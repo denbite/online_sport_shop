@@ -1,0 +1,31 @@
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
+    <meta content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description | strip_html | strip_newlines }}{% endif %}"
+          name="description">
+
+    <!--[if lte IE 8]><script src="{{ "/js/ie/html5shiv.js" | prepend: site.baseurl }}"></script><![endif]-->
+    <link href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}" rel="canonical">
+    <link href="{{ '/css/main.css' | prepend: site.baseurl }}" rel="stylesheet">
+    <!--[if lte IE 8]><link rel="stylesheet" href="{{ "/css/ie8.css" | prepend: site.baseurl }}" /><![endif]-->
+    <!--[if lte IE 9]><link rel="stylesheet" href="{{ "/css/ie9.css" | prepend: site.baseurl }}" /><![endif]-->
+
+    <script>
+        if (window.location.href.indexOf('github.io/popper.js') !== -1) {
+            window.location.href = "{{site.url}}" + "{{page.url}}"
+        }
+    </script>
+
+    <meta content="{{ site.title | escape }}" property="og:title">
+    <meta content="{{ site.description | strip_html | strip_newlines }}" property="og:description">
+    <meta content="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"
+          property="og:url">
+    <meta content="{{ '/images/logo.png' | prepend: site.baseurl | prepend: site.url }}" property="og:image">
+
+    <!-- favicon -->
+    <link href="favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <link href="favicon-96x96.png" rel="icon" sizes="96x96" type="image/png">
+    <link href="favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
+    <link href="../../../../../../../web/favicon.ico" rel="shortcut icon">
+</head>
