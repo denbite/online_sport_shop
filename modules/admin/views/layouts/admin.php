@@ -61,29 +61,6 @@ AdminAsset::register($this);
                 <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
                     <span class="sr-only">Toggle navigation</span>
                 </a>
-
-                <div class="btn-group d-none d-lg-inline-block mt-5">
-                    <button class="btn dropdown-toggle mr-10 btn-outline btn-white" type="button"
-                            data-toggle="dropdown">Dashboard
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item"
-                           href="http://html-templates.multipurposethemes.com/bootstrap-4/admin/fab-admin/src/"><i
-                                    class="fa fa-dashboard w-30"></i>Main Dashboard</a>
-                        <a class="dropdown-item"
-                           href="http://html-templates.multipurposethemes.com/bootstrap-4/admin/fab-admin/ecommerce-dashboard/"><i
-                                    class="fa fa-shopping-basket w-30"></i>eCommerce Dashboard</a>
-                        <a class="dropdown-item"
-                           href="http://html-templates.multipurposethemes.com/bootstrap-4/admin/fab-admin/hospital-dashboard/"><i
-                                    class="fa fa-heartbeat w-30"></i>Hospital Dashboard</a>
-                        <a class="dropdown-item"
-                           href="http://html-templates.multipurposethemes.com/bootstrap-4/admin/fab-admin/horizontal-nav/main"><i
-                                    class="fa fa-bars w-30"></i>Horizontal Nav Dashboard</a>
-                        <a class="dropdown-item"
-                           href="http://html-templates.multipurposethemes.com/bootstrap-4/admin/fab-admin/horizontal-nav/real-estate-dashboard"><i
-                                    class="fa fa-building w-30"></i>Real Estate Dashboard</a>
-                    </div>
-                </div>
             </div>
 
             <div class="navbar-custom-menu">
@@ -741,12 +718,6 @@ AdminAsset::register($this);
             <h1>
                 <?= Yii::$app->view->title ?>
             </h1>
-            <!--            <ol class="breadcrumb">-->
-            <!--                <li class="breadcrumb-item"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>-->
-            <!--                <li class="breadcrumb-item"><a href="#">Layout</a></li>-->
-            <!--                <li class="breadcrumb-item active">Fixed</li>-->
-            <!--            </ol>-->
-            
             <?php
             
             echo Breadcrumbs::widget([
@@ -772,17 +743,7 @@ AdminAsset::register($this);
     <!-- /.content-wrapper -->
 
     <footer class="main-footer">
-        <div class="pull-right d-none d-sm-inline-block">
-            <ul class="nav nav-primary nav-dotted nav-dot-separated justify-content-center justify-content-md-end">
-                <li class="nav-item">
-                    <a class="nav-link" href="javascript:void(0)">FAQ</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Purchase Now</a>
-                </li>
-            </ul>
-        </div>
-        &copy; 2018 <a href="https://www.multipurposethemes.com/">Multi-Purpose Themes</a>. All Rights Reserved.
+        &copy; 2019 All Rights Reserved.
     </footer>
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-light">

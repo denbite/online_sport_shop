@@ -16,11 +16,15 @@ class AdminAsset extends AssetBundle
     ];
     
     public $js = [
-        'js/template.js',
-        'js/demo.js',
+        'vendor/jquery-ui/jquery-ui.js',
         'vendor/popper/dist/popper.min.js',
-        'vendor/jquery-slimscroll/jquery.slimscroll.min.js',
+        'vendor/jquery-slimscroll/jquery.slimscroll.js',
         'vendor/fastclick/lib/fastclick.js',
+        'vendor/bootstrap/dist/js/bootstrap.js',
+    
+        'js/template.js',
+        //        'js/demo.js',
+    
     ];
     
     public $depends = [
@@ -28,4 +32,5 @@ class AdminAsset extends AssetBundle
         'yii\bootstrap4\BootstrapAsset',
         'app\assets\IconsAsset',
     ];
+    
 }

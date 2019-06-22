@@ -20,8 +20,7 @@ if (typeof jQuery === 'undefined') {
 //  Configure any options by passing data-option="value"
 //  to the body tag.
 
-
-+function ($) {
+jQuery(document).ready(function ($) {
     'use strict'
 
     var DataKey = 'fabadmin.layout'
@@ -187,7 +186,9 @@ if (typeof jQuery === 'undefined') {
     $(window).on('load', function () {
         Plugin.call($('body'))
     });
-}(jQuery)  // End of use strict
+});
+
+(jQuery)  // End of use strict
 
 /* PushMenu()
  * Adds the push menu functionality to the sidebar.
