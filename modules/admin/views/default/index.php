@@ -13,7 +13,6 @@ $this->title = 'Главная';
         in the "<?= $this->context->module->id ?>" module ADMIN.
     </p>
     <p>
-        You may customize this page by editing the following file:<br>
         <code><?= __FILE__ ?></code>
     </p>
 </div>

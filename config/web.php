@@ -22,6 +22,10 @@ $config = [
         ],
         'main' => [
             'class' => 'app\modules\main\Module',
+            'layout' => 'main',
+        ],
+        'user' => [
+            'class' => 'app\modules\user\Module',
         ],
     ],
     'components' => [
@@ -34,8 +38,13 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\modules\user\models\User',
             'enableAutoLogin' => true,
+            'loginUrl' => [ 'user/default/login' ],
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+            //            'defaultRoles' => [ 'guest' ],
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
