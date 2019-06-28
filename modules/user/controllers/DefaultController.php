@@ -8,7 +8,6 @@ use app\modules\user\models\forms\PasswordResetForm;
 use app\modules\user\models\forms\PasswordResetRequestForm;
 use app\modules\user\models\forms\SignupForm;
 use Yii;
-use yii\base\Event;
 use yii\base\InvalidParamException;
 use yii\filters\AccessControl;
 use yii\web\BadRequestHttpException;
@@ -70,10 +69,12 @@ class DefaultController extends Controller
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-        
-        $model = ( Yii::$app->params['loginWithEmail'] ) ? new LoginForm([ 'scenario' => 'loginWithEmail' ]) : new LoginForm();
+    
+        $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            $this->trigger('AFTERUSERLOGIN', new Event([ 'sender' => $model ]));
+    
+            //todo: add mailer
+            //            $this->trigger('AFTERUSERLOGIN', new Event([ 'sender' => $model ]));
             
             return $this->goBack();
         } else {
@@ -95,7 +96,7 @@ class DefaultController extends Controller
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
-                Yii::$app->getSession()->setFlash('success', Yii::t('app', '_EMAIL_CONFIRM_SIGNUP'));
+                //                Yii::$app->getSession()->setFlash('success', 'Подтвердите регистрацию');
                 
                 return $this->goHome();
             }

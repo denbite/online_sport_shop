@@ -11,6 +11,7 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => [ 'log' ],
+    'defaultRoute' => 'main/default/index',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
@@ -22,7 +23,6 @@ $config = [
         ],
         'main' => [
             'class' => 'app\modules\main\Module',
-            'layout' => 'main',
         ],
         'user' => [
             'class' => 'app\modules\user\Module',
@@ -47,7 +47,7 @@ $config = [
             //            'defaultRoles' => [ 'guest' ],
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'main/default/error',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

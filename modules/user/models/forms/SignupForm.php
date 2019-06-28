@@ -29,18 +29,18 @@ class SignupForm extends Model
             [ 'username', 'filter', 'filter' => 'trim' ],
             [ 'username', 'required' ],
             [ 'username', 'match', 'pattern' => '#^[\w_-]+$#i' ],
-            [ 'username', 'unique', 'targetClass' => User::className(), 'message' => Yii::t('user', '_ERROR_USERNAME_EXISTS') ],
+            [ 'username', 'unique', 'targetClass' => User::className(), 'message' => 'Пользователь с данным никнеймом уже существует' ],
             [ 'username', 'string', 'min' => 2, 'max' => 255 ],
             
             [ 'email', 'filter', 'filter' => 'trim' ],
             [ 'email', 'required' ],
             [ 'email', 'email' ],
-            [ 'email', 'unique', 'targetClass' => User::className(), 'message' => Yii::t('user', '_ERROR_EMAIL_EXISTS') ],
+            [ 'email', 'unique', 'targetClass' => User::className(), 'message' => 'Пользователь с таким почтовым ящиком уже зарегистрирован' ],
             
             [ 'password', 'required' ],
             [ 'password', 'string', 'min' => 6 ],
-            
-            [ 'verifyCode', 'captcha', 'captchaAction' => '/user/default/captcha' ],
+    
+            //            [ 'verifyCode', 'captcha', 'captchaAction' => '/user/default/captcha' ],
         ];
     }
     
@@ -56,16 +56,22 @@ class SignupForm extends Model
             $user->username = $this->username;
             $user->email = $this->email;
             $user->setPassword($this->password);
-            $user->status = User::STATUS_WAIT;
+            // todo: change to WAIT after add mailer
+            $user->status = User::STATUS_ACTIVE;
             $user->generateAuthKey();
             $user->generateEmailConfirmToken();
             
             if ($user->save()) {
-                Yii::$app->mailer->compose('@app/modules/user/mails/emailConfirm', [ 'user' => $user ])
-                                 ->setFrom([ Yii::$app->params['supportEmail'] => Yii::$app->name ])
-                                 ->setTo($this->email)
-                                 ->setSubject('Email confirmation for ' . Yii::$app->name)
-                                 ->send();
+                // todo: add mailer
+                //                Yii::$app->mailer->compose('@app/modules/user/mails/emailConfirm', [ 'user' => $user ])
+                //                                 ->setFrom([ Yii::$app->params['supportEmail'] => Yii::$app->name ])
+                //                                 ->setTo($this->email)
+                //                                 ->setSubject('Email confirmation for ' . Yii::$app->name)
+                //                                 ->send();
+    
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole('user'), $user->id);
+    
+                Yii::$app->user->login($user, 3600 * 24);
             }
             
             return $user;
@@ -78,10 +84,10 @@ class SignupForm extends Model
     public function attributeLabels()
     {
         return [
-            'username' => Yii::t('user', '_USERNAME'),
-            'email' => Yii::t('user', '_EMAIL'),
-            'password' => Yii::t('user', '_PASSWORD'),
-            'verifyCode' => Yii::t('app', '_CAPTCHA'),
+            'username' => 'Никнейм',
+            'email' => 'Почтовый ящик',
+            'password' => 'Пароль',
+            'verifyCode' => 'Капча',
         ];
     }
 }

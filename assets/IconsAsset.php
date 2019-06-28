@@ -12,5 +12,6 @@ class IconsAsset extends AssetBundle
     public $css = [
         'font-awesome/css/font-awesome.min.css',
         'mdi/css/materialdesignicons.min.css',
+        'simple-line-icons/css/simple-line-icons.css',
     ];
 }

@@ -1,7 +1,10 @@
 <?php
 
 return [
-    '<slug:[\w\-\/]+>/page<page:\d+>/' => 'main/default/index',
+    //    '<slug:[\w\-\/]+>/page<page:\d+>/' => 'main/default/index',
+    
+    //    auth
+    '<_a:(login|signup|logout|confirm-email|request-password-reset|reset-password)>' => 'user/default/<_a>',
     
     //    main pages
     '' => 'main/default/index',

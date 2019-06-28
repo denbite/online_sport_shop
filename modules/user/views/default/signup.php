@@ -1,16 +1,14 @@
 <?php
 
-/* @var $this yii\web\View */
-
-/* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \app\modules\user\models\LoginForm */
-
-$this->title = 'Вход';
-$this->params['breadcrumbs'][] = $this->title;
-
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
+/* @var $this yii\web\View */
+/* @var $form yii\bootstrap\ActiveForm */
+/* @var $model \app\modules\user\models\LoginForm */
+
+$this->title = 'Регистрация';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="login-register-area pt-100 pb-100">
     <div class="container">
@@ -18,25 +16,20 @@ use yii\helpers\Html;
             <div class="col-lg-7 col-md-12 ml-auto mr-auto">
                 <div class="login-register-wrapper">
                     <div class="login-register-tab-list nav">
-                        <h4 style="color:#ff3535;"> Вход </h4>
+                        <h4 style="color:#ff3535;"> Зарегистрироваться </h4>
                     </div>
                     <div class="tab-content">
-                        <div class="tab-pane active">
+                        <div id="lg2" class="tab-pane active">
                             <div class="login-form-container">
                                 <div class="login-register-form">
                                     <?php $form = ActiveForm::begin([
-                                                                        'id' => 'login-form',
+                                                                        'id' => 'signup-form',
                                                                     ]) ?>
                                     <?= $form->field($model, 'username') ?>
                                     <?= $form->field($model, 'password')->passwordInput() ?>
+                                    <?= $form->field($model, 'email') ?>
                                     <div class="button-box">
-                                        <div class="login-toggle-btn">
-                                            <?= $form->field($model, 'rememberMe')
-                                                     ->checkbox()
-                                                     ->label('Запомнить меня') ?>
-                                            <?= Html::a('Забыли пароль?', [ '/user/default/forgot-password' ]) ?>
-                                        </div>
-                                        <?= Html::submitButton('Войти') ?>
+                                        <?= Html::submitButton('Зарегистрироваться') ?>
                                     </div>
                                     <?php ActiveForm::end() ?>
                                 </div>

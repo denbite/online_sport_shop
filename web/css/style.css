@@ -31,7 +31,7 @@
     21. Compare style
     22. Checkout style
     23. My account style
-    
+
 -----------------------------------------------------------------------------------*/
 /*----------------------------------------*/
 /*  1. Template default CSS
@@ -68,14 +68,14 @@ h4,
 h5,
 h6 {
     font-family: "Poppins", sans-serif;
-    font-weight: 400;
+    font-weight: 600;
     margin-top: 0;
     color: #1f2226;
 }
 
 p {
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 24px;
     color: #333333;
     margin-bottom: 15px;

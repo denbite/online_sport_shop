@@ -8,6 +8,8 @@ use yii\widgets\Breadcrumbs;
 
 AdminAsset::register($this);
 
+$controller = Yii::$app->controller->id;
+$action = Yii::$app->controller->action->id;
 ?>
 
 <?php $this->beginPage() ?>
@@ -42,18 +44,15 @@ AdminAsset::register($this);
 
     <header class="main-header">
         <!-- Logo -->
-        <a href="#" class="logo">
-            <!-- mini logo -->
-            <b class="logo-mini">
+        <?= Html::a('<b class="logo-mini">
                 <span class="light-logo"><img src="images/admin/logo-light.png" alt="logo"></span>
                 <span class="dark-logo"><img src="images/admin/logo-dark.png" alt="logo"></span>
             </b>
-            <!-- logo-->
             <span class="logo-lg">
 		  <img src="images/admin/logo-light-text.png" alt="logo" class="light-logo">
 	  	  <img src="images/admin/logo-dark-text.png" alt="logo" class="dark-logo">
-	  </span>
-        </a>
+	  </span>', [ '/main/default/index' ], [ 'class' => 'logo' ]) ?>
+
         <!-- Header Navbar -->
         <nav class="navbar navbar-static-top">
             <!-- Sidebar toggle button-->
@@ -115,13 +114,8 @@ AdminAsset::register($this);
 
             <!-- sidebar menu-->
             <ul class="sidebar-menu" data-widget="tree">
-                <li>
-                    <a href="admin">
-                        <i class="fa fa-home"></i> <span>Главная</span>
-                        <span class="pull-right-container">
-              <i class="fa fa-angle-right pull-right"></i>
-            </span>
-                    </a>
+                <li <?= $controller == 'default' ? ' class="active"' : '""' ?>>
+                    <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-home' ]) . Html::tag('span', 'Главная'), [ '/admin/default/index' ]) ?>
                 </li>
                 <li class="header nav-small-cap">Основные</li>
                 <li class="treeview">

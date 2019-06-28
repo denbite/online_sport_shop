@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-  "content-hash": "09c3bbf2b0b619f1473630353310e77a",
+  "content-hash": "cc18e4a70473f9e480631f0f504b7e90",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -54,7 +54,7 @@
             "version": "3.3.11",
             "source": {
                 "type": "git",
-              "url": "git@github.com:RobinHerbots/Inputmask.git",
+              "url": "https://github.com/RobinHerbots/Inputmask.git",
                 "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
             },
             "dist": {
@@ -127,6 +127,25 @@
             "type": "bower-asset"
         },
         {
+          "name": "bower-asset/simple-line-icons",
+          "version": "2.4.1",
+          "source": {
+            "type": "git",
+            "url": "https://github.com/thesabbir/simple-line-icons.git",
+            "reference": "ae1cf4ec75a8a32c4810a2fe7ca8c2fdf6f3e32c"
+          },
+          "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/thesabbir/simple-line-icons/zipball/ae1cf4ec75a8a32c4810a2fe7ca8c2fdf6f3e32c",
+            "reference": "ae1cf4ec75a8a32c4810a2fe7ca8c2fdf6f3e32c",
+            "shasum": null
+          },
+          "type": "bower-asset",
+          "license": [
+            "MIT"
+          ]
+        },
+      {
             "name": "bower-asset/yii2-pjax",
             "version": "2.0.7.1",
             "source": {
