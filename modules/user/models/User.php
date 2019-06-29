@@ -10,6 +10,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string auth_key
  * @property string username
  * @property string email
+ * @property int status
  */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
@@ -23,6 +24,14 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     private static $_myRoles = false;
     
     protected $role_name;
+    
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
+        return '{{%user}}';
+    }
     
     public static function findIdentity($id)
     {
@@ -146,9 +155,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public static function getStatusesArray()
     {
         return [
-            self::STATUS_BLOCKED => Yii::t('app', '_STATUS_BLOCKED'),
-            self::STATUS_ACTIVE => Yii::t('app', '_STATUS_ACTIVE'),
-            self::STATUS_WAIT => Yii::t('app', '_STATUS_WAIT'),
+            self::STATUS_BLOCKED => 'Заблокированый',
+            self::STATUS_ACTIVE => 'Активный',
+            self::STATUS_WAIT => 'Ожидание',
         ];
     }
     

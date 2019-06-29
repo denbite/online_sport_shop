@@ -2,6 +2,7 @@
 
 /** @var string $content */
 
+use app\components\helpers\Permission;
 use app\modules\admin\assets\AdminAsset;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
@@ -22,7 +23,7 @@ $action = Yii::$app->controller->action->id;
     
     <?= Html::csrfMetaTags() ?>
 
-    <link rel="icon" href="images/admin/favicon.ico">
+    <link rel="icon" href="/images/admin/favicon.ico">
 
     <title><?= Html::encode($this->title) ?></title>
 
@@ -45,12 +46,12 @@ $action = Yii::$app->controller->action->id;
     <header class="main-header">
         <!-- Logo -->
         <?= Html::a('<b class="logo-mini">
-                <span class="light-logo"><img src="images/admin/logo-light.png" alt="logo"></span>
-                <span class="dark-logo"><img src="images/admin/logo-dark.png" alt="logo"></span>
+                <span class="light-logo"><img src="/images/admin/logo-light.png" alt="logo"></span>
+                <span class="dark-logo"><img src="/images/admin/logo-dark.png" alt="logo"></span>
             </b>
             <span class="logo-lg">
-		  <img src="images/admin/logo-light-text.png" alt="logo" class="light-logo">
-	  	  <img src="images/admin/logo-dark-text.png" alt="logo" class="dark-logo">
+		  <img src="/images/admin/logo-light-text.png" alt="logo" class="light-logo">
+	  	  <img src="/images/admin/logo-dark-text.png" alt="logo" class="dark-logo">
 	  </span>', [ '/main/default/index' ], [ 'class' => 'logo' ]) ?>
 
         <!-- Header Navbar -->
@@ -77,13 +78,13 @@ $action = Yii::$app->controller->action->id;
                     <!-- User Account-->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="images/admin/user5-128x128.jpg" class="user-image rounded-circle"
+                            <img src="/images/admin/user5-128x128.jpg" class="user-image rounded-circle"
                                  alt="User Image">
                         </a>
                         <ul class="dropdown-menu scale-up">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="images/admin/user5-128x128.jpg" class="float-left rounded-circle"
+                                <img src="/images/admin/user5-128x128.jpg" class="float-left rounded-circle"
                                      alt="User Image">
 
                                 <p>
@@ -132,19 +133,21 @@ $action = Yii::$app->controller->action->id;
                         <li><a href="../app/app-ticket.html"><i class="fa fa-circle-thin"></i>Заказы</a></li>
                     </ul>
                 </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-user-o"></i> <span>Пользователи</span>
-                        <span class="pull-right-container">
+                <?php if (Permission::can([ 'admin_user_index', 'admin_role_index' ])): ?>
+                    <li class="treeview <?= in_array($controller, [ 'user', 'role' ]) ? ' active' : '' ?>">
+                        <a href="#">
+                            <i class="fa fa-user-o"></i> <span>Пользователи</span>
+                            <span class="pull-right-container">
               <i class="fa fa-angle-right pull-right"></i>
             </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="../mailbox/mailbox.html"><i class="fa fa-circle-thin"></i>Список пользователей</a>
-                        </li>
-                        <li><a href="../mailbox/compose.html"><i class="fa fa-circle-thin"></i>Роли</a></li>
-                    </ul>
-                </li>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li <?= $controller == 'user' ? ' class="active"' : '' ?>><?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-circle-thin' ]) . 'Список пользователей', [ '/admin/user/index' ]) ?>
+                            </li>
+                            <li <?= $controller == 'role' ? ' class="active"' : '' ?>><?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-circle-thin' ]) . 'Роли', [ '/admin/role/index' ]) ?></li>
+                        </ul>
+                    </li>
+                <?php endif; ?>
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-bars"></i>

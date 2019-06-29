@@ -11,7 +11,7 @@ class Permission
     /**
      * Проверяет доступ текущего пользователя к правилу
      *
-     * @param $rule string
+     * @param $rule string|array
      *
      * @return bool
      */
@@ -23,9 +23,21 @@ class Permission
         if (array_key_exists('admin', $auth->getRolesByUser($user_id))) {
             return true;
         }
-        
-        if (self::permissionExist($rule)) {
-            return Yii::$app->user->can($rule);
+    
+        if (is_string($rule)) {
+            if (self::permissionExist($rule)) {
+                return Yii::$app->user->can($rule);
+            }
+        }
+    
+        if (is_array($rule) and !empty($rule)) {
+            foreach ($rule as $one) {
+                if (!Yii::$app->user->can($one)) {
+                    continue;
+                }
+            
+                return true;
+            }
         }
         
         return false;
@@ -82,5 +94,11 @@ class Permission
         }
         
         return false;
+    }
+    
+    public static function getAllRoles()
+    {
+        //todo-cache: add cache
+        return ArrayHelper::map(ArrayHelper::toArray(Yii::$app->authManager->getRoles()), 'name', 'name');
     }
 }
