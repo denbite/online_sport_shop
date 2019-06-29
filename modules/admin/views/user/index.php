@@ -1,9 +1,9 @@
 <?php
 
+use app\components\grid\ActionColumn;
 use app\components\grid\DropdownColumn;
 use app\components\grid\IdColumn;
 use app\components\grid\OwnColumn;
-use app\components\grid\StatusColumn;
 use app\components\helpers\Permission;
 use app\modules\user\models\User;
 use yii\helpers\Html;
@@ -16,7 +16,7 @@ $this->title = 'Пользователи';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="box box-shadowed">
+<div class="box box-shadowed box-outline-success">
 
     <div class="box-body no-padding">
         <?php echo \yii\grid\GridView::widget([
@@ -24,12 +24,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                                   'dataProvider' => $dataProvider,
                                                   'filterModel' => $searchModel,
                                                   'tableOptions' => [
-                                                      'class' => 'table table-hover bg-food-white',
+                                                      'class' => 'table table-hover ' . ( !empty(Yii::$app->params['background']) ? Yii::$app->params['background'] : '' ),
                                                   ],
                                                   'options' => [
                                                       'class' => 'table-responsive',
                                                   ],
-                                                  'summary' => '<div class="box-header with-border"><h4 class="box-title">Найдено {totalCount} шт., показывается {begin} - {end}</h4><div class="box-controls pull-right">' . Html::a('Добавить пользователя', [ '/admin/user/create' ], [ 'class' => 'btn btn-xs btn-info', 'style' => 'font-size: 16px;font-weight: 600;' ]) . '</div></div>',
+                                                  'summary' => '<div class="box-header with-border"><h4 class="box-title">Найдено {totalCount} шт., показывается {begin} - {end}</h4><div class="pull-right">' . Html::a('Добавить пользователя', [ '/admin/user/create' ], [ 'class' => 'btn btn-sm btn-info', 'style' => 'font-size: 16px;font-weight: 600;' ]) . '</div></div>',
                                                   'dataColumnClass' => OwnColumn::className(),
                                                   'columns' => [
                                                       [
@@ -74,7 +74,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                       [
                                                           'attribute' => 'created_at',
                                                           'format' => 'datetime',
-                
+
+                                                      ],
+                                                      [
+                                                          'class' => ActionColumn::className(),
                                                       ],
                                                   ],
                                               ])

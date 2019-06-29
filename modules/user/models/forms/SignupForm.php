@@ -71,7 +71,8 @@ class SignupForm extends Model
     
                 Yii::$app->authManager->assign(Yii::$app->authManager->getRole('user'), $user->id);
     
-                Yii::$app->user->login($user, 3600 * 24);
+                // doesn't work
+                //                Yii::$app->user->login($user, 3600 * 24);
             }
             
             return $user;

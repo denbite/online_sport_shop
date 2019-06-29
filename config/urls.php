@@ -12,7 +12,6 @@ return [
     //    admin pages
     'admin' => 'admin/default/index',
     'admin/<controller>' => 'admin/<controller>/index',
-    'user/<_c:[\w\-]+>/<id:\d+>' => 'user/<_c>/view',
-    'user/<_c:[\w\-]+>/update/<id:\d+>' => 'user/<_c>/update',
+    'admin/<_c:[\w\-]+>/<_a:(view|update)>/<id:\d+>' => 'admin/<_c>/<_a>',
 
 ];

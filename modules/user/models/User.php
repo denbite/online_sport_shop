@@ -2,6 +2,8 @@
 
 namespace app\modules\user\models;
 
+use app\models\AuthAssignment;
+use http\Exception;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -22,6 +24,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     const STATUS_WAIT = 2;
     
     private static $_myRoles = false;
+    
+    public $roles = [];
     
     protected $role_name;
     
@@ -146,6 +150,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [ 'status', 'integer' ],
             [ 'status', 'default', 'value' => self::STATUS_ACTIVE ],
             [ 'status', 'in', 'range' => array_keys(self::getStatusesArray()) ],
+            
+            [ [ 'roles' ], 'safe' ],
         ];
     }
     
@@ -155,7 +161,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public static function getStatusesArray()
     {
         return [
-            self::STATUS_BLOCKED => 'Заблокированый',
+            self::STATUS_BLOCKED => 'Заблокированный',
             self::STATUS_ACTIVE => 'Активный',
             self::STATUS_WAIT => 'Ожидание',
         ];
@@ -317,9 +323,31 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'created_at' => 'Дата создания',
             'updated_at' => 'Дата обновления',
             'username' => 'Никнейм',
-            'email' => 'e-mail',
+            'email' => 'Почтовый ящик',
             'status' => 'Статус',
         ];
+    }
+    
+    public function save($runValidation = true, $attributeNames = null)
+    {
+        if (!empty($this->roles)) {
+            AuthAssignment::deleteRolesById($this->id);
+            
+            foreach (array_keys($this->roles) as $role) {
+                try {
+                    if (Yii::$app->authManager->assign(Yii::$app->authManager->getRole($role), $this->id)) {
+                        continue;
+                    } else {
+                        AuthAssignment::deleteRolesById($this->id);
+                        break;
+                    }
+                } catch (Exception $e) {
+                    $e->getMessage();
+                }
+            }
+        }
+        
+        return parent::save($runValidation, $attributeNames);
     }
     
 }

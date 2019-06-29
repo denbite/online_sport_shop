@@ -23,7 +23,7 @@ class AdminAsset extends AssetBundle
         'vendor/bootstrap/dist/js/bootstrap.js',
     
         'js/template.js',
-        //        'js/demo.js',
+        'js/demo.js',
     
     ];
     
