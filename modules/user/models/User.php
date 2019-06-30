@@ -306,14 +306,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
     
     /**
-     * @return mixed
-     */
-    public function getStatusName()
-    {
-        return ArrayHelper::getValue(self::getStatusesArray(), $this->status);
-    }
-    
-    /**
      * @return array
      */
     public function attributeLabels()

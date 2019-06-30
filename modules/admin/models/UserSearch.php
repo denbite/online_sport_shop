@@ -21,7 +21,7 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [ [ 'status' ], 'integer', ],
+            [ [ 'id', 'status' ], 'integer', ],
             [ [ 'role', 'username', 'email' ], 'string', ],
             [ [ 'status' ], 'in', 'range' => array_keys(User::getStatusesArray()) ],
         ];

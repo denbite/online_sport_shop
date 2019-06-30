@@ -16,11 +16,11 @@ class OwnColumn extends DataColumn
     ];
     
     public $filterOptions = [
-        'style' => 'width: 200px; white-space: normal; font-weight: 600; font-size: 16px;text-align:center;',
+        'style' => 'max-width: 200px; white-space: normal; font-weight: 600; font-size: 16px;text-align:center;',
     ];
     
     public $filterInputOptions = [
         'class' => 'btn bg-secondary-gradient-animet dropdown-toggle',
-        'style' => 'width: 200px; white-space: normal; font-weight: 600; font-size: 16px;text-align:center;',
+        'style' => 'max-width: 200px; white-space: normal; font-weight: 600; font-size: 16px;text-align:center;',
     ];
 }

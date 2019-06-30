@@ -10,11 +10,11 @@ class DropdownColumn extends OwnColumn
     public $css;
     
     public $contentOptions = [
-        'style' => 'width: 200px; white-space: normal; font-weight: 600; font-size: 20px; text-align:center;',
+        'style' => 'max-width: 200px; white-space: normal; font-weight: 600; font-size: 20px; text-align:center;',
     ];
     
     public $headerOptions = [
-        'style' => 'width: 200px; white-space: normal; font-weight: 600; font-size: 16px;text-align:center;',
+        'style' => 'max-width: 200px; white-space: normal; font-weight: 600; font-size: 16px;text-align:center;',
     ];
     
     private $_attr;

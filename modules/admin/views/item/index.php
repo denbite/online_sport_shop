@@ -5,28 +5,48 @@ use app\components\grid\DropdownColumn;
 use app\components\grid\IdColumn;
 use app\components\grid\OwnColumn;
 use app\components\helpers\Permission;
-use app\modules\user\models\User;
+use app\components\models\Status;
 use yii\helpers\Html;
 
 /** @var object $dataProvider */
 /** @var object $searchModel */
 
-$this->title = 'Пользователи';
+$this->title = 'Товары';
 
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="box box-shadowed box-outline-success">
+<?php if (Yii::$app->session->hasFlash('success')): ?>
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+        <?php echo Yii::$app->session->getFlash('success'); ?>
+    </div>
+<?php endif; ?>
 
+<div class="box box-shadowed box-outline-success">
     <div class="box-header with-border">
         <div class="pull-right">
-            <?= Html::a('Добавить пользователя', [ '/admin/user/create' ], [ 'class' => 'btn-sm btn-info', 'style' => 'font-size: 16px;font-weight: 600;' ]) ?>
+            <?php if (Permission::can('admin_item_create')): ?>
+                <?= Html::a('Добавить товар', [ '/admin/item/create' ], [ 'class' => 'btn btn-sm
+            btn-info', 'style' => 'font-size: 16px;font-weight: 600;margin-left:15px;' ]) ?>
+            <?php endif; ?>
+            
+            <?php if (Permission::can('admin_item-color_create')): ?>
+                <?= Html::a('Добавить цвет', [
+                    '/admin/item-color/create' ], [ 'class' => 'btn btn-sm btn-info', 'style' => 'font-size: 16px;font-weight:
+            600;margin-left:15px;' ]) ?>
+            <?php endif; ?>
+            
+            <?php if (Permission::can('admin_item-size_create')): ?>
+                <?= Html::a('Добавить размер', [ '/admin/item-size/create' ], [ 'class' => 'btn
+            btn-sm btn-info', 'style' => 'font-size: 16px;font-weight: 600;margin-left:15px;' ]) ?>
+            <?php endif; ?>
         </div>
     </div>
-
     <div class="box-body no-padding">
         <?php echo \yii\grid\GridView::widget([
-                                                  'id' => 'user-table',
+                                                  'id' => 'item-table',
                                                   'dataProvider' => $dataProvider,
                                                   'filterModel' => $searchModel,
                                                   'tableOptions' => [
@@ -34,6 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                   ],
                                                   'options' => [
                                                       'class' => 'table-responsive',
+            
                                                   ],
                                                   'summary' => '<div class="box-header with-border"><h4 class="box-title">Найдено {totalCount} шт., показывается {begin} - {end}</h4></div>',
                                                   'dataColumnClass' => OwnColumn::className(),
@@ -44,43 +65,38 @@ $this->params['breadcrumbs'][] = $this->title;
                                                           'label' => '#',
                                                           'format' => 'html',
                                                           'value' => function($model) {
-                                                              if (Permission::can('admin_user_view')) {
-                                                                  return Html::a($model->id, [ '/admin/user/view', 'id' => $model->id ]);
+                                                              if (Permission::can('admin_item_view')) {
+                                                                  return Html::a($model->id, [ '/admin/item/view', 'id' => $model->id ]);
                                                               }
                         
                                                               return $model->id;
                                                           },
                                                       ],
                                                       [
-                                                          'attribute' => 'username',
+                                                          'attribute' => 'firm',
                 
                                                       ],
                                                       [
-                                                          'attribute' => 'email',
+                                                          'attribute' => 'model',
                 
                                                       ],
                                                       [
-                                                          'attribute' => 'role',
-                                                          'label' => 'Роли',
-                                                          'format' => 'html',
-                                                          'filter' => Permission::getAllRoles(),
-                                                          'value' => function($model) {
-                                                              $roles = array_keys(Yii::$app->authManager->getRolesByUser($model->id));
-                        
-                                                              return !empty($roles) ? implode(', ', $roles) : null;
-                                                          },
+                                                          'attribute' => 'collection',
+                
+                                                      ],
+                                                      [
+                                                          'attribute' => 'code',
                                                       ],
                                                       [
                                                           'attribute' => 'status',
                                                           'format' => 'html',
                                                           'class' => DropdownColumn::className(),
-                                                          'filter' => User::getStatusesArray(),
-                                                          'css' => User::getStatusCssClass(),
+                                                          'filter' => Status::getStatusesArray(),
+                                                          'css' => Status::getStatusCssClass(),
                                                       ],
                                                       [
                                                           'attribute' => 'created_at',
                                                           'format' => 'datetime',
-
                                                       ],
                                                       [
                                                           'class' => ActionColumn::className(),
