@@ -2,17 +2,16 @@
 
 namespace app\modules\admin\controllers;
 
-use app\models\Item;
-use app\modules\admin\models\ItemSearch;
+use app\models\Category;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
- * ItemController implements the CRUD actions for Item model.
+ * CategoryController implements the CRUD actions for Category model.
  */
-class ItemController extends Controller
+class CategoryController extends Controller
 {
     
     /**
@@ -31,22 +30,20 @@ class ItemController extends Controller
     }
     
     /**
-     * Lists all Item models.
+     * Lists all Category models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ItemSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $query = Category::find()->addOrderBy('root, lft');
         
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'query' => $query,
         ]);
     }
     
     /**
-     * Displays a single Item model.
+     * Displays a single Category model.
      *
      * @param integer $id
      *
@@ -55,33 +52,23 @@ class ItemController extends Controller
      */
     public function actionView($id)
     {
-        $model = $this->findModel($id);
-    
-        $modelColors = $model->allColors;
-    
-        foreach ($modelColors as $modelColor) {
-            $modelColorsSizes[$modelColor->color] = $modelColor->allSizes;
-        }
-        
         return $this->render('view', [
-            'model' => $model,
-            'modelColors' => $modelColors,
-            'modelColorsSizes' => $modelColorsSizes,
+            'model' => $this->findModel($id),
         ]);
     }
     
     /**
-     * Finds the Item model based on its primary key value.
+     * Finds the Category model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
      * @param integer $id
      *
-     * @return Item the loaded model
+     * @return Category the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (( $model = Item::findOne($id) ) !== null) {
+        if (( $model = Category::findOne($id) ) !== null) {
             return $model;
         }
         
@@ -89,28 +76,16 @@ class ItemController extends Controller
     }
     
     /**
-     * Creates a new Item model.
+     * Creates a new Category model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Item();
+        $model = new Category();
         
-        if (Yii::$app->request->isPost) {
-            $post = Yii::$app->request->post();
-            
-            $model->category_id = 2;
-            
-            if ($model->load($post) and $model->validate()) {
-                if ($model->save()) {
-                    Yii::$app->session->setFlash('success', 'Товар успешно создан');
-                    
-                    return $this->redirect([ '/admin/item-color/create', 'id' => (int) $model->id ]);
-                }
-                
-                Yii::$app->session->setFlash('error', reset($model->errors));
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect([ 'view', 'id' => $model->id ]);
         }
         
         return $this->render('create', [
@@ -119,7 +94,7 @@ class ItemController extends Controller
     }
     
     /**
-     * Updates an existing Item model.
+     * Updates an existing Category model.
      * If update is successful, the browser will be redirected to the 'view' page.
      *
      * @param integer $id
@@ -141,7 +116,7 @@ class ItemController extends Controller
     }
     
     /**
-     * Deletes an existing Item model.
+     * Deletes an existing Category model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      *
      * @param integer $id

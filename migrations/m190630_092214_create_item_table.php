@@ -46,8 +46,8 @@ class m190630_092214_create_item_table extends Migration
             'category_id', 'firm', 'model', 'collection', 'code',
         ],
                            [
-                               [ 2, '47 Brand', 'FRANCHISE DODGERS', '2018`SS', 'FRANC12RPF' ],
-                               [ 4, 'Saucony', 'JAZZ O QUILTED', '2017`SS', '60295' ],
+                               [ 4, '47 Brand', 'FRANCHISE DODGERS', '2018`SS', 'FRANC12RPF' ],
+                               [ 7, 'Saucony', 'JAZZ O QUILTED', '2017`SS', '60295' ],
                            ]
         );
         

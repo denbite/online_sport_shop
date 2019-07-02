@@ -1,45 +1,214 @@
 <?php
 
+use app\components\helpers\Permission;
+use app\components\models\Status;
 use yii\helpers\Html;
-use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Item */
+/* @var $modelColors app\models\ItemColor */
+/* @var $modelColorsSizes app\models\ItemColorSize */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = [ 'label' => 'Items', 'url' => [ 'index' ] ];
+$this->title = $model->firm . ' ' . $model->model;
+$this->params['breadcrumbs'][] = [ 'label' => 'Товары', 'url' => [ '/admin/item/index' ] ];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
 ?>
-<div class="item-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Update', [ 'update', 'id' => $model->id ], [ 'class' => 'btn btn-primary' ]) ?>
-        <?= Html::a('Delete', [ 'delete', 'id' => $model->id ], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-    
-    <?= DetailView::widget([
-                               'model' => $model,
-                               'attributes' => [
-                                   'id',
-                                   'category_id',
-                                   'firm',
-                                   'model',
-                                   'collection',
-                                   'code',
-                                   'sale',
-                                   'status',
-                                   'created_at',
-                                   'updated_at',
-                               ],
-                           ]) ?>
-
+<div class="col-12">
+    <div class="box box-shadowed">
+        <!-- /.box-header -->
+        <div class="box-body">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#main" role="tab"><span
+                                class="hidden-sm-up"><i class="ion-home"></i></span> <span
+                                class="hidden-xs-down">Основные</span></a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#color" role="tab"><span
+                                class="hidden-sm-up"><i class="ion-person"></i></span> <span class="hidden-xs-down">Цвета</span></a>
+                </li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#size" role="tab"><span
+                                class="hidden-sm-up"><i class="ion-email"></i></span> <span class="hidden-xs-down">Размеры</span></a>
+                </li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#photo" role="tab"><span
+                                class="hidden-sm-up"><i class="ion-email"></i></span> <span class="hidden-xs-down">Фотографии</span></a>
+                </li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#description" role="tab"><span
+                                class="hidden-sm-up"><i class="ion-email"></i></span> <span class="hidden-xs-down">Описание</span></a>
+                </li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content tabcontent-border">
+                <div class="tab-pane active" id="main" role="tabpanel">
+                    <div class="box-header with-border pb-40">
+                        <div class="pull-right">
+                            <?php if (Permission::can('admin_item_update')): ?>
+                                <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-pencil' ]) . ' Редактировать', [ "/admin/item/update", 'id' => $model->id ], [ 'class' => 'btn btn-sm btn-warning ml-20' ]) ?>
+                            <?php endif; ?>
+                            <?php if (Permission::can('admin_item_delete')): ?>
+                                <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-pencil' ]) . ' Удалить', [ "/admin/item/delete", 'id' => $model->id ], [ 'class' => 'btn btn-sm btn-danger ml-20' ]) ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="pad">
+                        <?php
+                        
+                        echo \yii\widgets\DetailView::widget([
+                                                                 'model' => $model,
+                                                                 'options' => [
+                                                                     'class' => 'table table-hover table-bordered detail-view',
+                                                                     'style' => 'font-weight:600;font-size:16px;',
+                                                                 ],
+                                                                 'attributes' => [
+                                                                     'id',
+                                                                     'firm',
+                                                                     'model',
+                                                                     'collection',
+                                                                     'code',
+                                                                     [
+                                                                         'attribute' => 'status',
+                                                                         'format' => 'html',
+                                                                         'value' => function($model) {
+                                                                             $css = Status::getStatusCssClass();
+                                                                             $filter = Status::getStatusesArray();
+                                        
+                                                                             if (array_key_exists($model->status, $css) and array_key_exists($model->status, $css)) {
+                                                                                 return Html::tag('span', $filter[$model->status], [ 'class' => 'label label-' . $css[$model->status] ]);
+                                                                             }
+                                        
+                                                                             return null;
+                                                                         },
+                                                                     ],
+                                                                     'created_at:date',
+                                                                 ],
+                                                             ])
+                        ?>
+                    </div>
+                </div>
+                <div class="tab-pane" id="color" role="tabpanel">
+                    <div class="box-header with-border pb-40">
+                        <div class="pull-right">
+                            <?php if (Permission::can('admin_item-color_update')): ?>
+                                <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-pencil' ]) . ' Редактировать', [ "/admin/item-color/update", 'id' => $model->id ], [ 'class' => 'btn btn-sm btn-warning ml-20' ]) ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="pad">
+                        <?php foreach ($modelColors as $modelColor): ?>
+                            <?php
+                            
+                            echo \yii\widgets\DetailView::widget([
+                                                                     'model' => $modelColor,
+                                                                     'options' => [
+                                                                         'class' => 'table table-hover table-bordered detail-view',
+                                                                         'style' => 'font-weight:600;font-size:16px;',
+                                                                     ],
+                                                                     'attributes' => [
+                                                                         [
+                                                                             'attribute' => 'id',
+                                                                             'contentOptions' => [
+                                                                                 'style' => 'width:45%;',
+                                                                             ],
+                                                                         ],
+                                                                         'code',
+                                                                         'color',
+                                                                         [
+                                                                             'attribute' => 'status',
+                                                                             'format' => 'html',
+                                                                             'value' => function($model) {
+                                                                                 $css = Status::getStatusCssClass();
+                                                                                 $filter = Status::getStatusesArray();
+                                            
+                                                                                 if (array_key_exists($model->status, $css) and array_key_exists($model->status, $css)) {
+                                                                                     return Html::tag('span', $filter[$model->status], [ 'class' => 'label label-' . $css[$model->status] ]);
+                                                                                 }
+                                            
+                                                                                 return null;
+                                                                             },
+                                                                         ],
+                                                                     ],
+                                                                 ])
+                            ?>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="tab-pane" id="size" role="tabpanel">
+                    <div class="box-header with-border pb-40">
+                        <div class="pull-right">
+                            <?php if (Permission::can('admin_item-size_update')): ?>
+                                <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-pencil' ]) . ' Редактировать', [ "/admin/item-size/update", 'id' => $model->id ], [ 'class' => 'btn btn-sm btn-warning ml-20' ]) ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="pad">
+                        <?php foreach ($modelColorsSizes as $color => $modelColorSize): ?>
+                            <h1><?= $color ?></h1>
+                            <?php foreach ($modelColorSize as $modelSize): ?>
+                                <?php
+                                
+                                echo \yii\widgets\DetailView::widget([
+                                                                         'model' => $modelSize,
+                                                                         'options' => [
+                                                                             'class' => 'table table-hover table-bordered detail-view',
+                                                                             'style' => 'font-weight:600;font-size:16px;',
+                                                                         ],
+                                                                         'attributes' => [
+                                                                             [
+                                                                                 'attribute' => 'id',
+                                                                                 'contentOptions' => [
+                                                                                     'style' => 'width:45%;',
+                                                                                 ],
+                                                                             ],
+                                                                             'size',
+                                                                             'quantity',
+                                                                             'price',
+                                                                             [
+                                                                                 'attribute' => 'status',
+                                                                                 'format' => 'html',
+                                                                                 'value' => function($model) {
+                                                                                     $css = Status::getStatusCssClass();
+                                                                                     $filter = Status::getStatusesArray();
+                                                
+                                                                                     if (array_key_exists($model->status, $css) and array_key_exists($model->status, $css)) {
+                                                                                         return Html::tag('span', $filter[$model->status], [ 'class' => 'label label-' . $css[$model->status] ]);
+                                                                                     }
+                                                
+                                                                                     return null;
+                                                                                 },
+                                                                             ],
+                                                                         ],
+                                                                     ])
+                                ?>
+                            <?php endforeach; ?>
+                        
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="tab-pane" id="photo" role="tabpanel">
+                    <div class="box-header with-border pb-40">
+                        <div class="pull-right">
+                            <?php if (Permission::can('admin_item_update')): ?>
+                                <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-pencil' ]) . ' Редактировать', [ "/admin/item/update", 'id' => $model->id ], [ 'class' => 'btn btn-sm btn-warning ml-20' ]) ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="pad">
+                        <h1>Coming Soon!</h1>
+                    </div>
+                </div>
+                <div class="tab-pane" id="description" role="tabpanel">
+                    <div class="box-header with-border pb-40">
+                        <div class="pull-right">
+                            <?php if (Permission::can('admin_item_update')): ?>
+                                <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-pencil' ]) . ' Редактировать', [ "/admin/item/update", 'id' => $model->id ], [ 'class' => 'btn btn-sm btn-warning ml-20' ]) ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="pad">
+                        <h1>Coming Soon!</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
 </div>

@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\models\Status;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -69,5 +70,16 @@ class ItemColor extends \yii\db\ActiveRecord
             'color' => 'Цвет',
             'status' => 'Статус',
         ];
+    }
+    
+    public function getEnableSizes()
+    {
+        return $this->hasMany(ItemColorSize::className(), [ 'color_id' => 'id' ])
+                    ->where([ 'status' => Status::STATUS_ACTIVE ]);
+    }
+    
+    public function getAllSizes()
+    {
+        return $this->hasMany(ItemColorSize::className(), [ 'color_id' => 'id' ]);
     }
 }

@@ -27,6 +27,9 @@ $config = [
         'user' => [
             'class' => 'app\modules\user\Module',
         ],
+        'treemanager' => [
+            'class' => '\kartik\tree\Module',
+        ],
     ],
     'components' => [
         'request' => [
