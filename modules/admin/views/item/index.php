@@ -25,6 +25,14 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 <?php endif; ?>
 
+<?php if (Yii::$app->session->hasFlash('error')): ?>
+    <div class="alert alert-error alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+        <?php echo Yii::$app->session->getFlash('error'); ?>
+    </div>
+<?php endif; ?>
+
 <div class="box box-shadowed box-outline-success">
     <div class="box-header with-border">
         <div class="pull-right">
@@ -35,13 +43,13 @@ $this->params['breadcrumbs'][] = $this->title;
             
             <?php if (Permission::can('admin_item-color_create')): ?>
                 <?= Html::a('Добавить цвет', [
-                    '/admin/item-color/create' ], [ 'class' => 'btn btn-sm btn-info', 'style' => 'font-size: 16px;font-weight:
+                    '/admin/item/create-color' ], [ 'class' => 'btn btn-sm btn-info', 'style' => 'font-size: 16px;font-weight:
             600;margin-left:15px;' ]) ?>
             <?php endif; ?>
             
             <?php if (Permission::can('admin_item-size_create')): ?>
-                <?= Html::a('Добавить размер', [ '/admin/item-size/create' ], [ 'class' => 'btn
-            btn-sm btn-info', 'style' => 'font-size: 16px;font-weight: 600;margin-left:15px;' ]) ?>
+                <?= Html::a('Добавить размер', [ '/admin/item/create-size' ], [ 'class' => 'btn
+            btn-sm btn-info mt-15 mt-lg-0', 'style' => 'font-size: 16px;font-weight: 600;margin-left:15px;' ]) ?>
             <?php endif; ?>
         </div>
     </div>

@@ -33,7 +33,7 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <div class="wrapper">
-    <?php if (\app\components\helpers\Permission::can('admin_default_index')): ?>
+    <?php if (!Yii::$app->user->isGuest and \app\components\helpers\Permission::can('admin_default_index')): ?>
         <div class="row" style="background-color: #000000;">
             <div class="col py-2 px-5">
                 <?= Html::a('Добро пожаловать, ' . Yii::$app->user->identity->username, [ '/admin/default/index' ], [ 'class' => 'px-50 pull-right', 'style' => 'color:#fff;font-size:18px;text-decoration:underline;' ]) ?>
@@ -429,20 +429,22 @@ AppAsset::register($this);
         <div class="container">
             <div class="breadcrumb-content text-center">
                 <?php
-                
-                echo Breadcrumbs::widget([
-                                             'tag' => 'ul',
-                                             'links' => !empty($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                                             'activeItemTemplate' => '<li class="active">{link}</li>',
-                                             'itemTemplate' => '<li>{link}</li>',
-                                             'homeLink' => [
-                                                 'label' => 'Главная',
-                                                 'url' => '/main/default/index',
-                                             ],
-                                             'options' => [
-                                                 'class' => null,
-                                             ],
-                                         ])
+
+                echo Breadcrumbs::widget(
+                    [
+                        'tag' => 'ul',
+                        'links' => !empty($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                        'activeItemTemplate' => '<li class="active">{link}</li>',
+                        'itemTemplate' => '<li>{link}</li>',
+                        'homeLink' => [
+                            'label' => 'Главная',
+                            'url' => '/main/default/index',
+                        ],
+                        'options' => [
+                            'class' => null,
+                        ],
+                    ]
+                )
                 ?>
             </div>
         </div>

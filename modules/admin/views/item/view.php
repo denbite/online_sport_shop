@@ -14,11 +14,39 @@ $this->title = $model->firm . ' ' . $model->model;
 $this->params['breadcrumbs'][] = [ 'label' => 'Товары', 'url' => [ '/admin/item/index' ] ];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<?php if (Yii::$app->session->hasFlash('success')): ?>
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+        <?php echo Yii::$app->session->getFlash('success'); ?>
+    </div>
+<?php endif; ?>
+
+<?php if (Yii::$app->session->hasFlash('error')): ?>
+    <div class="alert alert-error alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+        <?php echo Yii::$app->session->getFlash('error'); ?>
+    </div>
+<?php endif; ?>
+
 <div class="col-12">
-    <div class="box box-shadowed">
-        <!-- /.box-header -->
+    <div class="box box-shadowed box-outline-success <?= !empty(Yii::$app->params['background']) ?
+        Yii::$app->params['background'] : '' ?>">
+        <div class="box-header with-border">
+            <div class="pull-right">
+                <?php if (Permission::can('admin_item_update')): ?>
+                    <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-pencil' ]) . ' Редактировать',
+                        [ "/admin/item/update", 'id' => $model->id ], [ 'class' => 'btn btn-sm btn-warning ml-20' ]) ?>
+                <?php endif; ?>
+                <?php if (Permission::can('admin_item_delete')): ?>
+                    <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-pencil' ]) . ' Удалить',
+                        [ "/admin/item/delete", 'id' => $model->id ], [ 'class' => 'btn btn-sm btn-danger ml-20' ]) ?>
+                <?php endif; ?>
+            </div>
+        </div>
         <div class="box-body">
-            <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#main" role="tab"><span
                                 class="hidden-sm-up"><i class="ion-home"></i></span> <span
@@ -36,19 +64,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 class="hidden-sm-up"><i class="ion-email"></i></span> <span class="hidden-xs-down">Описание</span></a>
                 </li>
             </ul>
-            <!-- Tab panes -->
             <div class="tab-content tabcontent-border">
                 <div class="tab-pane active" id="main" role="tabpanel">
-                    <div class="box-header with-border pb-40">
-                        <div class="pull-right">
-                            <?php if (Permission::can('admin_item_update')): ?>
-                                <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-pencil' ]) . ' Редактировать', [ "/admin/item/update", 'id' => $model->id ], [ 'class' => 'btn btn-sm btn-warning ml-20' ]) ?>
-                            <?php endif; ?>
-                            <?php if (Permission::can('admin_item_delete')): ?>
-                                <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-pencil' ]) . ' Удалить', [ "/admin/item/delete", 'id' => $model->id ], [ 'class' => 'btn btn-sm btn-danger ml-20' ]) ?>
-                            <?php endif; ?>
-                        </div>
-                    </div>
                     <div class="pad">
                         <?php
                         
@@ -64,8 +81,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                          'attribute' => 'category_id',
                                                                          'value' => function($model) {
                                                                              $category = Category::getAllCategoriesByRoot();
-            
-                                                                             return !empty($category[$model->id]) ? $category[$model->id]->name : '';
+    
+                                                                             return !empty($category[$model->category_id]) ? $category[$model->category_id]->name : '';
                                                                          },
                                                                      ],
                                                                      'firm',
@@ -93,13 +110,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 </div>
                 <div class="tab-pane" id="color" role="tabpanel">
-                    <div class="box-header with-border pb-40">
-                        <div class="pull-right">
-                            <?php if (Permission::can('admin_item-color_update')): ?>
-                                <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-pencil' ]) . ' Редактировать', [ "/admin/item-color/update", 'id' => $model->id ], [ 'class' => 'btn btn-sm btn-warning ml-20' ]) ?>
-                            <?php endif; ?>
-                        </div>
-                    </div>
                     <div class="pad">
                         <?php foreach ($modelColors as $modelColor): ?>
                             <?php
@@ -140,13 +150,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 </div>
                 <div class="tab-pane" id="size" role="tabpanel">
-                    <div class="box-header with-border pb-40">
-                        <div class="pull-right">
-                            <?php if (Permission::can('admin_item-size_update')): ?>
-                                <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-pencil' ]) . ' Редактировать', [ "/admin/item-size/update", 'id' => $model->id ], [ 'class' => 'btn btn-sm btn-warning ml-20' ]) ?>
-                            <?php endif; ?>
-                        </div>
-                    </div>
                     <div class="pad">
                         <?php foreach ($modelColorsSizes as $color => $modelColorSize): ?>
                             <h1><?= $color ?></h1>
@@ -192,32 +195,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 </div>
                 <div class="tab-pane" id="photo" role="tabpanel">
-                    <div class="box-header with-border pb-40">
-                        <div class="pull-right">
-                            <?php if (Permission::can('admin_item_update')): ?>
-                                <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-pencil' ]) . ' Редактировать', [ "/admin/item/update", 'id' => $model->id ], [ 'class' => 'btn btn-sm btn-warning ml-20' ]) ?>
-                            <?php endif; ?>
-                        </div>
-                    </div>
                     <div class="pad">
                         <h1>Coming Soon!</h1>
                     </div>
                 </div>
                 <div class="tab-pane" id="description" role="tabpanel">
-                    <div class="box-header with-border pb-40">
-                        <div class="pull-right">
-                            <?php if (Permission::can('admin_item_update')): ?>
-                                <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-pencil' ]) . ' Редактировать', [ "/admin/item/update", 'id' => $model->id ], [ 'class' => 'btn btn-sm btn-warning ml-20' ]) ?>
-                            <?php endif; ?>
-                        </div>
-                    </div>
                     <div class="pad">
                         <h1>Coming Soon!</h1>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- /.box-body -->
     </div>
-    <!-- /.box -->
 </div>

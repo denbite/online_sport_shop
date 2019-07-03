@@ -12,7 +12,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "query",
+                url: "create-size",
                 dataType: "json",
                 data: "query=getColors&item_id=" + item_id,
                 error: function () {

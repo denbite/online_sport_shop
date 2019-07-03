@@ -30,7 +30,6 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 <?php endif; ?>
 
-<div class="container">
     <div class="box box-shadowed box-outline-success <?= !empty(Yii::$app->params['background']) ? Yii::$app->params['background'] : '' ?>">
         <div class="box-body form-element">
             <?php $form = ActiveForm::begin([
@@ -84,7 +83,6 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php ActiveForm::end() ?>
         </div>
     </div>
-</div>
 
 
 
