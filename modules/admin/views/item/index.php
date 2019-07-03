@@ -6,6 +6,7 @@ use app\components\grid\IdColumn;
 use app\components\grid\OwnColumn;
 use app\components\helpers\Permission;
 use app\components\models\Status;
+use app\models\Category;
 use yii\helpers\Html;
 
 /** @var object $dataProvider */
@@ -73,8 +74,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                                           },
                                                       ],
                                                       [
+                                                          'attribute' => 'category_id',
+                                                          'format' => 'html',
+                                                          'filter' => Category::getCategoriesIndexNameWithParents(),
+                                                          'value' => function($model) {
+                                                              $category = Category::getAllCategoriesByRoot();
+        
+                                                              return !empty($category[$model->category_id]) ? $category[$model->category_id]->name : '';
+                                                          },
+                                                      ],
+                                                      [
                                                           'attribute' => 'firm',
-                
+    
                                                       ],
                                                       [
                                                           'attribute' => 'model',

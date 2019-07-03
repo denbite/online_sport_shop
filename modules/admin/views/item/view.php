@@ -2,6 +2,7 @@
 
 use app\components\helpers\Permission;
 use app\components\models\Status;
+use app\models\Category;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -59,6 +60,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                  ],
                                                                  'attributes' => [
                                                                      'id',
+                                                                     [
+                                                                         'attribute' => 'category_id',
+                                                                         'value' => function($model) {
+                                                                             $category = Category::getAllCategoriesByRoot();
+            
+                                                                             return !empty($category[$model->id]) ? $category[$model->id]->name : '';
+                                                                         },
+                                                                     ],
                                                                      'firm',
                                                                      'model',
                                                                      'collection',

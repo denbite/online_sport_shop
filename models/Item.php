@@ -59,6 +59,8 @@ class Item extends \yii\db\ActiveRecord
             [ [ 'firm', 'model' ], 'string', 'max' => 128 ],
             [ [ 'collection', 'code' ], 'string', 'max' => 64 ],
             [ [ 'code' ], 'unique', 'message' => 'Товар с таким артикулом \'{value}\' уже существует' ],
+            [ [ 'model' ], 'unique', 'targetAttribute' => [ 'firm', 'model' ], 'message' => 'Такая модель \'{value}\' уже существует' ],
+        
         ];
     }
     

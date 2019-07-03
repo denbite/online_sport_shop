@@ -8,6 +8,7 @@ use yii\helpers\Html;
 /* @var $model app\models\Item */
 /* @var $model_color app\models\ItemColor */
 /* @var $model_size app\models\ItemColorSize */
+/* @var $categories array */
 
 $this->title = 'Создание товара';
 $this->params['breadcrumbs'][] = [ 'label' => 'Товары', 'url' => [ 'index' ] ];
@@ -37,6 +38,17 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'id' => 'item-create',
                                             ]) ?>
             <div class="row">
+                <div class="col">
+                    <?= $form->field($model, 'category_id')->widget(\kartik\select2\Select2::className(), [
+                        'data' => $categories,
+                        'options' => [
+                            'placeholder' => 'Выберите категорию ...',
+                        ],
+                        'pluginOptions' => [
+                            'allowClear' => true,
+                        ],
+                    ]) ?>
+                </div>
                 <div class="col">
                     <?= $form->field($model, 'firm') ?>
                 </div>

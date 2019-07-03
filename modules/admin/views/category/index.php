@@ -1,5 +1,6 @@
 <?php
 
+use app\components\helpers\Permission;
 use kartik\tree\TreeView;
 
 /* @var $this yii\web\View */
@@ -22,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                   'query' => $query,
                                   'headingOptions' => [ 'label' => $this->title ],
                                   'fontAwesome' => true,     // optional
-                                  'isAdmin' => false,         // optional (toggle to enable admin mode)
+                                  'isAdmin' => Permission::can('admin_category_admin') ? true : false,         // optional (toggle to enable admin mode)
                                   'displayValue' => 1,        // initial display value
                                   'softDelete' => true,       // defaults to true
                                   'cacheSettings' => [

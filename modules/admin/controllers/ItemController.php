@@ -2,6 +2,7 @@
 
 namespace app\modules\admin\controllers;
 
+use app\models\Category;
 use app\models\Item;
 use app\modules\admin\models\ItemSearch;
 use Yii;
@@ -56,17 +57,17 @@ class ItemController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
-    
+        
         $modelColors = $model->allColors;
-    
+        
         foreach ($modelColors as $modelColor) {
             $modelColorsSizes[$modelColor->color] = $modelColor->allSizes;
         }
         
         return $this->render('view', [
             'model' => $model,
-            'modelColors' => $modelColors,
-            'modelColorsSizes' => $modelColorsSizes,
+            'modelColors' => !empty($modelColors) ? $modelColors : [],
+            'modelColorsSizes' => !empty($modelColorsSizes) ? $modelColorsSizes : [],
         ]);
     }
     
@@ -100,8 +101,6 @@ class ItemController extends Controller
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
             
-            $model->category_id = 2;
-            
             if ($model->load($post) and $model->validate()) {
                 if ($model->save()) {
                     Yii::$app->session->setFlash('success', 'Товар успешно создан');
@@ -115,6 +114,7 @@ class ItemController extends Controller
         
         return $this->render('create', [
             'model' => $model,
+            'categories' => Category::getCategoriesIndexNameWithParents(),
         ]);
     }
     
