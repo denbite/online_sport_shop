@@ -8,6 +8,7 @@ use yii\helpers\Html;
 /* @var $model app\models\Item */
 /* @var $modelColors app\models\ItemColor */
 /* @var $modelColorsSizes app\models\ItemColorSize */
+/* @var $modelColorsImages app\models\Image */
 
 $this->title = 'Редактирование: ' . $model->firm . ' ' . $model->model;
 $this->params['breadcrumbs'][] = [ 'label' => 'Товары', 'url' => [ '/admin/item/index' ] ];
@@ -164,7 +165,25 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="tab-pane" id="photo" role="tabpanel">
                 <div class="pad">
-                    <h1>Coming Soon!</h1>
+                    <?php foreach ($modelColorsImages as $color => $modelImage): ?>
+                        <h1><?= $color ?></h1>
+                        <?= $form->field($modelImage, '[' . $color . ']attachment[]')
+                                 ->widget(\kartik\file\FileInput::className(), [
+                                     'options' => [
+                                         'multiple' => true,
+                                         'accept' => 'image/*',
+                                     ],
+                                     'pluginOptions' => [
+                                         'uploadUrl' => \yii\helpers\Url::to([ '/admin/item/update' ]),
+                                         'uploadExtraData' => [
+                                             "[{$color}]category" => \app\models\Image::TYPE_ITEM,
+                                             "[{$color}]subject_id" => $color,
+                                         ],
+            
+                                     ],
+                                 ])
+                        ?>
+                    <?php endforeach; ?>
                 </div>
             </div>
             <div class="tab-pane" id="description" role="tabpanel">

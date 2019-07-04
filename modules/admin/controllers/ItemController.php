@@ -3,6 +3,7 @@
 namespace app\modules\admin\controllers;
 
 use app\models\Category;
+use app\models\Image;
 use app\models\Item;
 use app\models\ItemColor;
 use app\models\ItemColorSize;
@@ -14,6 +15,7 @@ use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+use yii\web\UploadedFile;
 
 /**
  * ItemController implements the CRUD actions for Item model.
@@ -48,9 +50,9 @@ class ItemController
     
         return $this->render(
             'index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-            ]
+                       'searchModel' => $searchModel,
+                       'dataProvider' => $dataProvider,
+                   ]
         );
     }
     
@@ -74,10 +76,10 @@ class ItemController
     
         return $this->render(
             'view', [
-                'model' => $model,
-                'modelColors' => !empty($modelColors) ? $modelColors : [],
-                'modelColorsSizes' => !empty($modelColorsSizes) ? $modelColorsSizes : [],
-            ]
+                      'model' => $model,
+                      'modelColors' => !empty($modelColors) ? $modelColors : [],
+                      'modelColorsSizes' => !empty($modelColorsSizes) ? $modelColorsSizes : [],
+                  ]
         );
     }
     
@@ -124,9 +126,9 @@ class ItemController
     
         return $this->render(
             'create', [
-                'model' => $model,
-                'categories' => Category::getCategoriesIndexNameWithParents(),
-            ]
+                        'model' => $model,
+                        'categories' => Category::getCategoriesIndexNameWithParents(),
+                    ]
         );
     }
     
@@ -147,18 +149,23 @@ class ItemController
     
         foreach ($modelColors as $modelColor) {
             $modelColorsSizes[$modelColor->color] = $modelColor->allSizes;
+            $modelColorsImages[$modelColor->color] = !empty($modelColor->allImages) ? $modelColor->allImages : new Image();
         }
     
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
-        
+    
+            foreach ($modelColorsImages as $color => $modelImage) {
+                $modelImage->attachment = UploadedFile::getInstancesByName("Image[{$color}][attachment]");
+            }
+            
             $success = true;
         
             if ($model->load($post) and $model->save() and Model::loadMultiple($modelColors,
-                    $post) and Model::validateMultiple($modelColors)) {
+                                                                               $post) and Model::validateMultiple($modelColors)) {
                 foreach ($modelColorsSizes as $color => $modelSizes) {
                     if (!Model::loadMultiple($modelSizes,
-                            $post['ItemColorSize'], $color) or !Model::validateMultiple($modelSizes)) {
+                                             $post['ItemColorSize'], $color) or !Model::validateMultiple($modelSizes)) {
                         Yii::$app->session->setFlash('error', 'Не удалось загрузить изменения');
                         $success = false;
                         break;
@@ -185,7 +192,7 @@ class ItemController
                             }
                             if ($success) {
                                 Yii::$app->session->setFlash('success', 'Успешно сохранено');
-                            
+    
                                 return $this->redirect([ 'view', 'id' => $model->id ]);
                             }
                         }
@@ -198,11 +205,12 @@ class ItemController
     
         return $this->render(
             'update', [
-                'model' => $model,
-                'modelColors' => !empty($modelColors) ? $modelColors : [],
-                'modelColorsSizes' => !empty($modelColorsSizes) ? $modelColorsSizes : [],
-                'categories' => Category::getCategoriesIndexNameWithParents(),
-            ]
+                        'model' => $model,
+                        'modelColors' => !empty($modelColors) ? $modelColors : [],
+                        'modelColorsSizes' => !empty($modelColorsSizes) ? $modelColorsSizes : [],
+                        'modelColorsImages' => !empty($modelColorsImages) ? $modelColorsImages : [],
+                        'categories' => Category::getCategoriesIndexNameWithParents(),
+                    ]
         );
     }
     

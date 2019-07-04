@@ -25,11 +25,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                   'fontAwesome' => true,     // optional
                                   'isAdmin' => Permission::can('admin_category_admin') ? true : false,         // optional (toggle to enable admin mode)
                                   'displayValue' => 1,        // initial display value
-                                  'softDelete' => true,       // defaults to true
+                                  'softDelete' => false,       // defaults to true
                                   'cacheSettings' => [
                                       // todo-cache: add cache, softDelete to true!
                                       'enableCache' => false   // defaults to true
                                   ],
+                                  'showInactive' => true, // show all nodes
                               ]);
         ?>
     </div>

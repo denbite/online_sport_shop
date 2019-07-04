@@ -82,4 +82,17 @@ class ItemColor extends \yii\db\ActiveRecord
     {
         return $this->hasMany(ItemColorSize::className(), [ 'color_id' => 'id' ]);
     }
+    
+    public function getAllImages()
+    {
+        return $this->hasMany(Image::className(), [ 'subject_id' => 'id' ])
+                    ->andWhere([ 'type' => Image::TYPE_ITEM ])
+                    ->orderBy([ 'sort' => SORT_ASC ]);
+    }
+    
+    public function getMainImage()
+    {
+        return $this->hasOne(Image::className(), [ 'subject_id' => 'id' ])
+                    ->andWhere([ 'type' => Image::TYPE_ITEM, 'sort' => 0 ]);
+    }
 }

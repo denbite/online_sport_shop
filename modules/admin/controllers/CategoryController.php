@@ -34,7 +34,7 @@ class CategoryController extends Controller
     public function actionIndex()
     {
         $query = Category::find()->addOrderBy('root, lft');
-        
+    
         return $this->render('index', [
             'query' => $query,
         ]);
