@@ -74,4 +74,18 @@ class Image
             'created_at' => 'Created At',
         ];
     }
+    
+    public function upload($type, $subject_id)
+    {
+        foreach ($this->attachment as $pic) {
+            echo '<pre>';
+            var_dump($pic);
+            echo '</pre>';
+            die;
+            // path, save image, load attrs, validate, save()
+            
+        }
+        
+        return false;
+    }
 }

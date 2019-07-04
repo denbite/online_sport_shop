@@ -178,6 +178,8 @@ class ItemController
                                 $success = false;
                                 break;
                             }
+                            $modelColorsImages[$modelColor->color]->upload(Image::TYPE_ITEM,
+                                                                           $modelColor->id);
                         }
                         if ($success) {
                             foreach ($modelColorsSizes as $color => $modelSizes) {

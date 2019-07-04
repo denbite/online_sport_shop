@@ -173,14 +173,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                          'multiple' => true,
                                          'accept' => 'image/*',
                                      ],
-                                     'pluginOptions' => [
-                                         'uploadUrl' => \yii\helpers\Url::to([ '/admin/item/update' ]),
-                                         'uploadExtraData' => [
-                                             "[{$color}]category" => \app\models\Image::TYPE_ITEM,
-                                             "[{$color}]subject_id" => $color,
-                                         ],
-            
-                                     ],
                                  ])
                         ?>
                     <?php endforeach; ?>
