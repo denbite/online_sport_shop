@@ -157,6 +157,7 @@ class ItemController
     
             foreach ($modelColorsImages as $color => $modelImage) {
                 $modelImage->attachment = UploadedFile::getInstancesByName("Image[{$color}][attachment]");
+                $modelImage->type = Image::TYPE_ITEM;
             }
             
             $success = true;
@@ -178,8 +179,9 @@ class ItemController
                                 $success = false;
                                 break;
                             }
-                            $modelColorsImages[$modelColor->color]->upload(Image::TYPE_ITEM,
-                                                                           $modelColor->id);
+    
+                            $modelColorsImages[$modelColor->color]->subject_id = $modelColor->id;
+                            $modelColorsImages[$modelColor->color]->upload();
                         }
                         if ($success) {
                             foreach ($modelColorsSizes as $color => $modelSizes) {

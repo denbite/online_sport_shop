@@ -21,6 +21,7 @@ class m190703_201556_create_image_table
             'url' => $this->string()->notNull(),
             'sort' => $this->smallInteger()->unsigned()->defaultValue(0),
             'created_at' => $this->integer()->unsigned()->notNull(),
+            'updated_at' => $this->integer()->unsigned()->notNull(),
         ]);
     }
     

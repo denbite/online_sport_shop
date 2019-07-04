@@ -2,7 +2,9 @@
 
 namespace app\models;
 
+use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\FileHelper;
 
 /**
  * This is the model class for table "image".
@@ -67,25 +69,45 @@ class Image
     {
         return [
             'id' => 'ID',
-            'type' => 'Type',
-            'subject_id' => 'Subject ID',
-            'url' => 'Url',
-            'sort' => 'Sort',
-            'created_at' => 'Created At',
+            'type' => 'Тип',
+            'subject_id' => 'Объект ID',
+            'url' => 'Путь',
+            'sort' => 'Сортировка',
+            'created_at' => 'Дата создания',
         ];
     }
     
-    public function upload($type, $subject_id)
+    public function upload()
     {
         foreach ($this->attachment as $pic) {
-            echo '<pre>';
-            var_dump($pic);
-            echo '</pre>';
-            die;
-            // path, save image, load attrs, validate, save()
+            $subject = self::getTypes();
+            if (array_key_exists($this->type, $subject)) {
+                $subject = $subject[$this->type];
+                $this->url = Yii::$app->security->generateRandomString(16) . '_' . time() . '.' . $pic->extension;
+                $path = Yii::getAlias('@webroot') . '/files/' . $subject . '/' . $subject . '-' . $this->subject_id . '/';
+                
+                if (!file_exists($path)) {
+                    FileHelper::createDirectory($path, 0777);
+                }
+                
+                if ($this->validate()) {
+                    if (!$pic->saveAs($path . $this->url) or !$this->save(false)) {
+                        return false;
+                    }
+                }
+            }
             
         }
         
-        return false;
+        return true;
+    }
+    
+    public static function getTypes()
+    {
+        return [
+            self::TYPE_ITEM => 'Item',
+            self::TYPE_CATEGORY => 'Category',
+            self::TYPE_PROMOTIONS => 'Promotions',
+        ];
     }
 }
