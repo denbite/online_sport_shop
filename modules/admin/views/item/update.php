@@ -8,7 +8,7 @@ use yii\helpers\Html;
 /* @var $model app\models\Item */
 /* @var $modelColors app\models\ItemColor */
 /* @var $modelColorsSizes app\models\ItemColorSize */
-/* @var $modelColorsImages app\models\Image */
+/* @var $modelUploads app\models\UploadForm */
 
 $this->title = 'Редактирование: ' . $model->firm . ' ' . $model->model;
 $this->params['breadcrumbs'][] = [ 'label' => 'Товары', 'url' => [ '/admin/item/index' ] ];
@@ -165,9 +165,9 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="tab-pane" id="photo" role="tabpanel">
                 <div class="pad">
-                    <?php foreach ($modelColorsImages as $color => $modelImage): ?>
+                    <?php foreach ($modelUploads as $color => $modelUpload): ?>
                         <h1><?= $color ?></h1>
-                        <?= $form->field($modelImage, '[' . $color . ']attachment[]')
+                        <?= $form->field($modelUpload, '[' . $color . ']images[]')
                                  ->widget(\kartik\file\FileInput::className(), [
                                      'options' => [
                                          'multiple' => true,

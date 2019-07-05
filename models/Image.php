@@ -2,9 +2,7 @@
 
 namespace app\models;
 
-use Yii;
 use yii\behaviors\TimestampBehavior;
-use yii\helpers\FileHelper;
 
 /**
  * This is the model class for table "image".
@@ -20,13 +18,11 @@ class Image
     extends \yii\db\ActiveRecord
 {
     
-    const TYPE_ITEM = 0;
+    const TYPE_ITEM = 1;
     
-    const TYPE_CATEGORY = 1;
+    const TYPE_CATEGORY = 2;
     
-    const TYPE_PROMOTIONS = 2;
-    
-    public $attachment;
+    const TYPE_PROMOTIONS = 3;
     
     /**
      * {@inheritdoc}
@@ -51,7 +47,6 @@ class Image
                                  ->all());
             } ],
             [ [ 'url' ], 'string', 'max' => 255 ],
-            [ [ 'attachment' ], 'file', 'skipOnEmpty' => false, 'maxFiles' => 10, 'extensions' => 'png, jpg, jpeg' ],
         ];
     }
     
@@ -75,31 +70,6 @@ class Image
             'sort' => 'Сортировка',
             'created_at' => 'Дата создания',
         ];
-    }
-    
-    public function upload()
-    {
-        foreach ($this->attachment as $pic) {
-            $subject = self::getTypes();
-            if (array_key_exists($this->type, $subject)) {
-                $subject = $subject[$this->type];
-                $this->url = Yii::$app->security->generateRandomString(16) . '_' . time() . '.' . $pic->extension;
-                $path = Yii::getAlias('@webroot') . '/files/' . $subject . '/' . $subject . '-' . $this->subject_id . '/';
-                
-                if (!file_exists($path)) {
-                    FileHelper::createDirectory($path, 0777);
-                }
-                
-                if ($this->validate()) {
-                    if (!$pic->saveAs($path . $this->url) or !$this->save(false)) {
-                        return false;
-                    }
-                }
-            }
-            
-        }
-        
-        return true;
     }
     
     public static function getTypes()

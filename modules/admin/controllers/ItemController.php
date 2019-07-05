@@ -7,6 +7,7 @@ use app\models\Image;
 use app\models\Item;
 use app\models\ItemColor;
 use app\models\ItemColorSize;
+use app\models\UploadForm;
 use app\modules\admin\models\ItemSearch;
 use Yii;
 use yii\base\Model;
@@ -145,25 +146,28 @@ class ItemController
     {
         $model = $this->findModel($id);
     
-        $modelColors = $model->allColors;
+        $modelColors = !empty($model->allColors) ? $model->allColors : [];
     
         foreach ($modelColors as $modelColor) {
             $modelColorsSizes[$modelColor->color] = $modelColor->allSizes;
-            $modelColorsImages[$modelColor->color] = !empty($modelColor->allImages) ? $modelColor->allImages : new Image();
+            $modelUploads[$modelColor->color] = new UploadForm([
+                'type' => Image::TYPE_ITEM,
+                'subject_id' => $modelColor->id,
+                'firm' => $model->firm,
+                'model' => $model->model,
+                'color' => $modelColor->color,
+            ]);
         }
     
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
     
-            foreach ($modelColorsImages as $color => $modelImage) {
-                $modelImage->attachment = UploadedFile::getInstancesByName("Image[{$color}][attachment]");
-                $modelImage->type = Image::TYPE_ITEM;
-            }
-            
             $success = true;
-        
+    
+            // load item and colors
             if ($model->load($post) and $model->save() and Model::loadMultiple($modelColors,
-                                                                               $post) and Model::validateMultiple($modelColors)) {
+                    $post) and Model::validateMultiple($modelColors) and !empty($modelUploads) and !empty($modelColorsSizes)) {
+                // load sizes and validate
                 foreach ($modelColorsSizes as $color => $modelSizes) {
                     if (!Model::loadMultiple($modelSizes,
                                              $post['ItemColorSize'], $color) or !Model::validateMultiple($modelSizes)) {
@@ -172,18 +176,21 @@ class ItemController
                         break;
                     }
                 }
+                // if successfully loaded and validated
                 if ($success) {
+                    // save main app\models\Item model
                     if ($model->save()) {
+                        // save colors app\models\ItemColor models
                         foreach ($modelColors as $modelColor) {
                             if (!$modelColor->save()) {
                                 $success = false;
                                 break;
                             }
-    
-                            $modelColorsImages[$modelColor->color]->subject_id = $modelColor->id;
-                            $modelColorsImages[$modelColor->color]->upload();
                         }
+    
+                        // if successfully saved
                         if ($success) {
+                            // save sizes
                             foreach ($modelColorsSizes as $color => $modelSizes) {
                                 foreach ($modelSizes as $modelSize) {
                                     if (!$modelSize->save()) {
@@ -194,14 +201,36 @@ class ItemController
                                 if (!$success)
                                     break;
                             }
-                            if ($success) {
-                                Yii::$app->session->setFlash('success', 'Успешно сохранено');
     
-                                return $this->redirect([ 'view', 'id' => $model->id ]);
+                            // if successfully saved
+                            if ($success) {
+                                // save new images
+                                foreach ($modelUploads as $color => $modelUpload) {
+                                    $modelUpload->images = UploadedFile::getInstancesByName("UploadForm[{$color}][images]");
+            
+                                    if (!$modelUpload->uploadItemImages()) {
+                                        $success = false;
+                                        break;
+                                    }
+                                }
+        
+                                // if successfully saved
+                                if ($success) {
+                                    Yii::$app->session->setFlash('success', 'Успешно сохранено');
+            
+                                    return $this->redirect([ 'view', 'id' => $model->id ]);
+                                } else {
+                                    Yii::$app->session->setFlash('error', 'Не удалось сохранить картинки');
+                                }
+                            } else {
+                                Yii::$app->session->setFlash('error', 'Не удалось сохранить размеры');
                             }
+                        } else {
+                            Yii::$app->session->setFlash('error', 'Не удалось сохранить цвета');
                         }
+                    } else {
+                        Yii::$app->session->setFlash('error', 'Не удалось сохранить изменения');
                     }
-                    Yii::$app->session->setFlash('error', 'Не удалось сохранить изменения');
                 }
             }
         
@@ -212,7 +241,7 @@ class ItemController
                         'model' => $model,
                         'modelColors' => !empty($modelColors) ? $modelColors : [],
                         'modelColorsSizes' => !empty($modelColorsSizes) ? $modelColorsSizes : [],
-                        'modelColorsImages' => !empty($modelColorsImages) ? $modelColorsImages : [],
+                'modelUploads' => !empty($modelUploads) ? $modelUploads : [],
                         'categories' => Category::getCategoriesIndexNameWithParents(),
                     ]
         );
