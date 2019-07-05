@@ -162,77 +162,46 @@ class ItemController
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
     
-            $success = true;
+            $transaction = Yii::$app->db->beginTransaction();
     
-            // load item and colors
-            if ($model->load($post) and $model->save() and Model::loadMultiple($modelColors,
-                    $post) and Model::validateMultiple($modelColors) and !empty($modelUploads) and !empty($modelColorsSizes)) {
-                // load sizes and validate
-                foreach ($modelColorsSizes as $color => $modelSizes) {
-                    if (!Model::loadMultiple($modelSizes,
-                                             $post['ItemColorSize'], $color) or !Model::validateMultiple($modelSizes)) {
-                        Yii::$app->session->setFlash('error', 'Не удалось загрузить изменения');
-                        $success = false;
-                        break;
-                    }
-                }
-                // if successfully loaded and validated
-                if ($success) {
-                    // save main app\models\Item model
-                    if ($model->save()) {
-                        // save colors app\models\ItemColor models
-                        foreach ($modelColors as $modelColor) {
-                            if (!$modelColor->save()) {
-                                $success = false;
-                                break;
-                            }
-                        }
-    
-                        // if successfully saved
-                        if ($success) {
-                            // save sizes
-                            foreach ($modelColorsSizes as $color => $modelSizes) {
-                                foreach ($modelSizes as $modelSize) {
-                                    if (!$modelSize->save()) {
-                                        $success = false;
-                                        break;
-                                    }
-                                }
-                                if (!$success)
-                                    break;
-                            }
-    
-                            // if successfully saved
-                            if ($success) {
-                                // save new images
-                                foreach ($modelUploads as $color => $modelUpload) {
-                                    $modelUpload->images = UploadedFile::getInstancesByName("UploadForm[{$color}][images]");
-            
-                                    if (!$modelUpload->uploadItemImages()) {
-                                        $success = false;
-                                        break;
-                                    }
-                                }
+            try {
         
-                                // if successfully saved
-                                if ($success) {
-                                    Yii::$app->session->setFlash('success', 'Успешно сохранено');
-            
-                                    return $this->redirect([ 'view', 'id' => $model->id ]);
-                                } else {
-                                    Yii::$app->session->setFlash('error', 'Не удалось сохранить картинки');
-                                }
-                            } else {
-                                Yii::$app->session->setFlash('error', 'Не удалось сохранить размеры');
-                            }
-                        } else {
-                            Yii::$app->session->setFlash('error', 'Не удалось сохранить цвета');
+                if ($model->load($post) and $model->validate() and Model::loadMultiple($modelColors,
+                        $post) and Model::validateMultiple($modelColors) and !empty($modelColorsSizes)) {
+                    // load sizes and validate
+                    foreach ($modelColorsSizes as $color => $modelSizes) {
+                
+                        $modelUploads[$color]->images = UploadedFile::getInstancesByName("UploadForm[{$color}][images]");
+                
+                        if (!Model::loadMultiple($modelSizes,
+                                $post['ItemColorSize'],
+                                $color) or !Model::validateMultiple($modelSizes) or !$modelUploads[$color]->validate()) {
+                            throw new \Exception('validation error');
                         }
-                    } else {
-                        Yii::$app->session->setFlash('error', 'Не удалось сохранить изменения');
+                
                     }
+            
+                    $model->save();
+            
+                    foreach ($modelColors as $modelColor) {
+                        $modelColor->save();
+                        foreach ($modelColorsSizes[$modelColor->color] as $modelSize) {
+                            $modelSize->save();
+                        }
+                        $modelUploads[$modelColor->color]->uploadItemImages();
+                    }
+            
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success', 'Изменения успешно сохранены');
                 }
+                throw new \Exception('validation error');
+            } catch
+            (\Exception $e) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error', 'Не удалось сохранить изменения');
             }
+    
+            Yii::$app->db->close();
         
         }
     

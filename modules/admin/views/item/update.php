@@ -173,6 +173,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                          'multiple' => true,
                                          'accept' => 'image/*',
                                      ],
+                                     'pluginOptions' => [
+                                         'showUpload' => false,
+                                         'maxCount' => 10,
+                                         'minCount' => 0,
+                                     ],
+                                     
                                  ])
                         ?>
                     <?php endforeach; ?>

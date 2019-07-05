@@ -24,7 +24,7 @@ class UploadForm
     public function rules()
     {
         return [
-            [ [ 'images' ], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg', 'maxFiles' => 10 ],
+            [ [ 'images' ], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg', 'maxFiles' => 10 ],
         ];
     }
     
