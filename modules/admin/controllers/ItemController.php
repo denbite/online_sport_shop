@@ -74,14 +74,16 @@ class ItemController
         $modelColors = $model->allColors;
         
         foreach ($modelColors as $modelColor) {
-            $modelColorsSizes[$modelColor->color] = $modelColor->allSizes;
+            $modelSizes[$modelColor->id] = $modelColor->allSizes;
+            $modelImages[$modelColor->id] = $modelColor->allImages;
         }
     
         return $this->render(
             'view', [
                       'model' => $model,
                       'modelColors' => !empty($modelColors) ? $modelColors : [],
-                      'modelColorsSizes' => !empty($modelColorsSizes) ? $modelColorsSizes : [],
+                      'modelSizes' => !empty($modelSizes) ? $modelSizes : [],
+                      'modelImages' => !empty($modelImages) ? $modelImages : [],
                   ]
         );
     }

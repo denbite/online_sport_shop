@@ -8,7 +8,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Item */
 /* @var $modelColors app\models\ItemColor */
-/* @var $modelColorsSizes app\models\ItemColorSize */
+/* @var $modelSizes app\models\ItemColorSize */
+/* @var $modelImages app\models\Image */
 
 $this->title = $model->firm . ' ' . $model->model;
 $this->params['breadcrumbs'][] = [ 'label' => 'Товары', 'url' => [ '/admin/item/index' ] ];
@@ -151,9 +152,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <div class="tab-pane" id="size" role="tabpanel">
                     <div class="pad">
-                        <?php foreach ($modelColorsSizes as $color => $modelColorSize): ?>
-                            <h1><?= $color ?></h1>
-                            <?php foreach ($modelColorSize as $modelSize): ?>
+                        <?php foreach ($modelColors as $modelColor): ?>
+                            <h1><?= $modelColor->color ?></h1>
+                            <?php foreach ($modelSizes[$modelColor->id] as $modelSize): ?>
                                 <?php
                                 
                                 echo \yii\widgets\DetailView::widget([
@@ -196,7 +197,46 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <div class="tab-pane" id="photo" role="tabpanel">
                     <div class="pad">
-                        <h1>Coming Soon!</h1>
+                        <?php foreach ($modelColors as $modelColor): ?>
+                            <h1><?= $modelColor->color ?></h1>
+                            <div id="carousel-example-generic-captions-<?= $modelColor->id ?>" class="carousel slide"
+                                 data-ride="carousel">
+
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <?php foreach ($modelImages[$modelColor->id] as $index => $modelImage): ?>
+                                        <li data-target="#carousel-example-generic-captions-<?= $modelColor->id ?>"
+                                            data-slide-to="<?= $index ?>"
+                                            <?= !$index ? ' class="active"' : '' ?>></li>
+                                    <?php endforeach; ?>
+                                </ol>
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner" role="listbox">
+                                    <?php foreach ($modelImages[$modelColor->id] as $index => $modelImage): ?>
+                                        <div class="carousel-item <?= !$index ? ' active' : '' ?>">
+                                            <?= Html::img($modelImage->filePath . $modelImage->url,
+                                                          [ 'class' => 'img-fluid', 'alt' => 'slide-' . $index ]) ?>
+                                            <div class="carousel-caption">
+                                                <h3><?= $modelImage->url ?></h3>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                                <!-- Controls -->
+                                <a class="carousel-control-prev"
+                                   href="#carousel-example-generic-captions-<?= $modelColor->id ?>" role="button"
+                                   data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next"
+                                   href="#carousel-example-generic-captions-<?= $modelColor->id ?>" role="button"
+                                   data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
                 <div class="tab-pane" id="description" role="tabpanel">
