@@ -3,6 +3,7 @@
 namespace app\models;
 
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "image".
@@ -72,6 +73,18 @@ class Image
         ];
     }
     
+    public function getFilePath()
+    {
+        $class = self::getTypes()[$this->type];
+        
+        return "/files/{$class}/{$class}-{$this->subject_id}/";
+    }
+    
+    public function getColor()
+    {
+        return $this->hasOne(ItemColor::className(), [ 'id' => 'subject_id' ]);
+    }
+    
     public static function getTypes()
     {
         return [
@@ -79,5 +92,59 @@ class Image
             self::TYPE_CATEGORY => 'Category',
             self::TYPE_PROMOTIONS => 'Promotions',
         ];
+    }
+    
+    public static function getUrlsByColor($color_id)
+    {
+        // todo-cache: add cache(30 sec)
+        $data = ItemColor::find()
+                         ->with('item')
+                         ->where([
+                                     'id' => $color_id,
+                                 ])
+                         ->asArray()
+                         ->one();
+        
+        $urls = array_column(self::getImagesByColor($color_id), 'url');
+        
+        $class = self::getTypes()[self::TYPE_ITEM];
+        
+        $path = "/files/{$class}/{$class}-{$color_id}/";
+        
+        foreach ($urls as &$url) {
+            $url = $path . $url;
+        }
+        
+        return $urls;
+    }
+    
+    public static function getImagesByColor($color_id)
+    {
+        // todo-cache: add cache(30 sec) and clear value before insert in query
+        
+        return self::find()
+                   ->where([
+                               'subject_id' => $color_id,
+                               'type' => self::TYPE_ITEM,
+                           ])
+                   ->orderBy([ 'sort' => SORT_ASC ])
+                   ->asArray(false)
+                   ->all();
+    }
+    
+    /**
+     * @param $color_id
+     *
+     * @return array
+     */
+    public static function getInitialPreviewConfigByColor($color_id)
+    {
+        return ArrayHelper::toArray(self::getImagesByColor($color_id), [
+                                                                         Image::className() => [
+                                                                             'caption' => 'url',
+                                                                             'key' => 'id',
+                                                                         ],
+                                                                     ]
+        );
     }
 }

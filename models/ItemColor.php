@@ -95,4 +95,9 @@ class ItemColor extends \yii\db\ActiveRecord
         return $this->hasOne(Image::className(), [ 'subject_id' => 'id' ])
                     ->andWhere([ 'type' => Image::TYPE_ITEM, 'sort' => 0 ]);
     }
+    
+    public function getItem()
+    {
+        return $this->hasOne(Item::className(), [ 'id' => 'item_id' ]);
+    }
 }

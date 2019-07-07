@@ -36,7 +36,7 @@ class Module extends \yii\base\Module
                             if (!Permission::permissionExist($rule)) {
                                 Permission::addNewPermission($module, $controller, $action);
                             }
-                            
+    
                             return Permission::can($rule);
                         },
                     ],

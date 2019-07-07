@@ -53,6 +53,8 @@ class ItemController
             'index', [
                        'searchModel' => $searchModel,
                        'dataProvider' => $dataProvider,
+                       'category' => Category::getAllCategoriesByRoot(),
+                       'categories' => Category::getCategoriesIndexNameWithParents(),
                    ]
         );
     }
@@ -149,13 +151,10 @@ class ItemController
         $modelColors = !empty($model->allColors) ? $model->allColors : [];
     
         foreach ($modelColors as $modelColor) {
-            $modelColorsSizes[$modelColor->color] = $modelColor->allSizes;
-            $modelUploads[$modelColor->color] = new UploadForm([
+            $modelColorsSizes[$modelColor->id] = $modelColor->allSizes;
+            $modelUploads[$modelColor->id] = new UploadForm([
                 'type' => Image::TYPE_ITEM,
                 'subject_id' => $modelColor->id,
-                'firm' => $model->firm,
-                'model' => $model->model,
-                'color' => $modelColor->color,
             ]);
         }
     
@@ -169,40 +168,47 @@ class ItemController
                 if ($model->load($post) and $model->validate() and Model::loadMultiple($modelColors,
                         $post) and Model::validateMultiple($modelColors) and !empty($modelColorsSizes)) {
                     // load sizes and validate
-                    foreach ($modelColorsSizes as $color => $modelSizes) {
-                
-                        $modelUploads[$color]->images = UploadedFile::getInstancesByName("UploadForm[{$color}][images]");
+                    foreach ($modelColorsSizes as $color_id => $modelSizes) {
+        
+                        $modelUploads[$color_id]->images = UploadedFile::getInstancesByName("UploadForm[{$color_id}][images]");
                 
                         if (!Model::loadMultiple($modelSizes,
-                                $post['ItemColorSize'],
-                                $color) or !Model::validateMultiple($modelSizes) or !$modelUploads[$color]->validate()) {
+                                                 $post['ItemColorSize'],
+                                                 $color_id) or !Model::validateMultiple($modelSizes) or !$modelUploads[$color_id]->validate()) {
                             throw new \Exception('validation error');
                         }
                 
                     }
-            
+    
                     $model->save();
             
                     foreach ($modelColors as $modelColor) {
                         $modelColor->save();
-                        foreach ($modelColorsSizes[$modelColor->color] as $modelSize) {
+                        foreach ($modelColorsSizes[$modelColor->id] as $modelSize) {
                             $modelSize->save();
                         }
-                        $modelUploads[$modelColor->color]->uploadItemImages();
+                        $modelUploads[$modelColor->id]->uploadItemImages();
                     }
             
                     $transaction->commit();
                     Yii::$app->session->setFlash('success', 'Изменения успешно сохранены');
+    
+                    Yii::$app->db->close();
+    
+                    return $this->redirect([
+                                               'view',
+                                               'id' => $model->id,
+                                           ]);
+    
+                } else {
+                    throw new \Exception('validation error');
                 }
-                throw new \Exception('validation error');
             } catch
             (\Exception $e) {
                 $transaction->rollBack();
                 Yii::$app->session->setFlash('error', 'Не удалось сохранить изменения');
             }
     
-            Yii::$app->db->close();
-        
         }
     
         return $this->render(
@@ -322,4 +328,5 @@ class ItemController
             'colors' => ItemColor::getColorById($item),
         ]);
     }
+    
 }

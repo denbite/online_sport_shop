@@ -6,11 +6,12 @@ use app\components\grid\IdColumn;
 use app\components\grid\OwnColumn;
 use app\components\helpers\Permission;
 use app\components\models\Status;
-use app\models\Category;
 use yii\helpers\Html;
 
 /** @var object $dataProvider */
 /** @var object $searchModel */
+/** @var array $category */
+/** @var array $categories */
 
 $this->title = 'Товары';
 
@@ -84,10 +85,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                                       [
                                                           'attribute' => 'category_id',
                                                           'format' => 'html',
-                                                          'filter' => Category::getCategoriesIndexNameWithParents(),
-                                                          'value' => function($model) {
-                                                              $category = Category::getAllCategoriesByRoot();
-        
+                                                          'filter' => $categories,
+                                                          'value' => function ($model) use ($category)
+                                                          {
                                                               return !empty($category[$model->category_id]) ? $category[$model->category_id]->name : '';
                                                           },
                                                       ],

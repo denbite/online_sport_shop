@@ -19,8 +19,8 @@ class Permission
     {
         $auth = Yii::$app->authManager;
         $user_id = Yii::$app->user->identity->id;
-        
-        if (array_key_exists('admin', $auth->getRolesByUser($user_id))) {
+    
+        if (array_key_exists('admin', self::getRolesByUser($user_id))) {
             return true;
         }
     
@@ -100,5 +100,14 @@ class Permission
     {
         //todo-cache: add cache
         return ArrayHelper::map(ArrayHelper::toArray(Yii::$app->authManager->getRoles()), 'name', 'name');
+    }
+    
+    public static function getRolesByUser($user_id)
+    {
+        return Yii::$app->cache->getOrSet('roles', function () use ($user_id)
+        {
+            return Yii::$app->authManager->getRolesByUser($user_id);
+        }, 0
+        );
     }
 }

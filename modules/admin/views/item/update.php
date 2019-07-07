@@ -3,6 +3,7 @@
 use app\components\models\Status;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Item */
@@ -14,6 +15,9 @@ $this->title = 'Редактирование: ' . $model->firm . ' ' . $model->m
 $this->params['breadcrumbs'][] = [ 'label' => 'Товары', 'url' => [ '/admin/item/index' ] ];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js" crossorigin="anonymous"></script>
 
 <?php if (Yii::$app->session->hasFlash('success')): ?>
     <div class="alert alert-success alert-dismissible" role="alert">
@@ -133,21 +137,22 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="tab-pane" id="size" role="tabpanel">
                 <div class="pad">
-                    <?php foreach ($modelColorsSizes as $color => $modelColorSize): ?>
-                        <h1><?= $color ?></h1>
-                        <?php foreach ($modelColorSize as $index => $modelSize): ?>
+                    <?php foreach ($modelColors as $modelColor): ?>
+                        <h1><?= $modelColor->color ?></h1>
+                        <?php foreach ($modelColorsSizes[$modelColor->id] as $index => $modelSize): ?>
                             <div class="row">
                                 <div class="col">
-                                    <?= $form->field($modelSize, '[' . $color . '][' . $index . ']size') ?>
+                                    <?= $form->field($modelSize, '[' . $modelColor->id . '][' . $index . ']size') ?>
                                 </div>
                                 <div class="col">
-                                    <?= $form->field($modelSize, '[' . $color . '][' . $index . ']quantity') ?>
+                                    <?= $form->field($modelSize,
+                                                     '[' . $modelColor->id . '][' . $index . ']quantity') ?>
                                 </div>
                                 <div class="col">
-                                    <?= $form->field($modelSize, '[' . $color . '][' . $index . ']price') ?>
+                                    <?= $form->field($modelSize, '[' . $modelColor->id . '][' . $index . ']price') ?>
                                 </div>
                                 <div class="col">
-                                    <?= $form->field($modelSize, '[' . $color . '][' . $index . ']status')
+                                    <?= $form->field($modelSize, '[' . $modelColor->id . '][' . $index . ']status')
                                              ->widget(\kartik\switchinput\SwitchInput::className(), [
                                                  'type' => \kartik\switchinput\SwitchInput::CHECKBOX,
                                                  'pluginOptions' => [
@@ -165,20 +170,31 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="tab-pane" id="photo" role="tabpanel">
                 <div class="pad">
-                    <?php foreach ($modelUploads as $color => $modelUpload): ?>
-                        <h1><?= $color ?></h1>
-                        <?= $form->field($modelUpload, '[' . $color . ']images[]')
+                    <?php foreach ($modelColors as $modelColor): ?>
+                        <h1><?= $modelColor->color ?></h1>
+                        <?= $form->field($modelUploads[$modelColor->id], '[' . $modelColor->id . ']images[]')
                                  ->widget(\kartik\file\FileInput::className(), [
                                      'options' => [
                                          'multiple' => true,
                                          'accept' => 'image/*',
                                      ],
                                      'pluginOptions' => [
+                                         'deleteUrl' => Url::toRoute([ '/admin/image/delete-image' ]),
                                          'showUpload' => false,
                                          'maxCount' => 10,
                                          'minCount' => 0,
+                                         'overwriteInitial' => false,
+                                         'initialPreview' => \app\models\Image::getUrlsByColor($modelColor->id),
+                                         'initialPreviewAsData' => true,
+                                         'initialPreviewConfig' => \app\models\Image::getInitialPreviewConfigByColor($modelColor->id),
                                      ],
-                                     
+                                     'pluginEvents' => [
+                                         'filesorted' => new \yii\web\JsExpression('function(event, params){
+                    $.post("' . Url::toRoute([ "/admin/image/sort-image", "id" => $modelColor->id ]) . '", {sort: params});
+                    }'),
+                                     ],
+
+
                                  ])
                         ?>
                     <?php endforeach; ?>
