@@ -30,6 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                       // todo-cache: add cache, softDelete to true!
                                       'enableCache' => false   // defaults to true
                                   ],
+                                  'nodeAddlViews' => [
+                                      \kartik\tree\Module::VIEW_PART_2 => '@app/modules/admin/views/category/_treePart2',
+                                  ],
                                   'showInactive' => true, // show all nodes
                               ]);
         ?>

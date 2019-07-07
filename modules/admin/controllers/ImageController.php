@@ -3,11 +3,13 @@
 namespace app\modules\admin\controllers;
 
 use app\models\Image;
+use app\models\UploadForm;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\MethodNotAllowedHttpException;
 use yii\web\Response;
+use yii\web\UploadedFile;
 
 /**
  * ItemController implements the CRUD actions for Item model.
@@ -121,5 +123,25 @@ class ImageController
         } else {
             throw new MethodNotAllowedHttpException('Only POST method allowed');
         }
+    }
+    
+    public function actionUpload()
+    {
+        if (Yii::$app->request->isPost and Yii::$app->request->isAjax) {
+            
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            
+            $model = new UploadForm(Yii::$app->request->post('type'), Yii::$app->request->post('id'));
+            
+            $model->image = UploadedFile::getInstanceByName('UploadForm');
+            
+            if ($model->uploadImage()) {
+                return true;
+            }
+            
+            return false;
+        }
+        
+        throw new MethodNotAllowedHttpException('Only POST method allowed');
     }
 }

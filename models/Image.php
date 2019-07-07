@@ -94,22 +94,28 @@ class Image
         ];
     }
     
-    public static function getUrlsByColor($color_id)
+    /**
+     * @param $type
+     * @param $subject_id
+     *
+     * @return array
+     */
+    public static function getUrlsBySubject($type, $subject_id)
     {
         // todo-cache: add cache(30 sec)
         $data = ItemColor::find()
                          ->with('item')
                          ->where([
-                                     'id' => $color_id,
+                                     'id' => $subject_id,
                                  ])
                          ->asArray()
                          ->one();
-        
-        $urls = array_column(self::getImagesByColor($color_id), 'url');
-        
-        $class = self::getTypes()[self::TYPE_ITEM];
-        
-        $path = "/files/{$class}/{$class}-{$color_id}/";
+    
+        $urls = array_column(self::getImagesBySubject($type, $subject_id), 'url');
+    
+        $class = self::getTypes()[$type];
+    
+        $path = "/files/{$class}/{$class}-{$subject_id}/";
         
         foreach ($urls as &$url) {
             $url = $path . $url;
@@ -118,14 +124,20 @@ class Image
         return $urls;
     }
     
-    public static function getImagesByColor($color_id)
+    /**
+     * @param $type
+     * @param $subject_id
+     *
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public static function getImagesBySubject($type, $subject_id)
     {
         // todo-cache: add cache(30 sec) and clear value before insert in query
         
         return self::find()
                    ->where([
-                               'subject_id' => $color_id,
-                               'type' => self::TYPE_ITEM,
+                               'subject_id' => $subject_id,
+                               'type' => $type,
                            ])
                    ->orderBy([ 'sort' => SORT_ASC ])
                    ->asArray(false)
@@ -133,13 +145,14 @@ class Image
     }
     
     /**
-     * @param $color_id
+     * @param $type
+     * @param $subject_id
      *
      * @return array
      */
-    public static function getInitialPreviewConfigByColor($color_id)
+    public static function getInitialPreviewConfigBySubject($type, $subject_id)
     {
-        return ArrayHelper::toArray(self::getImagesByColor($color_id), [
+        return ArrayHelper::toArray(self::getImagesBySubject($type, $subject_id), [
                                                                          Image::className() => [
                                                                              'caption' => 'url',
                                                                              'key' => 'id',

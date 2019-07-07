@@ -23,6 +23,8 @@ class DefaultController extends Controller
     }
     
     /**
+     * Processing all slugs
+     *
      * Renders the index view for the module
      * @return string
      */

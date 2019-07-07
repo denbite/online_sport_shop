@@ -2,6 +2,8 @@
 
 return [
     //    '<slug:[\w\-\/]+>/page<page:\d+>/' => 'main/default/index',
+    'category/<slug:[\d]+>' => 'main/category/index',
+    'category' => 'main/category/index',
     
     //    auth
     '<_a:(login|signup|logout|confirm-email|request-password-reset|reset-password)>' => 'user/default/<_a>',

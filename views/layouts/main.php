@@ -424,31 +424,33 @@ AppAsset::register($this);
             </div>
         </div>
     </div>
-
-    <div class="breadcrumb-area pt-35 pb-35 bg-gray">
-        <div class="container">
-            <div class="breadcrumb-content text-center">
-                <?php
-
-                echo Breadcrumbs::widget(
-                    [
-                        'tag' => 'ul',
-                        'links' => !empty($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                        'activeItemTemplate' => '<li class="active">{link}</li>',
-                        'itemTemplate' => '<li>{link}</li>',
-                        'homeLink' => [
-                            'label' => 'Главная',
-                            'url' => '/main/default/index',
-                        ],
-                        'options' => [
-                            'class' => null,
-                        ],
-                    ]
-                )
-                ?>
+    
+    <?php if (!empty($this->params['breadcrumbs'])): ?>
+        <div class="breadcrumb-area pt-35 pb-35 bg-gray">
+            <div class="container">
+                <div class="breadcrumb-content text-center">
+                    <?php
+                    
+                    echo Breadcrumbs::widget(
+                        [
+                            'tag' => 'ul',
+                            'links' => !empty($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                            'activeItemTemplate' => '<li class="active">{link}</li>',
+                            'itemTemplate' => '<li>{link}</li>',
+                            'homeLink' => [
+                                'label' => 'Главная',
+                                'url' => \yii\helpers\Url::to([ '/main/default/index' ]),
+                            ],
+                            'options' => [
+                                'class' => null,
+                            ],
+                        ]
+                    )
+                    ?>
+                </div>
             </div>
         </div>
-    </div>
+    <?php endif; ?>
     
     
     <?= $content ?>

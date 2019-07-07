@@ -18,6 +18,13 @@ use yii\helpers\ArrayHelper;
 class Category extends Tree
 {
     
+    public function rules()
+    {
+        return array_merge(parent::rules(), [
+            [ 'description', 'string' ],
+        ]);
+    }
+    
     /**
      * {@inheritdoc}
      */
@@ -41,7 +48,7 @@ class Category extends Tree
             'root' => 'Корень',
             'lft' => 'Левый индекс',
             'rgt' => 'Правый индекс',
-            'lvl' => 'Уровень',
+            'lvl' => 'Глубина',
             'name' => 'Название',
         ];
     }
@@ -112,5 +119,11 @@ class Category extends Tree
         }
         
         return [];
+    }
+    
+    public function getImage()
+    {
+        return $this->hasOne(Image::className(), [ 'subject_id' => 'id' ])
+                    ->andWhere([ 'sort' => 0 ]);
     }
 }

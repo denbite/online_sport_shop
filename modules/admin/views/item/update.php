@@ -1,6 +1,7 @@
 <?php
 
 use app\components\models\Status;
+use app\models\Image;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -184,9 +185,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                          'maxCount' => 10,
                                          'minCount' => 0,
                                          'overwriteInitial' => false,
-                                         'initialPreview' => \app\models\Image::getUrlsByColor($modelColor->id),
+                                         'initialPreview' => Image::getUrlsBySubject(Image::TYPE_ITEM,
+                                                                                     $modelColor->id),
                                          'initialPreviewAsData' => true,
-                                         'initialPreviewConfig' => \app\models\Image::getInitialPreviewConfigByColor($modelColor->id),
+                                         'initialPreviewConfig' => Image::getInitialPreviewConfigBySubject(Image::TYPE_ITEM,
+                                                                                                           $modelColor->id),
                                      ],
                                      'pluginEvents' => [
                                          'filesorted' => new \yii\web\JsExpression('function(event, params){

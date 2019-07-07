@@ -154,10 +154,7 @@ class ItemController
     
         foreach ($modelColors as $modelColor) {
             $modelColorsSizes[$modelColor->id] = $modelColor->allSizes;
-            $modelUploads[$modelColor->id] = new UploadForm([
-                'type' => Image::TYPE_ITEM,
-                'subject_id' => $modelColor->id,
-            ]);
+            $modelUploads[$modelColor->id] = new UploadForm(Image::TYPE_ITEM, $modelColor->id);
         }
     
         if (Yii::$app->request->isPost) {
@@ -189,7 +186,7 @@ class ItemController
                         foreach ($modelColorsSizes[$modelColor->id] as $modelSize) {
                             $modelSize->save();
                         }
-                        $modelUploads[$modelColor->id]->uploadItemImages();
+                        $modelUploads[$modelColor->id]->uploadImages();
                     }
             
                     $transaction->commit();
@@ -208,7 +205,7 @@ class ItemController
             } catch
             (\Exception $e) {
                 $transaction->rollBack();
-                Yii::$app->session->setFlash('error', 'Не удалось сохранить изменения');
+                Yii::$app->session->setFlash('error', $e->getMessage());
             }
     
         }
