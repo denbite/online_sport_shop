@@ -47,7 +47,7 @@ AppAsset::register($this);
                 <div class="row">
                     <div class="col-xl-2 col-lg-2">
                         <div class="logo pt-40">
-                            <?= Html::a(Html::img('images/main/logo/logo.png'), [ '/main/default/index' ]) ?>
+                            <?= Html::a(Html::img('/images/main/logo/logo.png'), [ '/main/default/index' ]) ?>
                         </div>
                     </div>
                     <div class="col-xl-7 col-lg-7 ">
@@ -244,7 +244,7 @@ AppAsset::register($this);
                     <div class="col-6">
                         <div class="mobile-logo">
                             <a href="index.html">
-                                <img alt="" src="images/main/logo/logo.png">
+                                <img alt="" src="/images/main/logo/logo.png">
                             </a>
                         </div>
                     </div>

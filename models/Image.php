@@ -73,7 +73,7 @@ class Image
         ];
     }
     
-    public function getFilePath()
+    public function getPath()
     {
         $class = self::getTypes()[$this->type];
         
@@ -82,7 +82,9 @@ class Image
     
     public function getColor()
     {
-        return $this->hasOne(ItemColor::className(), [ 'id' => 'subject_id' ]);
+        if ($this->type == self::TYPE_ITEM) {
+            return $this->hasOne(ItemColor::className(), [ 'id' => 'subject_id' ]);
+        }
     }
     
     public static function getTypes()

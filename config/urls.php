@@ -3,6 +3,7 @@
 return [
     //    '<slug:[\w\-\/]+>/page<page:\d+>/' => 'main/default/index',
     'category/<slug:[\d]+>' => 'main/category/index',
+    'product/<id:[\d]+>' => 'main/product/index',
     'category' => 'main/category/index',
     
     //    auth

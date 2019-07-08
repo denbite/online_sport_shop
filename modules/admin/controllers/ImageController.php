@@ -94,8 +94,8 @@ class ImageController
                 
                 try {
                     $model = Image::find()->where([ 'id' => $id ])->one();
-                    
-                    $path = Yii::getAlias('@webroot') . $model->filePath . $model->url;
+    
+                    $path = Yii::getAlias('@webroot') . $model->path . $model->url;
                     
                     // delete file, if exists
                     if (file_exists($path)) {

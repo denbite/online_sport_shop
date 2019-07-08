@@ -34,6 +34,7 @@ class AppAsset extends AssetBundle
         'js/plugins.js',
         'js/popper.min.js',
         'js/modernizr-2.8.3.min.js',
+        'js/bootstrap.min.js',
     ];
     
     public $depends = [

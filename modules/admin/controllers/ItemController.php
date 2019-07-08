@@ -200,7 +200,7 @@ class ItemController
                                            ]);
     
                 } else {
-                    throw new \Exception('validation error');
+                    throw new \Exception('Не удалось сохранить изменения, добавьте хотя бы один цвет и размер');
                 }
             } catch
             (\Exception $e) {

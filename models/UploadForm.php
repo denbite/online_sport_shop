@@ -67,7 +67,7 @@ class UploadForm
             $mdl->subject_id = $this->_subject_id;
             
             // create path to save image
-            $path = Yii::getAlias('@webroot') . $mdl->getFilePath();
+            $path = Yii::getAlias('@webroot') . $mdl->path;
             
             // check if path exists
             if (!file_exists($path)) {

@@ -214,7 +214,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="carousel-inner" role="listbox">
                                     <?php foreach ($modelImages[$modelColor->id] as $index => $modelImage): ?>
                                         <div class="carousel-item <?= !$index ? ' active' : '' ?>">
-                                            <?= Html::img($modelImage->filePath . $modelImage->url,
+                                            <?= Html::img($modelImage->path . $modelImage->url,
                                                           [ 'class' => 'img-fluid', 'alt' => 'slide-' . $index ]) ?>
                                             <div class="carousel-caption">
                                                 <h3><?= $modelImage->url ?></h3>

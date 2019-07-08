@@ -80,7 +80,7 @@ class Category extends Tree
      *
      * @return null|array
      */
-    public static function getAllCategoriesByRoot($name = 'Каталог')
+    public static function getAllCategoriesByRoot($name = 'Категории')
     {
         // todo-cache: add cache
         
@@ -99,7 +99,7 @@ class Category extends Tree
      *
      * @return array|mixed
      */
-    public static function getCategoriesIndexNameWithParents($name = 'Каталог', $root = false)
+    public static function getCategoriesIndexNameWithParents($name = 'Категории', $root = false)
     {
         $data = self::getAllCategoriesByRoot($name);
         

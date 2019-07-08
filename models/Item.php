@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use app\components\models\Status;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
 
@@ -87,12 +86,6 @@ class Item extends \yii\db\ActiveRecord
             'created_at' => 'Дата создания',
             'updated_at' => 'Дата обновления',
         ];
-    }
-    
-    public function getEnableColors()
-    {
-        return $this->hasMany(ItemColor::className(), [ 'item_id' => 'id' ])
-                    ->where([ 'status' => Status::STATUS_ACTIVE ]);
     }
     
     public function getAllColors()

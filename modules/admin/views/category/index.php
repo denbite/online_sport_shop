@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                   // use the Product model you have in the previous step
                                   'query' => $query,
                                   'headingOptions' => [ 'label' => $this->title ],
-                                  'fontAwesome' => true,     // optional
+            'fontAwesome' => true,     // optional
                                   'isAdmin' => Permission::can('admin_category_admin') ? true : false,         // optional (toggle to enable admin mode)
                                   'displayValue' => 1,        // initial display value
                                   'softDelete' => false,       // defaults to true

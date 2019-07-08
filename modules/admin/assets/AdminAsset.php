@@ -17,7 +17,7 @@ class AdminAsset extends AssetBundle
     
     public $js = [
         'vendor/jquery-ui/jquery-ui.js',
-        'vendor/popper/dist/popper.min.js',
+        'vendor/popper/popper.min.js',
         'vendor/jquery-slimscroll/jquery.slimscroll.js',
         'vendor/fastclick/lib/fastclick.js',
         'vendor/bootstrap/dist/js/bootstrap.js',

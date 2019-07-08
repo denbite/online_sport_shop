@@ -78,15 +78,16 @@ $action = Yii::$app->controller->action->id;
                     <!-- User Account-->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="/images/admin/user5-128x128.jpg" class="user-image rounded-circle"
+                            <img src="<?= !empty(Yii::$app->user->identity->image) ? Yii::$app->user->identity->image : '/files/default-profile.jpg' ?>"
+                                 class="user-image rounded-circle"
                                  alt="User Image">
                         </a>
                         <ul class="dropdown-menu scale-up">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="/images/admin/user5-128x128.jpg" class="float-left rounded-circle"
+                                <img src="<?= !empty(Yii::$app->user->identity->image) ? Yii::$app->user->identity->image : '/files/default-profile.jpg' ?>"
+                                     class="float-left rounded-circle"
                                      alt="User Image">
-
                                 <p>
                                     <?= Yii::$app->user->identity->username ?>
                                     <small class="mb-5"><?= Yii::$app->user->identity->email ?></small>

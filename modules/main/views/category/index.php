@@ -3,9 +3,19 @@
 use app\components\helpers\ValueHelper;
 use yii\helpers\Html;
 
-$this->title = 'Категории';
+/** @var array $current */
+/** @var array $parents */
+/** @var array $children */
 
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = $current['name'];
+
+if (!empty($parents)) {
+    foreach ($parents as $parent) {
+        $this->params['breadcrumbs'][] = [ 'url' => \yii\helpers\Url::to([ '/main/category/index', 'slug' => ValueHelper::encryptValue($parent['id']) ]), 'label' => $parent['name'] ];
+    }
+}
+
+$this->params['breadcrumbs'][] = $current['name'];
 
 ?>
 
@@ -13,18 +23,18 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="blog-area pt-100 pb-100">
     <div class="container">
         <div class="row">
-            <?php foreach ($items as $item): ?>
+            <?php foreach ($children as $child): ?>
                 <div class="col-lg-4 col-md-6">
                     <div class="blog-wrap mb-40 text-center scroll-zoom">
                         <div class="blog-img mb-25">
-                            <?= Html::a(Html::img("/files/Category/Category-{$item['id']}/{$item['image']['url']}",
-                                                  [ 'alt' => $item['name'] ]),
-                                        [ '/main/category/index', 'slug' => ValueHelper::encryptValue($item['id']) ]) ?>
+                            <?= Html::a(Html::img("/files/Category/Category-{$child['id']}/{$child['image']['url']}",
+                                [ 'alt' => $child['name'] ]),
+                                [ '/main/category/index', 'slug' => ValueHelper::encryptValue($child['id']) ]) ?>
                         </div>
                         <div class="blog-content">
-                            <h3><?= $item['name'] ?></h3>
-                            <?php if (!empty($item['description'])): ?>
-                                <p><?= $item['description'] ?></p>
+                            <h3><?= $child['name'] ?></h3>
+                            <?php if (!empty($child['description'])): ?>
+                                <p><?= $child['description'] ?></p>
                             <?php endif; ?>
                         </div>
                     </div>

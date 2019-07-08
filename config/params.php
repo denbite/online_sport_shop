@@ -5,6 +5,6 @@ return [
     'senderEmail' => 'noreply@example.com',
     'senderName' => 'Example.com mailer',
     'background' => 'bg-food-white',
-    'priceMultiplier' => 90,
+    'priceMultiplier' => 0.95,
     'bsVersion' => '4.x',
 ];

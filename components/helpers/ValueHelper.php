@@ -2,10 +2,12 @@
 
 namespace app\components\helpers;
 
+use Yii;
+
 class ValueHelper
 {
     
-    const  SECRET_KEY = 574;
+    const  SECRET_KEY = 879548;
     
     
     /**
@@ -31,6 +33,18 @@ class ValueHelper
     public static function decryptValue($x)
     {
         return ( $x = (int) $x and $x > self::SECRET_KEY ) ? $x - self::SECRET_KEY : null;
+    }
+    
+    /**
+     * Format price
+     *
+     * @param $x
+     *
+     * @return string
+     */
+    public static function formatPrice($x)
+    {
+        return '₴ ' . round($x * Yii::$app->params['priceMultiplier'], -1);
     }
     
 }
