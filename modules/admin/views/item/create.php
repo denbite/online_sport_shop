@@ -61,6 +61,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($model, 'code') ?>
                 </div>
                 <div class="col">
+                    <?= $form->field($model, 'rate') ?>
+                </div>
+                <div class="col">
                     <?= $form->field($model, 'status')
                              ->widget(\kartik\switchinput\SwitchInput::className(), [
                                  'type' => \kartik\switchinput\SwitchInput::CHECKBOX,

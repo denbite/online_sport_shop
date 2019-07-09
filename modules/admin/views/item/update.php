@@ -98,6 +98,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?= $form->field($model, 'code') ?>
                         </div>
                         <div class="col">
+                            <?= $form->field($model, 'rate') ?>
+                        </div>
+                        <div class="col">
                             <?= $form->field($model, 'status')
                                      ->widget(\kartik\switchinput\SwitchInput::className(), [
                                          'type' => \kartik\switchinput\SwitchInput::CHECKBOX,
@@ -147,10 +150,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                                 <div class="col">
                                     <?= $form->field($modelSize,
-                                                     '[' . $modelColor->id . '][' . $index . ']quantity') ?>
+                                        '[' . $modelColor->id . '][' . $index . ']quantity') ?>
                                 </div>
                                 <div class="col">
-                                    <?= $form->field($modelSize, '[' . $modelColor->id . '][' . $index . ']price') ?>
+                                    <?= $form->field($modelSize,
+                                        '[' . $modelColor->id . '][' . $index . ']price') ?>
                                 </div>
                                 <div class="col">
                                     <?= $form->field($modelSize, '[' . $modelColor->id . '][' . $index . ']status')

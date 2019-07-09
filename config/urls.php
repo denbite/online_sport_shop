@@ -1,10 +1,14 @@
 <?php
 
 return [
-    //    '<slug:[\w\-\/]+>/page<page:\d+>/' => 'main/default/index',
-    'category/<slug:[\d]+>' => 'main/category/index',
-    'product/<id:[\d]+>' => 'main/product/index',
-    'category' => 'main/category/index',
+    // products pages
+    [
+        'pattern' => '<_a:(category|product|catalog)>/<slug:[\d]+>',
+        'route' => 'main/products/<_a>',
+        'defaults' => [
+            'slug' => false,
+        ],
+    ],
     
     //    auth
     '<_a:(login|signup|logout|confirm-email|request-password-reset|reset-password)>' => 'user/default/<_a>',

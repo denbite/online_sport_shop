@@ -90,6 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                      'model',
                                                                      'collection',
                                                                      'code',
+                                                                     'rate',
                                                                      [
                                                                          'attribute' => 'status',
                                                                          'format' => 'html',

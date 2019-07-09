@@ -4454,7 +4454,7 @@ textarea:focus {
     -ms-flex-pack: center;
     justify-content: center;
     position: absolute;
-    left: 25px;
+    left: 10px;
     right: auto;
     top: 50%;
     -webkit-transform: translateY(-50%);

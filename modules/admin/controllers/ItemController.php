@@ -174,7 +174,7 @@ class ItemController
                         if (!Model::loadMultiple($modelSizes,
                                                  $post['ItemColorSize'],
                                                  $color_id) or !Model::validateMultiple($modelSizes) or !$modelUploads[$color_id]->validate()) {
-                            throw new \Exception('validation error');
+                            throw new \Exception('Не удалось сохранить изменения, добавьте размер для всех существующих цветов');
                         }
                 
                     }

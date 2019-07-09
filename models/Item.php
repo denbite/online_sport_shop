@@ -55,6 +55,7 @@ class Item extends \yii\db\ActiveRecord
         return [
             [ [ 'category_id', 'code' ], 'required' ],
             [ [ 'category_id', 'status' ], 'integer' ],
+            [ [ 'rate' ], 'integer', 'min' => 0, 'max' => 100 ],
             [ [ 'firm', 'model' ], 'string', 'max' => 128 ],
             [ [ 'collection', 'code' ], 'string', 'max' => 64 ],
             [ [ 'code' ], 'unique', 'message' => 'Товар с таким артикулом \'{value}\' уже существует' ],
@@ -82,6 +83,7 @@ class Item extends \yii\db\ActiveRecord
             'model' => 'Модель',
             'collection' => 'Коллекция',
             'code' => 'Артикул',
+            'rate' => 'Рейтинг',
             'status' => 'Статус',
             'created_at' => 'Дата создания',
             'updated_at' => 'Дата обновления',

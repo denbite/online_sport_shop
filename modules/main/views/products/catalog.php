@@ -1,18 +1,20 @@
 <?php
 
 use app\components\helpers\ValueHelper;
+use app\components\widgets\Paginator;
 use app\models\Image;
 use yii\helpers\Html;
 
 /** @var array $current */
 /** @var array $parents */
 /** @var array $items */
+/** @var array $pages */
 
 $this->title = $current['name'];
 
 if (!empty($parents)) {
     foreach ($parents as $parent) {
-        $this->params['breadcrumbs'][] = [ 'url' => \yii\helpers\Url::to([ '/main/category/index', 'slug' => ValueHelper::encryptValue($parent['id']) ]), 'label' => $parent['name'] ];
+        $this->params['breadcrumbs'][] = [ 'url' => \yii\helpers\Url::to([ '/main/products/category', 'slug' => $parent['lvl'] != 0 ? ValueHelper::encryptValue($parent['id']) : false ]), 'label' => $parent['name'] ];
     }
 }
 
@@ -36,7 +38,7 @@ $class = Image::getTypes()[Image::TYPE_ITEM];
                         <!--                                <option value="">In stock</option>-->
                         <!--                            </select>-->
                         <!--                        </div>-->
-                        <p>Показывается 1-12 из 20 найденных</p>
+                        <p><?= "Найдено: {$pages->totalCount} шт." ?></p>
                     </div>
                     <div class="shop-tab nav">
                         <a class="active" href="#vertical" data-toggle="tab">
@@ -56,7 +58,7 @@ $class = Image::getTypes()[Image::TYPE_ITEM];
                                         <div class="ht-product ht-product-action-on-hover ht-product-category-right-bottom mb-30">
                                             <div class="ht-product-inner">
                                                 <div class="ht-product-image-wrap">
-                                                    <a href="<?= \yii\helpers\Url::to([ '/main/product/index', 'id' => ValueHelper::encryptValue($item['id']) ]) ?>"
+                                                    <a href="<?= \yii\helpers\Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ]) ?>"
                                                        class="ht-product-image">
                                                         <?= Html::img("/files/{$class}/{$class}-{$item['allColors'][0]['id']}/{$item['allColors'][0]['mainImage']['url']}",
                                                             [ 'alt' => $item['allColors'][0]['mainImage']['url'] ]) ?>
@@ -69,20 +71,20 @@ $class = Image::getTypes()[Image::TYPE_ITEM];
                                                                 <!--                                                                                class="sli sli-magnifier"></i><span-->
                                                                 <!--                                                                                class="ht-product-action-tooltip">Quick View</span></a>-->
                                                                 <!--                                                                </li>-->
-                                                                <li>
-                                                                    <a href="#"><i
-                                                                                class="sli sli-heart"></i><span
-                                                                                class="ht-product-action-tooltip">Add to Wishlist</span></a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#"><i
-                                                                                class="sli sli-refresh"></i><span
-                                                                                class="ht-product-action-tooltip">Add to Compare</span></a>
-                                                                </li>
+                                                                <!--                                                                <li>-->
+                                                                <!--                                                                    <a href="#"><i-->
+                                                                <!--                                                                                class="sli sli-heart"></i><span-->
+                                                                <!--                                                                                class="ht-product-action-tooltip">В список желаний</span></a>-->
+                                                                <!--                                                                </li>-->
+                                                                <!--                                                                <li>-->
+                                                                <!--                                                                    <a href="#"><i-->
+                                                                <!--                                                                                class="sli sli-refresh"></i><span-->
+                                                                <!--                                                                                class="ht-product-action-tooltip">Add to Compare</span></a>-->
+                                                                <!--                                                                </li>-->
                                                                 <li>
                                                                     <a href="#"><i
                                                                                 class="sli sli-bag"></i><span
-                                                                                class="ht-product-action-tooltip">Add to Cart</span></a>
+                                                                                class="ht-product-action-tooltip">Добавить в корзину</span></a>
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -90,7 +92,7 @@ $class = Image::getTypes()[Image::TYPE_ITEM];
                                                 <div class="ht-product-content">
                                                     <div class="ht-product-content-inner">
                                                         <h4 class="ht-product-title"><a
-                                                                    href="<?= \yii\helpers\Url::to([ '/main/product/index', 'id' => ValueHelper::encryptValue($item['id']) ]) ?>"><?= $item['firm'] . ' ' . $item['model'] ?></a>
+                                                                    href="<?= \yii\helpers\Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ]) ?>"><?= $item['firm'] . ' ' . $item['model'] ?></a>
                                                         </h4>
                                                         <div class="ht-product-price">
                                                             <span class="new"> <?= ValueHelper::formatPrice($item['min_price']) ?> </span>
@@ -101,10 +103,9 @@ $class = Image::getTypes()[Image::TYPE_ITEM];
                                                                     <span class="ht-product-user-ratting"
                                                                           style="width: 100%;">
 <!--                                                                        current rating for item-->
-                                                                        <i class="sli sli-star"></i>
-                                                                        <i class="sli sli-star"></i>
-                                                                        <i class="sli sli-star"></i>
-                                                                        <i class="sli sli-star"></i>
+                                                                        <?php for ($i = 0; $i < round($item['rate'] / 20); $i++): ?>
+                                                                            <i class="sli sli-star"></i>
+                                                                        <?php endfor; ?>
                                                                     </span>
                                                                     <!--                                                                    max count of stars-->
                                                                     <i class="sli sli-star"></i>
@@ -128,7 +129,7 @@ $class = Image::getTypes()[Image::TYPE_ITEM];
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4">
                                             <div class="product-list-img">
-                                                <a href="<?= \yii\helpers\Url::to([ '/main/product/index', 'id' => ValueHelper::encryptValue($item['id']) ]) ?>">
+                                                <a href="<?= \yii\helpers\Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ]) ?>">
                                                     <?= Html::img("/files/{$class}/{$class}-{$item['allColors'][0]['id']}/{$item['allColors'][0]['mainImage']['url']}",
                                                         [ 'alt' => $item['allColors'][0]['mainImage']['url'] ]) ?>
                                                 </a>
@@ -141,12 +142,11 @@ $class = Image::getTypes()[Image::TYPE_ITEM];
                                         <div class="col-lg-8 col-md-8 align-self-center">
                                             <div class="shop-list-content">
                                                 <h3>
-                                                    <a href="<?= \yii\helpers\Url::to([ '/main/product/index', 'id' => ValueHelper::encryptValue($item['id']) ]) ?>"><?= $item['firm'] . ' ' . $item['model'] ?></a>
+                                                    <a href="<?= \yii\helpers\Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ]) ?>"><?= $item['firm'] . ' ' . $item['model'] ?></a>
                                                 </h3>
                                                 <p>It has roots in a piece of classical Latin literature from 45 BC,
                                                     making
                                                     it over 2000 years old. Richard The standard chunk.</p>
-                                                <span>Chair</span>
                                                 <div class="shop-list-price-action-wrap">
                                                     <div class="shop-list-price-ratting">
                                                         <div class="ht-product-list-price">
@@ -160,12 +160,12 @@ $class = Image::getTypes()[Image::TYPE_ITEM];
                                                         </div>
                                                     </div>
                                                     <div class="ht-product-list-action">
-                                                        <a class="list-wishlist" title="Add To Wishlist" href="#"><i
-                                                                    class="sli sli-heart"></i></a>
+                                                        <!--                                                        <a class="list-wishlist" title="Add To Wishlist" href="#"><i-->
+                                                        <!--                                                                    class="sli sli-heart"></i></a>-->
                                                         <a class="list-cart" title="Add To Cart" href="#"><i
-                                                                    class="sli sli-basket-loaded"></i> Add to Cart</a>
-                                                        <a class="list-refresh" title="Add To Compare" href="#"><i
-                                                                    class="sli sli-refresh"></i></a>
+                                                                    class="sli sli-basket-loaded"></i>Добавить в корзину</a>
+                                                        <!--                                                        <a class="list-refresh" title="Add To Compare" href="#"><i-->
+                                                        <!--                                                                    class="sli sli-refresh"></i></a>-->
                                                     </div>
                                                 </div>
                                             </div>
@@ -175,16 +175,13 @@ $class = Image::getTypes()[Image::TYPE_ITEM];
                             <?php endforeach; ?>
                         </div>
                     </div>
-                    <!--                    PAGINATION-->
-                    <div class="pro-pagination-style text-center mt-30">
-                        <ul>
-                            <li><a class="prev" href="#"><i class="sli sli-arrow-left"></i></a></li>
-                            <li><a class="active" href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a class="next" href="#"><i class="sli sli-arrow-right"></i></a></li>
-                        </ul>
-                    </div>
-                    <!--                    ENDPAGINATION-->
+    
+                    <?=
+                    Paginator::widget([
+                        'pagination' => $pages,
+                    ])
+                    ?>
+
                 </div>
             </div>
             <div class="col-lg-3">
