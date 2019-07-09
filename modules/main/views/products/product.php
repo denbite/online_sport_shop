@@ -79,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <ul>
                                     <?php foreach ($item['allColors'] as $index => $color): ?>
                                         <li <?= !$index ? ' class="active"' : '' ?>
-                                                style="background-color: <?= "#{$color['html']}" ?>;"></li>
+                                                style="background-color: <?= $color['html'] ?>;"></li>
                                     <?php endforeach; ?>
                                 </ul>
                             </div>
@@ -99,17 +99,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="pro-details-quality">
                         <div class="cart-plus-minus">
-                            <input class="cart-plus-minus-box" type="text" name="qtybutton" value="2">
+                            <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1">
                         </div>
                         <div class="pro-details-cart btn-hover">
-                            <a href="#">Add To Cart</a>
+                            <a href="#">Добавить в корзину</a>
                         </div>
-                        <div class="pro-details-wishlist">
-                            <a title="Add To Wishlist" href="#"><i class="sli sli-heart"></i></a>
-                        </div>
-                        <div class="pro-details-compare">
-                            <a title="Add To Compare" href="#"><i class="sli sli-refresh"></i></a>
-                        </div>
+                        <!--                        <div class="pro-details-wishlist">-->
+                        <!--                            <a title="Add To Wishlist" href="#"><i class="sli sli-heart"></i></a>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="pro-details-compare">-->
+                        <!--                            <a title="Add To Compare" href="#"><i class="sli sli-refresh"></i></a>-->
+                        <!--                        </div>-->
                     </div>
                     <div class="pro-details-meta">
                         <span>Categories :</span>

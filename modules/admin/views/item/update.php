@@ -125,6 +125,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?= $form->field($modelColor, '[' . $index . ']color') ?>
                             </div>
                             <div class="col">
+                                <?= $form->field($modelColor, '[' . $index . ']html')
+                                         ->widget(\kartik\color\ColorInput::className(), [
+                                             'options' => [ 'readonly' => true ],
+                                         ]) ?>
+                            </div>
+                            <div class="col">
                                 <?= $form->field($modelColor, '[' . $index . ']status')
                                          ->widget(\kartik\switchinput\SwitchInput::className(), [
                                              'type' => \kartik\switchinput\SwitchInput::CHECKBOX,

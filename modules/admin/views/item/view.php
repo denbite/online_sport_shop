@@ -131,6 +131,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                          ],
                                                                          'code',
                                                                          'color',
+                                                                         'html',
                                                                          [
                                                                              'attribute' => 'status',
                                                                              'format' => 'html',

@@ -14,7 +14,7 @@ class m190709_151714_add_settings_to_items
      */
     public function safeUp()
     {
-        $this->addColumn('{{%item_color}}', 'html', $this->string(6)->after('color')->defaultValue('FFFFFF'));
+        $this->addColumn('{{%item_color}}', 'html', $this->string(7)->after('color')->defaultValue('#000000'));
         
         $this->createTable('{{%item_description}}', [
             'id' => $this->primaryKey(),
@@ -34,7 +34,7 @@ class m190709_151714_add_settings_to_items
     public function safeDown()
     {
         $this->dropTable('{{%item_description}}');
-        
-        $this->dropColumn('{{%item_color}}}', 'html');
+    
+        $this->dropColumn('{{%item_color}}', 'html');
     }
 }

@@ -52,6 +52,7 @@ class ItemColor extends \yii\db\ActiveRecord
             [ [ 'item_id', 'status' ], 'integer' ],
             [ [ 'code' ], 'string', 'max' => 32 ],
             [ [ 'color' ], 'string', 'max' => 128 ],
+            [ [ 'html' ], 'string', 'length' => 7 ],
             [ [ 'code' ], 'unique', 'targetAttribute' => [ 'item_id', 'code' ], 'message' => 'У данного товара уже существует такой код цвета \'{value}\' ' ],
             [ [ 'color' ], 'unique', 'targetAttribute' => [ 'item_id', 'color' ], 'message' => 'У данного товара уже существует такой цвет \'{value}\' ' ],
         ];
@@ -67,6 +68,7 @@ class ItemColor extends \yii\db\ActiveRecord
             'item_id' => 'Товар',
             'code' => 'Артикул',
             'color' => 'Цвет',
+            'html' => 'HTML-код цвета',
             'status' => 'Статус',
         ];
     }
