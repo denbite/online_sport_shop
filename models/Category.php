@@ -76,32 +76,27 @@ class Category extends Tree
     /**
      * Возвращает все конечные узлы определенного дерева
      *
-     * @param $name
+     * @param int $root
      *
      * @return null|array
      */
-    public static function getAllCategoriesByRoot($name = 'Категории')
+    public static function getAllCategoriesByRoot($root = 1)
     {
         // todo-cache: add cache
-        
-        if (is_string($name)) {
-            return self::findOne([ 'name' => $name ])->leaves()->indexBy('id')->all();
-        }
-        
-        return [];
+    
+        return self::findOne([ 'root' => $root, 'lvl' => 0 ])->leaves()->indexBy('id')->all();
     }
     
     /**
      * Выводит всю цепочку от дерева до листьев
      *
-     * @param string $name Имя дерева
-     * @param bool $root Вывод с названием дерева или нет
+     * @param int $root Номер дерева
      *
      * @return array|mixed
      */
-    public static function getCategoriesIndexNameWithParents($name = 'Категории', $root = false)
+    public static function getCategoriesIndexNameWithParents($root = 1)
     {
-        $data = self::getAllCategoriesByRoot($name);
+        $data = self::getAllCategoriesByRoot($root);
         
         if (is_array($data) and !empty($data)) {
             $result = [];
@@ -115,7 +110,7 @@ class Category extends Tree
             }
             
             //todo-cache: add cache
-            return $root ? $result : $result[$name];
+            return $result;
         }
         
         return [];
