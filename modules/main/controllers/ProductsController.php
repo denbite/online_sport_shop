@@ -6,10 +6,14 @@ use app\components\helpers\ValueHelper;
 use app\components\models\Status;
 use app\models\Category;
 use app\models\Item;
+use app\models\ItemColor;
+use app\models\ItemColorSize;
+use Yii;
 use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * Default controller for the `main` module
@@ -176,5 +180,53 @@ class ProductsController
         }
         
         throw new NotFoundHttpException('Страница не найдена');
+    }
+    
+    public function actionQuery()
+    {
+        $result = [];
+        
+        if (Yii::$app->request->isPost and Yii::$app->request->isAjax and $post = Yii::$app->request->post()) {
+            switch ($post['query']) {
+                case 'changeColor':
+                    // todo-cache: add cache (5 min or more)
+                    $result = ItemColor::find()
+                                       ->from(ItemColor::tableName() . ' color')
+                                       ->joinWith([ 'allSizes sizes' ])
+                                       ->where([
+                                           'color.id' => ValueHelper::decryptValue($post['data']),
+                                           'color.status' => Status::STATUS_ACTIVE,
+                                           'sizes.status' => Status::STATUS_ACTIVE,
+                                       ])
+                                       ->asArray()
+                                       ->one();
+                    
+                    foreach ($result['allSizes'] as &$size) {
+                        $size['new_price'] = ValueHelper::formatPrice($size['price']);
+                    }
+                    
+                    break;
+                case 'changeSize':
+                    $result = ItemColorSize::find()
+                                           ->where([
+                                               'id' => $post['data'],
+                                               'status' => Status::STATUS_ACTIVE,
+                                           ])
+                                           ->asArray()
+                                           ->one();
+                    
+                    break;
+                default:
+                    $result = null;
+                    break;
+            }
+        } else {
+            exit('only POST method allow');
+        }
+        
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        
+        return $result;
+        
     }
 }

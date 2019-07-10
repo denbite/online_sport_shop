@@ -5462,6 +5462,10 @@ textarea:focus {
     width: 14px;
 }
 
+.product-details-content .pro-details-size-color .pro-details-color-wrap .pro-details-color-content ul li.active {
+    border: 1px solid #0b0b0b;
+}
+
 .product-details-content .pro-details-size-color .pro-details-color-wrap .pro-details-color-content ul li:last-child {
     margin-right: 0px;
 }
@@ -5514,7 +5518,8 @@ textarea:focus {
     text-transform: uppercase;
 }
 
-.product-details-content .pro-details-size-color .pro-details-size .pro-details-size-content ul li a:hover {
+.product-details-content .pro-details-size-color .pro-details-size .pro-details-size-content ul li a:hover,
+.product-details-content .pro-details-size-color .pro-details-size .pro-details-size-content ul li a.active {
     background-color: #ff3535;
     color: #fff;
 }

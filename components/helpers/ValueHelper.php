@@ -38,13 +38,13 @@ class ValueHelper
     /**
      * Format price
      *
-     * @param $x
+     * @param int $price
      *
      * @return string
      */
-    public static function formatPrice($x)
+    public static function formatPrice($price)
     {
-        return '₴ ' . round($x * Yii::$app->params['priceMultiplier'], -1);
+        return '₴ ' . round($price * Yii::$app->params['priceMultiplier'], -1);
     }
     
 }

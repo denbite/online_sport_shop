@@ -39,12 +39,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         <!--                        </div>-->
                     </div>
                     <div id="gallery" class="mt-20 product-dec-slider">
-                        <?php foreach ($item['allColors'][0]['allImages'] as $image): ?>
-                            <?= Html::a(Html::img("/files/{$class}/{$class}-{$item['allColors'][0]['id']}/{$image['url']}",
+                        <?php foreach ($item['allColors'] as $color): ?>
+                            <?php foreach ($color['allImages'] as $image): ?>
+                                <?= Html::a(Html::img("/files/{$class}/{$class}-{$color['id']}/{$image['url']}",
                                 [ 'alt' => $image['url'], 'width' => 90, 'height' => 90 ]), null, [
-                                'data-image' => "/files/{$class}/{$class}-{$item['allColors'][0]['id']}/{$image['url']}",
-                                'data-zoom-image' => "/files/{$class}/{$class}-{$item['allColors'][0]['id']}/{$image['url']}",
+                                    'data-image' => "/files/{$class}/{$class}-{$color['id']}/{$image['url']}",
+                                    'data-zoom-image' => "/files/{$class}/{$class}-{$color['id']}/{$image['url']}",
                             ]) ?>
+                            <?php endforeach; ?>
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -52,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-lg-6 col-md-6">
                 <div class="product-details-content ml-30">
                     <h2><?= $this->title ?></h2>
-                    <div class="product-details-price">
+                    <div id="price-details" class="product-details-price">
                         <span><?= ValueHelper::formatPrice($item['allColors'][0]['allSizes'][0]['price']) ?> </span>
                     </div>
                     <div class="pro-details-rating-wrap">
@@ -76,10 +78,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="pro-details-color-wrap">
                             <span>Цвет</span>
                             <div class="pro-details-color-content">
-                                <ul>
+                                <ul id="color-details">
                                     <?php foreach ($item['allColors'] as $index => $color): ?>
-                                        <li <?= !$index ? ' class="active"' : '' ?>
-                                                style="background-color: <?= $color['html'] ?>;"></li>
+                                        <li data-color="<?= ValueHelper::encryptValue($color['id']) ?>" <?= !$index ? ' class="active"' : '' ?>
+                                            style="background-color: <?= $color['html'] ?>;"></li>
                                     <?php endforeach; ?>
                                 </ul>
                             </div>
@@ -87,12 +89,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="pro-details-size">
                             <span>Размер</span>
                             <div class="pro-details-size-content">
-                                <ul>
-                                    <li><a href="#">s</a></li>
-                                    <li><a href="#">m</a></li>
-                                    <li><a href="#">l</a></li>
-                                    <li><a href="#">xl</a></li>
-                                    <li><a href="#">xxl</a></li>
+                                <ul id="size-details">
+                                    <?php foreach ($item['allColors'][0]['allSizes'] as $index => $size): ?>
+                                        <li data-size="<?= ValueHelper::encryptValue($size['id']) ?>">
+                                            <a <?= !$index ? ' class="active"' : '' ?>><?= $size['size'] ?></a></li>
+                                    <?php endforeach; ?>
                                 </ul>
                             </div>
                         </div>

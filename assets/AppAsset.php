@@ -32,6 +32,7 @@ class AppAsset extends AssetBundle
         'js/ajax-mail.js',
         'js/main.js',
         'js/plugins.js',
+        'js/product_colors.js',
         'js/popper.min.js',
         'js/modernizr-2.8.3.min.js',
         'js/bootstrap.min.js',

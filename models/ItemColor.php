@@ -7,11 +7,11 @@ use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "item_color".
  *
- * @property int $id
- * @property int $item_id
+ * @property int    $id
+ * @property int    $item_id
  * @property string $code
  * @property string $color
- * @property int $status
+ * @property int    $status
  */
 class ItemColor extends \yii\db\ActiveRecord
 {

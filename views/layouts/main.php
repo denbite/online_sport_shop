@@ -1,7 +1,9 @@
 <?php
 
 use app\assets\AppAsset;
+use app\components\helpers\ValueHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 
 /** @var string $content */
@@ -54,49 +56,28 @@ AppAsset::register($this);
                         <div class="main-menu">
                             <nav>
                                 <ul>
-                                    <li class="angle-shape"><a href="shop.html"> Shop <span>hot</span> </a>
+                                    <li class="angle-shape"><a
+                                                href="<?= \yii\helpers\Url::to([ '/main/products/category' ]) ?>">
+                                            Категории <span>hot</span> </a>
                                         <ul class="mega-menu">
-                                            <li><a class="menu-title" href="#">Shop Layout</a>
-                                                <ul>
-                                                    <li><a href="shop.html">standard style</a></li>
-                                                    <li><a href="shop-grid-2-column.html">grid 2 column</a></li>
-                                                    <li><a href="shop-grid-4-column.html">grid 4 column</a></li>
-                                                    <li><a href="shop-grid-fullwide.html">grid full wide</a></li>
-                                                    <li><a href="shop-right-sidebar.html">grid right sidebar </a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a class="menu-title" href="#">Shop Layout</a>
-                                                <ul>
-                                                    <li><a href="shop-list-style1.html">list style 1</a></li>
-                                                    <li><a href="shop-list-style2.html">list style 2</a></li>
-                                                    <li><a href="shop-list-style3.html">list style 3</a></li>
-                                                    <li><a href="shop-list-fullwide.html">list full wide</a></li>
-                                                    <li><a href="shop-list-sidebar.html">list with sidebar </a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a class="menu-title" href="#">Product Details</a>
-                                                <ul>
-                                                    <li><a href="product-details.html">tab style 1</a></li>
-                                                    <li><a href="product-details-tab-2.html">tab style 2</a></li>
-                                                    <li><a href="product-details-tab-3.html">tab style 3</a></li>
-                                                    <li><a href="product-details-gallery.html">gallery style </a></li>
-                                                    <li><a href="product-details-gallery-right.html">gallery right</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li><a class="menu-title" href="#">Product Details</a>
-                                                <ul>
-                                                    <li><a href="product-details-sticky.html">sticky style</a></li>
-                                                    <li><a href="product-details-sticky-right.html">sticky right</a>
-                                                    </li>
-                                                    <li><a href="product-details-slider-box.html">slider style</a></li>
-                                                    <li><a href="product-details-affiliate.html">Affiliate style</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
+                                            <?php foreach (\app\models\Category::findOne([ 'root' => 1, 'lvl' => 0 ])
+                                                                               ->children(1)
+                                                                               ->all() as $category): ?>
+                                                <li><a class="menu-title"
+                                                       href="<?= Url::to([ '/main/products/category', 'slug' => ValueHelper::encryptValue($category['id']) ]) ?>"><?= $category['name'] ?></a>
+                                                    <ul>
+                                                        <?php foreach ($category->children(1)->all() as $child): ?>
+                                                            <li>
+                                                                <a href="<?= Url::to([ '/main/products/category', 'slug' => ValueHelper::encryptValue($child['id']) ]) ?>"><?= $child['name'] ?></a>
+                                                            </li>
+                                                        <?php endforeach; ?>
+                                                    </ul>
+                                                </li>
+                                            <?php endforeach; ?>
                                         </ul>
                                     </li>
-                                    <li><a href="shop.html">Accessories <span>hot</span> </a></li>
+                                    <li><a href="<?= Url::to([ '/main/products/catalog' ]) ?>">Каталог <span>hot</span>
+                                        </a></li>
                                     <li><a href="contact-us.html"> Contact </a></li>
                                     <li class="angle-shape"><a href="#">Pages </a>
                                         <ul class="submenu">
