@@ -26,6 +26,7 @@ class m190702_071421_create_nested_sets_table extends Migration
             'lvl' => $this->smallInteger(5)->notNull(),
             'name' => $this->string(60)->notNull(),
             'icon' => $this->string(255),
+            'description' => $this->string(255),
             'icon_type' => $this->smallInteger(1)->notNull()->defaultValue(1),
             'active' => $this->boolean()->notNull()->defaultValue(true),
             'selected' => $this->boolean()->notNull()->defaultValue(false),
