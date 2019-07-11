@@ -72,7 +72,7 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => require __DIR__ . ' /urls.php',
+            'rules' => require __DIR__ . '/urls.php',
         ],
     ],
     'params' => $params,
