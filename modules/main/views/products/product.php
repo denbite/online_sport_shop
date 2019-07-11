@@ -45,6 +45,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [ 'alt' => $image['url'], 'width' => 90, 'height' => 90 ]), null, [
                                     'data-image' => "/files/{$class}/{$class}-{$color['id']}/{$image['url']}",
                                     'data-zoom-image' => "/files/{$class}/{$class}-{$color['id']}/{$image['url']}",
+                                    'data-color' => $color['id'],
+                                    'style' => 'display:none;',
                             ]) ?>
                             <?php endforeach; ?>
                         <?php endforeach; ?>
@@ -54,8 +56,20 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-lg-6 col-md-6">
                 <div class="product-details-content ml-30">
                     <h2><?= $this->title ?></h2>
-                    <div id="price-details" class="product-details-price">
-                        <span><?= ValueHelper::formatPrice($item['allColors'][0]['allSizes'][0]['price']) ?> </span>
+                    <?php foreach ($item['allColors'] as $color): ?>
+                        <?php foreach ($color['allSizes'] as $size): ?>
+                            <?php if ($size['quantity'] > 0): ?>
+                                <div id="price-details" class="product-details-price"
+                                     data-color="<?= ValueHelper::encryptValue($color['id']) ?>"
+                                     data-size="<?= ValueHelper::encryptValue($size['id']) ?>" style="display: none;">
+                                    <span><?= ValueHelper::formatPrice($size['price']) ?></span>
+                                    <!--                                    make promotions check and display old value-->
+                                </div>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endforeach; ?>
+                    <div id="price-details" class="product-details-price" style="display: none">
+                        <span id="no_stock" style="color:#3b4552;"> Нет в наличии </span>
                     </div>
                     <div class="pro-details-rating-wrap">
                         <div class="pro-details-rating">
@@ -88,14 +102,28 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                         <div class="pro-details-size">
                             <span>Размер</span>
-                            <div class="pro-details-size-content">
-                                <ul id="size-details">
-                                    <?php foreach ($item['allColors'][0]['allSizes'] as $index => $size): ?>
-                                        <li data-size="<?= ValueHelper::encryptValue($size['id']) ?>">
-                                            <a <?= !$index ? ' class="active"' : '' ?>><?= $size['size'] ?></a></li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
+                            <?php foreach ($item['allColors'] as $color): ?>
+                                <div id="size-details" class="pro-details-size-content"
+                                     data-color="<?= ValueHelper::encryptValue($color['id']) ?>"
+                                     style="display: none">
+                                    <?php $first = true ?>
+                                    <ul>
+                                        <?php foreach ($color['allSizes'] as $size): ?>
+                                            <?php if ($size['quantity'] > 0 and $first): ?>
+                                                <li>
+                                                    <a data-size="<?= ValueHelper::encryptValue($size['id']) ?>"
+                                                       class="active"><?= $size['size'] ?></a>
+                                                </li>
+                                                <?php $first = false;
+                                            else: ?>
+                                                <li>
+                                                    <a data-size="<?= ValueHelper::encryptValue($size['id']) ?>"><?= $size['size'] ?></a>
+                                                </li>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                     <div class="pro-details-quality">

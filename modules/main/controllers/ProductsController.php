@@ -170,6 +170,8 @@ class ProductsController
                 $parents = ArrayHelper::toArray(array_merge($current->parents()->all(), [ $current ]));
                 
                 unset($current);
+    
+                // check if exists this item in any promotions
                 
                 return $this->render('product', [
                     'item' => $item,

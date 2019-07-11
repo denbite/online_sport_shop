@@ -1,7 +1,15 @@
 (function f() {
-    "use strict";
 
     jQuery(function () {
+
+        var color = $('#color-details li.active').data('color');
+
+        var size = $('#size-details[data-color = ' + color + ']').show().find('ul li a.active').data('size');
+
+        $('#price-details[data-color = ' + color + '][data-size = ' + size + ']').show();
+
+        $('#gallery .slick-list .slick-track a[data-color = ' + color + ']').show();
+
         $('#color-details li').click(function () {
 
             var old_color = $('#color-details li.active').data('color');
@@ -11,34 +19,15 @@
             if (old_color != new_color) {
                 console.log('true');
 
-                $.ajax({
-                    type: "POST",
-                    url: "/main/products/query",
-                    dataType: "json",
-                    data: "query=changeColor&data=" + new_color,
-                    error: function () {
-                        alert("При выполнении запроса возникла ошибка");
-                    },
-                    success: function (data) {
-                        $('#color-details li[data-color = ' + old_color + ']').removeClass('active');
-                        $('#color-details li[data-color = ' + new_color + ']').addClass('active');
+                $('#color-details li[data-color = ' + old_color + ']').removeClass('active');
+                $('#color-details li[data-color = ' + new_color + ']').addClass('active');
 
-                        $('#size-details li').remove();
+                $('#size-details[data-color = ' + new_color + ']').show();
+                $('#size-details[data-color = ' + old_color + ']').hide();
 
-                        console.log(data);
-                        for (var i in data['allSizes']) {
-                            if (data['allSizes'][i]['quantity'] > 0) {
-                                $('#size-details').append('<li data-size="' + data['allSizes'][i]['id'] + '"><a>' + data['allSizes'][i]['size'] + '</a></li>');
-                            } else {
-                                $('#size-details').append('<li><a class="disabled">' + data['allSizes'][i]['size'] + '</a></li>');
-                            }
-                        }
+                console.log('new_color: ' + new_color);
+                // $('#price-details[data-color = ' + new_color + '][data-size = ' + new_size + ']').show();
 
-                        $('#size-details li a:not(.disabled)').first().addClass('active');
-
-                        $('#price-details span').text(data['allSizes'][0]['new_price']);
-                    }
-                })
             }
         });
 
