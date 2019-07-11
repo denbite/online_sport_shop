@@ -7,6 +7,7 @@ use app\models\Image;
 use app\models\Item;
 use app\models\ItemColor;
 use app\models\ItemColorSize;
+use app\models\ItemDescription;
 use app\models\UploadForm;
 use app\modules\admin\models\ItemSearch;
 use Yii;
@@ -114,9 +115,12 @@ class ItemController
     public function actionCreate()
     {
         $model = new Item();
+        $modelDescription = new ItemDescription();
         
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
+    
+            // add transactions
             
             if ($model->load($post) and $model->validate()) {
                 if ($model->save()) {
@@ -132,6 +136,7 @@ class ItemController
         return $this->render(
             'create', [
                         'model' => $model,
+                'modelDescription' => $modelDescription,
                         'categories' => Category::getCategoriesIndexNameWithParents(),
                     ]
         );

@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-lg-6 col-md-6">
                 <div class="product-details-img">
-                    <div class="zoompro-border zoompro-span">
+                    <div id="preview" class="zoompro-border zoompro-span">
                         <?= Html::img("/files/{$class}/{$class}-{$item['allColors'][0]['id']}/{$item['allColors'][0]['allImages'][0]['url']}",
                             [
                                 'class' => 'zoompro',
@@ -54,12 +54,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
-                <div class="product-details-content ml-30">
+                <div id="price-details" class="product-details-content ml-30">
                     <h2><?= $this->title ?></h2>
                     <?php foreach ($item['allColors'] as $color): ?>
                         <?php foreach ($color['allSizes'] as $size): ?>
                             <?php if ($size['quantity'] > 0): ?>
-                                <div id="price-details" class="product-details-price"
+                                <div class="product-details-price"
                                      data-color="<?= ValueHelper::encryptValue($color['id']) ?>"
                                      data-size="<?= ValueHelper::encryptValue($size['id']) ?>" style="display: none;">
                                     <span><?= ValueHelper::formatPrice($size['price']) ?></span>
@@ -68,8 +68,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?php endif; ?>
                         <?php endforeach; ?>
                     <?php endforeach; ?>
-                    <div id="price-details" class="product-details-price" style="display: none">
-                        <span id="no_stock" style="color:#3b4552;"> Нет в наличии </span>
+                    <div id="no-stock" class="product-details-price" style="display: none">
+                        <span style="color:#3b4552;"> Нет в наличии </span>
                     </div>
                     <div class="pro-details-rating-wrap">
                         <div class="pro-details-rating">
@@ -102,12 +102,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                         <div class="pro-details-size">
                             <span>Размер</span>
-                            <?php foreach ($item['allColors'] as $color): ?>
-                                <div id="size-details" class="pro-details-size-content"
-                                     data-color="<?= ValueHelper::encryptValue($color['id']) ?>"
-                                     style="display: none">
+                            <div id="size-details" class="pro-details-size-content">
+                                <?php foreach ($item['allColors'] as $color): ?>
                                     <?php $first = true ?>
-                                    <ul>
+                                    <ul data-color="<?= ValueHelper::encryptValue($color['id']) ?>"
+                                        style="display: none">
                                         <?php foreach ($color['allSizes'] as $size): ?>
                                             <?php if ($size['quantity'] > 0 and $first): ?>
                                                 <li>
@@ -122,8 +121,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <?php endif; ?>
                                         <?php endforeach; ?>
                                     </ul>
+                                <?php endforeach; ?>
                                 </div>
-                            <?php endforeach; ?>
                         </div>
                     </div>
                     <div class="pro-details-quality">

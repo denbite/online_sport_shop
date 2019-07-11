@@ -6,8 +6,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Item */
-/* @var $model_color app\models\ItemColor */
-/* @var $model_size app\models\ItemColorSize */
+/* @var $modelDescription app\models\ItemDescription */
 /* @var $categories array */
 
 $this->title = 'Создание товара';
@@ -75,6 +74,20 @@ $this->params['breadcrumbs'][] = $this->title;
                              ]) ?>
                 </div>
             </div>
+            <!--            <div class="row">-->
+            <!--                <div class="col">-->
+            <!--                    --><? //= $form->field($modelDescription, 'small_text') ?>
+            <!--                </div>-->
+            <!--                <div class="col">-->
+            <!--                    --><? //= $form->field($modelDescription, 'small_list') ?>
+            <!--                </div>-->
+            <!--                <div class="col">-->
+            <!--                    --><? //= $form->field($modelDescription, 'text') ?>
+            <!--                </div>-->
+            <!--                <div class="col">-->
+            <!--                    --><? //= $form->field($modelDescription, 'list') ?>
+            <!--                </div>-->
+            <!--            </div>-->
             <div class="row">
                 <div class="col">
                     <?= Html::submitButton('Создать', [ 'class' => 'btn btn-success pull-right' ]) ?>

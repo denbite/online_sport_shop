@@ -4,10 +4,9 @@
 
         var color = $('#color-details li.active').data('color');
 
-        var size = $('#size-details[data-color = ' + color + ']').show().find('ul li a.active').data('size');
-
-        $('#price-details[data-color = ' + color + '][data-size = ' + size + ']').show();
-
+        // on load page show sizes, current price and photo for active color
+        var size = $('#size-details ul[data-color = ' + color + ']').show().find('li a.active').data('size');
+        $('#price-details div.product-details-price[data-color = ' + color + '][data-size = ' + size + ']').show();
         $('#gallery .slick-list .slick-track a[data-color = ' + color + ']').show();
 
         $('#color-details li').click(function () {
@@ -17,46 +16,58 @@
             var new_color = $(this).data('color');
 
             if (old_color != new_color) {
-                console.log('true');
 
-                $('#color-details li[data-color = ' + old_color + ']').removeClass('active');
+                // remove active from one and setup active to another color
+                $('#color-details li').removeClass('active');
                 $('#color-details li[data-color = ' + new_color + ']').addClass('active');
 
-                $('#size-details[data-color = ' + new_color + ']').show();
-                $('#size-details[data-color = ' + old_color + ']').hide();
+                // clear sizes and setup new block with one active size
+                $('#size-details ul').hide();
+                var new_size = $('#size-details ul[data-color = ' + new_color + ']').show().find('li a.active').data('size');
 
-                console.log('new_color: ' + new_color);
-                // $('#price-details[data-color = ' + new_color + '][data-size = ' + new_size + ']').show();
+                // clear price and then setup new value
+                $('#price-details div.product-details-price').hide();
+                let block_price = $('#price-details div.product-details-price[data-color = ' + new_color + '][data-size' +
+                    ' = ' + new_size + ']');
+                if (block_price.length) {
+                    block_price.show();
+                } else {
+                    $('#no-stock').show();
+                }
+
+                // clear gallery and setup new photos for active color
+                $('#gallery .slick-list .slick-track a').hide();
+                var src = $('#gallery .slick-list .slick-track a[data-color = ' + new_color + ']').show().find('img:first').attr('src');
+                $('#preview img').attr('src', src).attr('data-zoom-image', src);
+                $('.zoomContainer .zoomWindowContainer .zoomWindow').css('background-image', 'url(' + src + ')');
 
             }
         });
 
         $('#size-details li a').click(function () {
 
-            var old_size = $('#size-details li').has('a.active').data('size');
+            var old_size = $('#size-details ul li a.active').data('size');
 
             var new_size = $(this).data('size');
 
-            console.log('old: ' + old_size);
-            console.log('new: ' + new_size);
-
             if (old_size != new_size) {
-                console.log('true');
 
-                $.ajax({
-                    type: "POST",
-                    url: "/main/products/query",
-                    dataType: "json",
-                    data: "query=changeSize&data=" + new_size,
-                    error: function () {
-                        alert("При выполнении запроса возникла ошибка");
-                    },
-                    success: function (data) {
+                // get current color
+                var color = $('#color-details li.active').data('color');
 
-                        $('#size-details li[data-size = ' + old_size + ']').find('a').removeClass('active');
-                        $('#size-details li[data-size = ' + new_size + ']').find('a').addClass('active');
-                    }
-                })
+                // clear sizes and setup new
+                $('#size-details ul[data-color = ' + color + '] li a').removeClass('active');
+                $('#size-details ul[data-color = ' + color + '] li a[data-size = ' + new_size + ']').addClass('active');
+
+                // clear price and then setup new value
+                $('#price-details div.product-details-price').hide();
+                let block_price = $('#price-details div.product-details-price[data-color = ' + color + '][data-size' +
+                    ' = ' + new_size + ']');
+                if (block_price.length) {
+                    block_price.show();
+                } else {
+                    $('#no-stock').show();
+                }
             }
         });
     })
