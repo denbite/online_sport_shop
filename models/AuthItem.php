@@ -2,23 +2,25 @@
 
 namespace app\models;
 
+use yii\behaviors\TimestampBehavior;
+
 /**
  * This is the model class for table "auth_item".
  *
- * @property string $name
- * @property int $type
- * @property string $description
- * @property string $rule_name
- * @property resource $data
- * @property int $created_at
- * @property int $updated_at
+ * @property string           $name
+ * @property int              $type
+ * @property string           $description
+ * @property string           $rule_name
+ * @property resource         $data
+ * @property int              $created_at
+ * @property int              $updated_at
  *
  * @property AuthAssignment[] $authAssignments
- * @property AuthRule $ruleName
- * @property AuthItemChild[] $authItemChildren
- * @property AuthItemChild[] $authItemChildren0
- * @property AuthItem[] $children
- * @property AuthItem[] $parents
+ * @property AuthRule         $ruleName
+ * @property AuthItemChild[]  $authItemChildren
+ * @property AuthItemChild[]  $authItemChildren0
+ * @property AuthItem[]       $children
+ * @property AuthItem[]       $parents
  */
 class AuthItem extends \yii\db\ActiveRecord
 {
@@ -37,12 +39,20 @@ class AuthItem extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [ [ 'name', 'type' ], 'required' ],
+            [ [ 'name', ], 'required' ],
             [ [ 'type', 'created_at', 'updated_at' ], 'integer' ],
+            [ 'type', 'default', 'value' => 1 ],
             [ [ 'description', 'data' ], 'string' ],
             [ [ 'name', 'rule_name' ], 'string', 'max' => 64 ],
             [ [ 'name' ], 'unique' ],
             [ [ 'rule_name' ], 'exist', 'skipOnError' => true, 'targetClass' => AuthRule::className(), 'targetAttribute' => [ 'rule_name' => 'name' ] ],
+        ];
+    }
+    
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
         ];
     }
     

@@ -52,7 +52,7 @@ class Permission
      */
     public static function permissionExist($rule)
     {
-        if (ArrayHelper::keyExists($rule, self::getAllPermissions())) {
+        if (ArrayHelper::keyExists($rule, self::getAllPermissionsNames())) {
             return true;
         }
         
@@ -67,7 +67,22 @@ class Permission
     public static function getAllPermissions()
     {
         // todo-cache: add caching
-        return ArrayHelper::getColumn(Yii::$app->authManager->getPermissions(), 'name');
+        return Yii::$app->authManager->getPermissions();
+    }
+    
+    public static function getAllPermissionGroups()
+    {
+        return ArrayHelper::map(self::getAllPermissions(), 'name', 'name', 'description');
+    }
+    
+    /**
+     * Возвращает имена всех разрешений
+     *
+     * @return array
+     */
+    public static function getAllPermissionsNames()
+    {
+        return ArrayHelper::getColumn(self::getAllPermissions(), 'name');
     }
     
     /**

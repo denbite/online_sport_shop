@@ -41,14 +41,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= Html::a('Добавить товар', [ '/admin/item/create' ], [ 'class' => 'btn btn-sm
             btn-info', 'style' => 'font-size: 16px;font-weight: 600;margin-left:15px;' ]) ?>
             <?php endif; ?>
-            
-            <?php if (Permission::can('admin_item-color_create')): ?>
+
+            <?php if (Permission::can('admin_item_create-color')): ?>
                 <?= Html::a('Добавить цвет', [
                     '/admin/item/create-color' ], [ 'class' => 'btn btn-sm btn-info', 'style' => 'font-size: 16px;font-weight:
             600;margin-left:15px;' ]) ?>
             <?php endif; ?>
-            
-            <?php if (Permission::can('admin_item-size_create')): ?>
+
+            <?php if (Permission::can('admin_item_create-size')): ?>
                 <?= Html::a('Добавить размер', [ '/admin/item/create-size' ], [ 'class' => 'btn
             btn-sm btn-info mt-15 mt-lg-0', 'style' => 'font-size: 16px;font-weight: 600;margin-left:15px;' ]) ?>
             <?php endif; ?>
