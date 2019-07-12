@@ -2,9 +2,9 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=127.0.0.1;dbname=swim',
+    'dsn' => 'mysql:host=207.154.193.124;dbname=swim',
     'username' => 'root',
-    'password' => '',
+    'password' => 'qwerty',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
