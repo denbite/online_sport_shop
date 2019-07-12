@@ -10,6 +10,7 @@ use yii\helpers\Html;
 /* @var $modelColors app\models\ItemColor */
 /* @var $modelSizes app\models\ItemColorSize */
 /* @var $modelImages app\models\Image */
+/* @var $modelDescription app\models\ItemDescription */
 
 $this->title = $model->firm . ' ' . $model->model;
 $this->params['breadcrumbs'][] = [ 'label' => 'Товары', 'url' => [ '/admin/item/index' ] ];
@@ -243,7 +244,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <div class="tab-pane" id="description" role="tabpanel">
                     <div class="pad">
-                        <h1>Coming Soon!</h1>
+                        <?php
+    
+                        echo \yii\widgets\DetailView::widget([
+                            'model' => $modelDescription,
+                            'options' => [
+                                'class' => 'table table-hover table-bordered detail-view',
+                                'style' => 'font-weight:600;font-size:16px;',
+                            ],
+                            'attributes' => [
+                                'small_text',
+                                'small_list',
+                                'text',
+                                'list',
+                                'created_at:date',
+                            ],
+                        ])
+                        ?>
                     </div>
                 </div>
             </div>

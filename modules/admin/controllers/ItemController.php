@@ -2,6 +2,7 @@
 
 namespace app\modules\admin\controllers;
 
+use app\components\helpers\TransactionHelper;
 use app\models\Category;
 use app\models\Image;
 use app\models\Item;
@@ -49,14 +50,14 @@ class ItemController
     {
         $searchModel = new ItemSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-    
+        
         return $this->render(
             'index', [
-                       'searchModel' => $searchModel,
-                       'dataProvider' => $dataProvider,
-                       'category' => Category::getAllCategoriesByRoot(),
-                       'categories' => Category::getCategoriesIndexNameWithParents(),
-                   ]
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'category' => Category::getAllCategoriesByRoot(),
+                'categories' => Category::getCategoriesIndexNameWithParents(),
+            ]
         );
     }
     
@@ -72,20 +73,22 @@ class ItemController
     {
         $model = $this->findModel($id);
         
+        $modelDescription = $model->description;
         $modelColors = $model->allColors;
         
         foreach ($modelColors as $modelColor) {
             $modelSizes[$modelColor->id] = $modelColor->allSizes;
             $modelImages[$modelColor->id] = $modelColor->allImages;
         }
-    
+        
         return $this->render(
             'view', [
-                      'model' => $model,
-                      'modelColors' => !empty($modelColors) ? $modelColors : [],
-                      'modelSizes' => !empty($modelSizes) ? $modelSizes : [],
-                      'modelImages' => !empty($modelImages) ? $modelImages : [],
-                  ]
+                'model' => $model,
+                'modelColors' => !empty($modelColors) ? $modelColors : [],
+                'modelSizes' => !empty($modelSizes) ? $modelSizes : [],
+                'modelImages' => !empty($modelImages) ? $modelImages : [],
+                'modelDescription' => !empty($modelDescription) ? $modelDescription : [],
+            ]
         );
     }
     
@@ -118,27 +121,34 @@ class ItemController
         $modelDescription = new ItemDescription();
         
         if (Yii::$app->request->isPost) {
-            $post = Yii::$app->request->post();
-    
-            // add transactions
             
-            if ($model->load($post) and $model->validate()) {
-                if ($model->save()) {
-                    Yii::$app->session->setFlash('success', 'Товар успешно создан');
-    
-                    return $this->redirect([ '/admin/item/create-color', 'id' => (int) $model->id ]);
+            $post = Yii::$app->request->post();
+            
+            // add transactions
+            if ($model->load($post) and $model->validate() and $modelDescription->load($post)) {
+                try {
+                    TransactionHelper::wrap(function () use ($model, $modelDescription)
+                    {
+                        if ($model->save() and $modelDescription->item_id = $model->id and $modelDescription->save()) {
+                            
+                            Yii::$app->session->setFlash('success', 'Товар успешно создан');
+                        }
+                    });
+                } catch (\Exception $e) {
+                    Yii::$app->errorHandler->logException($e);
+                    Yii::$app->session->setFlash('error', $e->getMessage());
                 }
                 
-                Yii::$app->session->setFlash('error', reset($model->errors));
+                return $this->redirect([ '/admin/item/create-color', 'id' => (int) $model->id ]);
             }
         }
-    
+        
         return $this->render(
             'create', [
-                        'model' => $model,
+                'model' => $model,
                 'modelDescription' => $modelDescription,
-                        'categories' => Category::getCategoriesIndexNameWithParents(),
-                    ]
+                'categories' => Category::getCategoriesIndexNameWithParents(),
+            ]
         );
     }
     
@@ -154,75 +164,81 @@ class ItemController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-    
+        
+        $modelDescription = $model->description;
+        
         $modelColors = !empty($model->allColors) ? $model->allColors : [];
-    
+        
         foreach ($modelColors as $modelColor) {
             $modelColorsSizes[$modelColor->id] = $modelColor->allSizes;
             $modelUploads[$modelColor->id] = new UploadForm(Image::TYPE_ITEM, $modelColor->id);
         }
-    
+        
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
-    
-            $transaction = Yii::$app->db->beginTransaction();
-    
+            
             try {
-        
-                if ($model->load($post) and $model->validate() and Model::loadMultiple($modelColors,
+                
+                if ($model->load($post) and $model->validate() and $modelDescription->load($post) and $modelDescription->validate() and Model::loadMultiple($modelColors,
                         $post) and Model::validateMultiple($modelColors) and !empty($modelColorsSizes)) {
                     // load sizes and validate
                     foreach ($modelColorsSizes as $color_id => $modelSizes) {
-        
+                        
                         $modelUploads[$color_id]->images = UploadedFile::getInstancesByName("UploadForm[{$color_id}][images]");
-                
+                        
                         if (!Model::loadMultiple($modelSizes,
-                                                 $post['ItemColorSize'],
-                                                 $color_id) or !Model::validateMultiple($modelSizes) or !$modelUploads[$color_id]->validate()) {
+                                $post['ItemColorSize'],
+                                $color_id) or !Model::validateMultiple($modelSizes) or !$modelUploads[$color_id]->validate()) {
                             throw new \Exception('Не удалось сохранить изменения, добавьте размер для всех существующих цветов');
                         }
-                
+                        
                     }
-    
-                    $model->save();
-            
-                    foreach ($modelColors as $modelColor) {
-                        $modelColor->save();
-                        foreach ($modelColorsSizes[$modelColor->id] as $modelSize) {
-                            $modelSize->save();
+                    
+                    TransactionHelper::wrap(function () use (
+                        $model, $modelDescription, $modelColors, $modelColorsSizes, $modelUploads
+                    )
+                    {
+                        
+                        $model->save();
+                        
+                        $modelDescription->save();
+                        
+                        foreach ($modelColors as $modelColor) {
+                            $modelColor->save();
+                            foreach ($modelColorsSizes[$modelColor->id] as $modelSize) {
+                                $modelSize->save();
+                            }
+                            $modelUploads[$modelColor->id]->uploadImages();
                         }
-                        $modelUploads[$modelColor->id]->uploadImages();
-                    }
-            
-                    $transaction->commit();
-                    Yii::$app->session->setFlash('success', 'Изменения успешно сохранены');
-    
-                    Yii::$app->db->close();
-    
-                    return $this->redirect([
-                                               'view',
-                                               'id' => $model->id,
-                                           ]);
-    
+                        
+                        Yii::$app->session->setFlash('success', 'Изменения успешно сохранены');
+                        
+                    });
+                    
                 } else {
-                    throw new \Exception('Не удалось сохранить изменения, добавьте хотя бы один цвет и размер');
+                    throw new \Exception('Не удалось сохранить изменения, добавьте хотя бы один цвет, размер и описание');
                 }
             } catch
             (\Exception $e) {
-                $transaction->rollBack();
+                Yii::$app->errorHandler->logException($e);
                 Yii::$app->session->setFlash('error', $e->getMessage());
             }
-    
+            
+            return $this->redirect([
+                'view',
+                'id' => $model->id,
+            ]);
         }
-    
+        
         return $this->render(
             'update', [
-                        'model' => $model,
-                        'modelColors' => !empty($modelColors) ? $modelColors : [],
-                        'modelColorsSizes' => !empty($modelColorsSizes) ? $modelColorsSizes : [],
+                'model' => $model,
+                'modelDescription' => !empty($modelDescription) ? $modelDescription : null,
+                'modelColors' => !empty($modelColors) ? $modelColors : [],
+                'modelColorsSizes' => !empty($modelColorsSizes) ? $modelColorsSizes : [],
                 'modelUploads' => !empty($modelUploads) ? $modelUploads : [],
-                        'categories' => Category::getCategoriesIndexNameWithParents(),
-                    ]
+                'categories' => Category::getCategoriesIndexNameWithParents(),
+            ]
         );
     }
     

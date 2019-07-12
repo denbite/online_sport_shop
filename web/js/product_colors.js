@@ -36,10 +36,12 @@
                 }
 
                 // clear gallery and setup new photos for active color
-                $('#gallery .slick-list .slick-track a').hide();
-                var src = $('#gallery .slick-list .slick-track a[data-color = ' + new_color + ']').show().find('img:first').attr('src');
-                $('#preview img').attr('src', src).attr('data-zoom-image', src);
-                $('.zoomContainer .zoomWindowContainer .zoomWindow').css('background-image', 'url(' + src + ')');
+
+                // find method from original js and call him for new color !!!
+                // $('#gallery .slick-list .slick-track a').hide();
+                // var src = $('#gallery .slick-list .slick-track a[data-color = ' + new_color + ']').show().find('img:first').attr('src');
+                // $('#preview img').attr('src', src).attr('data-zoom-image', src);
+                // $('.zoomContainer .zoomWindowContainer .zoomWindow').css('background-image', 'url(' + src + ')');
 
             }
         });

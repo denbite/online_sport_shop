@@ -54,7 +54,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($model, 'color') ?>
                 </div>
                 <div class="col">
-                    <?= $form->field($model, 'html') ?>
+                    <?= $form->field($model, 'html')
+                             ->widget(\kartik\color\ColorInput::className(), [
+                                 'options' => [ 'readonly' => true, ],
+                             ]) ?>
                 </div>
                 <div class="col">
                     <?= $form->field($model, 'status')

@@ -8,6 +8,7 @@ use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Item */
+/* @var $modelDescription app\models\ItemDescription */
 /* @var $modelColors app\models\ItemColor */
 /* @var $modelColorsSizes app\models\ItemColorSize */
 /* @var $modelUploads app\models\UploadForm */
@@ -74,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="tab-pane active" id="main" role="tabpanel">
                 <div class="pad">
                     <div class="row">
-                        <div class="col">
+                        <div class="col-lg-2 col-6">
                             <?= $form->field($model, 'category_id')->widget(\kartik\select2\Select2::className(), [
                                 'data' => $categories,
                                 'options' => [
@@ -85,22 +86,22 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ],
                             ]) ?>
                         </div>
-                        <div class="col">
+                        <div class="col-lg-2 col-6">
                             <?= $form->field($model, 'firm') ?>
                         </div>
-                        <div class="col">
+                        <div class="col-lg-2 col-6">
                             <?= $form->field($model, 'model') ?>
                         </div>
-                        <div class="col">
+                        <div class="col-lg-2 col-6">
                             <?= $form->field($model, 'collection') ?>
                         </div>
-                        <div class="col">
+                        <div class="col-lg-1 col-6">
                             <?= $form->field($model, 'code') ?>
                         </div>
-                        <div class="col">
+                        <div class="col-lg-1 col-6">
                             <?= $form->field($model, 'rate') ?>
                         </div>
-                        <div class="col">
+                        <div class="col-lg-2 col-6">
                             <?= $form->field($model, 'status')
                                      ->widget(\kartik\switchinput\SwitchInput::className(), [
                                          'type' => \kartik\switchinput\SwitchInput::CHECKBOX,
@@ -118,19 +119,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="pad">
                     <?php foreach ($modelColors as $index => $modelColor): ?>
                         <div class="row">
-                            <div class="col">
+                            <div class="col-lg-2 col-6">
                                 <?= $form->field($modelColor, '[' . $index . ']code') ?>
                             </div>
-                            <div class="col">
+                            <div class="col-lg-2 col-6">
                                 <?= $form->field($modelColor, '[' . $index . ']color') ?>
                             </div>
-                            <div class="col">
+                            <div class="col-lg-2 col-6">
                                 <?= $form->field($modelColor, '[' . $index . ']html')
                                          ->widget(\kartik\color\ColorInput::className(), [
                                              'options' => [ 'readonly' => true ],
                                          ]) ?>
                             </div>
-                            <div class="col">
+                            <div class="col-lg-2 col-6">
                                 <?= $form->field($modelColor, '[' . $index . ']status')
                                          ->widget(\kartik\switchinput\SwitchInput::className(), [
                                              'type' => \kartik\switchinput\SwitchInput::CHECKBOX,
@@ -151,18 +152,18 @@ $this->params['breadcrumbs'][] = $this->title;
                         <h1><?= $modelColor->color ?></h1>
                         <?php foreach ($modelColorsSizes[$modelColor->id] as $index => $modelSize): ?>
                             <div class="row">
-                                <div class="col">
+                                <div class="col-lg-2 col-6">
                                     <?= $form->field($modelSize, '[' . $modelColor->id . '][' . $index . ']size') ?>
                                 </div>
-                                <div class="col">
+                                <div class="col-lg-2 col-6">
                                     <?= $form->field($modelSize,
                                         '[' . $modelColor->id . '][' . $index . ']quantity') ?>
                                 </div>
-                                <div class="col">
+                                <div class="col-lg-2 col-6">
                                     <?= $form->field($modelSize,
                                         '[' . $modelColor->id . '][' . $index . ']price') ?>
                                 </div>
-                                <div class="col">
+                                <div class="col-lg-2 col-6">
                                     <?= $form->field($modelSize, '[' . $modelColor->id . '][' . $index . ']status')
                                              ->widget(\kartik\switchinput\SwitchInput::className(), [
                                                  'type' => \kartik\switchinput\SwitchInput::CHECKBOX,
@@ -215,7 +216,20 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="tab-pane" id="description" role="tabpanel">
                 <div class="pad">
-                    <h1>Coming Soon!</h1>
+                    <div class="row">
+                        <div class="col-lg-3 col-6">
+                            <?= $form->field($modelDescription, 'small_text')->textarea() ?>
+                        </div>
+                        <div class="col-lg-3 col-6">
+                            <?= $form->field($modelDescription, 'small_list')->textarea() ?>
+                        </div>
+                        <div class="col-lg-3 col-6">
+                            <?= $form->field($modelDescription, 'text')->textarea() ?>
+                        </div>
+                        <div class="col-lg-3 col-6">
+                            <?= $form->field($modelDescription, 'list')->textarea() ?>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

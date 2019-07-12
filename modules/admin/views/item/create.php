@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'id' => 'item-create',
                                             ]) ?>
             <div class="row">
-                <div class="col">
+                <div class="col-lg-2 col-6">
                     <?= $form->field($model, 'category_id')->widget(\kartik\select2\Select2::className(), [
                         'data' => $categories,
                         'options' => [
@@ -47,22 +47,22 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                     ]) ?>
                 </div>
-                <div class="col">
+                <div class="col-lg-2 col-6">
                     <?= $form->field($model, 'firm') ?>
                 </div>
-                <div class="col">
+                <div class="col-lg-2 col-6">
                     <?= $form->field($model, 'model') ?>
                 </div>
-                <div class="col">
+                <div class="col-lg-1 col-6">
                     <?= $form->field($model, 'collection') ?>
                 </div>
-                <div class="col">
+                <div class="col-lg-2 col-6">
                     <?= $form->field($model, 'code') ?>
                 </div>
-                <div class="col">
+                <div class="col-lg-1 col-6">
                     <?= $form->field($model, 'rate') ?>
                 </div>
-                <div class="col">
+                <div class="col-lg-2 col-6">
                     <?= $form->field($model, 'status')
                              ->widget(\kartik\switchinput\SwitchInput::className(), [
                                  'type' => \kartik\switchinput\SwitchInput::CHECKBOX,
@@ -74,20 +74,20 @@ $this->params['breadcrumbs'][] = $this->title;
                              ]) ?>
                 </div>
             </div>
-            <!--            <div class="row">-->
-            <!--                <div class="col">-->
-            <!--                    --><? //= $form->field($modelDescription, 'small_text') ?>
-            <!--                </div>-->
-            <!--                <div class="col">-->
-            <!--                    --><? //= $form->field($modelDescription, 'small_list') ?>
-            <!--                </div>-->
-            <!--                <div class="col">-->
-            <!--                    --><? //= $form->field($modelDescription, 'text') ?>
-            <!--                </div>-->
-            <!--                <div class="col">-->
-            <!--                    --><? //= $form->field($modelDescription, 'list') ?>
-            <!--                </div>-->
-            <!--            </div>-->
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <?= $form->field($modelDescription, 'small_text')->textarea() ?>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <?= $form->field($modelDescription, 'small_list')->textarea() ?>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <?= $form->field($modelDescription, 'text')->textarea() ?>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <?= $form->field($modelDescription, 'list')->textarea() ?>
+                </div>
+            </div>
             <div class="row">
                 <div class="col">
                     <?= Html::submitButton('Создать', [ 'class' => 'btn btn-success pull-right' ]) ?>

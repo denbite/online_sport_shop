@@ -94,4 +94,9 @@ class Item extends \yii\db\ActiveRecord
     {
         return $this->hasMany(ItemColor::className(), [ 'item_id' => 'id' ]);
     }
+    
+    public function getDescription()
+    {
+        return $this->hasOne(ItemDescription::className(), [ 'item_id' => 'id' ]);
+    }
 }

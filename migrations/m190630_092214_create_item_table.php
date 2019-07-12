@@ -50,6 +50,15 @@ class m190630_092214_create_item_table extends Migration
                                [ 7, 'Saucony', 'JAZZ O QUILTED', '2017`SS', '60295' ],
                            ]
         );
+    
+        $this->batchInsert('{{%item_description}}', [
+            'item_id', 'small_text', 'small_list', 'text', 'list',
+        ],
+            [
+                [ 1, '', '', '', '' ],
+                [ 2, '', '', '', '' ],
+            ]
+        );
         
         $this->batchInsert('{{%item_color}}', [
             'item_id', 'code', 'color',

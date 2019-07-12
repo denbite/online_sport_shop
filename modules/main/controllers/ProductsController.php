@@ -149,7 +149,7 @@ class ProductsController
                         ->joinWith([ 'allColors colors' => function ($query)
                         {
                             $query->joinWith([ 'allSizes sizes', 'allImages' ]);
-                        }, ])
+                        }, 'description' ])
                         ->where([
                             'item.id' => ValueHelper::decryptValue($slug),
                             'item.status' => Status::STATUS_ACTIVE,

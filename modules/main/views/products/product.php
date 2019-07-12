@@ -46,7 +46,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'data-image' => "/files/{$class}/{$class}-{$color['id']}/{$image['url']}",
                                     'data-zoom-image' => "/files/{$class}/{$class}-{$color['id']}/{$image['url']}",
                                     'data-color' => $color['id'],
-                                    'style' => 'display:none;',
                             ]) ?>
                             <?php endforeach; ?>
                         <?php endforeach; ?>
@@ -73,19 +72,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="pro-details-rating-wrap">
                         <div class="pro-details-rating">
-                            <?php for ($i = 0; $i < round($item['rate'] / 20); $i++): ?>
+                            <i class="sli sli-star yellow"></i>
+                            <?php for ($i = 0; $i < round($item['rate'] / 25); $i++): ?>
                                 <i class="sli sli-star yellow"></i>
                             <?php endfor; ?>
                         </div>
                         <span><a href="#">0 отзывов</a></span>
                     </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisic elit eiusm tempor incidid ut labore et dolore
-                        magna aliqua. Ut enim ad minim venialo quis nostrud exercitation ullamco</p>
+                    <p><?= $item['description']['small_text'] ?></p>
                     <div class="pro-details-list">
                         <ul>
-                            <li>- 0.5 mm Dail</li>
-                            <li>- Inspired vector icons</li>
-                            <li>- Very modern style</li>
+                            <?php foreach (explode(';', $item['description']['small_list']) as $one): ?>
+                                <li>- <?= $one ?></li>
+                            <?php endforeach; ?>
                         </ul>
                     </div>
                     <div class="pro-details-size-color">
@@ -168,32 +167,25 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="description-review-topbar nav">
                         <a class="active" data-toggle="tab" href="#des-details1">Description</a>
                         <a data-toggle="tab" href="#des-details3">Additional information</a>
-                        <a data-toggle="tab" href="#des-details2">Reviews (3)</a>
+                        <a data-toggle="tab" href="#des-details2">Reviews (0)</a>
                     </div>
                     <div class="tab-content description-review-bottom">
                         <div id="des-details1" class="tab-pane active">
                             <div class="product-description-wrapper">
-                                <p>Pellentesque orci lectus, bibendum iaculis aliquet id, ullamcorper nec ipsum. In
-                                    laoreet ligula vitae tristique viverra. Suspendisse augue nunc, laoreet in arcu ut,
-                                    vulputate malesuada justo. Donec porttitor elit justo, sed lobortis nulla interdum
-                                    et. Sed lobortis sapien ut augue condimentum, eget ullamcorper nibh lobortis. Cras
-                                    ut bibendum libero. Quisque in nisl nisl. Mauris vestibulum leo nec pellentesque
-                                    sollicitudin.</p>
-                                <p>Pellentesque lacus eros, venenatis in iaculis nec, luctus at eros. Phasellus id
-                                    gravida magna. Maecenas fringilla auctor diam consectetur placerat. Suspendisse non
-                                    convallis ligula. Aenean sagittis eu erat quis efficitur. Maecenas volutpat erat ac
-                                    varius bibendum. Ut tincidunt, sem id tristique commodo, nunc diam suscipit lectus,
-                                    vel</p>
+                                <?= $item['description']['text'] ?>
                             </div>
                         </div>
                         <div id="des-details3" class="tab-pane">
                             <div class="product-anotherinfo-wrapper">
                                 <ul>
-                                    <li><span>Weight</span> 400 g</li>
-                                    <li><span>Dimensions</span>10 x 10 x 15 cm</li>
-                                    <li><span>Materials</span> 60% cotton, 40% polyester</li>
-                                    <li><span>Other Info</span> American heirloom jean shorts pug seitan letterpress
-                                    </li>
+                                    <?php foreach (explode(';', $item['description']['list']) as $one): ?>
+                                        <?php $parts = explode(':', $one);
+                                        if (!empty($parts) and count($parts) == 2):
+                                            ?>
+                                            <li><span><?= $parts[0] ?></span> <?= $parts[1] ?></li>
+                                        <?php
+                                        endif;
+                                    endforeach; ?>
                                 </ul>
                             </div>
                         </div>
@@ -201,7 +193,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="review-wrapper">
                                 <div class="single-review">
                                     <div class="review-img">
-                                        <img src="assets/img/product-details/client-1.jpg" alt="">
+                                        <img src="/images/main/product-details/client-1.jpg" alt="">
                                     </div>
                                     <div class="review-content">
                                         <p>“In convallis nulla et magna congue convallis. Donec eu nunc vel justo
@@ -222,7 +214,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                                 <div class="single-review">
                                     <div class="review-img">
-                                        <img src="assets/img/product-details/client-2.jpg" alt="">
+                                        <img src="/images/main/product-details/client-2.jpg" alt="">
                                     </div>
                                     <div class="review-content">
                                         <p>“In convallis nulla et magna congue convallis. Donec eu nunc vel justo
@@ -243,7 +235,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                                 <div class="single-review">
                                     <div class="review-img">
-                                        <img src="assets/img/product-details/client-3.jpg" alt="">
+                                        <img src="/images/main/product-details/client-3.jpg" alt="">
                                     </div>
                                     <div class="review-content">
                                         <p>“In convallis nulla et magna congue convallis. Donec eu nunc vel justo
@@ -330,7 +322,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="col-lg-4 col-md-4">
                 <div class="pro-dec-banner">
-                    <a href="#"><img src="assets/img/banner/banner-15.png" alt=""></a>
+                    <a href="#"><img src="/images/main/banner/banner-15.png" alt=""></a>
                 </div>
             </div>
         </div>
@@ -350,7 +342,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="ht-product-inner">
                         <div class="ht-product-image-wrap">
                             <a href="product-details.html" class="ht-product-image"> <img
-                                        src="assets/img/product/product-5.svg" alt="Universal Product Style"> </a>
+                                        src="/images/main/product/product-5.svg" alt="Universal Product Style"> </a>
                             <div class="ht-product-action">
                                 <ul>
                                     <li><a href="#" data-toggle="modal" data-target="#exampleModal"><i
@@ -413,7 +405,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="ht-product-inner">
                         <div class="ht-product-image-wrap">
                             <a href="product-details.html" class="ht-product-image"> <img
-                                        src="assets/img/product/product-6.svg" alt="Universal Product Style"> </a>
+                                        src="/images/main/product/product-6.svg" alt="Universal Product Style"> </a>
                             <div class="ht-product-action">
                                 <ul>
                                     <li><a href="#" data-toggle="modal" data-target="#exampleModal"><i
@@ -477,7 +469,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="ht-product-inner">
                         <div class="ht-product-image-wrap">
                             <a href="product-details.html" class="ht-product-image"> <img
-                                        src="assets/img/product/product-7.svg" alt="Universal Product Style"> </a>
+                                        src="/images/main/product/product-7.svg" alt="Universal Product Style"> </a>
                             <div class="ht-product-action">
                                 <ul>
                                     <li><a href="#" data-toggle="modal" data-target="#exampleModal"><i
@@ -540,7 +532,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="ht-product-inner">
                         <div class="ht-product-image-wrap">
                             <a href="product-details.html" class="ht-product-image"> <img
-                                        src="assets/img/product/product-8.svg" alt="Universal Product Style"> </a>
+                                        src="/images/main/product/product-8.svg" alt="Universal Product Style"> </a>
                             <div class="ht-product-action">
                                 <ul>
                                     <li><a href="#" data-toggle="modal" data-target="#exampleModal"><i
@@ -604,7 +596,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="ht-product-inner">
                         <div class="ht-product-image-wrap">
                             <a href="product-details.html" class="ht-product-image"> <img
-                                        src="assets/img/product/product-6.svg" alt="Universal Product Style"> </a>
+                                        src="/images/main/product/product-6.svg" alt="Universal Product Style"> </a>
                             <div class="ht-product-action">
                                 <ul>
                                     <li><a href="#" data-toggle="modal" data-target="#exampleModal"><i

@@ -104,7 +104,7 @@ class Permission
     
     public static function getRolesByUser($user_id)
     {
-        return Yii::$app->cache->getOrSet('roles', function () use ($user_id)
+        return Yii::$app->cache->getOrSet(md5('roles_' . $user_id), function () use ($user_id)
         {
             return Yii::$app->authManager->getRolesByUser($user_id);
         }, 0
