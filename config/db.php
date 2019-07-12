@@ -2,7 +2,7 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=91.202.130.52;port=3306;dbname=swim',
+    'dsn' => 'mysql:host=172.18.0.4;port=3306;dbname=swim',
     'username' => 'root',
     'password' => 'qwerty',
     'charset' => 'utf8',
