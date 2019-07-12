@@ -47,7 +47,7 @@
   "config": {
     "process-timeout": 1800,
     "fxp-asset": {
-      "enabled": true
+      "enabled": false
     }
   },
   "scripts": {
