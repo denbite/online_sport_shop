@@ -15,17 +15,6 @@ class m190709_151714_add_settings_to_items
     public function safeUp()
     {
         $this->addColumn('{{%item_color}}', 'html', $this->string(7)->after('color')->defaultValue('#000000'));
-        
-        $this->createTable('{{%item_description}}', [
-            'id' => $this->primaryKey(),
-            'item_id' => $this->integer()->unsigned()->notNull(),
-            'small_text' => $this->string(255),
-            'small_list' => $this->string(255),
-            'text' => $this->string(),
-            'list' => $this->string()->comment('serialized array'),
-            'updated_at' => $this->integer()->unsigned()->notNull(),
-            'created_at' => $this->integer()->unsigned()->notNull(),
-        ]);
     }
     
     /**
@@ -33,8 +22,6 @@ class m190709_151714_add_settings_to_items
      */
     public function safeDown()
     {
-        $this->dropTable('{{%item_description}}');
-    
         $this->dropColumn('{{%item_color}}', 'html');
     }
 }

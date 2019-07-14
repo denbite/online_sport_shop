@@ -24,6 +24,17 @@ class m190630_092214_create_item_table extends Migration
             'created_at' => $this->integer(12)->notNull()->defaultValue(time()),
             'updated_at' => $this->integer(12)->notNull()->defaultValue(time()),
         ]);
+    
+        $this->createTable('{{%item_description}}', [
+            'id' => $this->primaryKey(),
+            'item_id' => $this->integer()->unsigned()->notNull(),
+            'small_text' => $this->string(255),
+            'small_list' => $this->string(255),
+            'text' => $this->string(),
+            'list' => $this->string(),
+            'updated_at' => $this->integer()->unsigned()->notNull(),
+            'created_at' => $this->integer()->unsigned()->notNull(),
+        ]);
         
         $this->createTable('{{%item_color}}', [
             'id' => $this->primaryKey(),
@@ -93,6 +104,7 @@ class m190630_092214_create_item_table extends Migration
     {
         $this->dropTable('{{%item_color_size}}');
         $this->dropTable('{{%item_color}}');
+        $this->dropTable('{{%item_description}}');
         $this->dropTable('{{%item}}');
     }
 }
