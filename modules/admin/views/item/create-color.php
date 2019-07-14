@@ -31,6 +31,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php endif; ?>
 
     <div class="box box-shadowed box-outline-success <?= !empty(Yii::$app->params['background']) ? Yii::$app->params['background'] : '' ?>">
+        <div class="box-header with-border">
+            <div class="pull-right">
+                <?= Html::submitButton(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-save' ]) . ' Сохранить',
+                                       [ 'class' => 'btn btn-sm btn-success' ]) ?>
+            </div>
+        </div>
         <div class="box-body form-element">
             <?php $form = ActiveForm::begin([
                                                 'id' => 'item_color-create',
@@ -69,11 +75,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                      'offText' => Status::getStatusesArray()[Status::STATUS_DISABLE],
                                  ],
                              ]) ?>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <?= Html::submitButton('Создать', [ 'class' => 'btn btn-success pull-right' ]) ?>
                 </div>
             </div>
             <?php ActiveForm::end() ?>

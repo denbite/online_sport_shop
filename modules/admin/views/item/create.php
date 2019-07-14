@@ -1,6 +1,7 @@
 <?php
 
 use app\components\models\Status;
+use mihaildev\ckeditor\CKEditor;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
@@ -31,6 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php endif; ?>
 
     <div class="box box-shadowed box-outline-success <?= !empty(Yii::$app->params['background']) ? Yii::$app->params['background'] : '' ?>">
+        <div class="box-header with-border">
+            <div class="pull-right">
+                <?= Html::submitButton(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-save' ]) . ' Сохранить',
+                                       [ 'class' => 'btn btn-sm btn-success' ]) ?>
+            </div>
+        </div>
         <div class="box-body form-element">
             <?php $form = ActiveForm::begin([
                                                 'id' => 'item-create',
@@ -75,22 +82,33 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-3 col-6">
-                    <?= $form->field($modelDescription, 'small_text')->textarea() ?>
+                <div class="col-lg-6 col-12">
+                    <?= $form->field($modelDescription, 'small_text')->widget(CKEditor::className(), [
+                        'editorOptions' => [
+                            'preset' => 'basic',
+                        ],
+                    ]) ?>
                 </div>
-                <div class="col-lg-3 col-6">
-                    <?= $form->field($modelDescription, 'small_list')->textarea() ?>
+                <div class="col-lg-6 col-12">
+                    <?= $form->field($modelDescription, 'small_list')->widget(CKEditor::className(), [
+                        'editorOptions' => [
+                            'preset' => 'basic',
+                        ],
+                    ]) ?>
                 </div>
-                <div class="col-lg-3 col-6">
-                    <?= $form->field($modelDescription, 'text')->textarea() ?>
+                <div class="col-lg-6 col-12">
+                    <?= $form->field($modelDescription, 'text')->widget(CKEditor::className(), [
+                        'editorOptions' => [
+                            'preset' => 'full',
+                        ],
+                    ]) ?>
                 </div>
-                <div class="col-lg-3 col-6">
-                    <?= $form->field($modelDescription, 'list')->textarea() ?>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <?= Html::submitButton('Создать', [ 'class' => 'btn btn-success pull-right' ]) ?>
+                <div class="col-lg-6 col-12">
+                    <?= $form->field($modelDescription, 'list')->widget(CKEditor::className(), [
+                        'editorOptions' => [
+                            'preset' => 'full',
+                        ],
+                    ]) ?>
                 </div>
             </div>
             <?php ActiveForm::end() ?>

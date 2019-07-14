@@ -56,7 +56,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns' => [
                 [
                     'attribute' => 'name',
-                
+                    'format' => 'html',
+                    'value' => function ($model)
+                    {
+                        if (Permission::can('admin_role_view')) {
+                            return Html::a($model->name, [ '/admin/role/view', 'name' => $model->name ]);
+                        }
+        
+                        return $model->name;
+                    },
                 ],
                 [
                     'attribute' => 'description',

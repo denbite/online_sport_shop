@@ -34,7 +34,8 @@
     "kartik-v/yii2-widget-fileinput": "dev-master",
     "kartik-v/yii2-widget-colorinput": "dev-master",
     "fxp/composer-asset-plugin": "*",
-    "wbraganca/yii2-dynamicform": "*"
+    "wbraganca/yii2-dynamicform": "*",
+    "mihaildev/yii2-ckeditor": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",

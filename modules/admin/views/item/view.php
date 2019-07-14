@@ -43,8 +43,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         [ "/admin/item/update", 'id' => $model->id ], [ 'class' => 'btn btn-sm btn-warning ml-20' ]) ?>
                 <?php endif; ?>
                 <?php if (Permission::can('admin_item_delete')): ?>
-                    <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-pencil' ]) . ' Удалить',
-                        [ "/admin/item/delete", 'id' => $model->id ], [ 'class' => 'btn btn-sm btn-danger ml-20' ]) ?>
+                    <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-trash' ]) . ' Удалить',
+                                [ "/admin/item/delete", 'id' => $model->id ],
+                                [ 'class' => 'btn btn-sm btn-danger ml-20', 'data' => [
+                                    'confirm' => 'Вы уверены, что хотите удалить этот товар',
+                                ], ]) ?>
                 <?php endif; ?>
             </div>
         </div>

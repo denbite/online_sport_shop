@@ -2,6 +2,7 @@
 
 use app\components\models\Status;
 use app\models\Image;
+use mihaildev\ckeditor\CKEditor;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -217,17 +218,33 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="tab-pane" id="description" role="tabpanel">
                 <div class="pad">
                     <div class="row">
-                        <div class="col-lg-3 col-6">
-                            <?= $form->field($modelDescription, 'small_text')->textarea() ?>
+                        <div class="col-lg-6 col-12">
+                            <?= $form->field($modelDescription, 'small_text')->widget(CKEditor::className(), [
+                                'editorOptions' => [
+                                    'preset' => 'basic',
+                                ],
+                            ]) ?>
                         </div>
-                        <div class="col-lg-3 col-6">
-                            <?= $form->field($modelDescription, 'small_list')->textarea() ?>
+                        <div class="col-lg-6 col-12">
+                            <?= $form->field($modelDescription, 'small_list')->widget(CKEditor::className(), [
+                                'editorOptions' => [
+                                    'preset' => 'basic',
+                                ],
+                            ]) ?>
                         </div>
-                        <div class="col-lg-3 col-6">
-                            <?= $form->field($modelDescription, 'text')->textarea() ?>
+                        <div class="col-lg-6 col-12">
+                            <?= $form->field($modelDescription, 'text')->widget(CKEditor::className(), [
+                                'editorOptions' => [
+                                    'preset' => 'full',
+                                ],
+                            ]) ?>
                         </div>
-                        <div class="col-lg-3 col-6">
-                            <?= $form->field($modelDescription, 'list')->textarea() ?>
+                        <div class="col-lg-6 col-12">
+                            <?= $form->field($modelDescription, 'list')->widget(CKEditor::className(), [
+                                'editorOptions' => [
+                                    'preset' => 'full',
+                                ],
+                            ]) ?>
                         </div>
                     </div>
                 </div>

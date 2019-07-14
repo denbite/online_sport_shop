@@ -79,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                         <span><a href="#">0 отзывов</a></span>
                     </div>
-                    <p><?= $item['description']['small_text'] ?></p>
+                    <?= $item['description']['small_text'] ?>
                     <div class="pro-details-list">
                         <ul>
                             <?php foreach (explode(';', $item['description']['small_list']) as $one): ?>
