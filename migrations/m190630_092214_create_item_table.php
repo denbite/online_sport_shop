@@ -32,8 +32,8 @@ class m190630_092214_create_item_table extends Migration
             'small_list' => $this->string(255),
             'text' => $this->string(),
             'list' => $this->string(),
-            'updated_at' => $this->integer()->unsigned()->notNull(),
-            'created_at' => $this->integer()->unsigned()->notNull(),
+            'updated_at' => $this->integer()->unsigned()->notNull()->defaultValue(time()),
+            'created_at' => $this->integer()->unsigned()->notNull()->defaultValue(time()),
         ]);
         
         $this->createTable('{{%item_color}}', [
