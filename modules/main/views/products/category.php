@@ -1,12 +1,14 @@
 <?php
 
 use app\components\helpers\ValueHelper;
+use app\components\widgets\Paginator;
 use app\models\Image;
 use yii\helpers\Html;
 
 /** @var array $current */
 /** @var array $parents */
 /** @var array $children */
+/** @var \yii\data\Pagination $pages */
 
 $this->title = $current['name'];
 
@@ -16,7 +18,7 @@ if (!empty($parents)) {
     }
 }
 
-$this->params['breadcrumbs'][] = $current['name'];
+$this->params['breadcrumbs'][] = $this->title;
 
 $class = Image::getTypes()[Image::TYPE_CATEGORY];
 ?>
@@ -44,13 +46,10 @@ $class = Image::getTypes()[Image::TYPE_CATEGORY];
             <?php endforeach; ?>
         </div>
         <!--        pagination-->
-        <div class="pro-pagination-style text-center mt-20 pagination-mrg-xs-none">
-            <ul>
-                <li><a class="prev" href="#"><i class="sli sli-arrow-left"></i></a></li>
-                <li><a class="active" href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a class="next" href="#"><i class="sli sli-arrow-right"></i></a></li>
-            </ul>
-        </div>
+        <?=
+        Paginator::widget([
+                              'pagination' => $pages,
+                          ])
+        ?>
     </div>
 </div>

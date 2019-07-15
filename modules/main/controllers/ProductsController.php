@@ -47,25 +47,47 @@ class ProductsController
             // get all nodes lvl=1
             
             $current = Category::findOne([ 'lvl' => 0, 'root' => 1 ]);
-            
-            $children = $current->children(1)->with('image')->andWhere([ 'active' => Status::STATUS_ACTIVE ])->all();
+    
+            $query = $current->children(1)->with('image')->andWhere([ 'active' => Status::STATUS_ACTIVE ]);
+    
+            $pages = new Pagination([
+                                        'totalCount' => $query->count(),
+                                        'pageSize' => 18,
+                                        'defaultPageSize' => 18,
+                                        'forcePageParam' => false,
+                                    ]
+            );
+    
+            $children = $query->offset($pages->offset)->limit($pages->limit)->all();
             
             return $this->render('category', [
                 'children' => $children,
                 'parents' => [],
                 'current' => $current,
+                'pages' => $pages,
             ]);
         } elseif ($current = Category::findOne([ 'id' => ValueHelper::decryptValue($slug), 'active' => Status::STATUS_ACTIVE, ])) {
             $activeParents = $current->parents()->andWhere([ 'active' => Status::STATUS_ACTIVE ])->all();
             
             if (count($activeParents) == $current['lvl']) {
-                $children = $current->children(1)->andWhere([ 'active' => Status::STATUS_ACTIVE ])->all();
+                $query = $current->children(1)->andWhere([ 'active' => Status::STATUS_ACTIVE ]);
+    
+                $pages = new Pagination([
+                                            'totalCount' => $query->count(),
+                                            'pageSize' => 18,
+                                            'defaultPageSize' => 18,
+                                            'forcePageParam' => false,
+                                        ]
+                );
+    
+                $children = $query->offset($pages->offset)->limit($pages->limit)->all();
                 
                 if (!empty($children)) {
                     return $this->render('category', [
                         'children' => $children,
                         'parents' => $activeParents,
                         'current' => $current,
+                        'pages' => $pages,
                     ]);
                 } else {
                     return $this->redirect([ 'catalog', 'slug' => ValueHelper::encryptValue($current['id']) ]);
@@ -82,13 +104,39 @@ class ProductsController
         $slug = (int) preg_replace("[\D+]", "", $slug);
         
         if (empty($slug)) {
+    
+            $query = Item::find()
+                         ->select([ 'item.*', 'MIN(sizes.price) as min_price' ])
+                         ->from(Item::tableName() . ' item')
+                         ->joinWith([ 'allColors colors' => function ($query)
+                         {
+                             $query->joinWith([ 'allSizes sizes', 'mainImage' ]);
+                         }, ])
+                         ->where([
+                                     'item.status' => Status::STATUS_ACTIVE,
+                                     'colors.status' => Status::STATUS_ACTIVE,
+                                     'sizes.status' => Status::STATUS_ACTIVE,
+                                 ])
+                         ->groupBy([ 'id' ])
+                         ->orderBy([ 'rate' => SORT_DESC ]);
+    
+            $pages = new Pagination([
+                                        'totalCount' => $query->count(),
+                                        'pageSize' => 18,
+                                        'defaultPageSize' => 18,
+                                        'forcePageParam' => false,
+                                    ]
+            );
+    
+            $items = $query->offset($pages->offset)->limit($pages->limit)->asArray()->all();
             
             // all items, order by rate descending
             
             return $this->render('catalog', [
                 'parents' => [],
-                'current' => [],
-                'items' => [],
+                'current' => [ 'name' => 'Каталог' ],
+                'items' => $items,
+                'pages' => $pages,
             ]);
         } elseif ($current = Category::findOne([ 'id' => ValueHelper::decryptValue($slug), 'active' => Status::STATUS_ACTIVE ])) {
             if ($current['rgt'] != $current['lft'] + 1) {

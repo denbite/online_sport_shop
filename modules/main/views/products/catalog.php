@@ -178,8 +178,8 @@ $class = Image::getTypes()[Image::TYPE_ITEM];
     
                     <?=
                     Paginator::widget([
-                        'pagination' => $pages,
-                    ])
+                                          'pagination' => $pages,
+                                      ])
                     ?>
 
                 </div>

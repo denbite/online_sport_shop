@@ -24,8 +24,8 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="images/main/favicon.png">
-    <title><?= Html::encode($this->title) ?></title>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <title><?= Html::encode(!empty($this->title) ? 'AquistA | ' . $this->title : 'Интернет-магазин AquistA | Лучшие цены на одежду, инвентарь') ?></title>
     
     <?php $this->head() ?>
 
@@ -49,7 +49,7 @@ AppAsset::register($this);
                 <div class="row">
                     <div class="col-xl-2 col-lg-2">
                         <div class="logo pt-40">
-                            <?= Html::a(Html::img('/images/main/logo/logo.png'), [ '/main/default/index' ]) ?>
+                            <?= Html::a(Html::img('/files/logo.png'), [ '/main/default/index' ]) ?>
                         </div>
                     </div>
                     <div class="col-xl-7 col-lg-7 ">
@@ -129,7 +129,7 @@ AppAsset::register($this);
                                     <ul>
                                         <li class="single-shopping-cart">
                                             <div class="shopping-cart-img">
-                                                <a href="#"><img alt="" src="images/main/cart/cart-1.svg"></a>
+                                                <a href="#"><img alt="" src="/images/main/cart/cart-1.svg"></a>
                                                 <div class="item-close">
                                                     <a href="#"><i class="sli sli-close"></i></a>
                                                 </div>
@@ -141,7 +141,7 @@ AppAsset::register($this);
                                         </li>
                                         <li class="single-shopping-cart">
                                             <div class="shopping-cart-img">
-                                                <a href="#"><img alt="" src="images/main/cart/cart-2.svg"></a>
+                                                <a href="#"><img alt="" src="/images/main/cart/cart-2.svg"></a>
                                                 <div class="item-close">
                                                     <a href="#"><i class="sli sli-close"></i></a>
                                                 </div>
@@ -224,9 +224,7 @@ AppAsset::register($this);
                 <div class="row align-items-center">
                     <div class="col-6">
                         <div class="mobile-logo">
-                            <a href="index.html">
-                                <img alt="" src="/images/main/logo/logo.png">
-                            </a>
+                            <?= Html::a(Html::img('/files/logo.png'), [ '/main/default/index' ]) ?>
                         </div>
                     </div>
                     <div class="col-6">
@@ -249,7 +247,7 @@ AppAsset::register($this);
                                     <ul>
                                         <li class="single-shopping-cart">
                                             <div class="shopping-cart-img">
-                                                <a href="#"><img alt="" src="images/main/cart/cart-1.svg"></a>
+                                                <a href="#"><img alt="" src="/images/main/cart/cart-1.svg"></a>
                                             </div>
                                             <div class="shopping-cart-title">
                                                 <h4><a href="#">Product Name </a></h4>
@@ -258,7 +256,7 @@ AppAsset::register($this);
                                         </li>
                                         <li class="single-shopping-cart">
                                             <div class="shopping-cart-img">
-                                                <a href="#"><img alt="" src="images/main/cart/cart-2.svg"></a>
+                                                <a href="#"><img alt="" src="/images/main/cart/cart-2.svg"></a>
                                             </div>
                                             <div class="shopping-cart-title">
                                                 <h4><a href="#">Product Name</a></h4>
@@ -302,38 +300,27 @@ AppAsset::register($this);
                     <!-- mobile menu navigation start -->
                     <nav>
                         <ul class="mobile-menu">
-                            <li class="menu-item-has-children "><a href="shop.html">shop</a>
+                            <li class="menu-item-has-children "><a
+                                        href="<?= \yii\helpers\Url::to([ '/main/products/category' ]) ?>">Категории </a>
                                 <ul class="dropdown">
-                                    <li class="menu-item-has-children"><a href="#">Shop Layout</a>
-                                        <ul class="dropdown">
-                                            <li><a href="shop.html">standard style</a></li>
-                                            <li><a href="shop-grid-2-column.html">grid 2 column</a></li>
-                                            <li><a href="shop-grid-4-column.html">grid 4 column</a></li>
-                                            <li><a href="shop-grid-fullwide.html">grid full wide</a></li>
-                                            <li><a href="shop-right-sidebar.html">grid right sidebar </a></li>
-                                            <li><a href="shop-list-style1.html">list style 1</a></li>
-                                            <li><a href="shop-list-style2.html">list style 2</a></li>
-                                            <li><a href="shop-list-style3.html">list style 3</a></li>
-                                            <li><a href="shop-list-fullwide.html">list full wide</a></li>
-                                            <li><a href="shop-list-sidebar.html">list with sidebar </a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item-has-children"><a href="#">products details</a>
-                                        <ul class="dropdown">
-                                            <li><a href="product-details.html">tab style 1</a></li>
-                                            <li><a href="product-details-tab-2.html">tab style 2</a></li>
-                                            <li><a href="product-details-tab-3.html">tab style 3</a></li>
-                                            <li><a href="product-details-gallery.html">gallery style </a></li>
-                                            <li><a href="product-details-gallery-right.html">gallery right</a></li>
-                                            <li><a href="product-details-sticky.html">sticky style</a></li>
-                                            <li><a href="product-details-sticky-right.html">sticky right</a></li>
-                                            <li><a href="product-details-slider-box.html">slider style</a></li>
-                                            <li><a href="product-details-affiliate.html">Affiliate style</a></li>
-                                        </ul>
-                                    </li>
+                                    <?php foreach (\app\models\Category::findOne([ 'root' => 1, 'lvl' => 0 ])
+                                                                       ->children(1)
+                                                                       ->all() as $category): ?>
+                                        <li class="menu-item-has-children"><a
+                                                    href="<?= Url::to([ '/main/products/category', 'slug' => ValueHelper::encryptValue($category['id']) ]) ?>"><?= $category['name'] ?></a>
+                                            <ul class="dropdown">
+                                                <?php foreach ($category->children(1)->all() as $child): ?>
+                                                    <li>
+                                                        <a href="<?= Url::to([ '/main/products/category', 'slug' => ValueHelper::encryptValue($child['id']) ]) ?>"><?= $child['name'] ?></a>
+                                                    </li>
+                                                <?php endforeach; ?>
+                                            </ul>
+                                        </li>
+                                    <?php endforeach; ?>
                                 </ul>
                             </li>
-                            <li><a href="shop.html">Accessories </a></li>
+                            <li><a href="<?= Url::to([ '/main/products/catalog' ]) ?>">Каталог
+                                </a></li>
                             <li class="menu-item-has-children"><a href="#">pages</a>
                                 <ul class="dropdown">
                                     <li><a href="about-us.html">about us </a></li>
@@ -443,17 +430,17 @@ AppAsset::register($this);
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                             <div class="footer-widget mb-40">
-                                <a href="#"><img alt="" src="images/main/logo/logo.png"></a>
+                                <?= Html::a(Html::img('/files/logo.png'), [ '/main/default/index' ]) ?>
                                 <div class="subscribe-style mt-45">
-                                    <p>Subscribe to our newsleter, Enter your emil address</p>
+                                    <p>Подпишитесь на новости, Введите свой e-mail</p>
                                     <div id="mc_embed_signup" class="subscribe-form mt-20">
                                         <form id="mc-embedded-subscribe-form" class="validate subscribe-form-style"
                                               novalidate="" target="_blank" name="mc-embedded-subscribe-form"
                                               method="post"
-                                              action="http://devitems.us11.list-manage.com/subscribe/post?u=6bbb9b6f5827bd842d9640c82&amp;id=05d85f18ef">
+                                              action="...">
                                             <div id="mc_embed_signup_scroll" class="mc-form">
                                                 <input class="email" type="email" required=""
-                                                       placeholder="Enter your email...." name="EMAIL" value="">
+                                                       placeholder="Введите свой e-mail...." name="EMAIL" value="">
                                                 <div class="mc-news" aria-hidden="true">
                                                     <input type="text" value="" tabindex="-1"
                                                            name="b_6bbb9b6f5827bd842d9640c82_05d85f18ef">
@@ -526,7 +513,7 @@ AppAsset::register($this);
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                             <div class="payment-mathod-2 pb-30">
-                                <a href="#"><img src="images/main/icon-img/payment-2.png" alt=""></a>
+                                <a href="#"><img src="/images/main/icon-img/payment-2.png" alt=""></a>
                             </div>
                         </div>
                     </div>
@@ -567,7 +554,7 @@ AppAsset::register($this);
                         </div>
                         <div class="col-lg-4 col-md-3 col-12">
                             <div class="payment-mathod pb-20">
-                                <a href="#"><img src="assets/img/icon-img/payment.png" alt=""></a>
+                                <a href="#"><img src="/images/admin/icon-img/payment.png" alt=""></a>
                             </div>
                         </div>
                     </div>
