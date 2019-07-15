@@ -23,7 +23,7 @@ class Image
     
     const TYPE_CATEGORY = 2;
     
-    const TYPE_PROMOTIONS = 3;
+    const TYPE_BANNER = 3;
     
     /**
      * {@inheritdoc}
@@ -92,7 +92,7 @@ class Image
         return [
             self::TYPE_ITEM => 'Item',
             self::TYPE_CATEGORY => 'Category',
-            self::TYPE_PROMOTIONS => 'Promotions',
+            self::TYPE_BANNER => 'Banner',
         ];
     }
     

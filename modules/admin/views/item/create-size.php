@@ -29,7 +29,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php echo Yii::$app->session->getFlash('error'); ?>
     </div>
 <?php endif; ?>
-
+<?php $form = ActiveForm::begin([
+    'id' => 'item_size-create',
+]) ?>
     <div class="box box-shadowed box-outline-success <?= !empty(Yii::$app->params['background']) ? Yii::$app->params['background'] : '' ?>">
         <div class="box-header with-border">
             <div class="pull-right">
@@ -38,9 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
         <div class="box-body form-element">
-            <?php $form = ActiveForm::begin([
-                                                'id' => 'item_size-create',
-                                            ]) ?>
+
             <div class="row">
                 <div class="col-3">
                     <label class="control-label">Товар</label>
@@ -81,9 +81,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                      'offText' => Status::getStatusesArray()[Status::STATUS_DISABLE], ], ]) ?>
                 </div>
             </div>
-            <?php ActiveForm::end() ?>
         </div>
     </div>
 
+<?php ActiveForm::end() ?>
 
 

@@ -12,13 +12,19 @@ $this->params['breadcrumbs'][] = [ 'label' => 'Пользователи', 'url' 
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
-<div class="container">
-    <div class="box box-shadowed box-outline-success <?= !empty(Yii::$app->params['background']) ? Yii::$app->params['background'] : '' ?>">
-        <div class="box-body form-element">
-            <?php $form = ActiveForm::begin([
-                                                'id' => 'user-create',
-                                            ]) ?>
-            <div class="row">
+<?php $form = ActiveForm::begin([
+    'id' => 'user-create',
+]) ?>
+<div class="box box-shadowed box-outline-success <?= !empty(Yii::$app->params['background']) ? Yii::$app->params['background'] : '' ?>">
+    <div class="box-header with-border">
+        <div class="pull-right">
+            <?= Html::submitButton(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-save' ]) . ' Сохранить',
+                [ 'class' => 'btn btn-sm btn-success' ]) ?>
+        </div>
+    </div>
+    <div class="box-body form-element">
+
+        <div class="row">
                 <div class="col">
                     <?= $form->field($model, 'username') ?>
                 </div>
@@ -29,12 +35,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($model, 'email') ?>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <?= Html::submitButton('Создать', [ 'class' => 'btn btn-success pull-right' ]) ?>
-                </div>
-            </div>
-            <?php ActiveForm::end() ?>
-        </div>
     </div>
 </div>
+<?php ActiveForm::end() ?>

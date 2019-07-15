@@ -159,20 +159,27 @@ $action = Yii::$app->controller->action->id;
                         </ul>
                     </li>
                 <?php endif; ?>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-bars"></i>
-                        <span>Контент</span>
-                        <span class="pull-right-container">
+                <?php if (Permission::can([ 'admin_promotion_index', ])): ?>
+                    <li class="treeview <?= in_array($controller, [ 'promotion' ]) ? ' active' : '' ?>">
+                        <a href="#">
+                            <i class="fa fa-bars"></i>
+                            <span>Контент</span>
+                            <span class="pull-right-container">
               <i class="fa fa-angle-right pull-right"></i>
             </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="../UI/badges.html"><i class="fa fa-circle-thin"></i>Акции</a></li>
-                        <li><a href="../UI/border-utilities.html"><i class="fa fa-circle-thin"></i>Соц. сети</a></li>
-                        <li><a href="../UI/buttons.html"><i class="fa fa-circle-thin"></i>Новости</a></li>
-                    </ul>
-                </li>
+                        </a>
+                        <ul class="treeview-menu">
+                            <?php if (Permission::can('admin_promotion_index')): ?>
+                                <li <?= $controller == 'promotion' ? ' class="active"' : '' ?>><a
+                                            href="<?= \yii\helpers\Url::to([ '/admin/promotion/index' ]) ?>"><i
+                                                class="fa fa-circle-thin"></i>Акции</a></li>
+                            <?php endif; ?>
+                            <li><a href="../UI/border-utilities.html"><i class="fa fa-circle-thin"></i>Соц. сети</a>
+                            </li>
+                            <li><a href="../UI/buttons.html"><i class="fa fa-circle-thin"></i>Новости</a></li>
+                        </ul>
+                    </li>
+                <?php endif; ?>
                 <li class="header nav-small-cap">Дополнительные</li>
                 <li class="treeview">
                     <a href="#">

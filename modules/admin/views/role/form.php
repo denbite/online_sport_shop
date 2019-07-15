@@ -28,7 +28,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php echo Yii::$app->session->getFlash('error'); ?>
     </div>
 <?php endif; ?>
-
+<?php $form = ActiveForm::begin([
+    'id' => $model->isNewRecord ? 'role-create' : 'role-update',
+]) ?>
 <div class="box box-shadowed box-outline-success <?= !empty(Yii::$app->params['background']) ? Yii::$app->params['background'] : '' ?>">
     <div class="box-header with-border">
         <div class="pull-right">
@@ -37,9 +39,6 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
     <div class="box-body form-element">
-        <?php $form = ActiveForm::begin([
-                                            'id' => $model->isNewRecord ? 'role-create' : 'role-update',
-        ]) ?>
         <div class="row">
             <div class="col-lg-2 col-6">
                 <?= $form->field($model, 'name') ?>
@@ -70,9 +69,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php endforeach; ?>
             </ol>
         </div>
-        <?php ActiveForm::end() ?>
     </div>
 </div>
+<?php ActiveForm::end() ?>
 
 
 

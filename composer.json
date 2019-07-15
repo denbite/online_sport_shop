@@ -35,7 +35,10 @@
     "kartik-v/yii2-widget-colorinput": "dev-master",
     "fxp/composer-asset-plugin": "*",
     "wbraganca/yii2-dynamicform": "*",
-    "mihaildev/yii2-ckeditor": "*"
+    "mihaildev/yii2-ckeditor": "*",
+    "kartik-v/yii2-widget-datetimepicker": "*",
+    "kartik-v/yii2-widget-datepicker": "@dev",
+    "kartik-v/yii2-field-range": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",

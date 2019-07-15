@@ -29,7 +29,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php echo Yii::$app->session->getFlash('error'); ?>
     </div>
 <?php endif; ?>
-
+<?php $form = ActiveForm::begin([
+    'id' => 'item_color-create',
+]) ?>
     <div class="box box-shadowed box-outline-success <?= !empty(Yii::$app->params['background']) ? Yii::$app->params['background'] : '' ?>">
         <div class="box-header with-border">
             <div class="pull-right">
@@ -38,9 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
         <div class="box-body form-element">
-            <?php $form = ActiveForm::begin([
-                                                'id' => 'item_color-create',
-                                            ]) ?>
+
             <div class="row">
                 <div class="col">
                     <?= $form->field($model, 'item_id')->widget(\kartik\select2\Select2::className(), [
@@ -77,9 +77,8 @@ $this->params['breadcrumbs'][] = $this->title;
                              ]) ?>
                 </div>
             </div>
-            <?php ActiveForm::end() ?>
         </div>
     </div>
-
+<?php ActiveForm::end() ?>
 
 
