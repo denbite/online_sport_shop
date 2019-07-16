@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\models\Status;
 use yii\behaviors\TimestampBehavior;
 
 /**
@@ -100,5 +101,28 @@ class Promotion
         }
         
         return false;
+    }
+    
+    public static function getItemColorSizeNamesByPromotion($promotion_id)
+    {
+        // todo-cache: add cache by md5(promo_id)
+        $sizes = Promotion::find()
+                          ->from(Promotion::tableName() . ' promo')
+                          ->joinWith([ 'sizes sizes' => function ($query)
+                          {
+                              $query->joinWith([ 'color color' => function ($query)
+                              {
+                                  $query->joinWith([ 'item item' ]);
+                              } ]);
+                          } ])
+                          ->where([
+                              'promo.status' => Status::STATUS_ACTIVE,
+                              'promo.id' => $promotion_id,
+                          ])
+                          ->asArray()
+                          ->one();
+        
+        return ( !empty($sizes) and array_key_exists('sizes', $sizes) ) ? $sizes['sizes'] : [];
+        
     }
 }

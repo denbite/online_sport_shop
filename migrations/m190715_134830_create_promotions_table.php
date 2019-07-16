@@ -27,7 +27,7 @@ class m190715_134830_create_promotions_table
         
         $this->createTable('{{%size_promotion}}', [
             'size_id' => $this->integer()->unsigned()->notNull(),
-            'promotions_id' => $this->integer()->unsigned()->notNull(),
+            'promotion_id' => $this->integer()->unsigned()->notNull(),
         ]);
     }
     

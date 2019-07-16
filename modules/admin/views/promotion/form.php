@@ -10,6 +10,7 @@ use yii\helpers\Html;
 /* @var $model app\models\Promotion */
 /* @var $types array */
 /* @var $sizes array */
+/* @var $current array */
 
 $this->title = 'Создание акции';
 $this->params['breadcrumbs'][] = [ 'label' => 'Акции', 'url' => [ 'index' ] ];
@@ -167,11 +168,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?= Select2::widget([
                                                     'name' => 'ItemColorSize',
                                                     'data' => $sizes,
+                                'value' => !empty($current) ? $current : [],
                                                     'options' => [
                                                         'multiple' => true,
                                                         'placeholder' => 'Выберите нужные размеры',
                                                     ],
-                                                    'pluginOptions' => [
+                                'pluginOptions' => [
                                                         'allowClear' => true,
                                                     ],
                                                 ]) ?>

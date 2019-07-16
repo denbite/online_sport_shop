@@ -59,8 +59,13 @@ class PromotionController
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'types' => Promotion::getTypes(),
+            'sizes' => ItemColorSize::getAllEnableItemColorSizeNames(),
+            'current' => array_column($model->sizes, 'id'),
         ]);
     }
     
@@ -96,52 +101,59 @@ class PromotionController
             $post = Yii::$app->request->post();
             
             try {
-                
-                if ($model->load($post) and $model->validate()) {
+    
+                if ($model->load($post) and $model->save()) {
+        
                     TransactionHelper::wrap(function () use ($model, $post)
                     {
-                        $model->save();
-                        
-                        $fromCat = [];
-                        $fromItems = [];
-                        
+                        $sizes = [];
+            
                         if (!empty($post['Category']) and $post['Category'] !== 'true') {
                             $category = explode(',', $post['Category']);
                             if (!empty($category)) {
-                                $fromCat = array_column(ItemColorSize::find()
-                                                                     ->joinWith([ 'color color' => function ($q)
-                                                                     {
-                                                                         $q->joinWith('item item');
-                                                                     } ])
-                                                                     ->where([
-                                                                                 'in', 'item.category_id', $category,
-                                                                                 //                                                                       'item.status' => Status::STATUS_ACTIVE,
-                                                                                 //                                                                       'color.status' => Status::STATUS_ACTIVE,
-                                                                                 //                                                                       'size.status' => Status::STATUS_ACTIVE,
-                                                                             ])
-                                                                     ->indexBy('id')
-                                                                     ->asArray()
-                                                                     ->all(), 'id', 'id');
-                            }
-                        }
-                        
-                        if (!empty($post['ItemColorSize'])) {
-                            $fromItems = array_column(ItemColorSize::find()
+                                $sizes = array_column(ItemColorSize::find()
+                                                                   ->joinWith([ 'color color' => function ($q)
+                                                                   {
+                                                                       $q->joinWith('item item');
+                                                                   } ])
                                                                    ->where([
-                                                                               'in', 'id', $post['ItemColorSize'],
-                                                                           ])
+                                                                       'in', 'item.category_id', $category,
+                                                                       //                                                                       'item.status' => Status::STATUS_ACTIVE,
+                                                                       //                                                                       'color.status' => Status::STATUS_ACTIVE,
+                                                                       //                                                                       'size.status' => Status::STATUS_ACTIVE,
+                                                                   ])
+                                                                   ->indexBy('id')
+                                                                   ->asArray()
+                                                                   ->all(), 'id', 'id');
+                            }
+                        } elseif (!empty($post['ItemColorSize'])) {
+                            $sizes = array_column(ItemColorSize::find()
+                                                                   ->where([
+                                                                       'in', 'id', $post['ItemColorSize'],
+                                                                   ])
                                                                    ->indexBy('id')
                                                                    ->asArray()
                                                                    ->all(), 'id', 'id');
                         }
-                        
-                        $result = array_merge($fromItems, $fromCat);
-                        
-                        echo '<pre>';
-                        var_dump($result);
-                        echo '</pre>';
-                        die;
-                        
+    
+                        if (!empty($sizes) and is_array($sizes)) {
+                            foreach ($sizes as $item) {
+            
+                                $result[] = [
+                                    'size_id' => $item,
+                                    'promotion_id' => $model->id,
+                                ];
+            
+                            }
+                            if (!empty($result)) {
+            
+                                Yii::$app->db->createCommand()->batchInsert('{{%size_promotion}}', [
+                                    'size_id', 'promotion_id',
+                                ], $result)->execute();
+                                Yii::$app->session->setFlash('success', 'Успешно сохранено');
+                            }
+                        }
+            
                     });
                     
                 }
@@ -151,9 +163,12 @@ class PromotionController
                 Yii::$app->errorHandler->logException($e);
                 Yii::$app->session->setFlash('error', $e->getMessage());
             }
+    
+            return $this->redirect([ 'index', ]);
         }
-        
-        return $this->render('create', [ 'model' => $model,
+    
+        return $this->render('form', [
+            'model' => $model,
             'types' => Promotion::getTypes(),
             'sizes' => ItemColorSize::getAllEnableItemColorSizeNames(), ]);
     }
@@ -170,13 +185,87 @@ class PromotionController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+    
+        if (Yii::$app->request->isPost) {
         
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $post = Yii::$app->request->post();
+        
+            try {
+            
+                if ($model->load($post) and $model->save()) {
+                
+                    TransactionHelper::wrap(function () use ($model, $post)
+                    {
+                        $sizes = [];
+                    
+                        if (!empty($post['Category']) and $post['Category'] !== 'true') {
+                            $category = explode(',', $post['Category']);
+                            if (!empty($category)) {
+                                $sizes = array_column(ItemColorSize::find()
+                                                                   ->joinWith([ 'color color' => function ($q)
+                                                                   {
+                                                                       $q->joinWith('item item');
+                                                                   } ])
+                                                                   ->where([
+                                                                       'in', 'item.category_id', $category,
+                                                                       //                                                                       'item.status' => Status::STATUS_ACTIVE,
+                                                                       //                                                                       'color.status' => Status::STATUS_ACTIVE,
+                                                                       //                                                                       'size.status' => Status::STATUS_ACTIVE,
+                                                                   ])
+                                                                   ->indexBy('id')
+                                                                   ->asArray()
+                                                                   ->all(), 'id', 'id');
+                            }
+                        } elseif (!empty($post['ItemColorSize'])) {
+                            $sizes = array_column(ItemColorSize::find()
+                                                               ->where([
+                                                                   'in', 'id', $post['ItemColorSize'],
+                                                               ])
+                                                               ->indexBy('id')
+                                                               ->asArray()
+                                                               ->all(), 'id', 'id');
+                        }
+                    
+                        if (!empty($sizes) and is_array($sizes)) {
+                            foreach ($sizes as $item) {
+                            
+                                $result[] = [
+                                    'size_id' => $item,
+                                    'promotion_id' => $model->id,
+                                ];
+                            
+                            }
+                            if (!empty($result)) {
+                            
+                                Yii::$app->db->createCommand()
+                                             ->delete('{{%size_promotion}}', [ 'promotion_id' => $model->id ])
+                                             ->execute();
+                            
+                                Yii::$app->db->createCommand()->batchInsert('{{%size_promotion}}', [
+                                    'size_id', 'promotion_id',
+                                ], $result)->execute();
+                                Yii::$app->session->setFlash('success', 'Успешно сохранено');
+                            }
+                        }
+                    
+                    });
+                
+                }
+            
+            } catch
+            (\Exception $e) {
+                Yii::$app->errorHandler->logException($e);
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
+        
             return $this->redirect([ 'view', 'id' => $model->id ]);
         }
-        
-        return $this->render('update', [
+    
+        return $this->render('form', [
             'model' => $model,
+            'types' => Promotion::getTypes(),
+            'sizes' => ItemColorSize::getAllEnableItemColorSizeNames(),
+            'current' => array_column($model->sizes, 'id'),
         ]);
     }
     

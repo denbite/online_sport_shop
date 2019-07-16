@@ -87,7 +87,6 @@ class ItemColorSize extends \yii\db\ActiveRecord
         foreach ($data as $item) {
             foreach ($item['allColors'] as $color) {
                 foreach ($color['allSizes'] as $size) {
-                    //                    $result[$item['firm'] . ' ' . $item['model']][$color['color']][$size['id']] = $size['size'];
                     $result[$size['id']] = $item['firm'] . ' ' . $item['model'] . ' ' . $color['color'] . ' ' . $size['size'];
                 }
             }
