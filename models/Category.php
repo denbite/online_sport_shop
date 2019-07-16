@@ -119,6 +119,6 @@ class Category extends Tree
     public function getImage()
     {
         return $this->hasOne(Image::className(), [ 'subject_id' => 'id' ])
-                    ->andWhere([ 'sort' => 0 ]);
+                    ->andWhere([ 'sort' => 0, 'type' => Image::TYPE_CATEGORY ]);
     }
 }
