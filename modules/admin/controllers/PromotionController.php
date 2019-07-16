@@ -2,6 +2,8 @@
 
 namespace app\modules\admin\controllers;
 
+use app\components\helpers\TransactionHelper;
+use app\models\ItemColorSize;
 use app\models\Promotion;
 use app\modules\admin\models\PromotionSearch;
 use Yii;
@@ -93,22 +95,67 @@ class PromotionController
             
             $post = Yii::$app->request->post();
             
-            echo '<pre>';
-            var_dump($post);
-            echo '</pre>';
-            die;
-            
-            
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect([ 'view', 'id' => $model->id ]);
+            try {
+                
+                if ($model->load($post) and $model->validate()) {
+                    TransactionHelper::wrap(function () use ($model, $post)
+                    {
+                        $model->save();
+                        
+                        $fromCat = [];
+                        $fromItems = [];
+                        
+                        if (!empty($post['Category']) and $post['Category'] !== 'true') {
+                            $category = explode(',', $post['Category']);
+                            if (!empty($category)) {
+                                $fromCat = array_column(ItemColorSize::find()
+                                                                     ->joinWith([ 'color color' => function ($q)
+                                                                     {
+                                                                         $q->joinWith('item item');
+                                                                     } ])
+                                                                     ->where([
+                                                                                 'in', 'item.category_id', $category,
+                                                                                 //                                                                       'item.status' => Status::STATUS_ACTIVE,
+                                                                                 //                                                                       'color.status' => Status::STATUS_ACTIVE,
+                                                                                 //                                                                       'size.status' => Status::STATUS_ACTIVE,
+                                                                             ])
+                                                                     ->indexBy('id')
+                                                                     ->asArray()
+                                                                     ->all(), 'id', 'id');
+                            }
+                        }
+                        
+                        if (!empty($post['ItemColorSize'])) {
+                            $fromItems = array_column(ItemColorSize::find()
+                                                                   ->where([
+                                                                               'in', 'id', $post['ItemColorSize'],
+                                                                           ])
+                                                                   ->indexBy('id')
+                                                                   ->asArray()
+                                                                   ->all(), 'id', 'id');
+                        }
+                        
+                        $result = array_merge($fromItems, $fromCat);
+                        
+                        echo '<pre>';
+                        var_dump($result);
+                        echo '</pre>';
+                        die;
+                        
+                    });
+                    
+                }
+                
+            } catch
+            (\Exception $e) {
+                Yii::$app->errorHandler->logException($e);
+                Yii::$app->session->setFlash('error', $e->getMessage());
             }
-            
         }
         
-        return $this->render('create', [
-            'model' => $model,
+        return $this->render('create', [ 'model' => $model,
             'types' => Promotion::getTypes(),
-        ]);
+            'sizes' => ItemColorSize::getAllEnableItemColorSizeNames(), ]);
     }
     
     /**

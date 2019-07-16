@@ -86,4 +86,19 @@ class Promotion
         return $this->hasMany(ItemColorSize::className(), [ 'id' => 'size_id' ])
                     ->viaTable('{{%size_promotion}}', [ 'promotion_id' => 'id' ]);
     }
+    
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            
+            $this->publish_from = strtotime($this->publish_from);
+            $this->publish_to = strtotime($this->publish_to);
+            
+            if ($this->publish_from <= $this->publish_to) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 }
