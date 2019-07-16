@@ -2,6 +2,7 @@
 
 use app\components\helpers\ValueHelper;
 use app\models\Image;
+use app\models\Promotion;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -31,6 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-zoom-image' => "/files/{$class}/{$class}-{$item['allColors'][0]['id']}/{$item['allColors'][0]['allImages'][0]['url']}",
                                 'alt' => $item['allColors'][0]['allImages'][0]['url'],
                             ]) ?>
+                        <!--                        <span>-10%</span>-->
                         <!--                        <div class="product-video">-->
                         <!--                            <a class="video-popup" href="https://www.youtube.com/watch?v=tce_Ap96b0c">-->
                         <!--                                <i class="sli sli-control-play"></i>-->
@@ -61,7 +63,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="product-details-price"
                                      data-color="<?= ValueHelper::encryptValue($color['id']) ?>"
                                      data-size="<?= ValueHelper::encryptValue($size['id']) ?>" style="display: none;">
-                                    <span><?= ValueHelper::formatPrice($size['price']) ?></span>
+                                    <span><?php
+    
+                                        if ($size['promotion']['type'] == Promotion::TYPE_PERCENT) {
+                                            echo ValueHelper::formatPrice($size['price'] * ( 100 - $size['promotion']['sale'] ) / 100);
+                                        } elseif ($size['promotion']['type'] == Promotion::TYPE_VALUE) {
+                                            echo ValueHelper::formatPrice($size['price'] - $size['promotion']['sale']);
+                                        } else {
+                                            echo ValueHelper::formatPrice($size['price']);
+                                        }
+                                        ?></span>
+                                    <?php if (!empty($size['promotion'])): ?>
+                                        <span class="old"> <?= ValueHelper::formatPrice($size['price']); ?> </span>
+                                    <?php endif; ?>
                                     <!--                                    make promotions check and display old value-->
                                 </div>
                             <?php endif; ?>

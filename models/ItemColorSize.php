@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use app\components\models\Status;
-
 /**
  * This is the model class for table "item_color_size".
  *
@@ -54,46 +52,6 @@ class ItemColorSize extends \yii\db\ActiveRecord
             'price' => 'Цена',
             'status' => 'Статус',
         ];
-    }
-    
-    public static function getAllEnableItemColorSize()
-    {
-        
-        // todo-cache: add cache (10 min)
-        return Item::find()
-                   ->from(Item::tableName() . ' item')
-                   ->joinWith([ 'allColors colors' => function ($query)
-                   {
-                       $query->joinWith([ 'allSizes sizes' ]);
-                   }, ])
-                   ->where([
-                               'item.status' => Status::STATUS_ACTIVE,
-                               'colors.status' => Status::STATUS_ACTIVE,
-                               'sizes.status' => Status::STATUS_ACTIVE,
-                           ])
-                   ->orderBy([ 'item.rate' => SORT_DESC ])
-                   ->asArray()
-                   ->all();
-    }
-    
-    public static function getAllEnableItemColorSizeNames()
-    {
-        
-        // todo-cache: add cache (5-10 min)
-        $data = self::getAllEnableItemColorSize();
-        
-        $result = [];
-        
-        foreach ($data as $item) {
-            foreach ($item['allColors'] as $color) {
-                foreach ($color['allSizes'] as $size) {
-                    $result[$size['id']] = $item['firm'] . ' ' . $item['model'] . ' ' . $color['color'] . ' ' . $size['size'];
-                }
-            }
-        }
-        
-        return $result;
-        
     }
     
     public function getColor()

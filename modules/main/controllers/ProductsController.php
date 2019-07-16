@@ -5,6 +5,7 @@ namespace app\modules\main\controllers;
 use app\components\helpers\ValueHelper;
 use app\components\models\Status;
 use app\models\Category;
+use app\models\Image;
 use app\models\Item;
 use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
@@ -196,13 +197,18 @@ class ProductsController
                         ->from(Item::tableName() . ' item')
                         ->joinWith([ 'allColors colors' => function ($query)
                         {
-                            $query->joinWith([ 'allSizes sizes', 'allImages' ]);
+                            $query->joinWith([ 'allSizes sizes' => function ($query)
+                            {
+                                $query->joinWith([ 'promotion promotion' ]);
+                            }, 'allImages images' ]);
                         }, 'description' ])
                         ->where([
+                            'images.type' => Image::TYPE_ITEM,
                             'item.id' => ValueHelper::decryptValue($slug),
                             'item.status' => Status::STATUS_ACTIVE,
                             'colors.status' => Status::STATUS_ACTIVE,
                             'sizes.status' => Status::STATUS_ACTIVE,
+                            'promotion.status' => Status::STATUS_ACTIVE,
                         ])
                         ->asArray()
                         ->one();

@@ -82,10 +82,10 @@ class Promotion
         ];
     }
     
-    public function getSizes()
+    public function getItems()
     {
-        return $this->hasMany(ItemColorSize::className(), [ 'id' => 'size_id' ])
-                    ->viaTable('{{%size_promotion}}', [ 'promotion_id' => 'id' ]);
+        return $this->hasMany(Item::className(), [ 'id' => 'item_id' ])
+                    ->viaTable(PromotionItem::tableName(), [ 'promotion_id' => 'id' ]);
     }
     
     public function beforeSave($insert)

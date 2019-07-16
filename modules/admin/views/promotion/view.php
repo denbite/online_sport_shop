@@ -7,7 +7,8 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Promotion */
-/* @var $sizes array */
+/* @var $types array */
+/* @var $items array */
 
 $this->title = 'Акция: ' . $model->id;
 $this->params['breadcrumbs'][] = [ 'label' => 'Акции', 'url' => [ 'index' ] ];
@@ -111,7 +112,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="col-12">
                                 <?= Select2::widget([
                                     'name' => 'ItemColorSize',
-                                    'data' => $sizes,
+                                    'data' => $items,
                                     'value' => !empty($current) ? $current : [],
                                     'options' => [
                                         'multiple' => true,

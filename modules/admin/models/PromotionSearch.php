@@ -47,7 +47,7 @@ class PromotionSearch
      */
     public function search($params)
     {
-        $query = Promotion::find();
+        $query = Promotion::find()->orderBy([ 'publish_from' => SORT_DESC ]);
         
         // add conditions that should always apply here
         

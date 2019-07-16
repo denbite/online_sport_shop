@@ -24,9 +24,9 @@ class m190715_134830_create_promotions_table
             'updated_at' => $this->integer()->unsigned()->notNull(),
             'created_at' => $this->integer()->unsigned()->notNull(),
         ]);
-        
-        $this->createTable('{{%size_promotion}}', [
-            'size_id' => $this->integer()->unsigned()->notNull(),
+    
+        $this->createTable('{{%promotion_item}}', [
+            'item_id' => $this->integer()->unsigned()->notNull(),
             'promotion_id' => $this->integer()->unsigned()->notNull(),
         ]);
     }
@@ -36,7 +36,7 @@ class m190715_134830_create_promotions_table
      */
     public function safeDown()
     {
-        $this->dropTable('{{%size_promotion}}');
+        $this->dropTable('{{%promotion_item}}');
         $this->dropTable('{{%promotion}}');
     }
 }

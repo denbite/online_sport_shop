@@ -81,7 +81,6 @@ class ItemColor extends \yii\db\ActiveRecord
     public function getAllImages()
     {
         return $this->hasMany(Image::className(), [ 'subject_id' => 'id' ])
-                    ->andWhere([ 'type' => Image::TYPE_ITEM ])
                     ->orderBy([ 'sort' => SORT_ASC ]);
     }
     

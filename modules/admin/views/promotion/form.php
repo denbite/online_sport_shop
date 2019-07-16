@@ -9,7 +9,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Promotion */
 /* @var $types array */
-/* @var $sizes array */
+/* @var $items array */
 /* @var $current array */
 
 $this->title = 'Создание акции';
@@ -18,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
 <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js" crossorigin="anonymous"></script>
+
 <?php if (Yii::$app->session->hasFlash('success')): ?>
     <div class="alert alert-success alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
@@ -166,8 +167,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="row">
                         <div class="col-12">
                             <?= Select2::widget([
-                                                    'name' => 'ItemColorSize',
-                                                    'data' => $sizes,
+                                'name' => 'PromotionItem',
+                                'data' => $items,
                                 'value' => !empty($current) ? $current : [],
                                                     'options' => [
                                                         'multiple' => true,
