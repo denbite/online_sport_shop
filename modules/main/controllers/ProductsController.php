@@ -112,7 +112,11 @@ class ProductsController
                          ->joinWith([ 'allColors colors' => function ($query)
                          {
                              $query->joinWith([ 'allSizes sizes', 'mainImage' ]);
-                         }, ])
+                         }, 'description' ])
+                         ->with([ 'promotion' => function ($query)
+                         {
+                             $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
+                         } ])
                          ->where([
                                      'item.status' => Status::STATUS_ACTIVE,
                                      'colors.status' => Status::STATUS_ACTIVE,
@@ -153,7 +157,11 @@ class ProductsController
                                  ->joinWith([ 'allColors colors' => function ($query)
                                  {
                                      $query->joinWith([ 'allSizes sizes', 'mainImage' ]);
-                                 }, ])
+                                 }, 'description' ])
+                                 ->with([ 'promotion' => function ($query)
+                                 {
+                                     $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
+                                 } ])
                                  ->where([
                                      'item.category_id' => $current['id'],
                                      'item.status' => Status::STATUS_ACTIVE,
@@ -197,22 +205,22 @@ class ProductsController
                         ->from(Item::tableName() . ' item')
                         ->joinWith([ 'allColors colors' => function ($query)
                         {
-                            $query->joinWith([ 'allSizes sizes' => function ($query)
-                            {
-                                $query->joinWith([ 'promotion promotion' ]);
-                            }, 'allImages images' ]);
+                            $query->joinWith([ 'allSizes sizes', 'allImages images' ]);
                         }, 'description' ])
+                        ->with([ 'promotion' => function ($query)
+                        {
+                            $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
+                        } ])
                         ->where([
                             'images.type' => Image::TYPE_ITEM,
                             'item.id' => ValueHelper::decryptValue($slug),
                             'item.status' => Status::STATUS_ACTIVE,
                             'colors.status' => Status::STATUS_ACTIVE,
                             'sizes.status' => Status::STATUS_ACTIVE,
-                            'promotion.status' => Status::STATUS_ACTIVE,
                         ])
                         ->asArray()
                         ->one();
-            
+    
             if (!empty($item)) {
                 
                 $current = Category::findOne([ 'id' => $item['category_id'], 'active' => Status::STATUS_ACTIVE ]);

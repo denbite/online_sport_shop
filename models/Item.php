@@ -99,4 +99,12 @@ class Item extends \yii\db\ActiveRecord
     {
         return $this->hasOne(ItemDescription::className(), [ 'item_id' => 'id' ]);
     }
+    
+    public function getPromotion()
+    {
+        return $this->hasOne(Promotion::className(), [ 'id' => 'promotion_id' ])
+                    ->viaTable(PromotionItem::tableName(), [ 'item_id' => 'id' ])
+                    ->andWhere([ 'and', [ '<', 'publish_from', time() ], [ '>', 'publish_to', time() ] ])
+                    ->orderBy([ 'publish_from' => SORT_DESC ]);
+    }
 }

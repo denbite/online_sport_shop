@@ -94,6 +94,10 @@ class Promotion
             
             $this->publish_from = strtotime($this->publish_from);
             $this->publish_to = strtotime($this->publish_to);
+    
+            if ($this->type == self::TYPE_PERCENT and $this->sale >= 100) {
+                return false;
+            }
             
             if ($this->publish_from <= $this->publish_to) {
                 return true;

@@ -3,6 +3,7 @@
 use app\components\helpers\ValueHelper;
 use app\components\widgets\Paginator;
 use app\models\Image;
+use app\models\Promotion;
 use yii\helpers\Html;
 
 /** @var array $current */
@@ -58,6 +59,10 @@ $class = Image::getTypes()[Image::TYPE_ITEM];
                                         <div class="ht-product ht-product-action-on-hover ht-product-category-right-bottom mb-30">
                                             <div class="ht-product-inner">
                                                 <div class="ht-product-image-wrap">
+                                                    <span class="ht-product-label ht-product-label-left">NEW</span>
+                                                    <?php if (!empty($item['promotion'])): ?>
+                                                        <span class="ht-product-label ht-product-label-right">Sale</span>
+                                                    <?php endif; ?>
                                                     <a href="<?= \yii\helpers\Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ]) ?>"
                                                        class="ht-product-image">
                                                         <?= Html::img("/files/{$class}/{$class}-{$item['allColors'][0]['id']}/{$item['allColors'][0]['mainImage']['url']}",
@@ -95,7 +100,19 @@ $class = Image::getTypes()[Image::TYPE_ITEM];
                                                                     href="<?= \yii\helpers\Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ]) ?>"><?= $item['firm'] . ' ' . $item['model'] ?></a>
                                                         </h4>
                                                         <div class="ht-product-price">
-                                                            <span class="new"> <?= ValueHelper::formatPrice($item['min_price']) ?> </span>
+                                                            <span class="new"> <?php
+    
+                                                                if ($item['promotion']['type'] == Promotion::TYPE_PERCENT) {
+                                                                    echo ValueHelper::formatPrice($item['min_price'] * ( 100 - $item['promotion']['sale'] ) / 100);
+                                                                } elseif ($item['promotion']['type'] == Promotion::TYPE_VALUE) {
+                                                                    echo ValueHelper::formatPrice($item['min_price'] - $item['promotion']['sale']);
+                                                                } else {
+                                                                    echo ValueHelper::formatPrice($item['min_price']);
+                                                                }
+                                                                ?> </span>
+                                                            <?php if (!empty($item['promotion'])): ?>
+                                                                <span class="old"> <?= ValueHelper::formatPrice($item['min_price']) ?> </span>
+                                                            <?php endif; ?>
                                                         </div>
                                                         <div class="ht-product-ratting-wrap">
                                                                 <span class="ht-product-ratting">
@@ -144,13 +161,23 @@ $class = Image::getTypes()[Image::TYPE_ITEM];
                                                 <h3>
                                                     <a href="<?= \yii\helpers\Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ]) ?>"><?= $item['firm'] . ' ' . $item['model'] ?></a>
                                                 </h3>
-                                                <p>It has roots in a piece of classical Latin literature from 45 BC,
-                                                    making
-                                                    it over 2000 years old. Richard The standard chunk.</p>
+                                                <?= $item['description']['small_text'] ?>
                                                 <div class="shop-list-price-action-wrap">
                                                     <div class="shop-list-price-ratting">
                                                         <div class="ht-product-list-price">
-                                                            <span class="new"><?= ValueHelper::formatPrice($item['min_price']) ?></span>
+                                                            <span class="new"> <?php
+    
+                                                                if ($item['promotion']['type'] == Promotion::TYPE_PERCENT) {
+                                                                    echo ValueHelper::formatPrice($item['min_price'] * ( 100 - $item['promotion']['sale'] ) / 100);
+                                                                } elseif ($item['promotion']['type'] == Promotion::TYPE_VALUE) {
+                                                                    echo ValueHelper::formatPrice($item['min_price'] - $item['promotion']['sale']);
+                                                                } else {
+                                                                    echo ValueHelper::formatPrice($item['min_price']);
+                                                                }
+                                                                ?> </span>
+                                                            <?php if (!empty($item['promotion'])): ?>
+                                                                <span class="old"> <?= ValueHelper::formatPrice($item['min_price']) ?> </span>
+                                                            <?php endif; ?>
                                                         </div>
                                                         <div class="ht-product-list-ratting">
                                                             <i class="sli sli-star"></i>

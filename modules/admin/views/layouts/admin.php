@@ -23,7 +23,7 @@ $action = Yii::$app->controller->action->id;
     
     <?= Html::csrfMetaTags() ?>
 
-    <link rel="icon" href="/images/admin/favicon.ico">
+    <link rel="icon" href="/favicon.ico">
 
     <title><?= Html::encode($this->title) ?></title>
 
