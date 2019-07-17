@@ -19,13 +19,15 @@ class UploadForm
     
     private $_subject_id;
     
-    public function __construct($type, $subject_id)
+    public function __construct($type = null, $subject_id = null)
     {
         if ($type and $subject_id) {
             // add validation
             $this->_type = $type;
             $this->_subject_id = $subject_id;
         }
+    
+        return $this;
     }
     
     public function rules()
@@ -34,6 +36,20 @@ class UploadForm
             [ [ 'images' ], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg', 'maxFiles' => 10 ],
             [ [ 'image' ], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg' ],
         ];
+    }
+    
+    public function setType($type)
+    {
+        if ($this->_type === null or array_key_exists($type, Image::getTypes())) {
+            $this->_type = $type;
+        }
+    }
+    
+    public function setSubject($subject)
+    {
+        if ($this->_subject_id === null) {
+            $this->_subject_id = (int) $subject;
+        }
     }
     
     /**

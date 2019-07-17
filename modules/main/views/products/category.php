@@ -19,8 +19,6 @@ if (!empty($parents)) {
 }
 
 $this->params['breadcrumbs'][] = $this->title;
-
-$class = Image::getTypes()[Image::TYPE_CATEGORY];
 ?>
 
 
@@ -31,7 +29,7 @@ $class = Image::getTypes()[Image::TYPE_CATEGORY];
                 <div class="col-lg-4 col-md-6">
                     <div class="blog-wrap mb-40 text-center scroll-zoom">
                         <div class="blog-img mb-25">
-                            <?= Html::a(Html::img("/files/{$class}/{$class}-{$child['id']}/{$child['image']['url']}",
+                            <?= Html::a(Html::img(Image::getLink($child['image']['id']),
                                 [ 'alt' => $child['name'] ]),
                                 [ '/main/products/category', 'slug' => ValueHelper::encryptValue($child['id']) ]) ?>
                         </div>

@@ -159,8 +159,8 @@ $action = Yii::$app->controller->action->id;
                         </ul>
                     </li>
                 <?php endif; ?>
-                <?php if (Permission::can([ 'admin_promotion_index', ])): ?>
-                    <li class="treeview <?= in_array($controller, [ 'promotion' ]) ? ' active' : '' ?>">
+                <?php if (Permission::can([ 'admin_promotion_index', 'admin_banner_index' ])): ?>
+                    <li class="treeview <?= in_array($controller, [ 'promotion', 'banner' ]) ? ' active' : '' ?>">
                         <a href="#">
                             <i class="fa fa-bars"></i>
                             <span>Контент</span>
@@ -173,6 +173,11 @@ $action = Yii::$app->controller->action->id;
                                 <li <?= $controller == 'promotion' ? ' class="active"' : '' ?>><a
                                             href="<?= \yii\helpers\Url::to([ '/admin/promotion/index' ]) ?>"><i
                                                 class="fa fa-circle-thin"></i>Акции</a></li>
+                            <?php endif; ?>
+                            <?php if (Permission::can('admin_banner_index')): ?>
+                                <li <?= $controller == 'banner' ? ' class="active"' : '' ?>><a
+                                            href="<?= \yii\helpers\Url::to([ '/admin/banner/index' ]) ?>"><i
+                                                class="fa fa-circle-thin"></i>Баннеры</a></li>
                             <?php endif; ?>
                             <li><a href="../UI/border-utilities.html"><i class="fa fa-circle-thin"></i>Соц. сети</a>
                             </li>

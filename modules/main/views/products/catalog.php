@@ -21,8 +21,6 @@ if (!empty($parents)) {
 
 $this->params['breadcrumbs'][] = $current['name'];
 
-$class = Image::getTypes()[Image::TYPE_ITEM];
-
 ?>
 
 <div class="shop-area pt-95 pb-100">
@@ -65,7 +63,7 @@ $class = Image::getTypes()[Image::TYPE_ITEM];
                                                     <?php endif; ?>
                                                     <a href="<?= \yii\helpers\Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ]) ?>"
                                                        class="ht-product-image">
-                                                        <?= Html::img("/files/{$class}/{$class}-{$item['allColors'][0]['id']}/{$item['allColors'][0]['mainImage']['url']}",
+                                                        <?= Html::img(Image::getLink($item['allColors'][0]['mainImage']['id']),
                                                             [ 'alt' => $item['allColors'][0]['mainImage']['url'] ]) ?>
                                                         <div class="ht-product-action">
                                                             <ul>
@@ -147,7 +145,7 @@ $class = Image::getTypes()[Image::TYPE_ITEM];
                                         <div class="col-lg-4 col-md-4">
                                             <div class="product-list-img">
                                                 <a href="<?= \yii\helpers\Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ]) ?>">
-                                                    <?= Html::img("/files/{$class}/{$class}-{$item['allColors'][0]['id']}/{$item['allColors'][0]['mainImage']['url']}",
+                                                    <?= Html::img(Image::getLink($item['allColors'][0]['mainImage']['id']),
                                                         [ 'alt' => $item['allColors'][0]['mainImage']['url'] ]) ?>
                                                 </a>
                                                 <!--                                                <div class="product-quickview">-->

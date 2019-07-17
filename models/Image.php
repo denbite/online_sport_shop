@@ -25,6 +25,12 @@ class Image
     
     const TYPE_BANNER = 3;
     
+    const SIZE_ORIGINAL = 1;
+    
+    const SIZE_300x300 = 2;
+    
+    const SIZE_90x90 = 3;
+    
     /**
      * {@inheritdoc}
      */
@@ -85,6 +91,8 @@ class Image
         if ($this->type == self::TYPE_ITEM) {
             return $this->hasOne(ItemColor::className(), [ 'id' => 'subject_id' ]);
         }
+    
+        return null;
     }
     
     public static function getTypes()
@@ -92,38 +100,17 @@ class Image
         return [
             self::TYPE_ITEM => 'Item',
             self::TYPE_CATEGORY => 'Category',
-            self::TYPE_BANNER => 'Banner',
+            self::TYPE_BANNER => 'Poster',
         ];
     }
     
-    /**
-     * @param $type
-     * @param $subject_id
-     *
-     * @return array
-     */
-    public static function getUrlsBySubject($type, $subject_id)
+    public static function getSizes()
     {
-        // todo-cache: add cache(30 sec)
-        $data = ItemColor::find()
-                         ->with('item')
-                         ->where([
-                                     'id' => $subject_id,
-                                 ])
-                         ->asArray()
-                         ->one();
-    
-        $urls = array_column(self::getImagesBySubject($type, $subject_id), 'url');
-    
-        $class = self::getTypes()[$type];
-    
-        $path = "/files/{$class}/{$class}-{$subject_id}/";
-        
-        foreach ($urls as &$url) {
-            $url = $path . $url;
-        }
-        
-        return $urls;
+        return [
+            self::SIZE_ORIGINAL => '/',
+            self::SIZE_300x300 => '/300x300/',
+            self::SIZE_90x90 => '/90x90/',
+        ];
     }
     
     /**
@@ -161,5 +148,59 @@ class Image
                                                                          ],
                                                                      ]
         );
+    }
+    
+    /**
+     * Return relative path to image
+     *
+     * @param int $image_id
+     * @param int $size if u want to get cropped image
+     *
+     * @return null|string
+     */
+    public static function getLink($image_id, $size = self::SIZE_ORIGINAL)
+    {
+        // todo-cache: add cache (few hours) md5($image_id . '_' . $size)
+        if ($image = self::findOne([ 'id' => (int) $image_id ]) and array_key_exists($image->type,
+                self::getTypes()) and array_key_exists($size, self::getSizes())) {
+            
+            $class = self::getTypes()[$image->type];
+            $size = self::getSizes()[$size];
+            
+            return "/files/{$class}/{$class}-{$image->subject_id}" . $size . $image->url;
+            
+        }
+        
+        return null;
+    }
+    
+    /**
+     * @param $type
+     * @param $subject_id
+     *
+     * @return array
+     */
+    public static function getUrlsBySubject($type, $subject_id)
+    {
+        // todo-cache: add cache(30 sec)
+        $data = ItemColor::find()
+                         ->with('item')
+                         ->where([
+                             'id' => $subject_id,
+                         ])
+                         ->asArray()
+                         ->one();
+        
+        $urls = array_column(self::getImagesBySubject($type, $subject_id), 'url');
+        
+        $class = self::getTypes()[$type];
+        
+        $path = "/files/{$class}/{$class}-{$subject_id}/";
+        
+        foreach ($urls as &$url) {
+            $url = $path . $url;
+        }
+        
+        return $urls;
     }
 }

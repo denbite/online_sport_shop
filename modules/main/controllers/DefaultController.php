@@ -2,6 +2,8 @@
 
 namespace app\modules\main\controllers;
 
+use app\components\models\Status;
+use app\models\Banner;
 use yii\web\Controller;
 
 /**
@@ -30,6 +32,20 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $banners = Banner::find()
+                         ->joinWith('image')
+                         ->where([
+                             'status' => Status::STATUS_ACTIVE,
+                         ])
+                         ->andWhere([
+                             'and', [ '<', 'publish_from', time() ], [ '>', 'publish_to', time() ],
+                         ])
+                         ->orderBy([ 'publish_from' => SORT_DESC ])
+                         ->asArray()
+                         ->all();
+        
+        return $this->render('index', [
+            'banners' => $banners,
+        ]);
     }
 }

@@ -27,10 +27,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-lg-6 col-md-6">
                 <div class="product-details-img">
                     <div id="preview" class="zoompro-border zoompro-span">
-                        <?= Html::img("/files/{$class}/{$class}-{$item['allColors'][0]['id']}/{$item['allColors'][0]['allImages'][0]['url']}",
+                        <?= Html::img(Image::getLink($item['allColors'][0]['allImages'][0]['id']),
                             [
                                 'class' => 'zoompro',
-                                'data-zoom-image' => "/files/{$class}/{$class}-{$item['allColors'][0]['id']}/{$item['allColors'][0]['allImages'][0]['url']}",
+                                'data-zoom-image' => Image::getLink($item['allColors'][0]['allImages'][0]['id']),
                                 'alt' => $item['allColors'][0]['allImages'][0]['url'],
                             ]) ?>
                         <?php if (!empty($item['promotion'])): ?>
@@ -46,10 +46,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div id="gallery" class="mt-20 product-dec-slider">
                         <?php foreach ($item['allColors'] as $color): ?>
                             <?php foreach ($color['allImages'] as $image): ?>
-                                <?= Html::a(Html::img("/files/{$class}/{$class}-{$color['id']}/{$image['url']}",
+                                <?= Html::a(Html::img(Image::getLink($image['id']), // set size to 90x90 in future
                                 [ 'alt' => $image['url'], 'width' => 90, 'height' => 90 ]), null, [
-                                    'data-image' => "/files/{$class}/{$class}-{$color['id']}/{$image['url']}",
-                                    'data-zoom-image' => "/files/{$class}/{$class}-{$color['id']}/{$image['url']}",
+                                    'data-image' => Image::getLink($image['id'], Image::SIZE_90x90),
+                                    'data-zoom-image' => Image::getLink($image['id'], Image::SIZE_90x90),
                                     'data-color' => $color['id'],
                             ]) ?>
                             <?php endforeach; ?>
@@ -350,7 +350,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="product-area pb-70">
     <div class="container">
         <div class="section-title text-center pb-60">
-            <h2>Related products</h2>
+            <h2>Похожие товары</h2>
             <p> Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of
                 classical</p>
         </div>
@@ -449,7 +449,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                                 <div class="ht-product-ratting-wrap">
                                         <span class="ht-product-ratting">
-                                            <span class="ht-product-user-ratting" style="width: 90%;">
+                                            <span class="ht-product-user-ratting" style="width: 47%;">
                                                 <i class="sli sli-star"></i>
                                                 <i class="sli sli-star"></i>
                                                 <i class="sli sli-star"></i>
