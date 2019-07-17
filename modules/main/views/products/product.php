@@ -2,6 +2,7 @@
 
 use app\components\helpers\ValueHelper;
 use app\models\Image;
+use app\models\ItemDescription;
 use app\models\Promotion;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -98,7 +99,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $item['description']['small_text'] ?>
                     <div class="pro-details-list">
                         <ul>
-                            <?php foreach (explode(';', $item['description']['small_list']) as $one): ?>
+                            <?php foreach (explode(ItemDescription::ITEMS_SEPARATOR,
+                                $item['description']['small_list']) as $one): ?>
                                 <li>- <?= $one ?></li>
                             <?php endforeach; ?>
                         </ul>
@@ -194,8 +196,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div id="des-details3" class="tab-pane">
                             <div class="product-anotherinfo-wrapper">
                                 <ul>
-                                    <?php foreach (explode(';', $item['description']['list']) as $one): ?>
-                                        <?php $parts = explode(':', $one);
+                                    <?php foreach (explode(ItemDescription::ITEMS_SEPARATOR,
+                                        $item['description']['list']) as $one): ?>
+                                        <?php $parts = explode(ItemDescription::PARTS_SEPARATOR, $one);
                                         if (!empty($parts) and count($parts) == 2):
                                             ?>
                                             <li><span><?= $parts[0] ?></span> <?= $parts[1] ?></li>

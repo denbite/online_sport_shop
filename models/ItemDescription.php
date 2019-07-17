@@ -20,6 +20,14 @@ class ItemDescription
     extends \yii\db\ActiveRecord
 {
     
+    const ITEMS_SEPARATOR = ';';
+    
+    const PARTS_SEPARATOR = ':';
+    
+    public $small_list_array;
+    
+    public $list_array;
+    
     /**
      * {@inheritdoc}
      */
@@ -58,6 +66,7 @@ class ItemDescription
             'item_id' => 'Товар',
             'small_text' => 'Краткое описание',
             'small_list' => 'Краткий список',
+            'small_list_array' => 'Преимущества',
             'text' => 'Описание',
             'list' => 'Таблица характеристик',
             'updated_at' => 'Дата обновления',

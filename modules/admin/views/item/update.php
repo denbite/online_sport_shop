@@ -226,11 +226,18 @@ $this->params['breadcrumbs'][] = $this->title;
                             ]) ?>
                         </div>
                         <div class="col-lg-6 col-12">
-                            <?= $form->field($modelDescription, 'small_list')->widget(CKEditor::className(), [
-                                'editorOptions' => [
-                                    'preset' => 'basic',
-                                ],
-                            ]) ?>
+                            <div id="dynamic_fields-small_list">
+                                <?php foreach ($modelDescription['small_list_array'] as $index => $item): ?>
+                                    <?= $form->field($modelDescription, 'small_list_array[]')
+                                             ->textInput([
+                                                 'value' => $item,
+                                             ])
+                                             ->label($index ? false : $modelDescription->getAttributeLabel('small_list_array')) ?>
+                                <?php endforeach; ?>
+                                <a id="add-field" class="btn btn-info"><i class="glyphicon glyphicon-plus"></i></a>
+                                <a id="minus-field" class="btn btn-info" style="display: none;"><i
+                                            class="glyphicon glyphicon-minus"></i></a>
+                            </div>
                         </div>
                         <div class="col-lg-6 col-12">
                             <?= $form->field($modelDescription, 'text')->widget(CKEditor::className(), [
@@ -240,11 +247,27 @@ $this->params['breadcrumbs'][] = $this->title;
                             ]) ?>
                         </div>
                         <div class="col-lg-6 col-12">
-                            <?= $form->field($modelDescription, 'list')->widget(CKEditor::className(), [
-                                'editorOptions' => [
-                                    'preset' => 'full',
-                                ],
-                            ]) ?>
+                            <div id="dynamic_fields-list">
+                                <?php foreach ($modelDescription['list_array'] as $item): ?>
+                                    <div class="form-group field-itemdescription-list_array-key" style="display: flex;">
+                                        <label class="control-label"
+                                               for="itemdescription-list_array-key">Параметр</label>
+                                        <input type="text" id="itemdescription-list_array-key" class="form-control"
+                                               name="ItemDescription[list_array][key][]"
+                                               value="<?= explode(\app\models\ItemDescription::PARTS_SEPARATOR,
+                                                   $item)[0] ?>">
+                                        <label class="control-label"
+                                               for="itemdescription-list_array-value">Значение</label>
+                                        <input type="text" id="itemdescription-list_array-value" class="form-control"
+                                               name="ItemDescription[list_array][value][]"
+                                               value="<?= explode(\app\models\ItemDescription::PARTS_SEPARATOR,
+                                                   $item)[1] ?>">
+                                    </div>
+                                <?php endforeach; ?>
+                                <a id="add-field" class="btn btn-info"><i class="glyphicon glyphicon-plus"></i></a>
+                                <a id="minus-field" class="btn btn-info" style="display: none;"><i
+                                            class="glyphicon glyphicon-minus"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>

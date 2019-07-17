@@ -13,6 +13,7 @@ use yii\helpers\Html;
 $this->title = 'Создание товара';
 $this->params['breadcrumbs'][] = [ 'label' => 'Товары', 'url' => [ 'index' ] ];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 <?php if (Yii::$app->session->hasFlash('success')): ?>
@@ -89,11 +90,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]) ?>
                 </div>
                 <div class="col-lg-6 col-12">
-                    <?= $form->field($modelDescription, 'small_list')->widget(CKEditor::className(), [
-                        'editorOptions' => [
-                            'preset' => 'basic',
-                        ],
-                    ]) ?>
+                    <div id="dynamic_fields-small_list">
+                        <?= $form->field($modelDescription, 'small_list_array[]')->textInput() ?>
+                        <a id="add-field" class="btn btn-info"><i class="glyphicon glyphicon-plus"></i></a>
+                        <a id="minus-field" class="btn btn-info" style="display: none;"><i
+                                    class="glyphicon glyphicon-minus"></i></a>
+                    </div>
                 </div>
                 <div class="col-lg-6 col-12">
                     <?= $form->field($modelDescription, 'text')->widget(CKEditor::className(), [
@@ -102,12 +104,20 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                     ]) ?>
                 </div>
-                <div class="col-lg-6 col-12">
-                    <?= $form->field($modelDescription, 'list')->widget(CKEditor::className(), [
-                        'editorOptions' => [
-                            'preset' => 'full',
-                        ],
-                    ]) ?>
+                <div class="col-lg-6 col-12 py-5">
+                    <div id="dynamic_fields-list">
+                        <div class="form-group field-itemdescription-list_array-key" style="display: flex;">
+                            <label class="control-label" for="itemdescription-list_array-key">Keys</label>
+                            <input type="text" id="itemdescription-list_array-key" class="form-control"
+                                   name="ItemDescription[list_array][key][]">
+                            <label class="control-label" for="itemdescription-list_array-value">Values</label>
+                            <input type="text" id="itemdescription-list_array-value" class="form-control"
+                                   name="ItemDescription[list_array][value][]">
+                        </div>
+                        <a id="add-field" class="btn btn-info"><i class="glyphicon glyphicon-plus"></i></a>
+                        <a id="minus-field" class="btn btn-info" style="display: none;"><i
+                                    class="glyphicon glyphicon-minus"></i></a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -27,6 +27,7 @@
     "bower-asset/font-awesome": "4.7",
     "bower-asset/mdi": "*",
     "bower-asset/simple-line-icons": " *",
+    "bower-asset/glyphicons": " *",
     "kartik-v/yii2-widget-switchinput": "dev-master",
     "kartik-v/yii2-widget-select2": "dev-master",
     "creocoder/yii2-nested-sets": "^0.9.0",
@@ -38,7 +39,8 @@
     "mihaildev/yii2-ckeditor": "*",
     "kartik-v/yii2-widget-datetimepicker": "*",
     "kartik-v/yii2-widget-datepicker": "@dev",
-    "kartik-v/yii2-field-range": "*"
+    "kartik-v/yii2-field-range": "*",
+    "bupy7/yii2-dynamic-fields": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",

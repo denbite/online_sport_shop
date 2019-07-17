@@ -13,5 +13,6 @@ class IconsAsset extends AssetBundle
         'font-awesome/css/font-awesome.min.css',
         'mdi/css/materialdesignicons.min.css',
         'simple-line-icons/css/simple-line-icons.css',
+        'glyphicons/styles/glyphicons.css',
     ];
 }
