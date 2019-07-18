@@ -13,6 +13,7 @@ use yii\helpers\Url;
 /* @var $modelColors app\models\ItemColor */
 /* @var $modelColorsSizes app\models\ItemColorSize */
 /* @var $modelUploads app\models\UploadForm */
+/* @var $categories array */
 
 $this->title = 'Редактирование: ' . $model->firm . ' ' . $model->model;
 $this->params['breadcrumbs'][] = [ 'label' => 'Товары', 'url' => [ '/admin/item/index' ] ];
@@ -254,14 +255,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                                for="itemdescription-list_array-key">Параметр</label>
                                         <input type="text" id="itemdescription-list_array-key" class="form-control"
                                                name="ItemDescription[list_array][key][]"
-                                               value="<?= explode(\app\models\ItemDescription::PARTS_SEPARATOR,
-                                                   $item)[0] ?>">
+                                               value="<?= !empty($item) ? explode(\app\models\ItemDescription::PARTS_SEPARATOR,
+                                                                                  $item)[0] : '' ?>">
                                         <label class="control-label"
                                                for="itemdescription-list_array-value">Значение</label>
                                         <input type="text" id="itemdescription-list_array-value" class="form-control"
                                                name="ItemDescription[list_array][value][]"
-                                               value="<?= explode(\app\models\ItemDescription::PARTS_SEPARATOR,
-                                                   $item)[1] ?>">
+                                               value="<?= !empty($item) ? explode(\app\models\ItemDescription::PARTS_SEPARATOR,
+                                                                                  $item)[1] : '' ?>">
                                     </div>
                                 <?php endforeach; ?>
                                 <a id="add-field" class="btn btn-info"><i class="glyphicon glyphicon-plus"></i></a>

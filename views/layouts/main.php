@@ -223,7 +223,7 @@ AppAsset::register($this);
                                 </button>
                                 <div class="shopping-cart-content">
                                     <div class="shopping-cart-top">
-                                        <h4>Shoping Cart</h4>
+                                        <h4>Корзина</h4>
                                         <a class="cart-close" href="#"><i class="sli sli-close"></i></a>
                                     </div>
                                     <ul>
@@ -343,11 +343,8 @@ AppAsset::register($this);
                 </div>
             </div>
             <div class="mobile-social-wrap">
-                <a class="facebook" href="#"><i class="sli sli-social-facebook"></i></a>
-                <a class="twitter" href="#"><i class="sli sli-social-twitter"></i></a>
-                <a class="pinterest" href="#"><i class="sli sli-social-pinterest"></i></a>
-                <a class="instagram" href="#"><i class="sli sli-social-instagram"></i></a>
-                <a class="google" href="#"><i class="sli sli-social-google"></i></a>
+                <a class="instagram" href="https://instagram.com/aquista.shop" target="_blank"><i
+                            class="sli sli-social-instagram"></i></a>
             </div>
         </div>
     </div>

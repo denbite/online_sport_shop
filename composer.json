@@ -40,7 +40,6 @@
     "kartik-v/yii2-widget-datetimepicker": "*",
     "kartik-v/yii2-widget-datepicker": "@dev",
     "kartik-v/yii2-field-range": "*",
-    "bupy7/yii2-dynamic-fields": "*",
     "devanych/yii2-cart": "*"
   },
   "require-dev": {

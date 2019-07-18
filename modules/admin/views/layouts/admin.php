@@ -46,12 +46,10 @@ $action = Yii::$app->controller->action->id;
     <header class="main-header">
         <!-- Logo -->
         <?= Html::a('<b class="logo-mini">
-                <span class="light-logo"><img src="/images/admin/logo-light.png" alt="logo"></span>
-                <span class="dark-logo"><img src="/images/admin/logo-dark.png" alt="logo"></span>
+                <span class="light-logo"><img src="/files/logo-admin-icon.png" width="40px" height="40px" alt="logo"></span>
             </b>
             <span class="logo-lg">
-		  <img src="/images/admin/logo-light-text.png" alt="logo" class="light-logo">
-	  	  <img src="/images/admin/logo-dark-text.png" alt="logo" class="dark-logo">
+		  <img src="/files/logo-admin.png" alt="logo" class="light-logo">
 	  </span>', [ '/main/default/index' ], [ 'class' => 'logo' ]) ?>
 
         <!-- Header Navbar -->

@@ -79,11 +79,18 @@ class Image
         ];
     }
     
-    public function getPath()
+    public function getPath($size = self::SIZE_ORIGINAL)
     {
-        $class = self::getTypes()[$this->type];
+        if (array_key_exists($size, self::getSizes())) {
         
-        return "/files/{$class}/{$class}-{$this->subject_id}/";
+            $class = self::getTypes()[$this->type];
+        
+            $folder = self::getSizes()[$size];
+        
+            return "/files/{$class}/{$class}-{$this->subject_id}{$folder}";
+        }
+    
+        return '';
     }
     
     public function getColor()
