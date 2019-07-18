@@ -63,8 +63,9 @@ $this->params['breadcrumbs'][] = $current['name'];
                                                     <?php endif; ?>
                                                     <a href="<?= \yii\helpers\Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ]) ?>"
                                                        class="ht-product-image">
-                                                        <?= Html::img(Image::getLink($item['allColors'][0]['mainImage']['id']),
-                                                            [ 'alt' => $item['allColors'][0]['mainImage']['url'] ]) ?>
+                                                        <?= Html::img(Image::getLink($item['allColors'][0]['mainImage']['id'],
+                                                                                     Image::SIZE_512x512),
+                                                                      [ 'alt' => $item['allColors'][0]['mainImage']['url'] ]) ?>
                                                         <div class="ht-product-action">
                                                             <ul>
                                                                 <!--                                                                <li>-->

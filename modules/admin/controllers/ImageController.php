@@ -95,11 +95,15 @@ class ImageController
                 try {
                     $model = Image::find()->where([ 'id' => $id ])->one();
     
-                    $path = Yii::getAlias('@webroot') . $model->path . $model->url;
-                    
-                    // delete file, if exists
-                    if (file_exists($path)) {
-                        unlink($path);
+                    foreach (Image::getSizes() as $size => $folder) {
+        
+                        $path = Yii::getAlias('@webroot') . Image::getLink($model->id, $size);
+        
+                        // delete file, if exists
+                        if (file_exists($path)) {
+                            unlink($path);
+                        }
+        
                     }
                     
                     $model->delete();

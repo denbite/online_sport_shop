@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use http\Exception\InvalidArgumentException;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
 
@@ -27,7 +28,7 @@ class Image
     
     const SIZE_ORIGINAL = 1;
     
-    const SIZE_300x300 = 2;
+    const SIZE_512x512 = 2;
     
     const SIZE_90x90 = 3;
     
@@ -82,14 +83,14 @@ class Image
     public function getPath($size = self::SIZE_ORIGINAL)
     {
         if (array_key_exists($size, self::getSizes())) {
-        
+            
             $class = self::getTypes()[$this->type];
-        
+            
             $folder = self::getSizes()[$size];
-        
+            
             return "/files/{$class}/{$class}-{$this->subject_id}{$folder}";
         }
-    
+        
         return '';
     }
     
@@ -98,7 +99,7 @@ class Image
         if ($this->type == self::TYPE_ITEM) {
             return $this->hasOne(ItemColor::className(), [ 'id' => 'subject_id' ]);
         }
-    
+        
         return null;
     }
     
@@ -115,7 +116,7 @@ class Image
     {
         return [
             self::SIZE_ORIGINAL => '/',
-            self::SIZE_300x300 => '/300x300/',
+            self::SIZE_512x512 => '/512x512/',
             self::SIZE_90x90 => '/90x90/',
         ];
     }
@@ -149,11 +150,11 @@ class Image
     public static function getInitialPreviewConfigBySubject($type, $subject_id)
     {
         return ArrayHelper::toArray(self::getImagesBySubject($type, $subject_id), [
-                                                                         Image::className() => [
-                                                                             'caption' => 'url',
-                                                                             'key' => 'id',
-                                                                         ],
-                                                                     ]
+                                                                                    Image::className() => [
+                                                                                        'caption' => 'url',
+                                                                                        'key' => 'id',
+                                                                                    ],
+                                                                                ]
         );
     }
     
@@ -169,7 +170,8 @@ class Image
     {
         // todo-cache: add cache (few hours) md5($image_id . '_' . $size)
         if ($image = self::findOne([ 'id' => (int) $image_id ]) and array_key_exists($image->type,
-                self::getTypes()) and array_key_exists($size, self::getSizes())) {
+                                                                                     self::getTypes()) and array_key_exists($size,
+                                                                                                                            self::getSizes())) {
             
             $class = self::getTypes()[$image->type];
             $size = self::getSizes()[$size];
@@ -193,8 +195,8 @@ class Image
         $data = ItemColor::find()
                          ->with('item')
                          ->where([
-                             'id' => $subject_id,
-                         ])
+                                     'id' => $subject_id,
+                                 ])
                          ->asArray()
                          ->one();
         
@@ -209,5 +211,63 @@ class Image
         }
         
         return $urls;
+    }
+    
+    public static function resize($path, $width_p = false, $height_p = false)
+    {
+        $filename = $path;
+        
+        $info = getimagesize($filename);
+        $width = $info[0];
+        $height = $info[1];
+        $type = $info[2];
+        
+        switch ($type) {
+            case IMAGETYPE_JPEG:
+                $img = imageCreateFromJpeg($filename);
+                break;
+            case IMAGETYPE_PNG:
+                $img = imageCreateFromPng($filename);
+                imageSaveAlpha($img, true);
+                break;
+            default:
+                throw new InvalidArgumentException('Invalid image type given');
+        }
+        
+        // new image sizes
+        if ($width_p !== false or $height_p !== false) {
+            $w = $width_p;
+            $h = $height_p;
+        }
+        
+        if (empty($w)) {
+            $w = ceil($h / ( $height / $width ));
+        }
+        if (empty($h)) {
+            $h = ceil($w / ( $width / $height ));
+        }
+        
+        $tmp = imageCreateTrueColor($w, $h);
+        if ($type == 1 || $type == 3) {
+            imagealphablending($tmp, true);
+            imageSaveAlpha($tmp, true);
+            $transparent = imagecolorallocatealpha($tmp, 0, 0, 0, 127);
+            imagefill($tmp, 0, 0, $transparent);
+            imagecolortransparent($tmp, $transparent);
+        }
+        
+        $tw = ceil($h / ( $height / $width ));
+        $th = ceil($w / ( $width / $height ));
+        if ($tw < $w) {
+            imageCopyResampled($tmp, $img, ceil(( $w - $tw ) / 2), 0, 0, 0, $tw, $h, $width, $height);
+        } else {
+            imageCopyResampled($tmp, $img, 0, ceil(( $h - $th ) / 2), 0, 0, $w, $th, $width, $height);
+        }
+        
+        if ($type == IMAGETYPE_JPEG) {
+            imagejpeg($tmp, $filename);
+        } elseif ($type == IMAGETYPE_PNG) {
+            imagepng($tmp, $filename);
+        }
     }
 }

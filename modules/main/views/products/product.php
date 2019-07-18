@@ -46,10 +46,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div id="gallery" class="mt-20 product-dec-slider">
                         <?php foreach ($item['allColors'] as $color): ?>
                             <?php foreach ($color['allImages'] as $image): ?>
-                                <?= Html::a(Html::img(Image::getLink($image['id']), // set size to 90x90 in future
-                                [ 'alt' => $image['url'], 'width' => 90, 'height' => 90 ]), null, [
-                                    'data-image' => Image::getLink($image['id'], Image::SIZE_90x90),
-                                    'data-zoom-image' => Image::getLink($image['id'], Image::SIZE_90x90),
+                                <?= Html::a(Html::img(Image::getLink($image['id'], Image::SIZE_90x90),
+                                    // set size to 90x90 in future
+                                                      [ 'alt' => $image['url'], 'width' => 90, 'height' => 90 ]), null, [
+                                                'data-image' => Image::getLink($image['id']),
+                                                'data-zoom-image' => Image::getLink($image['id']),
                                     'data-color' => $color['id'],
                             ]) ?>
                             <?php endforeach; ?>

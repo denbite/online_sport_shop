@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\helpers\FileHelper;
+use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
 class UploadForm
@@ -65,7 +66,7 @@ class UploadForm
                     return false;
                 }
             }
-        
+    
             return true;
         }
     
@@ -76,29 +77,74 @@ class UploadForm
     {
         if ($this->validate()) {
             if (!empty($this->image)) {
-        
+    
                 $mdl = new Image();
-        
+    
                 // generate filename
                 $mdl->url = Yii::$app->security->generateRandomString(16) . '_' . time() . '.' . $this->image->extension;
                 $mdl->type = $this->_type;
                 $mdl->subject_id = $this->_subject_id;
-        
-                // create path to save image
-                $path = Yii::getAlias('@webroot') . $mdl->path;
-        
-                // check if path exists
-                if (!file_exists($path)) {
-                    // if not -> create
-                    FileHelper::createDirectory($path, 0777);
-                }
-                if ($mdl->save()) {
+    
+                if ($mdl->save() and $this->image instanceof UploadedFile) {
                     // save file and model
-                    if (!$this->image instanceof UploadedFile or !$this->image->saveAs($path . $mdl->url, false)) {
-                        return false;
+        
+                    switch ($mdl->type) {
+                        case Image::TYPE_ITEM:
+                            foreach (Image::getSizes() as $size => $folder) {
+                                // create path to save image
+                                $path = Yii::getAlias('@webroot') . $mdl->getPath($size);
+                    
+                                // check if path exists
+                                if (!file_exists($path)) {
+                                    // if not -> create
+                                    FileHelper::createDirectory($path, 0777);
+                                }
+                                if (!$this->image->saveAs($path . $mdl->url, false)) {
+                                    throw new NotFoundHttpException('Изображения не были сохранены');
+                                }
+                    
+                                if ($size == Image::SIZE_512x512) {
+                                    Image::resize($path . $mdl->url, 512, 512);
+                                } elseif ($size == Image::SIZE_90x90) {
+                                    Image::resize($path . $mdl->url, 90, 90);
+                                }
+                            }
+                            break;
+                        case Image::TYPE_CATEGORY:
+                            $path = Yii::getAlias('@webroot') . $mdl->getPath(Image::SIZE_512x512);
+                
+                            // check if path exists
+                            if (!file_exists($path)) {
+                                // if not -> create
+                                FileHelper::createDirectory($path, 0777);
+                            }
+                
+                            if (!$this->image->saveAs($path . $mdl->url, false)) {
+                                throw new NotFoundHttpException('Изображения не были сохранены');
+                            }
+                
+                            Image::resize($path . $mdl->url, 512, 512);
+                
+                            break;
+                        case Image::TYPE_BANNER:
+                            $path = Yii::getAlias('@webroot') . $mdl->getPath(Image::SIZE_ORIGINAL);
+                
+                            // check if path exists
+                            if (!file_exists($path)) {
+                                // if not -> create
+                                FileHelper::createDirectory($path, 0777);
+                            }
+                
+                            if (!$this->image->saveAs($path . $mdl->url, false)) {
+                                throw new NotFoundHttpException('Изображения не были сохранены');
+                            }
+                
+                            break;
+                        default:
+                            break;
                     }
                 }
-        
+    
                 unset($mdl);
                 $this->image = null;
             }
