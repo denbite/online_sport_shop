@@ -25,9 +25,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <?php $form = ActiveForm::begin([
                                                                         'id' => 'signup-form',
                                                                     ]) ?>
-                                    <?= $form->field($model, 'username') ?>
-                                    <?= $form->field($model, 'password')->passwordInput() ?>
-                                    <?= $form->field($model, 'email') ?>
+                                    <?= $form->field($model, 'username')
+                                             ->textInput([ 'placeholder' => $model->getAttributeLabel('username'), ])
+                                             ->label(false) ?>
+                                    <?= $form->field($model, 'password')
+                                             ->passwordInput([ 'placeholder' => $model->getAttributeLabel('password'), ])
+                                             ->label(false) ?>
+                                    <?= $form->field($model, 'email')
+                                             ->textInput([ 'placeholder' => $model->getAttributeLabel('email') ])
+                                             ->label(false) ?>
                                     <div class="button-box">
                                         <?= Html::submitButton('Зарегистрироваться') ?>
                                     </div>

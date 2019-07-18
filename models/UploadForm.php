@@ -75,30 +75,33 @@ class UploadForm
     public function uploadImage()
     {
         if ($this->validate()) {
-            $mdl = new Image();
-            
-            // generate filename
-            $mdl->url = Yii::$app->security->generateRandomString(16) . '_' . time() . '.' . $this->image->extension;
-            $mdl->type = $this->_type;
-            $mdl->subject_id = $this->_subject_id;
-            
-            // create path to save image
-            $path = Yii::getAlias('@webroot') . $mdl->path;
-            
-            // check if path exists
-            if (!file_exists($path)) {
-                // if not -> create
-                FileHelper::createDirectory($path, 0777);
-            }
-            if ($mdl->save()) {
-                // save file and model
-                if (!$this->image instanceof UploadedFile or !$this->image->saveAs($path . $mdl->url, false)) {
-                    return false;
+            if (!empty($this->image)) {
+        
+                $mdl = new Image();
+        
+                // generate filename
+                $mdl->url = Yii::$app->security->generateRandomString(16) . '_' . time() . '.' . $this->image->extension;
+                $mdl->type = $this->_type;
+                $mdl->subject_id = $this->_subject_id;
+        
+                // create path to save image
+                $path = Yii::getAlias('@webroot') . $mdl->path;
+        
+                // check if path exists
+                if (!file_exists($path)) {
+                    // if not -> create
+                    FileHelper::createDirectory($path, 0777);
                 }
+                if ($mdl->save()) {
+                    // save file and model
+                    if (!$this->image instanceof UploadedFile or !$this->image->saveAs($path . $mdl->url, false)) {
+                        return false;
+                    }
+                }
+        
+                unset($mdl);
+                $this->image = null;
             }
-            
-            unset($mdl);
-            $this->image = null;
             
             return true;
             

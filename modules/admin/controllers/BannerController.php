@@ -161,7 +161,7 @@ class BannerController
                         if (!$modelUpload->uploadImage()) {
                             throw new NotFoundHttpException('Не удалось сохранить изображение');
                         }
-                        
+                        Yii::$app->session->setFlash('success', 'Данные успешно сохранены');
                     });
                 }
                 

@@ -95,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'label' => 'Время показа',
                                     'value' => function ($model)
                                     {
-                                        return date('d.m.Y h:m', $model->publish_from) . ' - ' . date('d.m.Y h:m',
+                                        return date('d.m.Y H:i', $model->publish_from) . ' - ' . date('d.m.Y H:i',
                                                 $model->publish_to);
                                     },
                                 ],

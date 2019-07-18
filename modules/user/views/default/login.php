@@ -27,13 +27,18 @@ use yii\helpers\Html;
                                     <?php $form = ActiveForm::begin([
                                                                         'id' => 'login-form',
                                                                     ]) ?>
-                                    <?= $form->field($model, 'username') ?>
-                                    <?= $form->field($model, 'password')->passwordInput() ?>
+                                    <?= $form->field($model, 'username')->textInput([
+                                        'placeholder' => $model->getAttributeLabel('username'),
+                                    ])->label(false) ?>
+                                    <?= $form->field($model, 'password')->passwordInput([
+                                        'placeholder' => $model->getAttributeLabel('password'),
+                                    ])->label(false) ?>
                                     <div class="button-box">
                                         <div class="login-toggle-btn">
                                             <?= $form->field($model, 'rememberMe')
                                                      ->checkbox()
                                                      ->label('Запомнить меня') ?>
+
                                             <?= Html::a('Забыли пароль?', [ '/user/default/forgot-password' ]) ?>
                                         </div>
                                         <?= Html::submitButton('Войти') ?>

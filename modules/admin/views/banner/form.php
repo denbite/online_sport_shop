@@ -96,7 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                              'pluginOptions' => [
                                                  'autoclose' => true,
                                                  'todayBtn' => true,
-                                                 'format' => 'dd.mm.yyyy HH:ii',
+                                                 'format' => 'dd.mm.yyyy h:i',
                                                  //                                                    'weekStart' => 1,
                                                  //'startDate' => $startDate,//дата начала
                                              ],
@@ -117,9 +117,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                                  'placeholder' => 'Дата окончания',
                                              ],
                                              'pluginOptions' => [
-                                                 'autoclose' => true,
+                                                 //                                                 'autoclose' => true,
                                                  'todayBtn' => true,
-                                                 'format' => 'dd.mm.yyyy HH:ii',
+                                                 'format' => 'dd.mm.yyyy h:i',
                                                  //                                                    'weekStart' => 1,
                                                  //'startDate' => $startDate,//дата начала
                                              ],

@@ -4,7 +4,7 @@
 
 ?>
 
-
+<?php if (!empty($banners) and is_array($banners)): ?>
 <div class="slider-area section-padding-1">
     <div class="slider-active-2 owl-carousel nav-style-2 dot-style-1">
         <?php foreach ($banners as $banner): ?>
@@ -16,7 +16,8 @@
                                 <h1 class="animated"><?= $banner['title'] ?></h1>
                                 <p class="animated"><?= $banner['description'] ?></p>
                                 <div class="slider-btn btn-hover">
-                                    <a class="animated" href="<?= $banner['link'] ?>"><?= $banner['link_title'] ?></a>
+                                    <a class="animated" target="_blank"
+                                       href="<?= $banner['link'] ?>"><?= $banner['link_title'] ?></a>
                                 </div>
                             </div>
                         </div>
@@ -34,3 +35,4 @@
         <?php endforeach; ?>
     </div>
 </div>
+<?php endif; ?>

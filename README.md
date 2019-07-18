@@ -40,6 +40,7 @@ Come back to the main project folder and apply migrations:
 cd ..
 yii migrate --migrationPath=@yii/rbac/migrations
 yii migrate
+yii migrate --migrationPath=@vendor/devanych/yii2-cart/migrations
 ~~~
 
 

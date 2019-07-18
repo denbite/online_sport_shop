@@ -25,7 +25,7 @@ AppAsset::register($this);
 
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
-    <title><?= Html::encode(!empty($this->title) ? 'AquistA | ' . $this->title : 'Интернет-магазин AquistA | Лучшие цены на одежду, инвентарь') ?></title>
+    <title><?= Html::encode(!empty($this->title) ? 'AquistA | ' . $this->title : 'Интернет-магазин AquistA | Самая быстрая доставка по Украине') ?></title>
     
     <?php $this->head() ?>
 
@@ -78,29 +78,19 @@ AppAsset::register($this);
                                     </li>
                                     <li><a href="<?= Url::to([ '/main/products/catalog' ]) ?>">Каталог <span>hot</span>
                                         </a></li>
-                                    <li><a href="contact-us.html"> Contact </a></li>
-                                    <li class="angle-shape"><a href="#">Pages </a>
+                                    <li class="angle-shape"><a href="#">Информация </a>
                                         <ul class="submenu">
-                                            <li><a href="about-us.html">about us </a></li>
-                                            <li><a href="cart-page.html">cart page </a></li>
-                                            <li><a href="checkout.html">checkout </a></li>
-                                            <li><a href="compare-page.html">compare </a></li>
-                                            <li><a href="wishlist.html">wishlist </a></li>
-                                            <li><a href="my-account.html">my account </a></li>
-                                            <li><a href="contact-us.html">contact us </a></li>
-                                            <li><a href="login-register.html">login/register </a></li>
+                                            <li><a href="<?= Url::to([ '/main/default/delivery' ]) ?>">Доставка </a>
+                                            </li>
+                                            <li><a href="<?= Url::to([ '/main/default/payment' ]) ?>">Оплата </a></li>
+                                            <li><a href="<?= Url::to([ '/main/default/sizes' ]) ?>">Размеры </a></li>
+                                            <li><a href="<?= Url::to([ '/main/default/contacts' ]) ?>">Связаться с
+                                                    нами</a></li>
+                                            <li><a href="<?= Url::to([ '/main/default/about' ]) ?>">О нас </a></li>
                                         </ul>
                                     </li>
-                                    <li class="angle-shape"><a href="blog.html"> Blog </a>
-                                        <ul class="submenu">
-                                            <li><a href="blog.html">standard style </a></li>
-                                            <li><a href="blog-2-col.html">blog 2 column </a></li>
-                                            <li><a href="blog-3-col.html">blog 3 column </a></li>
-                                            <li><a href="blog-right-sidebar.html">blog right sidebar </a></li>
-                                            <li><a href="blog-details.html">blog details </a></li>
-                                            <li><a href="blog-details-right-sidebar.html">blog details right
-                                                    sidebar </a></li>
-                                        </ul>
+                                    <li class="angle-shape"><a
+                                                href="<?= Url::to([ '/main/promotions/index' ]) ?>">Акции </a>
                                     </li>
                                 </ul>
                             </nav>
@@ -123,7 +113,7 @@ AppAsset::register($this);
                                 </button>
                                 <div class="shopping-cart-content">
                                     <div class="shopping-cart-top">
-                                        <h4>Shoping Cart</h4>
+                                        <h4>Корзина</h4>
                                         <a class="cart-close" href="#"><i class="sli sli-close"></i></a>
                                     </div>
                                     <ul>
@@ -170,29 +160,21 @@ AppAsset::register($this);
                                 <div class="setting-content">
                                     <ul>
                                         <li>
-                                            <h4>Currency</h4>
+                                            <h4>Аккаунт</h4>
                                             <ul>
-                                                <li><a href="#">USD</a></li>
-                                                <li><a href="#">Euro</a></li>
-                                                <li><a href="#">Real</a></li>
-                                                <li><a href="#">BDT</a></li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <h4>Language</h4>
-                                            <ul>
-                                                <li><a href="#">English (US)</a></li>
-                                                <li><a href="#">English (UK)</a></li>
-                                                <li><a href="#">Spanish</a></li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <h4>Account</h4>
-                                            <ul>
-                                                <li><?= ( Yii::$app->user->isGuest ) ? Html::a('Войти', [ '/user/default/login' ]) : Html::a('Выйти', [ '/user/default/logout' ]) ?></li>
-                                                <li><?= ( Yii::$app->user->isGuest ) ? Html::a('Регистрация', [ '/user/default/signup' ]) : '' ?></li>
-
-                                                <li><a href="my-account.html">My Account</a></li>
+                                                <?= !Yii::$app->user->isGuest ?
+                                                    '<li>' . Html::a("Личный кабинет", [ '/main/profile/index' ]) . '</li>
+                                                <li>' . Html::a("Заказы", [ '/main/profile/orders' ]) . '</li>
+                                                <li>' . Html::a("Настройки",
+                                                        [ '/main/profile/settings' ]) . '</li>' : ''
+                                                ?>
+                                                <?= Yii::$app->user->isGuest ?
+                                                    '<li>' . Html::a('Войти', [ '/user/default/login' ]) . '</li>
+                                                        <li>' . Html::a('Регистрация',
+                                                        [ '/user/default/signup' ]) . '</li>'
+                                                    :
+                                                    '<li>' . Html::a('Выход',
+                                                        [ '/user/default/logout' ]) . '</li>' ?>
                                             </ul>
                                         </li>
                                     </ul>
@@ -321,29 +303,18 @@ AppAsset::register($this);
                             </li>
                             <li><a href="<?= Url::to([ '/main/products/catalog' ]) ?>">Каталог
                                 </a></li>
-                            <li class="menu-item-has-children"><a href="#">pages</a>
+                            <li class="menu-item-has-children"><a href="#">Информация </a>
                                 <ul class="dropdown">
-                                    <li><a href="about-us.html">about us </a></li>
-                                    <li><a href="cart-page.html">cart page </a></li>
-                                    <li><a href="checkout.html">checkout </a></li>
-                                    <li><a href="compare-page.html">compare </a></li>
-                                    <li><a href="wishlist.html">wishlist </a></li>
-                                    <li><a href="my-account.html">my account </a></li>
-                                    <li><a href="contact-us.html">contact us </a></li>
-                                    <li><a href="login-register.html">login/register </a></li>
+                                    <li><a href="<?= Url::to([ '/main/default/delivery' ]) ?>">Доставка </a>
+                                    </li>
+                                    <li><a href="<?= Url::to([ '/main/default/payment' ]) ?>">Оплата </a></li>
+                                    <li><a href="<?= Url::to([ '/main/default/sizes' ]) ?>">Размеры </a></li>
+                                    <li><a href="<?= Url::to([ '/main/default/contacts' ]) ?>">Связаться с
+                                            нами</a></li>
+                                    <li><a href="<?= Url::to([ '/main/default/about' ]) ?>">О нас </a></li>
                                 </ul>
                             </li>
-                            <li class="menu-item-has-children "><a href="blog.html">Blog</a>
-                                <ul class="dropdown">
-                                    <li><a href="blog.html">standard style </a></li>
-                                    <li><a href="blog-2-col.html">blog 2 column </a></li>
-                                    <li><a href="blog-3-col.html">blog 3 column </a></li>
-                                    <li><a href="blog-right-sidebar.html">blog right sidebar </a></li>
-                                    <li><a href="blog-details.html">blog details </a></li>
-                                    <li><a href="blog-details-right-sidebar.html">blog details right sidebar </a></li>
-                                </ul>
-                            </li>
-                            <li><a href="contact-us.html">Contact us</a></li>
+                            <li><a href="<?= Url::to([ '/main/promotions/index' ]) ?>">Акции</a></li>
                         </ul>
                     </nav>
                     <!-- mobile menu navigation end -->
@@ -352,33 +323,21 @@ AppAsset::register($this);
             </div>
             <div class="mobile-curr-lang-wrap">
                 <div class="single-mobile-curr-lang">
-                    <a class="mobile-language-active" href="#">Language <i class="sli sli-arrow-down"></i></a>
-                    <div class="lang-curr-dropdown lang-dropdown-active">
-                        <ul>
-                            <li><a href="#">English (US)</a></li>
-                            <li><a href="#">English (UK)</a></li>
-                            <li><a href="#">Spanish</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="single-mobile-curr-lang">
-                    <a class="mobile-currency-active" href="#">Currency <i class="sli sli-arrow-down"></i></a>
-                    <div class="lang-curr-dropdown curr-dropdown-active">
-                        <ul>
-                            <li><a href="#">USD</a></li>
-                            <li><a href="#">EUR</a></li>
-                            <li><a href="#">Real</a></li>
-                            <li><a href="#">BDT</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="single-mobile-curr-lang">
-                    <a class="mobile-account-active" href="#">My Account <i class="sli sli-arrow-down"></i></a>
+                    <a class="mobile-account-active" href="#">Аккаунт <i class="sli sli-arrow-down"></i></a>
                     <div class="lang-curr-dropdown account-dropdown-active">
                         <ul>
-                            <li><?= ( Yii::$app->user->isGuest ) ? Html::a('Войти', [ '/user/default/login' ]) : Html::a('Выйти', [ '/user/default/logout' ]) ?></li>
-                            <li><?= ( Yii::$app->user->isGuest ) ? Html::a('Регистрация', [ '/user/default/signup' ]) : '' ?></li>
-                            <li><a href="my-account.html">My Account</a></li>
+                            <?= !Yii::$app->user->isGuest ?
+                                '<li>' . Html::a("Личный кабинет", [ '/main/profile/index' ]) . '</li>
+                                                <li>' . Html::a("Заказы", [ '/main/profile/orders' ]) . '</li>
+                                                <li>' . Html::a("Настройки",
+                                    [ '/main/profile/settings' ]) . '</li>' : ''
+                            ?>
+                            <?= Yii::$app->user->isGuest ? '<li>' . Html::a('Войти',
+                                    [ '/user/default/login' ]) . '</li>
+                                                        <li>' . Html::a('Регистрация',
+                                    [ '/user/default/signup' ]) . '</li>' :
+                                '<li>' . Html::a('Выход',
+                                    [ '/user/default/logout' ]) . '</li>' ?>
                         </ul>
                     </div>
                 </div>
@@ -458,14 +417,14 @@ AppAsset::register($this);
                         <div class="col-lg-3 col-md-3 col-sm-4 col-6">
                             <div class="footer-widget mb-40 pl-100">
                                 <div class="footer-title">
-                                    <h3>Shopping</h3>
+                                    <h3>Покупки</h3>
                                 </div>
                                 <div class="footer-list">
                                     <ul>
-                                        <li><a href="shop.html">Product</a></li>
-                                        <li><a href="cart-page.html">My Cart</a></li>
-                                        <li><a href="wishlist.html">Wishlist</a></li>
-                                        <li><a href="cart-page.html">Cart</a></li>
+                                        <li><a href="<?= Url::to([ '/main/products/catalog' ]) ?>">Каталог</a></li>
+                                        <li><a href="<?= Url::to([ '/main/products/category' ]) ?>">Категории</a></li>
+                                        <li><a href="<?= Url::to([ '/main/promotions/index' ]) ?>">Акции</a></li>
+                                        <li><a href="<?= Url::to([ '/main/products/cart' ]) ?>">Корзина</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -473,14 +432,21 @@ AppAsset::register($this);
                         <div class="col-lg-3 col-md-3 col-sm-4 col-6">
                             <div class="footer-widget mb-40 pl-50">
                                 <div class="footer-title">
-                                    <h3>Account</h3>
+                                    <h3>Аккаунт</h3>
                                 </div>
                                 <div class="footer-list">
                                     <ul>
-                                        <li><a href="login-register.html">Login</a></li>
-                                        <li><a href="login-register.html">Register</a></li>
-                                        <li><a href="contact.html">Help</a></li>
-                                        <li><a href="contact-us.html">Support</a></li>
+                                        <?= Yii::$app->user->isGuest ?
+                                            '<li>' . Html::a("Войти", Url::to([ "/user/default/login" ])) . '</li>
+                                                <li>' . Html::a("Регистрация", Url::to([ "/user/default/signup" ])) . '</li>
+                                                <li>' . Html::a("Контакты", Url::to([ "/main/default/contacts" ])) . '</li>
+                                                <li>' . Html::a("О нас", Url::to([ "/main/default/about" ])) . '</li>'
+                                            :
+                                            '<li>' . Html::a("Личный кабинет", Url::to([ "/main/profile/index" ])) . '</li>
+                                                <li>' . Html::a("Мои заказы", Url::to([ "/main/profile/orders" ])) . '</li>
+                                                <li>' . Html::a("Настройки", Url::to([ "/main/profile/settings" ])) . '</li>
+                                                <li>' . Html::a("Выйти", Url::to([ "/user/default/logout" ])) . '</li>'
+                                        ?>
                                     </ul>
                                 </div>
                             </div>
@@ -488,14 +454,13 @@ AppAsset::register($this);
                         <div class="col-lg-2 col-md-2 col-sm-4 col-12">
                             <div class="footer-widget mb-40">
                                 <div class="footer-title">
-                                    <h3>Categories</h3>
+                                    <h3>Информация</h3>
                                 </div>
                                 <div class="footer-list">
                                     <ul>
-                                        <li><a href="shop.html">Men</a></li>
-                                        <li><a href="shop.html">Women</a></li>
-                                        <li><a href="shop.html">Jeins</a></li>
-                                        <li><a href="shop.html">Shoes</a></li>
+                                        <li><a href="<?= Url::to([ '/main/default/delivery' ]) ?>">Доставка</a></li>
+                                        <li><a href="<?= Url::to([ '/main/default/payment' ]) ?>">Оплата</a></li>
+                                        <li><a href="<?= Url::to([ '/main/default/sizes' ]) ?>">Размеры</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -508,12 +473,12 @@ AppAsset::register($this);
                     <div class="row align-items-center">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                             <div class="copyright-2 pb-30">
-                                <p>Copyright © All Right Reserved.</p>
+                                <p>Copyright 2018-2019 © All Right Reserved.</p>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                             <div class="payment-mathod-2 pb-30">
-                                <a href="#"><img src="/images/main/icon-img/payment-2.png" alt=""></a>
+                                <a href="#"><img src="/images/main/icon-img/payment.png" alt=""></a>
                             </div>
                         </div>
                     </div>
@@ -526,12 +491,12 @@ AppAsset::register($this);
                 <div class="footer-top text-center pt-45 pb-45">
                     <nav>
                         <ul>
-                            <li><a href="index.html">Home </a></li>
-                            <li><a href="shop.html">Shop </a></li>
-                            <li><a href="shop.html">Accessories </a></li>
-                            <li><a href="contact-us.html">Contact </a></li>
-                            <li><a href="about-us.html">About </a></li>
-                            <li><a href="blog.html">Blog </a></li>
+                            <li><a href="<?= Url::to([ '/main/default/index' ]) ?>">Главная </a></li>
+                            <li><a href="<?= Url::to([ '/main/products/catalog' ]) ?>">Каталог </a></li>
+                            <li><a href="<?= Url::to([ '/main/products/category' ]) ?>">Категории </a></li>
+                            <li><a href="<?= Url::to([ '/main/promotions/index' ]) ?>">Акции </a></li>
+                            <li><a href="<?= Url::to([ '/main/default/delivery' ]) ?>">Доставка </a></li>
+                            <li><a href="<?= Url::to([ '/main/default/payment' ]) ?>">Оплата </a></li>
                         </ul>
                     </nav>
                 </div>
@@ -541,20 +506,17 @@ AppAsset::register($this);
                     <div class="row align-items-center">
                         <div class="col-lg-4 col-md-5 col-12">
                             <div class="footer-social pb-20">
-                                <a href="#">Facebok</a>
-                                <a href="#">Twitter</a>
-                                <a href="#">Linkedin</a>
-                                <a href="#">Instagram</a>
+                                <a href="https://instagram.com/aquista.shop" target="_blank">Instagram</a>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-4 col-12">
                             <div class="copyright text-center pb-20">
-                                <p>Copyright © All Right Reserved</p>
+                                <p>Copyright 2018-2019 © All Right Reserved</p>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-3 col-12">
                             <div class="payment-mathod pb-20">
-                                <a href="#"><img src="/images/admin/icon-img/payment.png" alt=""></a>
+                                <a href="#"><img src="/images/main/icon-img/payment.png" alt=""></a>
                             </div>
                         </div>
                     </div>
