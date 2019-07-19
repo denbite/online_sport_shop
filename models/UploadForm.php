@@ -102,9 +102,11 @@ class UploadForm
                                 if (!$this->image->saveAs($path . $mdl->url, false)) {
                                     throw new NotFoundHttpException('Изображения не были сохранены');
                                 }
-                    
-                                if ($size == Image::SIZE_512x512) {
-                                    Image::resize($path . $mdl->url, 512, 512);
+    
+                                if ($size == Image::SIZE_ORIGINAL) {
+                                    Image::resize($path . $mdl->url, 1024, 1024, true);
+                                } elseif ($size == Image::SIZE_512x512) {
+                                    Image::resize($path . $mdl->url, 512, 512, true);
                                 } elseif ($size == Image::SIZE_90x90) {
                                     Image::resize($path . $mdl->url, 90, 90);
                                 }
@@ -122,8 +124,8 @@ class UploadForm
                             if (!$this->image->saveAs($path . $mdl->url, false)) {
                                 throw new NotFoundHttpException('Изображения не были сохранены');
                             }
-                
-                            Image::resize($path . $mdl->url, 512, 512);
+    
+                            Image::resize($path . $mdl->url, 512, 512, true);
                 
                             break;
                         case Image::TYPE_BANNER:

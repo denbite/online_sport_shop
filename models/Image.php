@@ -3,6 +3,7 @@
 namespace app\models;
 
 use http\Exception\InvalidArgumentException;
+use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
 
@@ -213,7 +214,7 @@ class Image
         return $urls;
     }
     
-    public static function resize($path, $width_p = false, $height_p = false)
+    public static function resize($path, $width_p = false, $height_p = false, $add_watermark = false)
     {
         $filename = $path;
         
@@ -263,11 +264,44 @@ class Image
         } else {
             imageCopyResampled($tmp, $img, 0, ceil(( $h - $th ) / 2), 0, 0, $w, $th, $width, $height);
         }
+    
+        if ($add_watermark) {
+            self::watermark($tmp, '55%', '70%', $w, $h);
+        }
         
         if ($type == IMAGETYPE_JPEG) {
             imagejpeg($tmp, $filename);
         } elseif ($type == IMAGETYPE_PNG) {
             imagepng($tmp, $filename);
         }
+    }
+    
+    public static function watermark(&$img, $x = '50%', $y = '50%', $width = false, $height = false)
+    {
+        $watermark = Yii::getAlias('@webroot') . '/files/watermark.png';
+        
+        $info = getimagesize($watermark);
+        switch ($info[2]) {
+            case IMAGETYPE_JPEG:
+                $tmp = imageCreateFromJpeg($watermark);
+                break;
+            case IMAGETYPE_PNG:
+                $tmp = imageCreateFromPng($watermark);
+                break;
+            default:
+                throw new InvalidArgumentException('Invalid watermark type given');
+        }
+        
+        if (strpos($x, '%') !== false and $width !== false) {
+            $x = intval($x);
+            $x = ceil(( $width * $x / 100 ) - ( $info[0] / 100 * $x ));
+        }
+        if (strpos($y, '%') !== false and $height !== false) {
+            $y = intval($y);
+            $y = ceil(( $height * $y / 100 ) - ( $info[1] / 100 * $y ));
+        }
+        
+        imagecopy($img, $tmp, $x, $y, 0, 0, $info[0], $info[1]);
+        imagedestroy($tmp);
     }
 }
