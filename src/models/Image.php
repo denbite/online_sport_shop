@@ -266,7 +266,7 @@ class Image
         }
     
         if ($add_watermark) {
-            self::watermark($tmp, '55%', '70%', $w, $h);
+            self::watermark($tmp, '75%', '75%', $w, $h);
         }
         
         if ($type == IMAGETYPE_JPEG) {
