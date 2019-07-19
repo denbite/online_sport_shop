@@ -105,50 +105,46 @@ AppAsset::register($this);
                                 <button class="icon-cart-active">
                                     <span class="icon-cart">
                                         <i class="sli sli-bag"></i>
-                                        <span class="count-style">02</span>
+                                        <?php if (Yii::$app->cart->getTotalCount() > 0): ?>
+                                            <span class="count-style"><?= Yii::$app->cart->getTotalCount() ?></span>
+                                        <?php endif; ?>
                                     </span>
                                     <span class="cart-price">
-                                        $320.00
+                                        <?= ValueHelper::formatPrice(Yii::$app->cart->getTotalCost()) ?>
                                     </span>
                                 </button>
                                 <div class="shopping-cart-content">
                                     <div class="shopping-cart-top">
                                         <h4>Корзина</h4>
-                                        <a class="cart-close" href="#"><i class="sli sli-close"></i></a>
+                                        <!--                                        make button with ajax deleting items from cart-->
+                                        <a class="cart-close" href="<?= Url::to([ '/main/cart/clear' ]) ?>"><i
+                                                    class="sli sli-close"></i></a>
                                     </div>
                                     <ul>
-                                        <li class="single-shopping-cart">
-                                            <div class="shopping-cart-img">
-                                                <a href="#"><img alt="" src="/images/main/cart/cart-1.svg"></a>
-                                                <div class="item-close">
-                                                    <a href="#"><i class="sli sli-close"></i></a>
+                                        <?php foreach (Yii::$app->cart->getItems() as $item): ?>
+                                            <li class="single-shopping-cart">
+                                                <div class="shopping-cart-img">
+                                                    <a href="#"><img alt="" src="/images/main/cart/cart-1.svg"></a>
+                                                    <div class="item-close">
+                                                        <a href="#"><i class="sli sli-close"></i></a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="shopping-cart-title">
-                                                <h4><a href="#">Product Name </a></h4>
-                                                <span>1 x 90.00</span>
-                                            </div>
-                                        </li>
-                                        <li class="single-shopping-cart">
-                                            <div class="shopping-cart-img">
-                                                <a href="#"><img alt="" src="/images/main/cart/cart-2.svg"></a>
-                                                <div class="item-close">
-                                                    <a href="#"><i class="sli sli-close"></i></a>
+                                                <div class="shopping-cart-title">
+                                                    <h4><a href="#">Product Name </a></h4>
+                                                    <span>1 x 90.00</span>
                                                 </div>
-                                            </div>
-                                            <div class="shopping-cart-title">
-                                                <h4><a href="#">Product Name</a></h4>
-                                                <span>1 x 90.00</span>
-                                            </div>
-                                        </li>
+                                            </li>
+                                        <?php endforeach; ?>
                                     </ul>
                                     <div class="shopping-cart-bottom">
                                         <div class="shopping-cart-total">
-                                            <h4>Total : <span class="shop-total">$260.00</span></h4>
+                                            <h4>Total : <span
+                                                        class="shop-total"><?= ValueHelper::formatPrice(Yii::$app->cart->getTotalCost()) ?></span>
+                                            </h4>
                                         </div>
                                         <div class="shopping-cart-btn btn-hover text-center">
-                                            <a class="default-btn" href="checkout.html">checkout</a>
-                                            <a class="default-btn" href="cart-page.html">view cart</a>
+                                            <a class="default-btn" href="checkout.html">Оплатить</a>
+                                            <a class="default-btn" href="cart-page.html">Корзина</a>
                                         </div>
                                     </div>
                                 </div>
@@ -215,10 +211,10 @@ AppAsset::register($this);
                                 <button class="icon-cart-active">
                                     <span class="icon-cart">
                                         <i class="sli sli-bag"></i>
-                                        <span class="count-style">02</span>
+                                        <span class="count-style"><?= Yii::$app->cart->getTotalCount() ?></span>
                                     </span>
                                     <span class="cart-price">
-                                        $320.00
+                                        <?= ValueHelper::formatPrice(Yii::$app->cart->getTotalCost()) ?>
                                     </span>
                                 </button>
                                 <div class="shopping-cart-content">

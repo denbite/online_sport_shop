@@ -66,7 +66,7 @@ $config = [
             'params' => [
                 'key' => 'cart',
                 'expire' => 604800,
-                'productClass' => 'app\model\ItemColorSize',
+                'productClass' => 'app\models\ItemColorSize',
                 'productFieldId' => 'id',
                 'productFieldPrice' => 'price',
             ],
