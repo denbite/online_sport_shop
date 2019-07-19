@@ -14,10 +14,10 @@ nbproject
 Thumbs.db
 
 # composer vendor dir
-/vendor
+/src/vendor
 
 # composer itself is not needed
-composer.phar
+/src/composer.phar
 
 # Mac DS_Store Files
 .DS_Store
@@ -32,6 +32,3 @@ tests/_support/_generated
 
 #vagrant folder
 /.vagrant
-
-#local files
-*-local.php
