@@ -148,7 +148,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1">
                         </div>
                         <div class="pro-details-cart btn-hover">
-                            <a href="#">Добавить в корзину</a>
+                            <a id="add-to-cart">Добавить
+                                в корзину</a>
                         </div>
                         <!--                        <div class="pro-details-wishlist">-->
                         <!--                            <a title="Add To Wishlist" href="#"><i class="sli sli-heart"></i></a>-->

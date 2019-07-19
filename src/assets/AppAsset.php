@@ -31,6 +31,7 @@ class AppAsset extends AssetBundle
     public $js = [
         'js/ajax-mail.js',
         'js/main.js',
+        'js/cart.js',
         'js/plugins.js',
         'js/product_colors.js',
         'js/popper.min.js',

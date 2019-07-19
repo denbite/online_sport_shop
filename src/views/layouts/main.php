@@ -2,6 +2,7 @@
 
 use app\assets\AppAsset;
 use app\components\helpers\ValueHelper;
+use app\models\Image;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
@@ -82,6 +83,8 @@ AppAsset::register($this);
                                             <li><a href="<?= Url::to([ '/main/default/delivery' ]) ?>">Доставка </a>
                                             </li>
                                             <li><a href="<?= Url::to([ '/main/default/payment' ]) ?>">Оплата </a></li>
+                                            <li><a href="<?= Url::to([ '/main/default/warranty' ]) ?>">Гарантия </a>
+                                            </li>
                                             <li><a href="<?= Url::to([ '/main/default/sizes' ]) ?>">Размеры </a></li>
                                             <li><a href="<?= Url::to([ '/main/default/contacts' ]) ?>">Связаться с
                                                     нами</a></li>
@@ -104,9 +107,7 @@ AppAsset::register($this);
                                 <button class="icon-cart-active">
                                     <span class="icon-cart">
                                         <i class="sli sli-bag"></i>
-                                        <?php if (Yii::$app->cart->getTotalCount() > 0): ?>
                                             <span class="count-style"><?= Yii::$app->cart->getTotalCount() ?></span>
-                                        <?php endif; ?>
                                     </span>
                                     <span class="cart-price">
                                         <?= ValueHelper::formatPrice(Yii::$app->cart->getTotalCost()) ?>
@@ -116,21 +117,28 @@ AppAsset::register($this);
                                     <div class="shopping-cart-top">
                                         <h4>Корзина</h4>
                                         <!--                                        make button with ajax deleting items from cart-->
-                                        <a class="cart-close" href="<?= Url::to([ '/main/cart/clear' ]) ?>"><i
+                                        <a class="cart-close"
+                                           href="<?= Url::to([ '/main/cart/clear' ]) ?>"><i
                                                     class="sli sli-close"></i></a>
                                     </div>
-                                    <ul>
+                                    <ul class="cart-items">
                                         <?php foreach (Yii::$app->cart->getItems() as $item): ?>
-                                            <li class="single-shopping-cart">
+                                            <li data-cart-id="<?= $item->getProduct()->id ?>"
+                                                class="single-shopping-cart">
                                                 <div class="shopping-cart-img">
-                                                    <a href="#"><img alt="" src="/images/main/cart/cart-1.svg"></a>
+                                                    <a href="<?= Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item->getProduct()->color->item->id) ]) ?>"><img
+                                                                alt="<?= $item->getProduct()->color->mainImage->url ?>"
+                                                                src="<?= Image::getLink($item->getProduct()->color->mainImage->id,
+                                                                    Image::SIZE_90x90) ?>"></a>
                                                     <div class="item-close">
                                                         <a href="#"><i class="sli sli-close"></i></a>
                                                     </div>
                                                 </div>
                                                 <div class="shopping-cart-title">
-                                                    <h4><a href="#">Product Name </a></h4>
-                                                    <span>1 x 90.00</span>
+                                                    <h4>
+                                                        <a href="<?= Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item->getProduct()->color->item->id) ]) ?>"> <?= $item->getProduct()->color->item->model . ' ' . $item->getProduct()->size ?></a>
+                                                    </h4>
+                                                    <span><?= $item->getQuantity() . ' x ' . ValueHelper::formatPrice($item->getPrice()) ?></span>
                                                 </div>
                                             </li>
                                         <?php endforeach; ?>
@@ -221,33 +229,34 @@ AppAsset::register($this);
                                         <h4>Корзина</h4>
                                         <a class="cart-close" href="#"><i class="sli sli-close"></i></a>
                                     </div>
-                                    <ul>
-                                        <li class="single-shopping-cart">
-                                            <div class="shopping-cart-img">
-                                                <a href="#"><img alt="" src="/images/main/cart/cart-1.svg"></a>
-                                            </div>
-                                            <div class="shopping-cart-title">
-                                                <h4><a href="#">Product Name </a></h4>
-                                                <span>1 x 90.00</span>
-                                            </div>
-                                        </li>
-                                        <li class="single-shopping-cart">
-                                            <div class="shopping-cart-img">
-                                                <a href="#"><img alt="" src="/images/main/cart/cart-2.svg"></a>
-                                            </div>
-                                            <div class="shopping-cart-title">
-                                                <h4><a href="#">Product Name</a></h4>
-                                                <span>1 x 90.00</span>
-                                            </div>
-                                        </li>
+                                    <ul class="cart-items">
+                                        <?php foreach (Yii::$app->cart->getItems() as $item): ?>
+                                            <li data-cart-id="<?= $item->getProduct()->id ?>"
+                                                class="single-shopping-cart">
+                                                <div class="shopping-cart-img">
+                                                    <a href="<?= Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item->getProduct()->color->item->id) ]) ?>"><img
+                                                                alt="<?= $item->getProduct()->color->mainImage->url ?>"
+                                                                src="<?= Image::getLink($item->getProduct()->color->mainImage->id,
+                                                                    Image::SIZE_90x90) ?>"></a>
+                                                </div>
+                                                <div class="shopping-cart-title">
+                                                    <h4>
+                                                        <a href="<?= Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item->getProduct()->color->item->id) ]) ?>"><?= $item->getProduct()->color->item->model . ' ' . $item->getProduct()->size ?> </a>
+                                                    </h4>
+                                                    <span><?= $item->getQuantity() . ' x ' . ValueHelper::formatPrice($item->getPrice()) ?></span>
+                                                </div>
+                                            </li>
+                                        <?php endforeach; ?>
                                     </ul>
                                     <div class="shopping-cart-bottom">
                                         <div class="shopping-cart-total">
-                                            <h4>Total : <span class="shop-total">$260.00</span></h4>
+                                            <h4>Total : <span
+                                                        class="shop-total"><?= ValueHelper::formatPrice(Yii::$app->cart->getTotalCost()) ?></span>
+                                            </h4>
                                         </div>
                                         <div class="shopping-cart-btn btn-hover text-center">
-                                            <a class="default-btn" href="checkout.html">checkout</a>
-                                            <a class="default-btn" href="cart-page.html">view cart</a>
+                                            <a class="default-btn" href="checkout.html">Оплатить</a>
+                                            <a class="default-btn" href="cart-page.html">Корзина</a>
                                         </div>
                                     </div>
                                 </div>
@@ -303,6 +312,7 @@ AppAsset::register($this);
                                     <li><a href="<?= Url::to([ '/main/default/delivery' ]) ?>">Доставка </a>
                                     </li>
                                     <li><a href="<?= Url::to([ '/main/default/payment' ]) ?>">Оплата </a></li>
+                                    <li><a href="<?= Url::to([ '/main/default/warranty' ]) ?>">Гарантия </a></li>
                                     <li><a href="<?= Url::to([ '/main/default/sizes' ]) ?>">Размеры </a></li>
                                     <li><a href="<?= Url::to([ '/main/default/contacts' ]) ?>">Связаться с
                                             нами</a></li>
@@ -338,7 +348,7 @@ AppAsset::register($this);
                 </div>
             </div>
             <div class="mobile-social-wrap">
-                <a class="instagram" href="https://instagram.com/aquista.shop" target="_blank"><i
+                <a class="instagram" href="https://instagram.com/aquista7" target="_blank"><i
                             class="sli sli-social-instagram"></i></a>
             </div>
         </div>
@@ -452,6 +462,7 @@ AppAsset::register($this);
                                     <ul>
                                         <li><a href="<?= Url::to([ '/main/default/delivery' ]) ?>">Доставка</a></li>
                                         <li><a href="<?= Url::to([ '/main/default/payment' ]) ?>">Оплата</a></li>
+                                        <li><a href="<?= Url::to([ '/main/default/warranty' ]) ?>">Гарантия</a></li>
                                         <li><a href="<?= Url::to([ '/main/default/sizes' ]) ?>">Размеры</a></li>
                                     </ul>
                                 </div>
@@ -498,7 +509,7 @@ AppAsset::register($this);
                     <div class="row align-items-center">
                         <div class="col-lg-4 col-md-5 col-12">
                             <div class="footer-social pb-20">
-                                <a href="https://instagram.com/aquista.shop" target="_blank">Instagram</a>
+                                <a href="https://instagram.com/aquista7" target="_blank">Instagram</a>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-4 col-12">

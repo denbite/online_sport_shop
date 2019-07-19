@@ -26,6 +26,7 @@ $(document).ready(function ($) {
         $cartWrap.on('click', '.icon-cart-active', function (e) {
             e.preventDefault();
             var $this = $(this);
+            console.log($this);
             if (!$this.parent().hasClass('show')) {
                 $this.siblings('.shopping-cart-content').addClass('show').parent().addClass('show');
             } else {

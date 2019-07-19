@@ -1860,7 +1860,7 @@ textarea:focus {
     position: absolute;
     right: -450px;
     top: 67px;
-    width: 340px;
+    width: 420px;
     z-index: 9999;
     -webkit-box-shadow: 0 0 20px 0.4px rgba(0, 0, 0, 0.1);
     box-shadow: 0 0 20px 0.4px rgba(0, 0, 0, 0.1);
