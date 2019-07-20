@@ -10,7 +10,7 @@ services:
         - 80:80
         - 443:443
       working_dir: ${APP_PATH_CONTAINER}
-      command: certbot --apache -d ${DOMAIN} -n --email storeaquista@gmail.com
+      command: certbot --apache -d ${DOMAIN} -n --email storeaquista@gmail.com --agree-tos
       depends_on:
         - db
 
