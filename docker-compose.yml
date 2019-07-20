@@ -6,7 +6,7 @@ services:
       build: ./etc
       volumes:
         - ${APP_PATH_HOST}:${APP_PATH_CONTAINER}
-        - ./etc/sites-available:/etc/apache2/sites-available
+        - ./etc/apache2:/etc/apache2
       ports:
         - 80:80
         - 443:443
