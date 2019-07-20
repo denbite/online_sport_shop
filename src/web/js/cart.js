@@ -36,12 +36,7 @@
                         $('ul.cart-items li[data-cart-id="' + data['id'] + '"] .shopping-cart-title span').html(data['extra']['sum']);
                     }
                     // show cart
-                    var $this = $('button.icon-cart-active');
-                    if (!$this.parent().hasClass('show')) {
-                        $this.siblings('.shopping-cart-content').addClass('show').parent().addClass('show');
-                    } else {
-                        $this.siblings('.shopping-cart-content').removeClass('show').parent().removeClass('show');
-                    }
+                    show_cart();
                 }
             })
         });
@@ -65,5 +60,14 @@
                 }
             })
         });
+
+        function show_cart() {
+            var $this = $('button.icon-cart-active');
+            if (!$this.parent().hasClass('show')) {
+                $this.siblings('.shopping-cart-content').addClass('show').parent().addClass('show');
+            } else {
+                $this.siblings('.shopping-cart-content').removeClass('show').parent().removeClass('show');
+            }
+        }
     })
 })();
