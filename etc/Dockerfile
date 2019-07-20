@@ -21,5 +21,5 @@ RUN docker-php-ext-configure gd \
     && docker-php-ext-install gd
 
 RUN apt-get update \
-    && apt-get install cerbot \
+    && apt-get install certbot \
     python-certbot-apache
