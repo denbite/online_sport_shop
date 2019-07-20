@@ -11,7 +11,7 @@ RUN apt-get update \
     libjpeg62-turbo-dev \
     libpng-dev \
     libxpm-dev \
-    libvpx-dev 
+    libvpx-dev  \
 
 RUN docker-php-ext-configure gd \
     --with-freetype-dir=/usr/lib/x86_64-linux-gnu/ \
@@ -19,3 +19,7 @@ RUN docker-php-ext-configure gd \
     --with-xpm-dir=/usr/lib/x86_64-linux-gnu/ \
     --with-vpx-dir=/usr/lib/x86_64-linux-gnu/ \
     && docker-php-ext-install gd
+
+RUN apt-get update \
+    && apt-get install cerbot \
+    python-certbot-apache
