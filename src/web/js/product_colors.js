@@ -35,6 +35,8 @@
                     $('#no-stock').show();
                 }
 
+                $('input.cart-plus-minus-box').val(1);
+
                 // clear gallery and setup new photos for active color
 
                 // find method from original js and call him for new color !!!
@@ -70,6 +72,8 @@
                 } else {
                     $('#no-stock').show();
                 }
+
+                $('input.cart-plus-minus-box').val(1);
             }
         });
     })

@@ -43,7 +43,8 @@ class CartController
         if (Yii::$app->request->isPost and Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             $result = [];
-            
+            $cart = Yii::$app->cart;
+    
             if ($post = Yii::$app->request->post() and array_key_exists('color', $post) and array_key_exists('size',
                     $post) and array_key_exists('quantity', $post)) {
                 $color = ValueHelper::decryptValue($post['color']);
@@ -69,12 +70,11 @@ class CartController
                                            'color.status' => Status::STATUS_ACTIVE,
                                            'item.status' => Status::STATUS_ACTIVE,
                                        ])
-                                       ->andWhere([ '>', 'size.quantity', $quantity ])
+                                       ->andWhere([ '>=', 'size.quantity', $quantity ])
                                        ->asArray()
                                        ->one();
                 
                 if (!empty($result)) {
-                    $cart = Yii::$app->cart;
                     // check if this item already exists
                     $product = ItemColorSize::findOne([ 'id' => $size ]);
                     if (empty($cart->getItem($product->id))) {
@@ -92,6 +92,45 @@ class CartController
                                                        ->getQuantity() . ' x ' . ValueHelper::formatPrice($result['price']);
                         $result['extra']['new'] = false;
                     }
+    
+                    if ($result['quantity'] > $cart->getItem($product->id)->getQuantity()) {
+                        $result['success'] = true;
+        
+                    } else {
+                        $cart->change($product->id, $result['quantity']);
+                        $result['success'] = false;
+                    }
+    
+                } else {
+                    $result['success'] = false;
+                }
+    
+                $result['extra']['totalCount'] = $cart->getTotalCount();
+                $result['extra']['totalCost'] = ValueHelper::formatPrice($cart->getTotalCost());
+            }
+    
+            return $result;
+        }
+    
+        throw new MethodNotAllowedHttpException('Only POST method allowed');
+    }
+    
+    public function actionRemoveItem()
+    {
+        if (Yii::$app->request->isPost and Yii::$app->request->isAjax) {
+            $result['success'] = false;
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $cart = Yii::$app->cart;
+            
+            if ($post = Yii::$app->request->post() and array_key_exists('product', $post)) {
+                $id = ValueHelper::decryptValue($post['product']);
+                
+                if ($cart->getItem($id)) {
+                    $cart->remove($id);
+                    $result['totalCount'] = $cart->getTotalCount();
+                    $result['totalCost'] = ValueHelper::formatPrice($cart->getTotalCost());
+                    $result['id'] = ValueHelper::encryptValue($id);
+                    $result['success'] = true;
                 }
             }
             

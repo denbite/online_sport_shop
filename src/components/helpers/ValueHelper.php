@@ -7,7 +7,7 @@ use Yii;
 class ValueHelper
 {
     
-    const  SECRET_KEY = 0;
+    const  SECRET_KEY = 234;
     
     
     /**

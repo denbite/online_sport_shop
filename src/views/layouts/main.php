@@ -117,13 +117,12 @@ AppAsset::register($this);
                                     <div class="shopping-cart-top">
                                         <h4>Корзина</h4>
                                         <!--                                        make button with ajax deleting items from cart-->
-                                        <a class="cart-close"
-                                           href="<?= Url::to([ '/main/cart/clear' ]) ?>"><i
+                                        <a class="cart-close"><i
                                                     class="sli sli-close"></i></a>
                                     </div>
                                     <ul class="cart-items">
                                         <?php foreach (Yii::$app->cart->getItems() as $item): ?>
-                                            <li data-cart-id="<?= $item->getProduct()->id ?>"
+                                            <li data-cart-id="<?= ValueHelper::encryptValue($item->getProduct()->id) ?>"
                                                 class="single-shopping-cart">
                                                 <div class="shopping-cart-img">
                                                     <a href="<?= Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item->getProduct()->color->item->id) ]) ?>"><img
@@ -150,8 +149,9 @@ AppAsset::register($this);
                                             </h4>
                                         </div>
                                         <div class="shopping-cart-btn btn-hover text-center">
-                                            <a class="default-btn" href="checkout.html">Оплатить</a>
-                                            <a class="default-btn" href="cart-page.html">Корзина</a>
+                                            <a class="default-btn" href="<?= Url::to([ '/main/cart/checkout' ]) ?>">Оплатить</a>
+                                            <a class="default-btn"
+                                               href="<?= Url::to([ '/main/cart/index' ]) ?>">Корзина</a>
                                         </div>
                                     </div>
                                 </div>
@@ -231,13 +231,16 @@ AppAsset::register($this);
                                     </div>
                                     <ul class="cart-items">
                                         <?php foreach (Yii::$app->cart->getItems() as $item): ?>
-                                            <li data-cart-id="<?= $item->getProduct()->id ?>"
+                                            <li data-cart-id="<?= ValueHelper::encryptValue($item->getProduct()->id) ?>"
                                                 class="single-shopping-cart">
                                                 <div class="shopping-cart-img">
                                                     <a href="<?= Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item->getProduct()->color->item->id) ]) ?>"><img
                                                                 alt="<?= $item->getProduct()->color->mainImage->url ?>"
                                                                 src="<?= Image::getLink($item->getProduct()->color->mainImage->id,
                                                                     Image::SIZE_90x90) ?>"></a>
+                                                    <div class="item-close">
+                                                        <a href="#"><i class="sli sli-close"></i></a>
+                                                    </div>
                                                 </div>
                                                 <div class="shopping-cart-title">
                                                     <h4>
@@ -255,8 +258,9 @@ AppAsset::register($this);
                                             </h4>
                                         </div>
                                         <div class="shopping-cart-btn btn-hover text-center">
-                                            <a class="default-btn" href="checkout.html">Оплатить</a>
-                                            <a class="default-btn" href="cart-page.html">Корзина</a>
+                                            <a class="default-btn" href="<?= Url::to([ '/main/cart/checkout' ]) ?>">Оплатить</a>
+                                            <a class="default-btn"
+                                               href="<?= Url::to([ '/main/cart/index' ]) ?>">Корзина</a>
                                         </div>
                                     </div>
                                 </div>
