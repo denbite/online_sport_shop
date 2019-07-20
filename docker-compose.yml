@@ -6,7 +6,7 @@ services:
       build: ./etc
       volumes:
         - ${APP_PATH_HOST}:${APP_PATH_CONTAINER}
-        - ./etc/sites-available/aquista.com.ua.conf:/etc/apache2/sites-available/aquista.com.ua.conf
+        - ./etc/sites-available:/etc/apache2/sites-available
       ports:
         - 80:80
       working_dir: ${APP_PATH_CONTAINER}
