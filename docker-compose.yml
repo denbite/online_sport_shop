@@ -6,11 +6,11 @@ services:
       build: ./etc
       volumes:
         - ${APP_PATH_HOST}:${APP_PATH_CONTAINER}
+        - ./etc/sites-available:/etc/apache2/sites-available
       ports:
         - 80:80
         - 443:443
       working_dir: ${APP_PATH_CONTAINER}
-      command: certbot --apache -d ${DOMAIN}
       depends_on:
         - db
 
