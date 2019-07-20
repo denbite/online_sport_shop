@@ -6,11 +6,11 @@ services:
       build: ./etc
       volumes:
         - ${APP_PATH_HOST}:${APP_PATH_CONTAINER}
-        - ./etc/apache2:/etc/apache2
       ports:
         - 80:80
         - 443:443
       working_dir: ${APP_PATH_CONTAINER}
+      command: certbot --apache -d ${DOMAIN} -n --email storeaquista@gmail.com
       depends_on:
         - db
 
