@@ -6,7 +6,8 @@ services:
       build: ./etc
       volumes:
         - ${APP_PATH_HOST}:${APP_PATH_CONTAINER}
-        - ./etc/sites-available/:/etc/apache2/sites-available/
+        - ./etc/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf
+        - ./etc/sites-available/000-default-le-ssl.conf:/etc/apache2/sites-available/000-default-le-ssl.conf
       ports:
         - 80:80
       working_dir: ${APP_PATH_CONTAINER}
