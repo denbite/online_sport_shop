@@ -25,5 +25,7 @@ RUN apt-get update \
     certbot \
     python-certbot-apache
 
+RUN certbot --apache -d ${DOMAIN} -n --email storeaquista@gmail.com --agree-tos
+
 EXPOSE 80
 EXPOSE 443
