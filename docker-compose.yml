@@ -7,7 +7,7 @@ services:
       volumes:
         - ${APP_PATH_HOST}:${APP_PATH_CONTAINER}
       ports:
-        - 80:80
+        - 443:80
       working_dir: ${APP_PATH_CONTAINER}
       depends_on:
         - db
