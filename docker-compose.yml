@@ -10,6 +10,7 @@ services:
         - 80:80
         - 443:443
       working_dir: ${APP_PATH_CONTAINER}
+      command: certbot --apache -d ${DOMAIN}
       depends_on:
         - db
 
