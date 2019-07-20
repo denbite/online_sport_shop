@@ -11,7 +11,7 @@ RUN apt-get update \
     libjpeg62-turbo-dev \
     libpng-dev \
     libxpm-dev \
-    libvpx-dev  \
+    libvpx-dev
 
 RUN docker-php-ext-configure gd \
     --with-freetype-dir=/usr/lib/x86_64-linux-gnu/ \
