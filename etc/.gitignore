@@ -1,5 +1,6 @@
 db
 
 .env
+domain.env
 
 !.gitignore
