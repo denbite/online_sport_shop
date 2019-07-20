@@ -24,5 +24,3 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     certbot \
     python-certbot-apache
-
-ADD ./etc/sites-available/aquista.com.ua.conf /etc/apache2/sites-available/aquista.com.ua.conf
