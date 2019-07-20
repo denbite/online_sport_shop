@@ -25,10 +25,5 @@ RUN apt-get update \
     certbot \
     python-certbot-apache
 
-ADD domain.env domain.env
-RUN export `cat domain.env`
-
-RUN certbot --apache -d $DOMAIN -n --email storeaquista@gmail.com --agree-tos
-
 EXPOSE 80
 EXPOSE 443

@@ -61,6 +61,7 @@ chmod -R 777 ./web/files
 php yii migrate --migrationPath=@yii/rbac/migrations
 php yii migrate
 php yii migrate --migrationPath=@vendor/devanych/yii2-cart/migrations
+certbot --apache -d {YOUR_DOMAIN} -n --email {YOUR_EMAIL}
 ~~~
 
 ------
