@@ -24,3 +24,6 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     certbot \
     python-certbot-apache
+
+EXPOSE 80
+EXPOSE 443
