@@ -64,7 +64,7 @@ $config = [
         ],
         'cart' => [
             'class' => 'devanych\cart\Cart',
-            'storageClass' => 'devanych\cart\storage\DbSessionStorage',
+            'storageClass' => 'devanych\cart\storage\CookieStorage',
             'calculatorClass' => 'devanych\cart\calculators\SimpleCalculator',
             'params' => [
                 'key' => 'cart',

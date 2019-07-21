@@ -4,11 +4,10 @@ namespace app\modules\main\controllers;
 
 use app\components\helpers\ValueHelper;
 use app\components\models\Status;
-use app\models\Image;
 use app\models\ItemColorSize;
 use Yii;
 use yii\db\Exception;
-use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\MethodNotAllowedHttpException;
 
@@ -45,13 +44,14 @@ class CartController
     
             if ($post = Yii::$app->request->post() and array_key_exists('color', $post) and array_key_exists('size',
                     $post) and array_key_exists('quantity', $post)) {
+                $result['success'] = false;
                 $color = ValueHelper::decryptValue($post['color']);
                 $size = ValueHelper::decryptValue($post['size']);
                 $quantity = $post['quantity'];
-                
-                $result = ItemColorSize::find()
-                                       ->from(ItemColorSize::tableName() . ' size')
-                                       ->joinWith([ 'color color' => function ($query)
+    
+                $item = ItemColorSize::find()
+                                     ->from(ItemColorSize::tableName() . ' size')
+                                     ->joinWith([ 'color color' => function ($query)
                                        {
                                            $query->joinWith([ 'item item' => function ($query)
                                            {
@@ -61,52 +61,30 @@ class CartController
                                                } ]);
                                            }, 'mainImage image' ]);
                                        } ])
-                                       ->where([
+                                     ->where([
                                            'color.id' => $color,
                                            'size.id' => $size,
                                            'size.status' => Status::STATUS_ACTIVE,
                                            'color.status' => Status::STATUS_ACTIVE,
                                            'item.status' => Status::STATUS_ACTIVE,
                                        ])
-                                       ->andWhere([ '>=', 'size.quantity', $quantity ])
-                                       ->asArray()
-                                       ->one();
-                
-                if (!empty($result)) {
+                                     ->andWhere([ '>=', 'size.quantity', $quantity ])
+                                     ->asArray()
+                                     ->one();
+    
+                if (!empty($item)) {
                     // check if this item already exists
                     $product = ItemColorSize::findOne([ 'id' => $size ]);
                     if (empty($cart->getItem($product->id))) {
                         $cart->add($product, $quantity);
-                        $result['extra']['image_src'] = Image::getLink($result['color']['mainImage']['id'],
-                            Image::SIZE_90x90);
-                        $result['extra']['image_alt'] = $result['color']['mainImage']['url'];
-                        $result['extra']['link'] = Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($result['color']['item']['id']) ]);
-                        $result['extra']['title'] = $result['color']['item']['model'] . ' ' . $result['size'];
-                        $result['extra']['new'] = true;
                     } else {
                         $cart->plus($product->id, $quantity);
-                        $result['extra']['new'] = false;
                     }
-    
-                    if ($result['quantity'] >= $cart->getItem($product->id)->getQuantity()) {
-                        $result['success'] = true;
-        
-                    } else {
-                        $cart->change($product->id, $result['quantity']);
-                        $result['success'] = false;
-                    }
-    
-                    $result['extra']['sum'] = $cart->getItem($product->id)
-                                                   ->getQuantity() . ' x ' . ValueHelper::formatPrice($result['price']);
-                    $result['id'] = ValueHelper::encryptValue($result['id']);
-                } else {
-                    $result['success'] = false;
+                    $result['success'] = true;
                 }
-    
-                $result['extra']['totalCount'] = $cart->getTotalCount();
-                $result['extra']['totalCost'] = ValueHelper::formatPrice($cart->getTotalCost());
             }
-    
+            unset($item);
+            
             return $this->asJson($result);
         }
     
@@ -154,5 +132,40 @@ class CartController
         }
         
         throw new MethodNotAllowedHttpException('Only POST method allowed');
+    }
+    
+    public function actionCart()
+    {
+        if (Yii::$app->request->isAjax) {
+            
+            $cart = Yii::$app->cart;
+            
+            $result['totalCount'] = $cart->getTotalCount();
+            $result['totalCost'] = ValueHelper::formatPrice($cart->getTotalCost());
+            
+            $tmp = [];
+            
+            foreach ($cart->getItems() as $index => $item) {
+                $size = $item->getProduct();
+                $tmp[$index]['size'] = ArrayHelper::toArray($size);
+                $tmp[$index]['color'] = ArrayHelper::toArray($size->color);
+                $tmp[$index]['image'] = ArrayHelper::toArray($size->color->mainImage);
+                $tmp[$index]['item'] = ArrayHelper::toArray($size->color->item);
+                $tmp[$index]['promotion'] = ArrayHelper::toArray($size->color->item->promotion);
+                $tmp[$index]['quantity'] = $item->getQuantity();
+            }
+            
+            $result['items'] = $tmp;
+            
+            unset($tmp);
+            unset($index);
+            
+            return $this->view->render('_cart', [
+                'result' => $result,
+            ], $this);
+            
+        }
+        
+        throw new MethodNotAllowedHttpException('Only AJAX allowed');
     }
 }
