@@ -17,8 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ]) ?>
 <div class="box box-shadowed box-outline-success <?= !empty(Yii::$app->params['background']) ? Yii::$app->params['background'] : '' ?>">
     <div class="box-header with-border">
-        <div class="pull-right">
-            <?= Html::submitButton(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-save' ]) . ' Сохранить',
+        <div class="right-float">
+            <?= Html::submitButton(Html::tag('i', '&nbsp;', [ 'class' => 'fas fa-save' ]) . ' Сохранить',
                 [ 'class' => 'btn btn-sm btn-success' ]) ?>
         </div>
     </div>

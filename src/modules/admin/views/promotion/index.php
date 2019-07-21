@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="box box-shadowed box-outline-success">
     <div class="box-header with-border">
-        <div class="pull-right">
+        <div class="right-float">
             <?php if (Permission::can('admin_promotion_create')): ?>
                 <?= Html::a('Добавить акцию', [ '/admin/promotion/create' ], [ 'class' => 'btn btn-sm
             btn-info', 'style' => 'font-size: 16px;font-weight: 600;margin-left:15px;' ]) ?>

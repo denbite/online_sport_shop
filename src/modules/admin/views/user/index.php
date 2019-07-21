@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="box box-shadowed box-outline-success">
 
     <div class="box-header with-border">
-        <div class="pull-right">
+        <div class="right-float">
             <?= Html::a('Добавить пользователя', [ '/admin/user/create' ], [ 'class' => 'btn-sm btn-info', 'style' => 'font-size: 16px;font-weight: 600;' ]) ?>
         </div>
     </div>

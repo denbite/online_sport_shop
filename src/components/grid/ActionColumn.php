@@ -16,7 +16,9 @@ class ActionColumn extends OwnColumn
         $this->_controller = Yii::$app->controller->id;
         
         if (!empty($this->_controller) and Permission::can("admin_{$this->_controller}_update")) {
-            return Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-pencil' ]) . ' Редактировать', [ "/admin/{$this->_controller}/update", 'id' => $model->id ], [ 'class' => 'btn btn-sm btn-warning' ]);
+            return Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fas fa-pen' ]) . ' Редактировать',
+                           [ "/admin/{$this->_controller}/update", 'id' => $model->id ],
+                           [ 'class' => 'btn btn-sm btn-warning' ]);
         }
         
         return null;

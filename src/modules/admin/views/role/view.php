@@ -31,14 +31,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="box box-shadowed box-outline-success <?= !empty(Yii::$app->params['background']) ?
         Yii::$app->params['background'] : '' ?>">
         <div class="box-header with-border">
-            <div class="pull-right">
+            <div class="right-float">
                 <?php if (Permission::can('admin_role_update')): ?>
-                    <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-pencil' ]) . ' Редактировать',
+                    <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fas fa-pen' ]) . ' Редактировать',
                                 [ "/admin/role/update", 'name' => $model->name ],
                                 [ 'class' => 'btn btn-sm btn-warning ml-20' ]) ?>
                 <?php endif; ?>
                 <?php if (Permission::can('admin_role_delete')): ?>
-                    <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-trash' ]) . ' Удалить',
+                    <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fas fa-trash' ]) . ' Удалить',
                                 [ "/admin/role/delete", 'name' => $model->name ],
                                 [ 'class' => 'btn btn-sm btn-danger ml-20',
                                     'data' => [

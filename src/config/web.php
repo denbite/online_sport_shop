@@ -45,6 +45,9 @@ $config = [
             'enableAutoLogin' => true,
             'loginUrl' => [ 'user/default/login' ],
         ],
+        'assetManager' => [
+            'appendTimestamp' => true,
+        ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
             //            'defaultRoles' => [ 'guest' ],

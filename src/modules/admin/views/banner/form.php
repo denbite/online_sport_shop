@@ -18,8 +18,7 @@ $this->title = $model->isNewRecord ? 'Создание баннера' : 'Ред
 $this->params['breadcrumbs'][] = [ 'label' => 'Баннеры', 'url' => [ 'index' ] ];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
-<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js" crossorigin="anonymous"></script>
+
 <?php if (Yii::$app->session->hasFlash('success')): ?>
     <div class="alert alert-success alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
@@ -41,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ]) ?>
 <div class="box box-shadowed box-outline-success <?= !empty(Yii::$app->params['background']) ? Yii::$app->params['background'] : '' ?>">
     <div class="box-header with-border">
-        <div class="pull-right">
+        <div class="right-float">
             <?= Html::submitButton(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-save' ]) . ' Сохранить',
                 [ 'class' => 'btn btn-sm btn-success' ]) ?>
         </div>

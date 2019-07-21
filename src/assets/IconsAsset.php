@@ -10,7 +10,7 @@ class IconsAsset extends AssetBundle
     public $sourcePath = '@bower';
     
     public $css = [
-        'font-awesome/css/font-awesome.min.css',
+        'font-awesome/css/all.min.css',
         'mdi/css/materialdesignicons.min.css',
         'simple-line-icons/css/simple-line-icons.css',
         'glyphicons/styles/glyphicons.css',

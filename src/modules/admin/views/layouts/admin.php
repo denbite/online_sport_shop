@@ -33,7 +33,6 @@ $action = Yii::$app->controller->action->id;
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
     <?php $this->head() ?>
 
 </head>
@@ -96,7 +95,7 @@ $action = Yii::$app->controller->action->id;
                             <li class="user-body">
                                 <div class="row no-gutters">
                                     <div class="col-12 text-left">
-                                        <a href="user/default/logout"><i class="fa fa-power-off"></i> Logout</a>
+                                        <a href="user/default/logout"><i class="fas fa-power-off"></i> Logout</a>
                                     </div>
                                 </div>
                             </li>
@@ -115,13 +114,14 @@ $action = Yii::$app->controller->action->id;
             <!-- sidebar menu-->
             <ul class="sidebar-menu" data-widget="tree">
                 <li <?= $controller == 'default' ? ' class="active"' : '""' ?>>
-                    <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-home' ]) . Html::tag('span', 'Главная'), [ '/admin/default/index' ]) ?>
+                    <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fas fa-home' ]) . Html::tag('span', 'Главная'),
+                                [ '/admin/default/index' ]) ?>
                 </li>
                 <li class="header nav-small-cap">Основные</li>
                 <?php if (Permission::can([ 'admin_item_index', 'admin_category_index', 'admin_order_index' ])): ?>
                     <li class="treeview <?= in_array($controller, [ 'item', 'item-color', 'item-size', 'category', 'order' ]) ? ' active' : '' ?>">
                         <a href="#">
-                            <i class="fa fa-shopping-bag"></i>
+                            <i class="fas fa-shopping-bag"></i>
                             <span>Магазин</span>
                             <span class="pull-right-container">
               <i class="fa fa-angle-right pull-right"></i>
@@ -129,12 +129,22 @@ $action = Yii::$app->controller->action->id;
                         </a>
                         <ul class="treeview-menu">
                             <?php if (Permission::can('admin_item_index')): ?>
-                                <li <?= in_array($controller, [ 'item', 'item-color', 'item-size' ]) ? ' class="active"' : '' ?>><?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-circle-thin' ]) . 'Товары', [ '/admin/item/index' ]) ?></li>
+                                <li <?= in_array($controller,
+                                                 [ 'item', 'item-color', 'item-size' ]) ? ' class="active"' : '' ?>><?= Html::a(Html::tag('i',
+                                                                                                                                          '&nbsp;',
+                                                                                                                                          [ 'class' => 'far fa-circle' ]) . 'Товары',
+                                                                                                                                [ '/admin/item/index' ]) ?></li>
                             <?php endif; ?>
                             <?php if (Permission::can('admin_category_index')): ?>
-                                <li<?= $controller == 'category' ? ' class="active"' : '' ?>><?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-circle-thin' ]) . 'Категории', [ '/admin/category/index' ]) ?></li>                                     <?php endif; ?>
+                                <li<?= $controller == 'category' ? ' class="active"' : '' ?>><?= Html::a(Html::tag('i',
+                                                                                                                   '&nbsp;',
+                                                                                                                   [ 'class' => 'far fa-circle' ]) . 'Категории',
+                                                                                                         [ '/admin/category/index' ]) ?></li>                                     <?php endif; ?>
                             <?php if (Permission::can('admin_order_index')): ?>
-                                <li<?= $controller == 'order' ? ' class="active"' : '' ?>><?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-circle-thin' ]) . 'Заказы', [ '/admin/order/index' ]) ?></li>
+                                <li<?= $controller == 'order' ? ' class="active"' : '' ?>><?= Html::a(Html::tag('i',
+                                                                                                                '&nbsp;',
+                                                                                                                [ 'class' => 'far fa-circle' ]) . 'Заказы',
+                                                                                                      [ '/admin/order/index' ]) ?></li>
                             <?php endif; ?>
                         </ul>
                     </li>
@@ -142,17 +152,23 @@ $action = Yii::$app->controller->action->id;
                 <?php if (Permission::can([ 'admin_user_index', 'admin_role_index' ])): ?>
                     <li class="treeview <?= in_array($controller, [ 'user', 'role' ]) ? ' active' : '' ?>">
                         <a href="#">
-                            <i class="fa fa-user-o"></i> <span>Пользователи</span>
+                            <i class="fas fa-users"></i> <span>Пользователи</span>
                             <span class="pull-right-container">
               <i class="fa fa-angle-right pull-right"></i>
             </span>
                         </a>
                         <ul class="treeview-menu">
                             <?php if (Permission::can('admin_user_index')): ?>
-                                <li <?= $controller == 'user' ? ' class="active"' : '' ?>><?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-circle-thin' ]) . 'Список пользователей', [ '/admin/user/index' ]) ?></li>
+                                <li <?= $controller == 'user' ? ' class="active"' : '' ?>><?= Html::a(Html::tag('i',
+                                                                                                                '&nbsp;',
+                                                                                                                [ 'class' => 'far fa-circle' ]) . 'Список пользователей',
+                                                                                                      [ '/admin/user/index' ]) ?></li>
                             <?php endif; ?>
                             <?php if (Permission::can('admin_role_index')): ?>
-                                <li <?= $controller == 'role' ? ' class="active"' : '' ?>><?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-circle-thin' ]) . 'Роли', [ '/admin/role/index' ]) ?></li>
+                                <li <?= $controller == 'role' ? ' class="active"' : '' ?>><?= Html::a(Html::tag('i',
+                                                                                                                '&nbsp;',
+                                                                                                                [ 'class' => 'far fa-circle' ]) . 'Роли',
+                                                                                                      [ '/admin/role/index' ]) ?></li>
                             <?php endif; ?>
                         </ul>
                     </li>
@@ -160,7 +176,7 @@ $action = Yii::$app->controller->action->id;
                 <?php if (Permission::can([ 'admin_promotion_index', 'admin_banner_index' ])): ?>
                     <li class="treeview <?= in_array($controller, [ 'promotion', 'banner' ]) ? ' active' : '' ?>">
                         <a href="#">
-                            <i class="fa fa-bars"></i>
+                            <i class="fas fa-bars"></i>
                             <span>Контент</span>
                             <span class="pull-right-container">
               <i class="fa fa-angle-right pull-right"></i>
@@ -168,33 +184,31 @@ $action = Yii::$app->controller->action->id;
                         </a>
                         <ul class="treeview-menu">
                             <?php if (Permission::can('admin_promotion_index')): ?>
-                                <li <?= $controller == 'promotion' ? ' class="active"' : '' ?>><a
-                                            href="<?= \yii\helpers\Url::to([ '/admin/promotion/index' ]) ?>"><i
-                                                class="fa fa-circle-thin"></i>Акции</a></li>
+                                <li <?= $controller == 'promotion' ? ' class="active"' : '' ?>><?= Html::a(Html::tag('i',
+                                                                                                                     '&nbsp;',
+                                                                                                                     [ 'class' => 'far fa-circle' ]) . 'Акции',
+                                                                                                           [ '/admin/promotion/index' ]) ?></li>
+
                             <?php endif; ?>
                             <?php if (Permission::can('admin_banner_index')): ?>
-                                <li <?= $controller == 'banner' ? ' class="active"' : '' ?>><a
-                                            href="<?= \yii\helpers\Url::to([ '/admin/banner/index' ]) ?>"><i
-                                                class="fa fa-circle-thin"></i>Баннеры</a></li>
+                                <li <?= $controller == 'banner' ? ' class="active"' : '' ?>><?= Html::a(Html::tag('i',
+                                                                                                                  '&nbsp;',
+                                                                                                                  [ 'class' => 'far fa-circle' ]) . 'Баннеры',
+                                                                                                        [ '/admin/banner/index' ]) ?></li>
                             <?php endif; ?>
-                            <li><a href="../UI/border-utilities.html"><i class="fa fa-circle-thin"></i>Соц. сети</a>
-                            </li>
-                            <li><a href="../UI/buttons.html"><i class="fa fa-circle-thin"></i>Новости</a></li>
                         </ul>
                     </li>
                 <?php endif; ?>
                 <li class="header nav-small-cap">Дополнительные</li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-gears"></i>
+                        <i class="fas fa-cogs"></i>
                         <span>Настройки</span>
                         <span class="pull-right-container">
               <i class="fa fa-angle-right pull-right"></i>
             </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="../widgets/chart.html"><i class="fa fa-circle-thin"></i>Основные</a></li>
-                        <li><a href="../widgets/blog.html"><i class="fa fa-circle-thin"></i>Очистка кэша</a></li>
                     </ul>
                 </li>
             </ul>
@@ -218,7 +232,7 @@ $action = Yii::$app->controller->action->id;
                                          'activeItemTemplate' => '<li class="breadcrumb-item active">{link}</li>',
                                          'itemTemplate' => '<li class="breadcrumb-item">{link}</li>',
                                          'homeLink' => [
-                                             'label' => '<i class="fa fa-home"></i>' . 'Главная',
+                                             'label' => '<i class="fas fa-home"></i>' . 'Главная',
                                              'url' => '/admin',
                                          ],
                                          'encodeLabels' => false,

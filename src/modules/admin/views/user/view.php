@@ -17,8 +17,9 @@ use yii\helpers\Html;
     
     <?php if (Permission::can('admin_user_update')): ?>
         <div class="box-header with-border">
-            <div class="pull-right">
-                <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-pencil' ]) . ' Редактировать', [ "/admin/user/update", 'id' => $model->id ], [ 'class' => 'btn btn-xs btn-warning' ]) ?>
+            <div class="right-float">
+                <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fas fa-pen' ]) . ' Редактировать',
+                            [ "/admin/user/update", 'id' => $model->id ], [ 'class' => 'btn btn-xs btn-warning' ]) ?>
             </div>
         </div>
     <?php endif; ?>

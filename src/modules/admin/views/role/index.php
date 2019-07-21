@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="box box-shadowed box-outline-success">
     <div class="box-header with-border">
-        <div class="pull-right">
+        <div class="right-float">
             <?php if (Permission::can('admin_role_create')): ?>
                 <?= Html::a('Добавить роль', [ '/admin/role/create' ], [ 'class' => 'btn btn-sm
             btn-info', 'style' => 'font-size: 16px;font-weight: 600;margin-left:15px;' ]) ?>
@@ -80,9 +80,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'buttons' => [
                         'update' => function ($url, $model)
                         {
-                            return Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-pencil' ]) . ' Редактировать',
-                                [ "/admin/role/update", 'name' => $model->name ],
-                                [ 'class' => 'btn btn-sm btn-warning' ]);
+                            return Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fas fa-pen' ]) . ' Редактировать',
+                                           [ "/admin/role/update", 'name' => $model->name ],
+                                           [ 'class' => 'btn btn-sm btn-warning' ]);
                         },
                     ],
                 ],

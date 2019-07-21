@@ -349,10 +349,11 @@ a:active, a:focus, a:hover {
     background-color: transparent;
     background-image: none;
     padding: 20px;
-    font-family: fontAwesome;
 }
 
 .main-header .sidebar-toggle:before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
     content: "\f0c9"
 }
 

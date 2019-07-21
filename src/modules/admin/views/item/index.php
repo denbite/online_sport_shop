@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="box box-shadowed box-outline-success">
     <div class="box-header with-border">
-        <div class="pull-right">
+        <div class="right-float">
             <?php if (Permission::can('admin_item_create')): ?>
                 <?= Html::a('Добавить товар', [ '/admin/item/create' ], [ 'class' => 'btn btn-sm
             btn-info', 'style' => 'font-size: 16px;font-weight: 600;margin-left:15px;' ]) ?>
