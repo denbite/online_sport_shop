@@ -2,22 +2,23 @@
 
 namespace app\models;
 
+use app\components\models\Status;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "item".
  *
- * @property int $id
- * @property int $category_id
+ * @property int    $id
+ * @property int    $category_id
  * @property string $firm
  * @property string $model
  * @property string $collection
  * @property string $code
- * @property int $sale
- * @property int $status
- * @property int $created_at
- * @property int $updated_at
+ * @property int    $sale
+ * @property int    $status
+ * @property int    $created_at
+ * @property int    $updated_at
  */
 class Item extends \yii\db\ActiveRecord
 {
@@ -105,6 +106,7 @@ class Item extends \yii\db\ActiveRecord
         return $this->hasOne(Promotion::className(), [ 'id' => 'promotion_id' ])
                     ->viaTable(PromotionItem::tableName(), [ 'item_id' => 'id' ])
                     ->andWhere([ 'and', [ '<', 'publish_from', time() ], [ '>', 'publish_to', time() ] ])
+                    ->andWhere([ 'status' => Status::STATUS_ACTIVE ])
                     ->orderBy([ 'publish_from' => SORT_DESC ]);
     }
 }

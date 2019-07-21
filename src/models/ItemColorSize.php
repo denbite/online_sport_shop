@@ -59,4 +59,9 @@ class ItemColorSize extends \yii\db\ActiveRecord
         return $this->hasOne(ItemColor::className(), [ 'id' => 'color_id' ]);
     }
     
+    public function getPromotion()
+    {
+        return $this->color->item->promotion;
+    }
+    
 }

@@ -146,6 +146,7 @@ class CartController
             $tmp = [];
             
             foreach ($cart->getItems() as $index => $item) {
+    
                 $size = $item->getProduct();
                 $tmp[$index]['size'] = ArrayHelper::toArray($size);
                 $tmp[$index]['color'] = ArrayHelper::toArray($size->color);

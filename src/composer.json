@@ -39,8 +39,7 @@
     "mihaildev/yii2-ckeditor": "*",
     "kartik-v/yii2-widget-datetimepicker": "*",
     "kartik-v/yii2-widget-datepicker": "@dev",
-    "kartik-v/yii2-field-range": "*",
-    "devanych/yii2-cart": "*"
+    "kartik-v/yii2-field-range": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",

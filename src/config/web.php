@@ -63,9 +63,9 @@ $config = [
             'useFileTransport' => true,
         ],
         'cart' => [
-            'class' => 'devanych\cart\Cart',
-            'storageClass' => 'devanych\cart\storage\CookieStorage',
-            'calculatorClass' => 'devanych\cart\calculators\SimpleCalculator',
+            'class' => 'app\components\cart\Cart',
+            'storageClass' => 'app\components\cart\storage\CookieStorage',
+            'calculatorClass' => 'app\components\cart\calculator\SimpleCalculator',
             'params' => [
                 'key' => 'cart',
                 'expire' => 604800,
