@@ -11,10 +11,9 @@ use yii\db\Exception;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\MethodNotAllowedHttpException;
-use yii\web\Response;
 
 /**
- * Default controller for the `main` module
+ * Controller with only AJAX actions
  */
 class CartController
     extends Controller
@@ -41,7 +40,6 @@ class CartController
     public function actionAddToCart()
     {
         if (Yii::$app->request->isPost and Yii::$app->request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
             $result = [];
             $cart = Yii::$app->cart;
     
@@ -84,16 +82,13 @@ class CartController
                         $result['extra']['image_alt'] = $result['color']['mainImage']['url'];
                         $result['extra']['link'] = Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($result['color']['item']['id']) ]);
                         $result['extra']['title'] = $result['color']['item']['model'] . ' ' . $result['size'];
-                        $result['extra']['sum'] = $quantity . ' x ' . ValueHelper::formatPrice($result['price']);
                         $result['extra']['new'] = true;
                     } else {
                         $cart->plus($product->id, $quantity);
-                        $result['extra']['sum'] = $cart->getItem($product->id)
-                                                       ->getQuantity() . ' x ' . ValueHelper::formatPrice($result['price']);
                         $result['extra']['new'] = false;
                     }
     
-                    if ($result['quantity'] > $cart->getItem($product->id)->getQuantity()) {
+                    if ($result['quantity'] >= $cart->getItem($product->id)->getQuantity()) {
                         $result['success'] = true;
         
                     } else {
@@ -101,6 +96,9 @@ class CartController
                         $result['success'] = false;
                     }
     
+                    $result['extra']['sum'] = $cart->getItem($product->id)
+                                                   ->getQuantity() . ' x ' . ValueHelper::formatPrice($result['price']);
+                    $result['id'] = ValueHelper::encryptValue($result['id']);
                 } else {
                     $result['success'] = false;
                 }
@@ -109,7 +107,7 @@ class CartController
                 $result['extra']['totalCost'] = ValueHelper::formatPrice($cart->getTotalCost());
             }
     
-            return $result;
+            return $this->asJson($result);
         }
     
         throw new MethodNotAllowedHttpException('Only POST method allowed');
@@ -119,7 +117,6 @@ class CartController
     {
         if (Yii::$app->request->isPost and Yii::$app->request->isAjax) {
             $result['success'] = false;
-            Yii::$app->response->format = Response::FORMAT_JSON;
             $cart = Yii::$app->cart;
             
             if ($post = Yii::$app->request->post() and array_key_exists('product', $post)) {
@@ -133,8 +130,8 @@ class CartController
                     $result['success'] = true;
                 }
             }
-            
-            return $result;
+    
+            return $this->asJson($result);
         }
         
         throw new MethodNotAllowedHttpException('Only POST method allowed');
@@ -145,7 +142,6 @@ class CartController
         if (Yii::$app->request->isPost and Yii::$app->request->isAjax) {
             
             $result['success'] = false;
-            Yii::$app->response->format = Response::FORMAT_JSON;
             
             try {
                 Yii::$app->cart->clear();
@@ -153,8 +149,8 @@ class CartController
             } catch (Exception $exception) {
                 Yii::$app->errorHandler->logException($exception);
             }
-            
-            return $result;
+    
+            return $this->asJson($result);
         }
         
         throw new MethodNotAllowedHttpException('Only POST method allowed');

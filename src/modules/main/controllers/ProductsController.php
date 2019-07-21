@@ -2,11 +2,13 @@
 
 namespace app\modules\main\controllers;
 
+use app\components\helpers\SeoHelper;
 use app\components\helpers\ValueHelper;
 use app\components\models\Status;
 use app\models\Category;
 use app\models\Image;
 use app\models\Item;
+use app\models\ItemDescription;
 use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -43,14 +45,16 @@ class ProductsController
     {
         $slug = (int) preg_replace("[\D+]", "", $slug);
         
+        SeoHelper::putDefaultTags();
+        
         // if empty after regexp check
         if (empty($slug)) {
             // get all nodes lvl=1
             
             $current = Category::findOne([ 'lvl' => 0, 'root' => 1 ]);
-    
+            
             $query = $current->children(1)->with('image')->andWhere([ 'active' => Status::STATUS_ACTIVE ]);
-    
+            
             $pages = new Pagination([
                                         'totalCount' => $query->count(),
                                         'pageSize' => 18,
@@ -58,7 +62,7 @@ class ProductsController
                                         'forcePageParam' => false,
                                     ]
             );
-    
+            
             $children = $query->offset($pages->offset)->limit($pages->limit)->all();
             
             return $this->render('category', [
@@ -72,7 +76,7 @@ class ProductsController
             
             if (count($activeParents) == $current['lvl']) {
                 $query = $current->children(1)->andWhere([ 'active' => Status::STATUS_ACTIVE ]);
-    
+                
                 $pages = new Pagination([
                                             'totalCount' => $query->count(),
                                             'pageSize' => 18,
@@ -80,7 +84,7 @@ class ProductsController
                                             'forcePageParam' => false,
                                         ]
                 );
-    
+                
                 $children = $query->offset($pages->offset)->limit($pages->limit)->all();
                 
                 if (!empty($children)) {
@@ -104,8 +108,10 @@ class ProductsController
     {
         $slug = (int) preg_replace("[\D+]", "", $slug);
         
+        SeoHelper::putDefaultTags();
+        
         if (empty($slug)) {
-    
+            
             $query = Item::find()
                          ->select([ 'item.*', 'MIN(sizes.price) as min_price' ])
                          ->from(Item::tableName() . ' item')
@@ -124,7 +130,7 @@ class ProductsController
                                  ])
                          ->groupBy([ 'id' ])
                          ->orderBy([ 'rate' => SORT_DESC ]);
-    
+            
             $pages = new Pagination([
                                         'totalCount' => $query->count(),
                                         'pageSize' => 18,
@@ -132,7 +138,7 @@ class ProductsController
                                         'forcePageParam' => false,
                                     ]
             );
-    
+            
             $items = $query->offset($pages->offset)->limit($pages->limit)->asArray()->all();
             
             // all items, order by rate descending
@@ -163,20 +169,20 @@ class ProductsController
                                      $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
                                  } ])
                                  ->where([
-                                     'item.category_id' => $current['id'],
-                                     'item.status' => Status::STATUS_ACTIVE,
-                                     'colors.status' => Status::STATUS_ACTIVE,
-                                     'sizes.status' => Status::STATUS_ACTIVE,
-                                 ])
+                                             'item.category_id' => $current['id'],
+                                             'item.status' => Status::STATUS_ACTIVE,
+                                             'colors.status' => Status::STATUS_ACTIVE,
+                                             'sizes.status' => Status::STATUS_ACTIVE,
+                                         ])
                                  ->groupBy([ 'id' ])
                                  ->orderBy([ 'rate' => SORT_DESC ]);
                     
                     $pages = new Pagination([
-                            'totalCount' => $query->count(),
-                            'pageSize' => 18,
-                            'defaultPageSize' => 18,
-                            'forcePageParam' => false,
-                        ]
+                                                'totalCount' => $query->count(),
+                                                'pageSize' => 18,
+                                                'defaultPageSize' => 18,
+                                                'forcePageParam' => false,
+                                            ]
                     );
                     
                     $items = $query->offset($pages->offset)->limit($pages->limit)->asArray()->all();
@@ -212,15 +218,15 @@ class ProductsController
                             $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
                         } ])
                         ->where([
-                            'images.type' => Image::TYPE_ITEM,
-                            'item.id' => ValueHelper::decryptValue($slug),
-                            'item.status' => Status::STATUS_ACTIVE,
-                            'colors.status' => Status::STATUS_ACTIVE,
-                            'sizes.status' => Status::STATUS_ACTIVE,
-                        ])
+                                    'images.type' => Image::TYPE_ITEM,
+                                    'item.id' => ValueHelper::decryptValue($slug),
+                                    'item.status' => Status::STATUS_ACTIVE,
+                                    'colors.status' => Status::STATUS_ACTIVE,
+                                    'sizes.status' => Status::STATUS_ACTIVE,
+                                ])
                         ->asArray()
                         ->one();
-    
+            
             if (!empty($item)) {
                 
                 $current = Category::findOne([ 'id' => $item['category_id'], 'active' => Status::STATUS_ACTIVE ]);
@@ -228,8 +234,42 @@ class ProductsController
                 $parents = ArrayHelper::toArray(array_merge($current->parents()->all(), [ $current ]));
                 
                 unset($current);
-    
-                // check if exists this item in any promotions
+                
+                $title = 'Купить ';
+                
+                foreach ($parents as $i => $parent) {
+                    if ($i) {
+                        $title .= "{$parent['name']} ";
+                    }
+                }
+                
+                $title .= $item['firm'] . ' ' . $item['model'] . ' ';
+                
+                foreach ($item['allColors'] as $color) {
+                    $title .= $color['color'] . ' ' . $item['code'] . '-' . $color['code'] . ' ';
+                }
+                
+                $description = $title;
+                
+                foreach (explode(ItemDescription::ITEMS_SEPARATOR, $item['description']['small_list']) as $d) {
+                    $description .= "{$d} ";
+                }
+                
+                $title .= '| Киев | Цены' . ( !empty($item['promotion']) ? ' | Скидки' : '' );
+                $description .= '| Киев | Цены' . ( !empty($item['promotion']) ? ' | Скидки' : '' );
+                
+                SeoHelper::putDefaultTags([
+                                              'title' => $title,
+                                              'description' => $description,
+                                          ]);
+                
+                // create OpenGraph meta-tags
+                
+                unset($title);
+                unset($description);
+                unset($parent);
+                unset($i);
+                unset($d);
                 
                 return $this->render('product', [
                     'item' => $item,

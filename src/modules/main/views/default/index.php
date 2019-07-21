@@ -1,6 +1,5 @@
 <?php
 
-/** @var array $banners */
 
 use app\components\helpers\ValueHelper;
 use app\models\Image;
@@ -8,6 +7,7 @@ use app\models\Promotion;
 use yii\helpers\Html;
 
 /** @var array $popular */
+/** @var array $banners */
 
 ?>
 
@@ -22,10 +22,12 @@ use yii\helpers\Html;
                             <div class="slider-content pt-180 slider-animated-1">
                                 <h1 class="animated"><?= $banner['title'] ?></h1>
                                 <p class="animated"><?= $banner['description'] ?></p>
-                                <div class="slider-btn btn-hover">
-                                    <a class="animated" target="_blank"
-                                       href="<?= $banner['link'] ?>"><?= $banner['link_title'] ?></a>
-                                </div>
+                                <?php if (!empty($banner['link_title']) and !empty($banner['link'])): ?>
+                                    <div class="slider-btn btn-hover">
+                                        <a class="animated" target="_blank"
+                                           href="<?= $banner['link'] ?>"><?= $banner['link_title'] ?></a>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-6 col-12 col-sm-6">

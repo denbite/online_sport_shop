@@ -51,7 +51,8 @@ Open putty with main project folder. (if u under root, else don't forget to writ
 ~~~
 docker-compose up --build -d
 ~~~
-Open in browser: {your-ip}:6080, then create table with the same name as in the config file (default = swim);
+Open in browser: {your-ip}:6080, then create table with the same name as in the config file (default = swim, utf-8 
+general_ci);
 Comeback to putty. When services started, write in putty these commands:
 ~~~
 docker-compose exec web bash
@@ -61,7 +62,7 @@ chmod -R 777 ./web/files
 php yii migrate --migrationPath=@yii/rbac/migrations
 php yii migrate
 php yii migrate --migrationPath=@vendor/devanych/yii2-cart/migrations
-certbot --apache -d {YOUR_DOMAIN} -n --email {YOUR_EMAIL}
+certbot --apache -d {YOUR_DOMAIN} -n --email {YOUR_EMAIL} --agree-tos
 ~~~
 
 ------

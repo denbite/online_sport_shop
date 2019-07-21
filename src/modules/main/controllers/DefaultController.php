@@ -2,6 +2,7 @@
 
 namespace app\modules\main\controllers;
 
+use app\components\helpers\SeoHelper;
 use app\components\models\Status;
 use app\models\Banner;
 use app\models\Item;
@@ -36,15 +37,15 @@ class DefaultController extends Controller
         $banners = Banner::find()
                          ->joinWith('image')
                          ->where([
-                             'status' => Status::STATUS_ACTIVE,
-                         ])
+                                     'status' => Status::STATUS_ACTIVE,
+                                 ])
                          ->andWhere([
-                             'and', [ '<', 'publish_from', time() ], [ '>', 'publish_to', time() ],
-                         ])
+                                        'and', [ '<', 'publish_from', time() ], [ '>', 'publish_to', time() ],
+                                    ])
                          ->orderBy([ 'publish_from' => SORT_DESC ])
                          ->asArray()
                          ->all();
-    
+        
         $popular = Item::find()
                        ->select([ 'item.*', 'MIN(sizes.price) as min_price' ])
                        ->from(Item::tableName() . ' item')
@@ -57,17 +58,19 @@ class DefaultController extends Controller
                            $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
                        } ])
                        ->where([
-                           'item.status' => Status::STATUS_ACTIVE,
-                           'colors.status' => Status::STATUS_ACTIVE,
-                           'sizes.status' => Status::STATUS_ACTIVE,
-                       ])
+                                   'item.status' => Status::STATUS_ACTIVE,
+                                   'colors.status' => Status::STATUS_ACTIVE,
+                                   'sizes.status' => Status::STATUS_ACTIVE,
+                               ])
                        ->andWhere([ '>', 'sizes.quantity', 0 ])
                        ->groupBy('id')
                        ->orderBy([ 'rate' => SORT_DESC ])
                        ->limit(6)
                        ->asArray()
                        ->all();
-    
+        
+        SeoHelper::putDefaultTags();
+        
         return $this->render('index', [
             'banners' => $banners,
             'popular' => $popular,

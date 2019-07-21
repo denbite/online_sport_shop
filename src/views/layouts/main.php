@@ -27,6 +27,7 @@ AppAsset::register($this);
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
     <title><?= Html::encode(!empty($this->title) ? 'Aquista | ' . $this->title : 'Интернет-магазин Aquista | Самая быстрая доставка по Украине') ?></title>
+    
     <?php $this->head() ?>
 
 </head>

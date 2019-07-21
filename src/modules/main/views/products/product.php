@@ -16,9 +16,10 @@ foreach ($parents as $parent) {
     $this->params['breadcrumbs'][] = [ 'url' => Url::to([ '/main/products/category', 'slug' => $parent['lvl'] != 0 ? ValueHelper::encryptValue($parent['id']) : null ]), 'label' => $parent['name'] ];
 }
 
-$class = Image::getTypes()[Image::TYPE_ITEM];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
+
 
 
 <div class="product-details-area pt-100 pb-95">

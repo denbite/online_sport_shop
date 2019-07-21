@@ -23,10 +23,6 @@
                     alert("При выполнении запроса возникла ошибка");
                 },
                 success: function (data) {
-                    $('.count-style').html(data['extra']['totalCount']);
-                    $('.cart-price').html(data['extra']['totalCost']);
-                    $('.shop-total').html(data['extra']['totalCost']);
-
                     if (data['success']) {
 
                         // if new cart item
@@ -36,11 +32,8 @@
                                 ' class="shopping-cart-img"><a' +
                                 ' href="' + data['extra']['link'] + '"><img alt="' + data['extra']['image_alt'] + '" src="' + data['extra']['image_src'] + '"></a><div class="item-close"><a href="#"><i class="sli sli-close"></i></a>' +
                                 '</div> </div> <div class="shopping-cart-title"> <h4> <a href="' + data['extra']['link'] + '">' + data['extra']['title'] + '</a> </h4> <span>' + data['extra']['sum'] + '</span> </div> </li>'
-                            )
-                            ;
+                            );
 
-                        } else {
-                            $('ul.cart-items li[data-cart-id="' + data['id'] + '"] .shopping-cart-title span').html(data['extra']['sum']);
                         }
 
                         // show cart
@@ -48,11 +41,17 @@
                     } else {
                         alert("К сожалению, данного товара уже нет на складе");
                     }
+
+                    $('.count-style').html(data['extra']['totalCount']);
+                    $('.cart-price').html(data['extra']['totalCost']);
+                    $('.shop-total').html(data['extra']['totalCost']);
+                    $('ul.cart-items li[data-cart-id="' + data['id'] + '"] .shopping-cart-title span').html(data['extra']['sum']);
+
                 }
             })
         });
 
-        $('.item-close i:visible').on('click', function () {
+        $('ul.cart-items').on('click', '.item-close i', function () {
 
             var product = $(this).closest('li.single-shopping-cart').data('cart-id');
 
