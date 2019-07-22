@@ -22,18 +22,21 @@ class m190721_172232_fix_items_and_config
         
         
         $this->createTable('{{%config}}', [
+            'group' => $this->string(32),
             'name' => $this->string(64)->unique()->notNull(),
             'value' => $this->string(),
             'label' => $this->string(),
         ]);
         
         $this->insert('{{%config}}', [
+            'group' => 'Коэфициенты',
             'name' => 'priceMultiplier',
             'value' => 0.95,
             'label' => 'Коэфициент, на который умножается базовая цена для продаж',
         ]);
         
         $this->insert('{{%config}}', [
+            'group' => 'Коэфициенты',
             'name' => 'buyMultiplier',
             'value' => 0.6,
             'label' => 'Коэфициент, на который умножается базовая цена при закупке товаров',

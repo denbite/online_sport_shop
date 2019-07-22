@@ -3,7 +3,6 @@
 namespace app\models;
 
 use app\components\helpers\ValueHelper;
-use yii\db\Exception;
 
 /**
  * This is the model class for table "item_color_size".
@@ -84,38 +83,37 @@ class ItemColorSize extends \yii\db\ActiveRecord
         return $this->color->item->promotion;
     }
     
-    public static function updateSalePrice($items = [], $type, $sale)
-    {
-        if (is_array($items) and !empty($items) and array_key_exists($type, Promotion::getTypes()) and !empty($sale)) {
-            $sizes = ItemColorSize::find()
-                                  ->joinWith([ 'color' => function ($query)
-                                  {
-                                      $query->joinWith([ 'item item' ]);
-                                  } ])
-                                  ->where([
-                                              'in', 'item.id', $items,
-                                          ])
-                                  ->all();
-            
-            if ($type == Promotion::TYPE_PERCENT and $sale > 0 and $sale < 100) {
-                $coef = (float) ( 100 - $sale ) / 100;
-                
-                foreach ($sizes as $size) {
-                    $size->sale_price = ValueHelper::format($size->base_price * $coef);
-                    if (!$size->save()) {
-                        throw new Exception('Не удалось изменить акционные цены');
-                    }
-                }
-                
-            } elseif ($type == Promotion::TYPE_VALUE and $sale > 0) {
-                foreach ($sizes as $size) {
-                    $size->sale_price = ValueHelper::format($size->base_price) - $sale;
-                    if (!$size->save()) {
-                        throw new Exception('Не удалось изменить акционные цены');
-                    }
-                }
-            }
-        }
-    }
-    
+    //    public static function updateSalePrice($items = [], $type, $sale)
+    //    {
+    //        if (is_array($items) and !empty($items) and array_key_exists($type, Promotion::getTypes()) and !empty($sale)) {
+    //            $sizes = ItemColorSize::find()
+    //                                  ->joinWith([ 'color' => function ($query)
+    //                                  {
+    //                                      $query->joinWith([ 'item item' ]);
+    //                                  } ])
+    //                                  ->where([
+    //                                              'in', 'item.id', $items,
+    //                                          ])
+    //                                  ->all();
+    //
+    //            if ($type == Promotion::TYPE_PERCENT and $sale > 0 and $sale < 100) {
+    //                $coef = (float) ( 100 - $sale ) / 100;
+    //
+    //                foreach ($sizes as $size) {
+    //                    $size->sale_price = ValueHelper::format($size->base_price * $coef);
+    //                    if (!$size->save()) {
+    //                        throw new Exception('Не удалось изменить акционные цены');
+    //                    }
+    //                }
+    //
+    //            } elseif ($type == Promotion::TYPE_VALUE and $sale > 0) {
+    //                foreach ($sizes as $size) {
+    //                    $size->sale_price = ValueHelper::format($size->base_price) - $sale;
+    //                    if (!$size->save()) {
+    //                        throw new Exception('Не удалось изменить акционные цены');
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
 }

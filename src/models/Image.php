@@ -187,28 +187,21 @@ class Image
     /**
      * @param $type
      * @param $subject_id
+     * @param $size
      *
      * @return array
      */
-    public static function getUrlsBySubject($type, $subject_id)
+    public static function getUrlsBySubject($type, $subject_id, $size = self::SIZE_ORIGINAL)
     {
+        $urls = [];
         // todo-cache: add cache(30 sec)
-        $data = ItemColor::find()
-                         ->with('item')
-                         ->where([
-                                     'id' => $subject_id,
-                                 ])
-                         ->asArray()
-                         ->one();
+        if (array_key_exists($type, self::getTypes()) and array_key_exists($size, self::getSizes())) {
         
-        $urls = array_column(self::getImagesBySubject($type, $subject_id), 'url');
+            $ids = array_column(self::getImagesBySubject($type, $subject_id), 'id');
         
-        $class = self::getTypes()[$type];
-        
-        $path = "/files/{$class}/{$class}-{$subject_id}/";
-        
-        foreach ($urls as &$url) {
-            $url = $path . $url;
+            foreach ($ids as $id) {
+                $urls[] = self::getLink($id, $size);
+            }
         }
         
         return $urls;

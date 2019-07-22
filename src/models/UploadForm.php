@@ -125,7 +125,7 @@ class UploadForm
                                 throw new NotFoundHttpException('Изображения не были сохранены');
                             }
     
-                            Image::resize($path . $mdl->url, 512, 512, true);
+                            Image::resize($path . $mdl->url, 512, 512);
                 
                             break;
                         case Image::TYPE_BANNER:

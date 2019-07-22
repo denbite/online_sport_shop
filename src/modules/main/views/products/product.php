@@ -68,16 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="product-details-price"
                                      data-color="<?= ValueHelper::encryptValue($color['id']) ?>"
                                      data-size="<?= ValueHelper::encryptValue($size['id']) ?>" style="display: none;">
-                                    <span><?php
-    
-                                        if ($item['promotion']['type'] == Promotion::TYPE_PERCENT) {
-                                            echo ValueHelper::outPrice($size['sell_price'] * ( 100 - $item['promotion']['sale'] ) / 100);
-                                        } elseif ($item['promotion']['type'] == Promotion::TYPE_VALUE) {
-                                            echo ValueHelper::outPrice($size['sell_price'] - $item['promotion']['sale']);
-                                        } else {
-                                            echo ValueHelper::outPrice($size['sell_price']);
-                                        }
-                                        ?></span>
+                                    <span class="new"><?= ValueHelper::outPrice($size, $item['promotion']) ?></span>
                                     <?php if (!empty($item['promotion'])): ?>
                                         <span class="old"> <?= ValueHelper::outPrice($size['sell_price']); ?> </span>
                                     <?php endif; ?>

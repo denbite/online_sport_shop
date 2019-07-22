@@ -200,7 +200,8 @@ $action = Yii::$app->controller->action->id;
                     </li>
                 <?php endif; ?>
                 <li class="header nav-small-cap">Дополнительные</li>
-                <li class="treeview">
+                <?php if (Permission::can([ 'admin_config_index', ])): ?>
+                    <li class="treeview <?= in_array($controller, [ 'config', ]) ? ' active' : '' ?>">
                     <a href="#">
                         <i class="fas fa-cogs"></i>
                         <span>Настройки</span>
@@ -209,8 +210,15 @@ $action = Yii::$app->controller->action->id;
             </span>
                     </a>
                     <ul class="treeview-menu">
+                        <?php if (Permission::can('admin_config_index')): ?>
+                            <li <?= $controller == 'config' ? ' class="active"' : '' ?>><?= Html::a(Html::tag('i',
+                                        '&nbsp;',
+                                        [ 'class' => 'far fa-circle' ]) . 'Основные',
+                                    [ '/admin/config/index' ]) ?></li>
+                        <?php endif; ?>
                     </ul>
                 </li>
+                <?php endif; ?>
             </ul>
         </section>
     </aside>

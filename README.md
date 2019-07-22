@@ -40,7 +40,6 @@ Come back to the main project folder and apply migrations:
 cd ..
 yii migrate --migrationPath=@yii/rbac/migrations
 yii migrate
-yii migrate --migrationPath=@vendor/devanych/yii2-cart/migrations
 ~~~
 
 ## Install for Linux (~Ubuntu 18.04)
@@ -61,7 +60,6 @@ chmod -R 777 ./web/assets
 chmod -R 777 ./web/files
 php yii migrate --migrationPath=@yii/rbac/migrations
 php yii migrate
-php yii migrate --migrationPath=@vendor/devanych/yii2-cart/migrations
 certbot --apache -d {YOUR_DOMAIN} -n --email {YOUR_EMAIL} --agree-tos
 ~~~
 
