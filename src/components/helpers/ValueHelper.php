@@ -2,6 +2,7 @@
 
 namespace app\components\helpers;
 
+use app\models\Config;
 use Yii;
 
 class ValueHelper
@@ -22,6 +23,20 @@ class ValueHelper
         return ( $x = (int) $x and $x > 0 ) ? $x + self::SECRET_KEY : null;
     }
     
+    public static function getMultiplier()
+    {
+        $param = Config::find()->select('value')->where([ 'name' => 'priceMultiplier' ])->asArray()->one();
+        
+        if (is_array($param) and array_key_exists('value', $param)) {
+            $multiplier = $param['value'];
+        }
+        
+        if (empty($multiplier)) {
+            $multiplier = Yii::$app->params['priceMultiplier'];
+        }
+        
+        return $multiplier;
+    }
     
     /**
      * Decrypt index from url
@@ -35,6 +50,11 @@ class ValueHelper
         return ( $x = (int) $x and $x > self::SECRET_KEY ) ? $x - self::SECRET_KEY : null;
     }
     
+    public static function format($price)
+    {
+        return round($price * self::getMultiplier(), -1);
+    }
+    
     /**
      * Format price
      *
@@ -42,9 +62,9 @@ class ValueHelper
      *
      * @return string
      */
-    public static function formatPrice($price)
+    public static function outPrice($price)
     {
-        return '₴ ' . round($price * Yii::$app->params['priceMultiplier'], -1);
+        return '₴ ' . $price;
     }
     
 }

@@ -26,9 +26,24 @@ class m190715_134830_create_promotions_table
         ]);
     
         $this->createTable('{{%promotion_item}}', [
-            'item_id' => $this->integer()->unsigned()->notNull(),
+            'item_id' => $this->integer()->notNull(),
             'promotion_id' => $this->integer()->unsigned()->notNull(),
         ]);
+    
+        $this->createIndex('index-item_promotion-item_id',
+                           '{{%promotion_item}}',
+                           [ 'item_id', 'promotion_id' ],
+                           true);
+    
+        $this->addForeignKey(
+            'fk_item_promotion',
+            '{{%promotion_item}}',
+            'item_id',
+            '{{%item}}',
+            'id',
+            'CASCADE',
+            'CASCADE'
+        );
     }
     
     /**
@@ -36,6 +51,10 @@ class m190715_134830_create_promotions_table
      */
     public function safeDown()
     {
+        $this->dropForeignKey('fk_item_promotion', '{{%promotion_item}}');
+    
+        $this->dropIndex('index-item_promotion-item_id', '{{%promotion_item}}');
+    
         $this->dropTable('{{%promotion_item}}');
         $this->dropTable('{{%promotion}}');
     }

@@ -14,15 +14,6 @@ class m190702_083651_insert_data extends Migration
      */
     public function safeUp()
     {
-        $this->batchInsert('{{%item}}', [
-            'category_id', 'firm', 'model', 'collection', 'code',
-        ],
-                           [
-                               [ 5, 'Funky Trunks', 'Pigs', '2018`SS', 'FJAJEAS' ],
-                               [ 6, 'Funkita', 'Bears', '2019`SS', 'FSH1241824S' ],
-                           ]
-        );
-    
         $root = new Category([ 'name' => 'Каталог' ]);
         $root->makeRoot();
     
@@ -54,9 +45,6 @@ class m190702_083651_insert_data extends Migration
     public function safeDown()
     {
         Category::deleteAll();
-    
-        \app\models\Item::findOne([ 'code' => 'FSH1241824S' ])->delete();
-        \app\models\Item::findOne([ 'code' => 'FJAJEAS' ])->delete();
     }
     
     /*

@@ -8,6 +8,8 @@ use yii\helpers\Html;
 /* @var $model app\models\Item */
 /* @var $model_color app\models\ItemColor */
 /* @var $model_size app\models\ItemColorSize */
+/* @var $items array */
+/* @var $item string */
 
 $this->title = 'Создание размера';
 $this->params['breadcrumbs'][] = [ 'label' => 'Товары', 'url' => [ '/admin/item/index' ] ];
@@ -71,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($model, 'quantity') ?>
                 </div>
                 <div class="col">
-                    <?= $form->field($model, 'price') ?>
+                    <?= $form->field($model, 'base_price') ?>
                 </div>
                 <div class="col">
                     <?= $form->field($model, 'status')

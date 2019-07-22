@@ -47,7 +47,7 @@ class DefaultController extends Controller
                          ->all();
         
         $popular = Item::find()
-                       ->select([ 'item.*', 'MIN(sizes.price) as min_price' ])
+                       ->select([ 'item.*', 'MIN(sizes.sell_price) as min_price' ])
                        ->from(Item::tableName() . ' item')
                        ->joinWith([ 'allColors colors' => function ($query)
                        {

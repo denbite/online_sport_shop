@@ -113,7 +113,7 @@ class ProductsController
         if (empty($slug)) {
             
             $query = Item::find()
-                         ->select([ 'item.*', 'MIN(sizes.price) as min_price' ])
+                         ->select([ 'item.*', 'MIN(sizes.sell_price) as min_price' ])
                          ->from(Item::tableName() . ' item')
                          ->joinWith([ 'allColors colors' => function ($query)
                          {
@@ -158,7 +158,7 @@ class ProductsController
                 if (count($activeParents) == $current['lvl']) {
                     
                     $query = Item::find()
-                                 ->select([ 'item.*', 'MIN(sizes.price) as min_price' ])
+                                 ->select([ 'item.*', 'MIN(sizes.sell_price) as min_price' ])
                                  ->from(Item::tableName() . ' item')
                                  ->joinWith([ 'allColors colors' => function ($query)
                                  {

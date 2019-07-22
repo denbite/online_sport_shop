@@ -71,7 +71,8 @@ $config = [
                 'expire' => 604800,
                 'productClass' => 'app\models\ItemColorSize',
                 'productFieldId' => 'id',
-                'productFieldPrice' => 'price',
+                'productFieldPrice' => 'sell_price',
+                'productFieldSale' => 'sale_price',
             ],
         ],
         'formatter' => [

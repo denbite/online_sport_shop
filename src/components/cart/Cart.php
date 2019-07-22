@@ -32,7 +32,8 @@ class Cart
         'expire' => 604800,
         'productClass' => 'app\model\Product',
         'productFieldId' => 'id',
-        'productFieldPrice' => 'price',
+        'productFieldPrice' => 'sell_price',
+        'productFieldSale' => 'sale_price',
     ];
     
     /**

@@ -4,6 +4,7 @@ namespace app\modules\admin\controllers;
 
 use app\components\helpers\TransactionHelper;
 use app\models\Item;
+use app\models\ItemColorSize;
 use app\models\Promotion;
 use app\models\PromotionItem;
 use app\modules\admin\models\PromotionSearch;
@@ -136,7 +137,7 @@ class PromotionController
                         if (!empty($items) and is_array($items)) {
                             $result = [];
                             foreach ($items as $item) {
-            
+    
                                 $result['PromotionItem'][] = [
                                     'item_id' => $item,
                                     'promotion_id' => $model->id,
@@ -155,6 +156,8 @@ class PromotionController
                                         throw new Exception('Не удалось сохранить товары, учавствующие в акции');
                                     }
                                 }
+    
+                                ItemColorSize::updateSalePrice($items, $model->type, $model->sale);
             
                                 Yii::$app->session->setFlash('success', 'Данные успешно сохранены');
                             }
@@ -251,7 +254,9 @@ class PromotionController
                                         throw new Exception('Не удалось сохранить товары, учавствующие в акции');
                                     }
                                 }
-            
+    
+                                ItemColorSize::updateSalePrice($items, $model->type, $model->sale);
+    
                                 Yii::$app->session->setFlash('success', 'Данные успешно сохранены');
                             }
                         }

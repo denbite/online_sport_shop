@@ -179,7 +179,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                              ],
                                                                              'size',
                                                                              'quantity',
-                                                                             'price',
+                                                                             'base_price',
+                                                                             'sell_price',
+                                                                             [
+                                                                                 'attribute' => 'sale_price',
+                                                                                 'value' => function ($model)
+                                                                                 {
+                                                                                     return !empty($model->promotion) ? $model->sell_price : 0;
+                                                                                 },
+                                                                             ],
                                                                              [
                                                                                  'attribute' => 'status',
                                                                                  'format' => 'html',

@@ -152,15 +152,15 @@ use yii\helpers\Html;
                                         <span class="new"><?php
     
                                             if ($item['promotion']['type'] == Promotion::TYPE_PERCENT) {
-                                                echo ValueHelper::formatPrice($item['min_price'] * ( 100 - $item['promotion']['sale'] ) / 100);
+                                                echo ValueHelper::outPrice($item['min_price'] * ( 100 - $item['promotion']['sale'] ) / 100);
                                             } elseif ($item['promotion']['type'] == Promotion::TYPE_VALUE) {
-                                                echo ValueHelper::formatPrice($item['min_price'] - $item['promotion']['sale']);
+                                                echo ValueHelper::outPrice($item['min_price'] - $item['promotion']['sale']);
                                             } else {
-                                                echo ValueHelper::formatPrice($item['min_price']);
+                                                echo ValueHelper::outPrice($item['min_price']);
                                             }
                                             ?></span>
                                         <?php if (!empty($item['promotion'])): ?>
-                                            <span class="old"> <?= ValueHelper::formatPrice($item['min_price']); ?> </span>
+                                            <span class="old"> <?= ValueHelper::outPrice($item['min_price']); ?> </span>
                                         <?php endif; ?>
                                     </div>
                                     <div class="ht-product-ratting-wrap">

@@ -38,7 +38,7 @@ use yii\helpers\Url;
                     <h4>
                         <a href="<?= Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['item']['id']) ]) ?>"> <?= $item['item']['model'] . ' ' . $item['size']['size'] ?></a>
                     </h4>
-                    <span><?= $item['quantity'] . ' x ' . ValueHelper::formatPrice($item['size']['price']) ?></span>
+                    <span><?= $item['quantity'] . ' x ' . $item['price'] ?></span>
                 </div>
             </li>
         <?php endforeach; ?>

@@ -71,15 +71,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <span><?php
     
                                         if ($item['promotion']['type'] == Promotion::TYPE_PERCENT) {
-                                            echo ValueHelper::formatPrice($size['price'] * ( 100 - $item['promotion']['sale'] ) / 100);
+                                            echo ValueHelper::outPrice($size['sell_price'] * ( 100 - $item['promotion']['sale'] ) / 100);
                                         } elseif ($item['promotion']['type'] == Promotion::TYPE_VALUE) {
-                                            echo ValueHelper::formatPrice($size['price'] - $item['promotion']['sale']);
+                                            echo ValueHelper::outPrice($size['sell_price'] - $item['promotion']['sale']);
                                         } else {
-                                            echo ValueHelper::formatPrice($size['price']);
+                                            echo ValueHelper::outPrice($size['sell_price']);
                                         }
                                         ?></span>
                                     <?php if (!empty($item['promotion'])): ?>
-                                        <span class="old"> <?= ValueHelper::formatPrice($size['price']); ?> </span>
+                                        <span class="old"> <?= ValueHelper::outPrice($size['sell_price']); ?> </span>
                                     <?php endif; ?>
                                     <!--                                    make promotions check and display old value-->
                                 </div>

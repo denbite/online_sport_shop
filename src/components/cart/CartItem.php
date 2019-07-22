@@ -61,7 +61,7 @@ class CartItem
      */
     public function getPrice()
     {
-        return $this->product->{$this->params['productFieldPrice']};
+        return !empty($this->product->promotion) ? $this->product->{$this->params['productFieldSale']} : $this->product->{$this->params['productFieldPrice']};
     }
     
     /**

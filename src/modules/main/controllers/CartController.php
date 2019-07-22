@@ -103,7 +103,7 @@ class CartController
                 if ($cart->getItem($id)) {
                     $cart->remove($id);
                     $result['totalCount'] = $cart->getTotalCount();
-                    $result['totalCost'] = ValueHelper::formatPrice($cart->getTotalCost());
+                    $result['totalCost'] = ValueHelper::outPrice($cart->getTotalCost());
                     $result['id'] = ValueHelper::encryptValue($id);
                     $result['success'] = true;
                 }
@@ -141,7 +141,7 @@ class CartController
             $cart = Yii::$app->cart;
             
             $result['totalCount'] = $cart->getTotalCount();
-            $result['totalCost'] = ValueHelper::formatPrice($cart->getTotalCost());
+            $result['totalCost'] = ValueHelper::outPrice($cart->getTotalCost());
             
             $tmp = [];
             
@@ -152,8 +152,9 @@ class CartController
                 $tmp[$index]['color'] = ArrayHelper::toArray($size->color);
                 $tmp[$index]['image'] = ArrayHelper::toArray($size->color->mainImage);
                 $tmp[$index]['item'] = ArrayHelper::toArray($size->color->item);
-                $tmp[$index]['promotion'] = ArrayHelper::toArray($size->color->item->promotion);
+                $tmp[$index]['promotion'] = ArrayHelper::toArray($size->promotion);
                 $tmp[$index]['quantity'] = $item->getQuantity();
+                $tmp[$index]['price'] = $item->getPrice();
             }
             
             $result['items'] = $tmp;

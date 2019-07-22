@@ -160,7 +160,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                                 <div class="col-lg-2 col-6">
                                     <?= $form->field($modelSize,
-                                        '[' . $modelColor->id . '][' . $index . ']price') ?>
+                                                     '[' . $modelColor->id . '][' . $index . ']base_price') ?>
                                 </div>
                                 <div class="col-lg-2 col-6">
                                     <?= $form->field($modelSize, '[' . $modelColor->id . '][' . $index . ']status')
