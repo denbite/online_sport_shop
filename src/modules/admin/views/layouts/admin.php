@@ -48,7 +48,7 @@ $action = Yii::$app->controller->action->id;
                 <span class="light-logo"><img src="/files/logo-admin-icon.png" width="40px" height="40px" alt="logo"></span>
             </b>
             <span class="logo-lg">
-		  <img src="/files/logo-admin.png" alt="logo" class="light-logo">
+		  <img src="/files/logo-admin.png" alt="logo" class="light-logo" height="40px" width="128px">
 	  </span>', [ '/main/default/index' ], [ 'class' => 'logo' ]) ?>
 
         <!-- Header Navbar -->

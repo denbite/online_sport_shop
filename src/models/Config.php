@@ -2,6 +2,9 @@
 
 namespace app\models;
 
+use app\components\helpers\ValueHelper;
+use Yii;
+
 /**
  * This is the model class for table "config".
  *
@@ -44,5 +47,20 @@ class Config
             'value' => 'Value',
             'label' => 'Label',
         ];
+    }
+    
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            
+            if ($this->name == 'priceMultiplier' and $this->value != $this->oldAttributes['value']) {
+                Yii::$app->cache->delete(ValueHelper::CACHE_MULTIPLIER);
+            }
+            
+            
+            return true;
+        } else {
+            return false;
+        }
     }
 }
