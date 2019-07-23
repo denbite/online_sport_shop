@@ -72,9 +72,7 @@ class ProductsController
                 'pages' => $pages,
             ]);
         } elseif ($current = Category::findOne([ 'id' => ValueHelper::decryptValue($slug), 'active' => Status::STATUS_ACTIVE, ])) {
-            $activeParents = $current->parents()->andWhere([ 'active' => Status::STATUS_ACTIVE ])->all();
             
-            if (count($activeParents) == $current['lvl']) {
                 $query = $current->children(1)->andWhere([ 'active' => Status::STATUS_ACTIVE ]);
                 
                 $pages = new Pagination([
@@ -90,14 +88,13 @@ class ProductsController
                 if (!empty($children)) {
                     return $this->render('category', [
                         'children' => $children,
-                        'parents' => $activeParents,
+                        'parents' => $current->parents()->all(),
                         'current' => $current,
                         'pages' => $pages,
                     ]);
                 } else {
                     return $this->redirect([ 'catalog', 'slug' => ValueHelper::encryptValue($current['id']) ]);
                 }
-            }
             
         }
         
@@ -113,12 +110,17 @@ class ProductsController
         if (empty($slug)) {
             
             $query = Item::find()
-                         ->select([ 'item.*', 'MIN(sizes.sell_price) as min_price' ])
+                         ->select([ 'item.*' ])
                          ->from(Item::tableName() . ' item')
                          ->joinWith([ 'allColors colors' => function ($query)
                          {
                              $query->joinWith([ 'allSizes sizes', 'mainImage' ]);
-                         }, 'description' ])
+                         }, 'description',
+                             'category' => function ($query)
+                             {
+                                 $query->andWhere([ 'active' => Status::STATUS_ACTIVE ]);
+                             },
+                         ])
                          ->with([ 'promotion' => function ($query)
                          {
                              $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
@@ -153,9 +155,6 @@ class ProductsController
             if ($current['rgt'] != $current['lft'] + 1) {
                 return $this->redirect([ 'category', 'slug' => ValueHelper::encryptValue($current['id']) ]);
             } else {
-                $activeParents = $current->parents()->andWhere([ 'active' => Status::STATUS_ACTIVE ])->all();
-                
-                if (count($activeParents) == $current['lvl']) {
                     
                     $query = Item::find()
                                  ->select([ 'item.*', 'MIN(sizes.sell_price) as min_price' ])
@@ -163,7 +162,11 @@ class ProductsController
                                  ->joinWith([ 'allColors colors' => function ($query)
                                  {
                                      $query->joinWith([ 'allSizes sizes', 'mainImage' ]);
-                                 }, 'description' ])
+                                 }, 'description',
+                                     'category' => function ($query)
+                                     {
+                                         $query->andWhere([ 'active' => Status::STATUS_ACTIVE ]);
+                                     } ])
                                  ->with([ 'promotion' => function ($query)
                                  {
                                      $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
@@ -189,11 +192,10 @@ class ProductsController
                     
                     return $this->render('catalog', [
                         'items' => $items,
-                        'parents' => $activeParents,
+                        'parents' => $current->parents()->all(),
                         'current' => $current,
                         'pages' => $pages,
                     ]);
-                }
             }
         }
         
@@ -212,7 +214,11 @@ class ProductsController
                         ->joinWith([ 'allColors colors' => function ($query)
                         {
                             $query->joinWith([ 'allSizes sizes', 'allImages images' ]);
-                        }, 'description' ])
+                        }, 'description',
+                            'category' => function ($query)
+                            {
+                                $query->andWhere([ 'active' => Status::STATUS_ACTIVE ]);
+                            } ])
                         ->with([ 'promotion' => function ($query)
                         {
                             $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
@@ -228,13 +234,15 @@ class ProductsController
                         ->one();
             
             if (!empty($item)) {
-                
-                $current = Category::findOne([ 'id' => $item['category_id'], 'active' => Status::STATUS_ACTIVE ]);
+    
+                $current = $item['promotion'];
                 
                 $parents = ArrayHelper::toArray(array_merge($current->parents()->all(), [ $current ]));
                 
                 unset($current);
-                
+    
+    
+                // make seo-title
                 $title = 'Купить ';
                 
                 foreach ($parents as $i => $parent) {

@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\models\Status;
 use creocoder\nestedsets\NestedSetsBehavior;
 use kartik\tree\models\Tree;
 use yii\helpers\ArrayHelper;
@@ -9,10 +10,10 @@ use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "category".
  *
- * @property int $id
- * @property int $lft
- * @property int $rgt
- * @property int $lvl
+ * @property int    $id
+ * @property int    $lft
+ * @property int    $rgt
+ * @property int    $lvl
  * @property string $name
  */
 class Category extends Tree
@@ -83,7 +84,7 @@ class Category extends Tree
     public static function getAllCategoriesByRoot($root = 1)
     {
         // todo-cache: add cache
-    
+        
         return self::findOne([ 'root' => $root, 'lvl' => 0 ])->leaves()->indexBy('id')->all();
     }
     
@@ -120,5 +121,27 @@ class Category extends Tree
     {
         return $this->hasOne(Image::className(), [ 'subject_id' => 'id' ])
                     ->andWhere([ 'sort' => 0, 'type' => Image::TYPE_CATEGORY ]);
+    }
+    
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->active != $this->oldAttributes['active']) {
+                
+                if (count($this->parents()->andWhere([ 'active' => Status::STATUS_ACTIVE ])->all()) == $this->lvl) {
+                    self::updateAll([ 'active' => $this->active ],
+                        [ 'in', 'id', array_column($this->children()->all(), 'id') ]);
+                    
+                } else {
+                    $this->active = $this->oldAttributes['active'];
+                }
+                
+            }
+            
+            
+            return true;
+        } else {
+            return false;
+        }
     }
 }

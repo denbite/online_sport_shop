@@ -109,4 +109,9 @@ class Item extends \yii\db\ActiveRecord
                     ->andWhere([ 'status' => Status::STATUS_ACTIVE ])
                     ->orderBy([ 'publish_from' => SORT_DESC ]);
     }
+    
+    public function getCategory()
+    {
+        return $this->hasOne(Category::className(), [ 'id' => 'category_id' ]);
+    }
 }

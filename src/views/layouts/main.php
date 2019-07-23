@@ -302,7 +302,10 @@ AppAsset::register($this);
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                             <div class="footer-widget mb-40">
-                                <?= Html::a(Html::img('/files/logo.png'), [ '/main/default/index' ]) ?>
+                                <?= Html::a(Html::img('/files/logo.png', [
+                                    'width' => 128,
+                                    'height' => 40,
+                                ]), [ '/main/default/index' ]) ?>
                                 <div class="subscribe-style mt-45">
                                     <p>Подпишитесь на новости, Введите свой e-mail</p>
                                     <div id="mc_embed_signup" class="subscribe-form mt-20">
