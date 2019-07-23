@@ -106,7 +106,7 @@ class ProductsController
         $slug = (int) preg_replace("[\D+]", "", $slug);
         
         SeoHelper::putDefaultTags();
-        
+    
         if (empty($slug)) {
             
             $query = Item::find()

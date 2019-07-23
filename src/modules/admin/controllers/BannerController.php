@@ -116,6 +116,8 @@ class BannerController
                         }
                         
                     });
+    
+                    Yii::$app->session->setFlash('success', 'Данные успешно сохранены');
                 }
                 
             } catch (\Exception $e) {

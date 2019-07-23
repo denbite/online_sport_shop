@@ -5,6 +5,7 @@ namespace app\modules\main\controllers;
 use app\components\helpers\SeoHelper;
 use app\components\models\Status;
 use app\models\Banner;
+use app\models\Category;
 use app\models\Item;
 use yii\web\Controller;
 
@@ -68,12 +69,19 @@ class DefaultController extends Controller
                        ->limit(6)
                        ->asArray()
                        ->all();
+    
+        $categories = Category::findOne([ 'lvl' => 0, 'root' => 1 ])
+                              ->children(1)
+                              ->with('image')
+                              ->andWhere([ 'active' => Status::STATUS_ACTIVE ])
+                              ->all();
         
         SeoHelper::putDefaultTags();
         
         return $this->render('index', [
             'banners' => $banners,
             'popular' => $popular,
+            'categories' => $categories,
         ]);
     }
 }

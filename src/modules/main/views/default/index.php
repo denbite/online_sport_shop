@@ -7,6 +7,7 @@ use yii\helpers\Html;
 
 /** @var array $popular */
 /** @var array $banners */
+/** @var array $categories */
 
 ?>
 
@@ -45,57 +46,27 @@ use yii\helpers\Html;
 </div>
 <?php endif; ?>
 
+<!-- Возможно сделать вывод активных акций сюда (нужно добавить картинки) -->
 <div class="banner-area pt-100 pb-65">
     <div class="container">
+        <div class="section-title text-center pb-45">
+            <h2>Акции</h2>
+        </div>
         <div class="row">
-            <div class="col-lg-4 col-md-4">
-                <div class="single-banner mb-30 scroll-zoom">
-                    <a href="product-details.html"><img class="animated" src="/images/main/banner/banner-6.png"
-                                                        alt=""></a>
-                    <div class="banner-content-2 banner-position-5">
-                        <h4>Women</h4>
+            <?php foreach ($categories as $category): ?>
+                <div class="col-lg-4 col-md-4">
+                    <div class="single-banner mb-30 scroll-zoom">
+                        <?= Html::a(Html::img(Image::getLink($category['image']['id'], Image::SIZE_512x512), [
+                            'alt' => $category['image']['url'],
+                        ]), [ '/main/products/category', 'slug' => ValueHelper::encryptValue($category['id']) ]) ?>
+                        <!--                        <a href="product-details.html"><img class="animated" src="/images/main/banner/banner-6.png"-->
+                        <!--                                                            alt=""></a>-->
+                        <div class="banner-content-2 banner-position-5">
+                            <h4><?= $category['name'] ?></h4>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-4">
-                <div class="single-banner mb-30 scroll-zoom">
-                    <a href="product-details.html"><img class="animated" src="/images/main/banner/banner-7.png"
-                                                        alt=""></a>
-                    <div class="banner-content-2 banner-position-5">
-                        <h4>Men</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4">
-                <div class="single-banner mb-30 scroll-zoom">
-                    <a href="product-details.html"><img class="animated" src="/images/main/banner/banner-8.png"
-                                                        alt=""></a>
-                    <div class="banner-content-2 banner-position-5">
-                        <h4>accessories</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6">
-                <div class="single-banner mb-30 scroll-zoom">
-                    <a href="product-details.html"><img class="animated" src="/images/main/banner/banner-9.png"
-                                                        alt=""></a>
-                    <div class="banner-content banner-position-6">
-                        <h3>Black Friday</h3>
-                        <h2>Wall Lighting <br>Black.</h2>
-                        <a href="product-details.html">Shop Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6">
-                <div class="single-banner mb-30 text-center scroll-zoom">
-                    <a href="product-details.html"><img class="animated" src="/images/main/banner/banner-10.png"
-                                                        alt=""></a>
-                    <div class="banner-content-3 banner-position-7">
-                        <h2>Wall Lighting Black.</h2>
-                        <a href="product-details.html">Shop Now</a>
-                    </div>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </div>
@@ -195,24 +166,24 @@ use yii\helpers\Html;
     </div>
 </div>
 
-<div class="banner-area pt-80 pb-80 section-margin-1 bg-aliceblue">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-8 col-md-7 col-sm-7">
-                <div class="banner-img-2 pr-10 scroll-zoom">
-                    <a href="product-details.html"><img src="/images/main/banner/banner-11.png" alt=""></a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-5 col-sm-5">
-                <div class="banner-bg-content pl-100 scroll-zoom">
-                    <h3>35% off <br>Black Monday</h3>
-                    <h2>Lighting For <br> Home.</h2>
-                    <a href="product-details.html">Shop Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<!--<div class="banner-area pt-80 pb-80 section-margin-1 bg-aliceblue">-->
+<!--    <div class="container">-->
+<!--        <div class="row align-items-center">-->
+<!--            <div class="col-lg-8 col-md-7 col-sm-7">-->
+<!--                <div class="banner-img-2 pr-10 scroll-zoom">-->
+<!--                    <a href="product-details.html"><img src="/images/main/banner/banner-11.png" alt=""></a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col-lg-4 col-md-5 col-sm-5">-->
+<!--                <div class="banner-bg-content pl-100 scroll-zoom">-->
+<!--                    <h3>35% off <br>Black Monday</h3>-->
+<!--                    <h2>Lighting For <br> Home.</h2>-->
+<!--                    <a href="product-details.html">Shop Now</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 <div class="instagram-area section-margin-1 py-5">
     <div class="container">

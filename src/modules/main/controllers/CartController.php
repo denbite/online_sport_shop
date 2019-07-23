@@ -172,4 +172,14 @@ class CartController
         
         throw new MethodNotAllowedHttpException('Only AJAX allowed');
     }
+    
+    public function actionCheckout()
+    {
+        return $this->render('checkout');
+    }
+    
+    public function actionIndex()
+    {
+        return $this->render('index');
+    }
 }

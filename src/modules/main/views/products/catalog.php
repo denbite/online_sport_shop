@@ -216,13 +216,15 @@ $this->params['breadcrumbs'][] = $current['name'];
                             <ul>
                                 <li>
                                     <div class="sidebar-widget-list-left">
-                                        <input type="checkbox"> <a href="#">On Sale <span>4</span> </a>
+                                        <input type="checkbox"> <a
+                                                href="">On
+                                            Sale <span>4</span> </a>
                                         <span class="checkmark"></span>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">New <span>5</span></a>
+                                        <input type="checkbox" value=""> <a href="?new=1">New <span>5</span></a>
                                         <span class="checkmark"></span>
                                     </div>
                                 </li>
