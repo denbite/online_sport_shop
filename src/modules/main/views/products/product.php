@@ -68,11 +68,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="product-details-price"
                                      data-color="<?= ValueHelper::encryptValue($color['id']) ?>"
                                      data-size="<?= ValueHelper::encryptValue($size['id']) ?>" style="display: none;">
-                                    <span class="new"><?= ValueHelper::outPrice($size, $item['promotion']) ?></span>
+                                    <span class="new"><?= ValueHelper::outPriceProduct($size,
+                                                                                       $item['promotion']) ?></span>
                                     <?php if (!empty($item['promotion'])): ?>
-                                        <span class="old"> <?= ValueHelper::outPrice($size['sell_price']); ?> </span>
+                                        <span class="old"> <?= ValueHelper::outPriceProduct($size, []); ?> </span>
                                     <?php endif; ?>
-                                    <!--                                    make promotions check and display old value-->
                                 </div>
                             <?php endif; ?>
                         <?php endforeach; ?>

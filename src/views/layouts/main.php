@@ -50,7 +50,10 @@ AppAsset::register($this);
                 <div class="row">
                     <div class="col-xl-2 col-lg-2">
                         <div class="logo pt-40">
-                            <?= Html::a(Html::img('/files/logo.png'), [ '/main/default/index' ]) ?>
+                            <?= Html::a(Html::img('/files/logo.png', [
+                                'width' => 128,
+                                'height' => 40,
+                            ]), [ '/main/default/index' ]) ?>
                         </div>
                     </div>
                     <div class="col-xl-7 col-lg-7 ">
@@ -159,7 +162,10 @@ AppAsset::register($this);
                 <div class="row align-items-center">
                     <div class="col-6">
                         <div class="mobile-logo">
-                            <?= Html::a(Html::img('/files/logo.png'), [ '/main/default/index' ]) ?>
+                            <?= Html::a(Html::img('/files/logo.png', [
+                                'width' => 128,
+                                'height' => 40,
+                            ]), [ '/main/default/index' ]) ?>
                         </div>
                     </div>
                     <div class="col-6">

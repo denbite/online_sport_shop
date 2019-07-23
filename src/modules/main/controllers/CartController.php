@@ -103,7 +103,7 @@ class CartController
                 if ($cart->getItem($id)) {
                     $cart->remove($id);
                     $result['totalCount'] = $cart->getTotalCount();
-                    $result['totalCost'] = ValueHelper::outPrice($cart->getTotalCost());
+                    $result['totalCost'] = ValueHelper::addCurrency($cart->getTotalCost());
                     $result['id'] = ValueHelper::encryptValue($id);
                     $result['success'] = true;
                 }
@@ -118,12 +118,14 @@ class CartController
     public function actionClearCart()
     {
         if (Yii::$app->request->isPost and Yii::$app->request->isAjax) {
-            
+            $cart = Yii::$app->cart;
             $result['success'] = false;
             
             try {
-                Yii::$app->cart->clear();
-                $result['success'] = true;
+                if (!empty($cart->getItems())) {
+                    $cart->clear();
+                    $result['success'] = true;
+                }
             } catch (Exception $exception) {
                 Yii::$app->errorHandler->logException($exception);
             }
@@ -141,7 +143,7 @@ class CartController
             $cart = Yii::$app->cart;
             
             $result['totalCount'] = $cart->getTotalCount();
-            $result['totalCost'] = ValueHelper::outPrice($cart->getTotalCost());
+            $result['totalCost'] = ValueHelper::addCurrency($cart->getTotalCost());
             
             $tmp = [];
             

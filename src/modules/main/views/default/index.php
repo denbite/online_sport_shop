@@ -3,7 +3,6 @@
 
 use app\components\helpers\ValueHelper;
 use app\models\Image;
-use app\models\Promotion;
 use yii\helpers\Html;
 
 /** @var array $popular */
@@ -149,18 +148,11 @@ use yii\helpers\Html;
                                     <h4 class="ht-product-title"><a
                                                 href="#"><?= $item['firm'] . ' ' . $item['model'] ?></a></h4>
                                     <div class="ht-product-price">
-                                        <span class="new"><?php
-    
-                                            if ($item['promotion']['type'] == Promotion::TYPE_PERCENT) {
-                                                echo ValueHelper::outPrice($item['min_price'] * ( 100 - $item['promotion']['sale'] ) / 100);
-                                            } elseif ($item['promotion']['type'] == Promotion::TYPE_VALUE) {
-                                                echo ValueHelper::outPrice($item['min_price'] - $item['promotion']['sale']);
-                                            } else {
-                                                echo ValueHelper::outPrice($item['min_price']);
-                                            }
-                                            ?></span>
+                                        <span class="new"><?= ValueHelper::outPriceCatalog($item['allColors'],
+                                                                                           $item['promotion']) ?></span>
                                         <?php if (!empty($item['promotion'])): ?>
-                                            <span class="old"> <?= ValueHelper::outPrice($item['min_price']); ?> </span>
+                                            <span class="old"> <?= ValueHelper::outPriceCatalog($item['allColors'],
+                                                                                                []); ?> </span>
                                         <?php endif; ?>
                                     </div>
                                     <div class="ht-product-ratting-wrap">

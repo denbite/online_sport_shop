@@ -49,10 +49,11 @@
                 success: function (data) {
                     console.log(data);
                     if (data['success']) {
-                        $('.count-style').html(data['totalCount']);
-                        $('.cart-price').html(data['totalCost']);
-                        $('.shop-total').html(data['totalCost']);
-                        $('ul.cart-items li[data-cart-id="' + data['id'] + '"]').remove();
+                        // $('.count-style').html(data['totalCount']);
+                        // $('.cart-price').html(data['totalCost']);
+                        // $('.shop-total').html(data['totalCost']);
+                        // $('ul.cart-items li[data-cart-id="' + data['id'] + '"]').remove();
+                        renderCart();
                     }
                 }
             })
@@ -70,10 +71,11 @@
                 },
                 success: function (data) {
                     if (data['success']) {
-                        $('.count-style').html(0);
-                        $('.cart-price').html('₴ 0');
-                        $('ul.cart-items').empty();
-                        $('.shopping-cart-total span').html('₴ 0');
+                        // $('.count-style').html(0);
+                        // $('.cart-price').html('₴ 0');
+                        // $('ul.cart-items').empty();
+                        // $('.shopping-cart-total span').html('₴ 0');
+                        renderCart();
                     }
                 }
             })

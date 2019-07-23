@@ -33,12 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                                   [ 'alt' => $child['name'] ]),
                                         [ '/main/products/category', 'slug' => ValueHelper::encryptValue($child['id']) ]) ?>
                         </div>
-                        <div class="blog-content">
-                            <h3><?= $child['name'] ?></h3>
-                            <?php if (!empty($child['description'])): ?>
-                                <p><?= $child['description'] ?></p>
-                            <?php endif; ?>
-                        </div>
                     </div>
                 </div>
             <?php endforeach; ?>

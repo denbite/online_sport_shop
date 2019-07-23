@@ -12,9 +12,7 @@ class ValueHelper
     
     const  SECRET_KEY = 234;
     
-    const PRICE_PROMOTION = 1;
-    
-    const PRICE_WITHOUT_PROMOTION = 2;
+    const CACHE_MULTIPLIER = 'config_price_multiplier';
     
     /**
      * Encrypt index in url
@@ -30,17 +28,20 @@ class ValueHelper
     
     public static function getMultiplier()
     {
-        $param = Config::find()->select('value')->where([ 'name' => 'priceMultiplier' ])->asArray()->one();
+        return Yii::$app->cache->getOrSet(self::CACHE_MULTIPLIER, function ()
+        {
+            $param = Config::find()->select('value')->where([ 'name' => 'priceMultiplier' ])->asArray()->one();
         
-        if (is_array($param) and array_key_exists('value', $param)) {
-            $multiplier = $param['value'];
-        }
-    
-        if (empty($multiplier) and array_key_exists('priceMultiplier', Yii::$app->params)) {
-            $multiplier = Yii::$app->params['priceMultiplier'];
-        }
-    
-        return !empty($multiplier) ? $multiplier : 1;
+            if (is_array($param) and array_key_exists('value', $param)) {
+                $multiplier = $param['value'];
+            }
+        
+            if (empty($multiplier) and array_key_exists('priceMultiplier', Yii::$app->params)) {
+                $multiplier = Yii::$app->params['priceMultiplier'];
+            }
+        
+            return !empty($multiplier) ? $multiplier : 1;
+        }, 300);
     }
     
     /**
@@ -69,39 +70,118 @@ class ValueHelper
      */
     public static function addCurrency($price)
     {
-        return "₴ {$price}";
+        return (int) $price >= 0 ? "₴ {$price}" : null;
     }
     
     /**
-     * Check for this item's actual promotion and return formatted price
+     * Check for this item's actual promotion and return formatted price in product page
      *
      * @param     $size
      * @param     $promotion
-     * @param int $type u can choose what type of return price u need
+     *
+     * @return string|null
+     */
+    public static function outPriceProduct($size, $promotion)
+    {
+        if (!empty($promotion) and !empty($size)) {
+            return self::addCurrency(self::verifySalePrice($size, $promotion));
+        } elseif (!empty($size)) {
+            return self::addCurrency(self::verifySellPrice($size));
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Check for this item's actual promotion and return formatted price in catalog
+     *
+     * @param     $colors
+     * @param     $promotion
      *
      * @return string
      */
-    public static function outPrice($size, $promotion, $type = self::PRICE_PROMOTION)
+    public static function outPriceCatalog($colors, $promotion)
     {
-        if ($type == self::PRICE_PROMOTION and !empty($promotion) and !empty($size)) {
-            if ($promotion['type'] == Promotion::TYPE_PERCENT) {
-            
-                $m = (float) ( 100 - $promotion['sale'] ) / 100;
-            
-                if ($size['sale_price'] != self::format($size['base_price'] * $m)) {
-                    ItemColorSize::updateAll([ 'sale_price' => self::format($size['base_price'] * $m) ],
-                        [ 'id' => $size['id'] ]);
+        $min_price = -1;
+    
+        if (!empty($promotion) and !empty($colors)) {
+            foreach ($colors as $color) {
+                foreach ($color['allSizes'] as $size) {
+                    if ($min_price < 0) {
+                        $min_price = self::verifySalePrice($size, $promotion);
+                    } elseif ($min_price > self::verifySalePrice($size, $promotion)) {
+                        $min_price = self::verifySalePrice($size, $promotion);
+                    }
                 }
-            
-                return self::format($size['base_price'] * $m);
-            
-            } elseif ($promotion['type'] == Promotion::TYPE_VALUE) {
-            } else {
-                // check if equal sell_price and base_price * nulti, if not -> change it and save
-                return $size['sell_price'];
             }
+        
+            return self::addCurrency($min_price);
+        } elseif (!empty($colors)) {
+            foreach ($colors as $color) {
+                foreach ($color['allSizes'] as $size) {
+                    if ($min_price < 0) {
+                        $min_price = self::verifySellPrice($size);
+                    } elseif ($min_price > self::verifySellPrice($size)) {
+                        $min_price = self::verifySellPrice($size);
+                    }
+                }
+            }
+        
+            return self::addCurrency($min_price);
         }
     
+        return null;
+    }
+    
+    public static function verifySalePrice($size, $promotion)
+    {
+        if ($promotion['type'] == Promotion::TYPE_PERCENT) {
+            
+            $m = (float) ( 100 - $promotion['sale'] ) / 100;
+            
+            if (array_key_exists('sale_price', $size) and array_key_exists('base_price',
+                                                                           $size)) {
+                if ($size['sale_price'] != self::format($size['base_price'] * $m)) {
+                    ItemColorSize::updateAll([ 'sale_price' => self::format($size['base_price'] * $m) ],
+                                             [ 'id' => $size['id'] ]);
+                    $size['sale_price'] = self::format($size['base_price'] * $m);
+                }
+                
+                return $size['sale_price'];
+            }
+            
+        } elseif ($promotion['type'] == Promotion::TYPE_VALUE) {
+            
+            $diff = $promotion['sale'];
+            
+            if (array_key_exists('sale_price', $size) and array_key_exists('base_price',
+                                                                           $size)) {
+                if ($size['sale_price'] != self::format($size['base_price']) - $diff) {
+                    ItemColorSize::updateAll([ 'sale_price' => self::format($size['base_price']) - $diff ],
+                                             [ 'id' => $size['id'] ]);
+                    $size['sale_price'] = self::format($size['base_price']) - $diff;
+                }
+                
+                return $size['sale_price'];
+            }
+        }
+        
+        return null;
+    }
+    
+    public static function verifySellPrice($size)
+    {
+        if (array_key_exists('sell_price', $size) and array_key_exists('base_price',
+                                                                       $size)) {
+            if ($size['sell_price'] != self::format($size['base_price'])) {
+                ItemColorSize::updateAll([ 'sell_price' => self::format($size['base_price']) ],
+                                         [ 'id' => $size['id'] ]);
+                $size['sell_price'] = self::format($size['base_price']);
+            }
+            
+            return ( $size['sell_price'] );
+        }
+        
         return null;
     }
     
