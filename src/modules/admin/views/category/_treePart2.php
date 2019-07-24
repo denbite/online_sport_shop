@@ -26,7 +26,7 @@ use yii\helpers\Url;
                                        'minCount' => 0,
                                        'overwriteInitial' => false,
                                        'initialPreview' => Image::getUrlsBySubject(Image::TYPE_CATEGORY, $node->id,
-                                           Image::SIZE_512x512),
+                                                                                   Image::SIZE_MEDIUM),
                                        'initialPreviewAsData' => true,
                                        'initialPreviewConfig' => Image::getInitialPreviewConfigBySubject(Image::TYPE_CATEGORY,
                                                                                                          $node->id),

@@ -14,7 +14,7 @@ class m190702_083651_insert_data extends Migration
      */
     public function safeUp()
     {
-        $root = new Category([ 'name' => 'Каталог' ]);
+        $root = new Category([ 'name' => 'Категории' ]);
         $root->makeRoot();
     
         $swim = new Category([ 'name' => 'Плавание' ]);

@@ -47,31 +47,29 @@ use yii\helpers\Html;
 <?php endif; ?>
 
 <!-- Возможно сделать вывод активных акций сюда (нужно добавить картинки) -->
-<div class="banner-area pt-100 pb-65">
-    <div class="container">
-        <div class="section-title text-center pb-45">
-            <h2>Акции</h2>
-        </div>
-        <div class="row">
-            <?php foreach ($categories as $category): ?>
-                <div class="col-lg-4 col-md-4">
-                    <div class="single-banner mb-30 scroll-zoom">
-                        <?= Html::a(Html::img(Image::getLink($category['image']['id'], Image::SIZE_512x512), [
-                            'alt' => $category['image']['url'],
-                        ]), [ '/main/products/category', 'slug' => ValueHelper::encryptValue($category['id']) ]) ?>
-                        <!--                        <a href="product-details.html"><img class="animated" src="/images/main/banner/banner-6.png"-->
-                        <!--                                                            alt=""></a>-->
-                        <div class="banner-content-2 banner-position-5">
-                            <h4><?= $category['name'] ?></h4>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    </div>
-</div>
+<!--<div class="banner-area pt-100 pb-65">-->
+<!--    <div class="container">-->
+<!--        <div class="section-title text-center pb-45">-->
+<!--            <h2>Акции</h2>-->
+<!--        </div>-->
+<!--        <div class="row">-->
+<!--            --><?php //foreach ($categories as $category): ?>
+<!--                <div class="col-lg-4 col-md-4">-->
+<!--                    <div class="single-banner mb-30 scroll-zoom">-->
+<!--                        --><? //= Html::a(Html::img(Image::getLink($category['image']['id'], Image::SIZE_MEDIUM), [
+//                            'alt' => $category['image']['url'],
+//                        ]), [ '/main/products/category', 'slug' => ValueHelper::encryptValue($category['id']) ]) ?>
+<!--                        <div class="banner-content-2 banner-position-5">-->
+<!--                            <h4>--><? //= $category['name'] ?><!--</h4>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            --><?php //endforeach; ?>
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
-<div class="product-area pb-70">
+<div class="product-area pb-70 pt-70">
     <div class="container">
         <div class="section-title text-center pb-45">
             <h2>Топы продаж</h2>
@@ -90,7 +88,7 @@ use yii\helpers\Html;
                                 
                                 <?=
                                 Html::a(Html::img(Image::getLink($item['allColors'][0]['mainImage']['id'],
-                                    Image::SIZE_512x512), [
+                                                                 Image::SIZE_MEDIUM), [
                                     'alt' => $item['allColors'][0]['mainImage']['url'],
                                 ]),
                                     [ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ],
@@ -108,16 +106,17 @@ use yii\helpers\Html;
                                         <!--                                        </li>-->
                                         <!--                                        <li><a href="#"><i class="sli sli-refresh"></i><span-->
                                         <!--                                                        class="ht-product-action-tooltip">Add to Compare</span></a></li>-->
-                                        <li><a href="#"><i class="sli sli-bag"></i><span
-                                                        class="ht-product-action-tooltip">Добавить в корзину</span></a>
-                                        </li>
+                                        <!--                                        <li><a href="#"><i class="sli sli-bag"></i><span-->
+                                        <!--                                                        class="ht-product-action-tooltip">Добавить в корзину</span></a>-->
+                                        <!--                                        </li>-->
                                     </ul>
                                 </div>
                             </div>
                             <div class="ht-product-content">
                                 <div class="ht-product-content-inner">
                                     <h4 class="ht-product-title"><a
-                                                href="#"><?= $item['firm'] . ' ' . $item['model'] ?></a></h4>
+                                                href="<?= \yii\helpers\Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ]) ?>"><?= $item['firm'] . ' ' . $item['model'] ?></a>
+                                    </h4>
                                     <div class="ht-product-price">
                                         <span class="new"><?= ValueHelper::outPriceCatalog($item['allColors'],
                                                                                            $item['promotion']) ?></span>
@@ -166,6 +165,7 @@ use yii\helpers\Html;
     </div>
 </div>
 
+<!--  ACTIVE PROMOTION (with image?)  -->
 <!--<div class="banner-area pt-80 pb-80 section-margin-1 bg-aliceblue">-->
 <!--    <div class="container">-->
 <!--        <div class="row align-items-center">-->

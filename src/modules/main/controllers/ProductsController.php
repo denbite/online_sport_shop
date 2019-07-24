@@ -235,9 +235,11 @@ class ProductsController
             
             if (!empty($item)) {
     
-                $current = $item['promotion'];
-                
-                $parents = ArrayHelper::toArray(array_merge($current->parents()->all(), [ $current ]));
+                $current = $item['category'];
+    
+                $parents = ArrayHelper::toArray(array_merge(Category::findOne([ 'id' => $current['id'] ])
+                                                                    ->parents()
+                                                                    ->all(), [ $current ]));
                 
                 unset($current);
     

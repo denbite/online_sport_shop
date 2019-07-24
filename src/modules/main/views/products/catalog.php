@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $current['name'];
                                                     <a href="<?= \yii\helpers\Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ]) ?>"
                                                        class="ht-product-image">
                                                         <?= Html::img(Image::getLink($item['allColors'][0]['mainImage']['id'],
-                                                                                     Image::SIZE_512x512),
+                                                                                     Image::SIZE_MEDIUM),
                                                                       [ 'alt' => $item['allColors'][0]['mainImage']['url'] ]) ?>
                                                         <div class="ht-product-action">
                                                             <ul>
@@ -84,11 +84,11 @@ $this->params['breadcrumbs'][] = $current['name'];
                                                                 <!--                                                                                class="sli sli-refresh"></i><span-->
                                                                 <!--                                                                                class="ht-product-action-tooltip">Add to Compare</span></a>-->
                                                                 <!--                                                                </li>-->
-                                                                <li>
-                                                                    <a href="#"><i
-                                                                                class="sli sli-bag"></i><span
-                                                                                class="ht-product-action-tooltip">Добавить в корзину</span></a>
-                                                                </li>
+                                                                <!--                                                                <li>-->
+                                                                <!--                                                                    <a href="#"><i-->
+                                                                <!--                                                                                class="sli sli-bag"></i><span-->
+                                                                <!--                                                                                class="ht-product-action-tooltip">Добавить в корзину</span></a>-->
+                                                                <!--                                                                </li>-->
                                                             </ul>
                                                         </div>
                                                 </div>
@@ -175,8 +175,8 @@ $this->params['breadcrumbs'][] = $current['name'];
                                                     <div class="ht-product-list-action">
                                                         <!--                                                        <a class="list-wishlist" title="Add To Wishlist" href="#"><i-->
                                                         <!--                                                                    class="sli sli-heart"></i></a>-->
-                                                        <a class="list-cart" title="Add To Cart" href="#"><i
-                                                                    class="sli sli-basket-loaded"></i>Добавить в корзину</a>
+                                                        <!--                                                        <a class="list-cart" title="Add To Cart" href="#"><i-->
+                                                        <!--                                                                    class="sli sli-basket-loaded"></i>Добавить в корзину</a>-->
                                                         <!--                                                        <a class="list-refresh" title="Add To Compare" href="#"><i-->
                                                         <!--                                                                    class="sli sli-refresh"></i></a>-->
                                                     </div>

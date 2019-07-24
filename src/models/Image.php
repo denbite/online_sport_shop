@@ -29,9 +29,9 @@ class Image
     
     const SIZE_ORIGINAL = 1;
     
-    const SIZE_512x512 = 2;
+    const SIZE_MEDIUM = 2;
     
-    const SIZE_90x90 = 3;
+    const SIZE_THUMBNAIL = 3;
     
     /**
      * {@inheritdoc}
@@ -117,8 +117,8 @@ class Image
     {
         return [
             self::SIZE_ORIGINAL => '/',
-            self::SIZE_512x512 => '/512x512/',
-            self::SIZE_90x90 => '/90x90/',
+            self::SIZE_MEDIUM => '/medium/',
+            self::SIZE_THUMBNAIL => '/thumbnails/',
         ];
     }
     

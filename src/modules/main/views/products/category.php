@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="col-lg-4 col-md-6">
                     <div class="blog-wrap mb-40 text-center scroll-zoom">
                         <div class="blog-img mb-25">
-                            <?= Html::a(Html::img(Image::getLink($child['image']['id'], Image::SIZE_512x512),
+                            <?= Html::a(Html::img(Image::getLink($child['image']['id'], Image::SIZE_MEDIUM),
                                                   [ 'alt' => $child['name'] ]),
                                         [ '/main/products/category', 'slug' => ValueHelper::encryptValue($child['id']) ]) ?>
                         </div>

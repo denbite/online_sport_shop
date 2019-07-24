@@ -53,7 +53,10 @@ class DefaultController extends Controller
                        ->joinWith([ 'allColors colors' => function ($query)
                        {
                            $query->joinWith([ 'allSizes sizes', 'mainImage' ]);
-                       }, ])
+                       }, 'category' => function ($query)
+                       {
+                           $query->andWhere([ 'active' => Status::STATUS_ACTIVE ]);
+                       } ])
                        ->with([ 'promotion' => function ($query)
                        {
                            $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);

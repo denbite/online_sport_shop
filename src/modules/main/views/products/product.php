@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div id="gallery" class="mt-20 product-dec-slider">
                         <?php foreach ($item['allColors'] as $color): ?>
                             <?php foreach ($color['allImages'] as $image): ?>
-                                <?= Html::a(Html::img(Image::getLink($image['id'], Image::SIZE_90x90),
+                                <?= Html::a(Html::img(Image::getLink($image['id'], Image::SIZE_THUMBNAIL),
                                     // set size to 90x90 in future
                                                       [ 'alt' => $image['url'], 'width' => 90, 'height' => 90 ]), null, [
                                                 'data-image' => Image::getLink($image['id']),

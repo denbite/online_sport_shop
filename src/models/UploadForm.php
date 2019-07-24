@@ -105,15 +105,15 @@ class UploadForm
     
                                 if ($size == Image::SIZE_ORIGINAL) {
                                     Image::resize($path . $mdl->url, 1024, 1024, true);
-                                } elseif ($size == Image::SIZE_512x512) {
+                                } elseif ($size == Image::SIZE_MEDIUM) {
                                     Image::resize($path . $mdl->url, 512, 512, true);
-                                } elseif ($size == Image::SIZE_90x90) {
-                                    Image::resize($path . $mdl->url, 90, 90);
+                                } elseif ($size == Image::SIZE_THUMBNAIL) {
+                                    Image::resize($path . $mdl->url, 192, 192);
                                 }
                             }
                             break;
                         case Image::TYPE_CATEGORY:
-                            $path = Yii::getAlias('@webroot') . $mdl->getPath(Image::SIZE_512x512);
+                            $path = Yii::getAlias('@webroot') . $mdl->getPath(Image::SIZE_MEDIUM);
                 
                             // check if path exists
                             if (!file_exists($path)) {
