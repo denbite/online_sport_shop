@@ -156,7 +156,7 @@ class CartController
                 $tmp[$index]['item'] = ArrayHelper::toArray($size->color->item);
                 $tmp[$index]['promotion'] = ArrayHelper::toArray($size->promotion);
                 $tmp[$index]['quantity'] = $item->getQuantity();
-                $tmp[$index]['price'] = $item->getPrice();
+                $tmp[$index]['price'] = ValueHelper::addCurrency($item->getPrice());
             }
             
             $result['items'] = $tmp;
@@ -180,6 +180,22 @@ class CartController
     
     public function actionIndex()
     {
-        return $this->render('index');
+        $cart = Yii::$app->cart;
+    
+        foreach ($cart->getItems() as $index => $item) {
+            $size = $item->getProduct();
+            $items[$index]['size'] = ArrayHelper::toArray($size);
+            $items[$index]['color'] = ArrayHelper::toArray($size->color);
+            $items[$index]['image'] = ArrayHelper::toArray($size->color->mainImage);
+            $items[$index]['item'] = ArrayHelper::toArray($size->color->item);
+            $items[$index]['promotion'] = ArrayHelper::toArray($size->promotion);
+            $items[$index]['quantity'] = $item->getQuantity();
+            $items[$index]['price'] = ValueHelper::addCurrency($item->getPrice());
+            $items[$index]['cost'] = ValueHelper::addCurrency($item->getCost());
+        }
+    
+        return $this->render('index', [
+            'items' => !empty($items) ? $items : [],
+        ]);
     }
 }

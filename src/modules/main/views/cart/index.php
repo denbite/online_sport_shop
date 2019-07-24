@@ -1,8 +1,15 @@
 <?php
 
+/** @var array $items */
+
 $this->title = 'Корзина';
 
 $this->params['breadcrumbs'][] = $this->title;
+
+use app\components\helpers\ValueHelper;
+use app\models\Image;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 
@@ -17,66 +24,44 @@ $this->params['breadcrumbs'][] = $this->title;
                         <table>
                             <thead>
                             <tr>
-                                <th>Image</th>
-                                <th>Product Name</th>
-                                <th>Until Price</th>
-                                <th>Qty</th>
-                                <th>Subtotal</th>
-                                <th>action</th>
+                                <th>Превью</th>
+                                <th>Название</th>
+                                <th>Цена</th>
+                                <th>Кол-во</th>
+                                <th>Сумма</th>
+                                <th>Действия</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td class="product-thumbnail">
-                                    <a href="#"><img src="assets/img/cart/cart-3.svg" alt=""></a>
-                                </td>
-                                <td class="product-name"><a href="#">Product Name</a></td>
-                                <td class="product-price-cart"><span class="amount">$260.00</span></td>
-                                <td class="product-quantity">
-                                    <div class="cart-plus-minus">
-                                        <input class="cart-plus-minus-box" type="text" name="qtybutton" value="2">
-                                    </div>
-                                </td>
-                                <td class="product-subtotal">$110.00</td>
-                                <td class="product-remove">
-                                    <a href="#"><i class="sli sli-pencil"></i></a>
-                                    <a href="#"><i class="sli sli-close"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="product-thumbnail">
-                                    <a href="#"><img src="assets/img/cart/cart-4.svg" alt=""></a>
-                                </td>
-                                <td class="product-name"><a href="#">Product Name</a></td>
-                                <td class="product-price-cart"><span class="amount">$150.00</span></td>
-                                <td class="product-quantity">
-                                    <div class="cart-plus-minus">
-                                        <input class="cart-plus-minus-box" type="text" name="qtybutton" value="2">
-                                    </div>
-                                </td>
-                                <td class="product-subtotal">$150.00</td>
-                                <td class="product-remove">
-                                    <a href="#"><i class="sli sli-pencil"></i></a>
-                                    <a href="#"><i class="sli sli-close"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="product-thumbnail">
-                                    <a href="#"><img src="assets/img/cart/cart-5.svg" alt=""></a>
-                                </td>
-                                <td class="product-name"><a href="#">Product Name </a></td>
-                                <td class="product-price-cart"><span class="amount">$170.00</span></td>
-                                <td class="product-quantity">
-                                    <div class="cart-plus-minus">
-                                        <input class="cart-plus-minus-box" type="text" name="qtybutton" value="2">
-                                    </div>
-                                </td>
-                                <td class="product-subtotal">$170.00</td>
-                                <td class="product-remove">
-                                    <a href="#"><i class="sli sli-pencil"></i></a>
-                                    <a href="#"><i class="sli sli-close"></i></a>
-                                </td>
-                            </tr>
+                            <?php foreach ($items as $item): ?>
+                                <tr>
+                                    <td class="product-thumbnail">
+                                        <?= Html::a(Html::img(Image::getLink($item['image']['id'],
+                                                                             Image::SIZE_THUMBNAIL), [
+                                                                  'alt' => $item['image']['url'],
+                                                                  'width' => 90,
+                                                                  'height' => 90,
+                                                              ]),
+                                                    [ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['item']['id']) ]) ?>
+                                    </td>
+                                    <td class="product-name"><a
+                                                href="<?= Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['item']['id']) ]) ?>"><?= $item['item']['firm'] . ' ' . $item['item']['model'] . ' ' . $item['size']['size'] ?>
+                                        </a></td>
+                                    <td class="product-price-cart"><span class="amount"><?= $item['price'] ?></span>
+                                    </td>
+                                    <td class="product-quantity">
+                                        <div class="cart-plus-minus">
+                                            <input id="cart-plus-minus" class="cart-plus-minus-box" type="text"
+                                                   name="qtybutton"
+                                                   value="<?= $item['quantity'] ?>">
+                                        </div>
+                                    </td>
+                                    <td class="product-subtotal"><?= $item['cost'] ?></td>
+                                    <td class="product-remove">
+                                        <a href="#"><i class="sli sli-close"></i></a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>
@@ -84,75 +69,18 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="col-lg-12">
                             <div class="cart-shiping-update-wrapper">
                                 <div class="cart-shiping-update">
-                                    <a href="#">Continue Shopping</a>
+                                    <a href="<?= \yii\helpers\Url::to([ 'main/products/catalog' ]) ?>">Продолжить
+                                        покупки</a>
                                 </div>
                                 <div class="cart-clear">
-                                    <button>Update Shopping Cart</button>
-                                    <a href="#">Clear Shopping Cart</a>
+                                    <a class="cart-close">Clear Shopping Cart</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
                 <div class="row">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="cart-tax">
-                            <div class="title-wrap">
-                                <h4 class="cart-bottom-title section-bg-gray">Estimate Shipping And Tax</h4>
-                            </div>
-                            <div class="tax-wrapper">
-                                <p>Enter your destination to get a shipping estimate.</p>
-                                <div class="tax-select-wrapper">
-                                    <div class="tax-select">
-                                        <label>
-                                            * Country
-                                        </label>
-                                        <select class="email s-email s-wid">
-                                            <option>Bangladesh</option>
-                                            <option>Albania</option>
-                                            <option>Åland Islands</option>
-                                            <option>Afghanistan</option>
-                                            <option>Belgium</option>
-                                        </select>
-                                    </div>
-                                    <div class="tax-select">
-                                        <label>
-                                            * Region / State
-                                        </label>
-                                        <select class="email s-email s-wid">
-                                            <option>Bangladesh</option>
-                                            <option>Albania</option>
-                                            <option>Åland Islands</option>
-                                            <option>Afghanistan</option>
-                                            <option>Belgium</option>
-                                        </select>
-                                    </div>
-                                    <div class="tax-select">
-                                        <label>
-                                            * Zip/Postal Code
-                                        </label>
-                                        <input type="text">
-                                    </div>
-                                    <button class="cart-btn-2" type="submit">Get A Quote</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="discount-code-wrapper">
-                            <div class="title-wrap">
-                                <h4 class="cart-bottom-title section-bg-gray">Use Coupon Code</h4>
-                            </div>
-                            <div class="discount-code">
-                                <p>Enter your coupon code if you have one.</p>
-                                <form>
-                                    <input type="text" required="" name="name">
-                                    <button class="cart-btn-2" type="submit">Apply Coupon</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-12">
+                    <div class="offset-lg-8 col-lg-4 col-md-12">
                         <div class="grand-totall">
                             <div class="title-wrap">
                                 <h4 class="cart-bottom-title section-bg-gary-cart">Cart Total</h4>

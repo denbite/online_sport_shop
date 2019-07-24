@@ -29,7 +29,7 @@ use yii\helpers\Url;
                     <a href="<?= Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['item']['id']) ]) ?>"><img
                                 alt="<?= $item['image']['url'] ?>"
                                 src="<?= Image::getLink($item['image']['id'],
-                                                        Image::SIZE_90x90) ?>"></a>
+                                                        Image::SIZE_THUMBNAIL) ?>"></a>
                     <div class="item-close">
                         <a href="#"><i class="sli sli-close"></i></a>
                     </div>
