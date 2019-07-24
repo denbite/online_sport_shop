@@ -83,6 +83,32 @@
             });
         });
 
+        $cartIndex.find('input.cart-plus-minus-box').on('change', function () {
+            var quantity = $(this).val();
+
+            var product = $(this).closest('tr').data('product');
+
+            // add check type integer before send request ?
+            $.ajax({
+                type: "POST",
+                url: "/main/cart/change-quantity",
+                dataType: "json",
+                data: "product=" + product + "&quantity=" + quantity,
+                error: function () {
+                    alert("При выполнении запроса возникла ошибка");
+                },
+                success: function (data) {
+                    if (data['success']) {
+                        $cartIndex.find('tr[data-product=' + data['extra']['id'] + '] .product-subtotal').html(data['extra']['cost']);
+                        $('h4.grand-totall-title span').html(data['extra']['totalCost']);
+
+                        renderCart();
+                    }
+                }
+            })
+
+        });
+
         function sendRequestRemoveItem(product_id, foo = null) {
             $.ajax({
                 type: "POST",

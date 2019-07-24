@@ -203,6 +203,39 @@ class CartController
     
         return $this->render('index', [
             'items' => !empty($items) ? $items : [],
+            'totalCost' => ValueHelper::addCurrency($cart->getTotalCost()),
         ]);
+    }
+    
+    public function actionChangeQuantity()
+    {
+        if (Yii::$app->request->isPost and Yii::$app->request->isAjax) {
+            $result['success'] = false;
+            $cart = Yii::$app->cart;
+            
+            if ($post = Yii::$app->request->post() and array_key_exists('product',
+                    $post) and array_key_exists('quantity', $post)) {
+                
+                $id = ValueHelper::decryptValue((int) Html::encode($post['product']));
+                $quantity = (int) Html::encode($post['quantity']);
+                
+                $item = $cart->getItem($id);
+                
+                if (!empty($item) and $item->getQuantity() != $quantity) {
+                    $cart->change($id, $quantity);
+                    
+                    $result['extra']['id'] = ValueHelper::encryptValue($id);
+                    $result['extra']['cost'] = ValueHelper::addCurrency($item->getCost());
+                    $result['extra']['totalCost'] = ValueHelper::addCurrency($cart->getTotalCost());
+                    $result['success'] = true;
+                }
+                
+            }
+            
+            return $this->asJson($result);
+            
+        }
+        
+        throw new MethodNotAllowedHttpException('Only AJAX allowed');
     }
 }

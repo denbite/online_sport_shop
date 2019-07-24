@@ -2,6 +2,8 @@
 
 /** @var array $items */
 
+/** @var string $totalCost */
+
 $this->title = 'Корзина';
 
 $this->params['breadcrumbs'][] = $this->title;
@@ -51,9 +53,9 @@ use yii\helpers\Url;
                                     </td>
                                     <td class="product-quantity">
                                         <div class="cart-plus-minus">
-                                            <input id="cart-plus-minus" class="cart-plus-minus-box" type="text"
+                                            <input class="cart-plus-minus-box" type="text"
                                                    name="qtybutton"
-                                                   value="<?= $item['quantity'] ?>">
+                                                   value="<?= $item['quantity'] ?>" min="1">
                                         </div>
                                     </td>
                                     <td class="product-subtotal"><?= $item['cost'] ?></td>
@@ -85,15 +87,7 @@ use yii\helpers\Url;
                             <div class="title-wrap">
                                 <h4 class="cart-bottom-title section-bg-gary-cart">Итого</h4>
                             </div>
-                            <h5>Всего <span>$260.00</span></h5>
-                            <div class="total-shipping">
-                                <h5>Total shipping</h5>
-                                <ul>
-                                    <li><input type="checkbox"> Standard <span>$20.00</span></li>
-                                    <li><input type="checkbox"> Express <span>$30.00</span></li>
-                                </ul>
-                            </div>
-                            <h4 class="grand-totall-title">Grand Total <span>$260.00</span></h4>
+                            <h4 class="grand-totall-title pt-4">Сумма чека <span> <?= $totalCost ?> </span></h4>
                             <a href="<?= Url::to([ '/main/cart/checkout' ]) ?>">Перейти к оплате</a>
                         </div>
                     </div>
