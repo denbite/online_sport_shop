@@ -8,11 +8,12 @@ use app\models\ItemColorSize;
 use Yii;
 use yii\db\Exception;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\MethodNotAllowedHttpException;
 
 /**
- * Controller with only AJAX actions
+ * Controller for work with cart
  */
 class CartController
     extends Controller
@@ -45,9 +46,9 @@ class CartController
             if ($post = Yii::$app->request->post() and array_key_exists('color', $post) and array_key_exists('size',
                     $post) and array_key_exists('quantity', $post)) {
                 $result['success'] = false;
-                $color = ValueHelper::decryptValue($post['color']);
-                $size = ValueHelper::decryptValue($post['size']);
-                $quantity = $post['quantity'];
+                $color = ValueHelper::decryptValue(Html::encode($post['color']));
+                $size = ValueHelper::decryptValue(Html::encode($post['size']));
+                $quantity = Html::encode($post['quantity']);
     
                 $item = ItemColorSize::find()
                                      ->from(ItemColorSize::tableName() . ' size')
@@ -75,12 +76,17 @@ class CartController
                 if (!empty($item)) {
                     // check if this item already exists
                     $product = ItemColorSize::findOne([ 'id' => $size ]);
-                    if (empty($cart->getItem($product->id))) {
+                    $cart_item = $cart->getItem($product->id);
+    
+                    if (empty($cart_item)) {
                         $cart->add($product, $quantity);
+                        $result['success'] = true;
                     } else {
-                        $cart->plus($product->id, $quantity);
+                        if (( $cart_item->getQuantity() + $quantity ) <= $item['quantity']) {
+                            $cart->plus($product->id, $quantity);
+                            $result['success'] = true;
+                        }
                     }
-                    $result['success'] = true;
                 }
             }
             unset($item);
@@ -98,7 +104,7 @@ class CartController
             $cart = Yii::$app->cart;
             
             if ($post = Yii::$app->request->post() and array_key_exists('product', $post)) {
-                $id = ValueHelper::decryptValue($post['product']);
+                $id = ValueHelper::decryptValue(Html::encode($post['product']));
                 
                 if ($cart->getItem($id)) {
                     $cart->remove($id);
@@ -117,6 +123,7 @@ class CartController
     
     public function actionClearCart()
     {
+        // todo-cache: add cache on 5-10 sec
         if (Yii::$app->request->isPost and Yii::$app->request->isAjax) {
             $cart = Yii::$app->cart;
             $result['success'] = false;

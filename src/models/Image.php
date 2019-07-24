@@ -242,10 +242,10 @@ class Image
         }
         
         $tmp = imageCreateTrueColor($w, $h);
-        if ($type == 1 || $type == 3) {
+        if ($type == IMAGETYPE_PNG || $type == IMAGETYPE_JPEG) {
             imagealphablending($tmp, true);
             imageSaveAlpha($tmp, true);
-            $transparent = imagecolorallocatealpha($tmp, 0, 0, 0, 127);
+            $transparent = imagecolorallocate($tmp, 255, 255, 255);
             imagefill($tmp, 0, 0, $transparent);
             imagecolortransparent($tmp, $transparent);
         }

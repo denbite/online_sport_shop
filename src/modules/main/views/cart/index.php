@@ -34,7 +34,7 @@ use yii\helpers\Url;
                             </thead>
                             <tbody>
                             <?php foreach ($items as $item): ?>
-                                <tr>
+                                <tr data-product="<?= ValueHelper::encryptValue($item['size']['id']) ?>">
                                     <td class="product-thumbnail">
                                         <?= Html::a(Html::img(Image::getLink($item['image']['id'],
                                                                              Image::SIZE_THUMBNAIL), [
@@ -73,7 +73,7 @@ use yii\helpers\Url;
                                         покупки</a>
                                 </div>
                                 <div class="cart-clear">
-                                    <a class="cart-close">Clear Shopping Cart</a>
+                                    <a class="cart-close">Очистить корзину</a>
                                 </div>
                             </div>
                         </div>
@@ -83,9 +83,9 @@ use yii\helpers\Url;
                     <div class="offset-lg-8 col-lg-4 col-md-12">
                         <div class="grand-totall">
                             <div class="title-wrap">
-                                <h4 class="cart-bottom-title section-bg-gary-cart">Cart Total</h4>
+                                <h4 class="cart-bottom-title section-bg-gary-cart">Итого</h4>
                             </div>
-                            <h5>Total products <span>$260.00</span></h5>
+                            <h5>Всего <span>$260.00</span></h5>
                             <div class="total-shipping">
                                 <h5>Total shipping</h5>
                                 <ul>
@@ -94,7 +94,7 @@ use yii\helpers\Url;
                                 </ul>
                             </div>
                             <h4 class="grand-totall-title">Grand Total <span>$260.00</span></h4>
-                            <a href="#">Proceed to Checkout</a>
+                            <a href="<?= Url::to([ '/main/cart/checkout' ]) ?>">Перейти к оплате</a>
                         </div>
                     </div>
                 </div>

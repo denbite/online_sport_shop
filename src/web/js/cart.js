@@ -7,6 +7,8 @@
 
         var $cartWrap = $('.cart-wrap');
 
+        var $cartIndex = $('.cart-main-area');
+
         // add item to cart
         $('#add-to-cart').on('click', function () {
             var color = $('#color-details li.active').data('color');
@@ -25,7 +27,11 @@
                 },
                 success: function (data) {
                     if (data['success']) {
-                        renderCart(true);
+
+                        renderCart(function () {
+                            show_cart();
+                        });
+
                     } else {
                         alert("К сожалению, данного товара уже нет на складе");
                     }
@@ -38,29 +44,65 @@
 
             var product = $(this).closest('li.single-shopping-cart').data('cart-id');
 
+            sendRequestRemoveItem(product, function () {
+                renderCart();
+                if ($cartIndex.length) {
+                    console.log('cart page');
+                    $cartIndex.find('tr[data-product=' + product + ']').remove();
+                }
+            });
+        });
+
+        // clear cart by clicking on close button in dropdown cart
+        $cartWrap.on('click', 'a.cart-close:visible', function () {
+            sendRequestClearCart(function () {
+                renderCart();
+                if ($cartIndex.length) {
+                    $cartIndex.find('tbody').empty();
+                }
+            });
+        });
+
+        // remove one product on cart page
+        $cartIndex.on('click', '.product-remove i:visible', function () {
+            var product = $(this).closest('tr').data('product');
+
+            sendRequestRemoveItem(product, function () {
+
+                $cartIndex.find('tr[data-product=' + product + ']').remove();
+                renderCart();
+            });
+        });
+
+        // clear cart on cart page
+        $cartIndex.on('click', 'a.cart-close', function () {
+            console.log('clear');
+            sendRequestClearCart(function () {
+                renderCart();
+                $cartIndex.find('tbody').empty();
+            });
+        });
+
+        function sendRequestRemoveItem(product_id, foo = null) {
             $.ajax({
                 type: "POST",
                 url: "/main/cart/remove-item",
                 dataType: "json",
-                data: "product=" + product,
+                data: "product=" + product_id,
                 error: function () {
                     alert("При выполнении запроса возникла ошибка");
                 },
                 success: function (data) {
-                    console.log(data);
                     if (data['success']) {
-                        // $('.count-style').html(data['totalCount']);
-                        // $('.cart-price').html(data['totalCost']);
-                        // $('.shop-total').html(data['totalCost']);
-                        // $('ul.cart-items li[data-cart-id="' + data['id'] + '"]').remove();
-                        renderCart();
+                        if (typeof (foo) == 'function') {
+                            foo();
+                        }
                     }
                 }
             })
-        });
+        }
 
-        // clear cart
-        $cartWrap.on('click', 'a.cart-close:visible', function () {
+        function sendRequestClearCart(foo = null) {
             $.ajax({
                 type: "POST",
                 url: "/main/cart/clear-cart",
@@ -71,15 +113,13 @@
                 },
                 success: function (data) {
                     if (data['success']) {
-                        // $('.count-style').html(0);
-                        // $('.cart-price').html('₴ 0');
-                        // $('ul.cart-items').empty();
-                        // $('.shopping-cart-total span').html('₴ 0');
-                        renderCart();
+                        if (typeof (foo) == 'function') {
+                            foo();
+                        }
                     }
                 }
             })
-        });
+        }
 
         // show cart
         function show_cart() {
@@ -89,7 +129,7 @@
         }
 
         // send request and insert response into cart div. can also show cart after inserting
-        function renderCart(show = false) {
+        function renderCart(afterRender = null) {
             return $.ajax({
                 type: "POST",
                 url: "/main/cart/cart",
@@ -103,8 +143,8 @@
                         $cartWrap.html(data);
                     }
 
-                    if (show) {
-                        show_cart();
+                    if (typeof (afterRender) == 'function') {
+                        afterRender();
                     }
                 }
             });
