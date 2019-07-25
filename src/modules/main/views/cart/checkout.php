@@ -5,164 +5,112 @@
 
 /** @var string $delivery */
 /** @var array $items */
+/** @var \app\modules\user\models\forms\LoginForm $model */
 
 $this->title = 'Оформление заказа';
 
 $this->params['breadcrumbs'][] = $this->title;
+
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 
 ?>
 
 
 <div class="checkout-main-area pt-70 pb-70">
     <div class="container">
-        <div class="customer-zone mb-20">
-            <p class="cart-page-title">Постоянный клиент? <a class="checkout-click1" href="#">Нажмите, чтобы войти</a>
-            </p>
-            <div class="checkout-login-info">
-                <p>
-                    Если вы покупали у нас раньше, то пожалуйста войдите с помощью формы внизу. Если вы новый
-                    покупатель, пожалуйста перейдите к форме "Оформления заказа"
+        <?php if (Yii::$app->user->isGuest and !empty($model)): ?>
+            <div class="customer-zone mb-20">
+                <p class="cart-page-title">Постоянный клиент? <a class="checkout-click1" href="#">Нажмите, чтобы
+                        войти</a>
                 </p>
-                <form action="#">
+                <div class="checkout-login-info">
+                    <p>
+                        Если вы покупали у нас раньше, то пожалуйста войдите с помощью формы внизу. Если вы новый
+                        покупатель, пожалуйста перейдите к форме "Оформления заказа"
+                    </p>
+                    <?php $form = ActiveForm::begin([
+                        'id' => 'login-form',
+                    ]) ?>
                     <div class="row">
-                        <div class="col-lg-6 col-md-6">
+                        <div class="col-lg-3 col-md-6">
                             <div class="sin-checkout-login">
-                                <label>Username or email address <span>*</span></label>
-                                <input type="text" name="user-name">
+                                <?= $form->field($model, 'email')->textInput([
+                                    'placeholder' => $model->getAttributeLabel('email'),
+                                ])->label(false) ?>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6">
+                        <div class="col-lg-3 col-md-6">
                             <div class="sin-checkout-login">
-                                <label>Passwords <span>*</span></label>
-                                <input type="password" name="user-password">
+                                <?= $form->field($model, 'password')->passwordInput([
+                                    'placeholder' => $model->getAttributeLabel('password'),
+                                ])->label(false) ?>
                             </div>
                         </div>
                     </div>
                     <div class="button-remember-wrap">
-                        <button class="button" type="submit">Login</button>
+                        <?= Html::submitButton('Войти') ?>
                         <div class="checkout-login-toggle-btn">
-                            <input type="checkbox">
-                            <label>Remember me</label>
+                            <?= $form->field($model, 'rememberMe')
+                                     ->checkbox()
+                                     ->label('Запомнить меня') ?>
                         </div>
                     </div>
                     <div class="lost-password">
-                        <a href="#">Lost your password?</a>
+                        <?= Html::a('Забыли пароль?', [ '/user/default/forgot-password' ]) ?>
                     </div>
-                </form>
+                    <?php ActiveForm::end() ?>
+                </div>
             </div>
-        </div>
+        <?php endif; ?>
         <div class="checkout-wrap pt-30">
             <div class="row">
                 <div class="col-lg-7">
                     <div class="billing-info-wrap mr-50">
                         <h3>Оформление</h3>
                         <!--                        Проверка на авторизацию пользователя-->
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6">
-                                <div class="billing-info mb-20">
-                                    <label>First Name <abbr class="required" title="required">*</abbr></label>
-                                    <input type="text">
+                        <?php if (Yii::$app->user->isGuest): ?>
+                            <div class="row"><?php $form = ActiveForm::begin([
+                                    'id' => 'signup-form',
+                                ]) ?>
+                                <?= $form->field($model, 'email')
+                                         ->textInput([ 'placeholder' => $model->getAttributeLabel('email'), ])
+                                         ->label(false) ?>
+                                <?= $form->field($model, 'password')
+                                         ->passwordInput([ 'placeholder' => $model->getAttributeLabel('password'), ])
+                                         ->label(false) ?>
+                                <?= $form->field($model, 'phone')
+                                         ->textInput([ 'placeholder' => $model->getAttributeLabel('phone') ])
+                                         ->label(false) ?>
+                                <?= $form->field($model, 'name')
+                                         ->input('tel', [ 'placeholder' => $model->getAttributeLabel('name') ])
+                                         ->label(false) ?>
+                                <div class="button-box">
+                                    <?= Html::submitButton('Зарегистрироваться') ?>
                                 </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6">
-                                <div class="billing-info mb-20">
-                                    <label>Last Name <abbr class="required" title="required">*</abbr></label>
-                                    <input type="text">
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="billing-info mb-20">
-                                    <label>Company Name <abbr class="required" title="required">*</abbr></label>
-                                    <input type="text">
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="billing-select mb-20">
-                                    <label>Country <abbr class="required" title="required">*</abbr></label>
-                                    <select>
-                                        <option>Select a country</option>
-                                        <option>Azerbaijan</option>
-                                        <option>Bahamas</option>
-                                        <option>Bahrain</option>
-                                        <option>Bangladesh</option>
-                                        <option>Barbados</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="billing-info mb-20">
-                                    <label>Street Address <abbr class="required" title="required">*</abbr></label>
-                                    <input class="billing-address" placeholder="House number and street name"
-                                           type="text">
-                                    <input placeholder="Apartment, suite, unit etc." type="text">
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="billing-info mb-20">
-                                    <label>Town / City <abbr class="required" title="required">*</abbr></label>
-                                    <input type="text">
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12">
-                                <div class="billing-info mb-20">
-                                    <label>State / County <abbr class="required" title="required">*</abbr></label>
-                                    <input type="text">
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12">
-                                <div class="billing-info mb-20">
-                                    <label>Postcode / ZIP <abbr class="required" title="required">*</abbr></label>
-                                    <input type="text">
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12">
-                                <div class="billing-info mb-20">
-                                    <label>Phone <abbr class="required" title="required">*</abbr></label>
-                                    <input type="text">
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12">
-                                <div class="billing-info mb-20">
-                                    <label>Email Address <abbr class="required" title="required">*</abbr></label>
-                                    <input type="text">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="checkout-account mb-25">
-                            <input class="checkout-toggle2" type="checkbox">
-                            <span>Create an account?</span>
-                        </div>
-                        <div class="checkout-account-toggle open-toggle2 mb-30">
-                            <label>Email Address</label>
-                            <input placeholder="Password" type="password">
-                        </div>
-                        <div class="checkout-account mt-25">
-                            <input class="checkout-toggle" type="checkbox">
-                            <span>Ship to a different address?</span>
-                        </div>
-                        <div class="different-address open-toggle mt-30">
+                                <?php ActiveForm::end() ?></div>
                             <div class="row">
                                 <div class="col-lg-6 col-md-6">
                                     <div class="billing-info mb-20">
-                                        <label>First Name</label>
+                                        <label>First Name <abbr class="required" title="required">*</abbr></label>
                                         <input type="text">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                     <div class="billing-info mb-20">
-                                        <label>Last Name</label>
+                                        <label>Last Name <abbr class="required" title="required">*</abbr></label>
                                         <input type="text">
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="billing-info mb-20">
-                                        <label>Company Name</label>
+                                        <label>Company Name <abbr class="required" title="required">*</abbr></label>
                                         <input type="text">
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="billing-select mb-20">
-                                        <label>Country</label>
+                                        <label>Country <abbr class="required" title="required">*</abbr></label>
                                         <select>
                                             <option>Select a country</option>
                                             <option>Azerbaijan</option>
@@ -175,7 +123,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="billing-info mb-20">
-                                        <label>Street Address</label>
+                                        <label>Street Address <abbr class="required" title="required">*</abbr></label>
                                         <input class="billing-address" placeholder="House number and street name"
                                                type="text">
                                         <input placeholder="Apartment, suite, unit etc." type="text">
@@ -183,41 +131,126 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="billing-info mb-20">
-                                        <label>Town / City</label>
+                                        <label>Town / City <abbr class="required" title="required">*</abbr></label>
                                         <input type="text">
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6">
+                                <div class="col-lg-12 col-md-12">
                                     <div class="billing-info mb-20">
-                                        <label>State / County</label>
+                                        <label>State / County <abbr class="required" title="required">*</abbr></label>
                                         <input type="text">
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6">
+                                <div class="col-lg-12 col-md-12">
                                     <div class="billing-info mb-20">
-                                        <label>Postcode / ZIP</label>
+                                        <label>Postcode / ZIP <abbr class="required" title="required">*</abbr></label>
                                         <input type="text">
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6">
+                                <div class="col-lg-12 col-md-12">
                                     <div class="billing-info mb-20">
-                                        <label>Phone</label>
+                                        <label>Phone <abbr class="required" title="required">*</abbr></label>
                                         <input type="text">
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6">
+                                <div class="col-lg-12 col-md-12">
                                     <div class="billing-info mb-20">
-                                        <label>Email Address</label>
+                                        <label>Email Address <abbr class="required" title="required">*</abbr></label>
                                         <input type="text">
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="additional-info-wrap">
-                            <label>Order notes</label>
-                            <textarea placeholder="Notes about your order, e.g. special notes for delivery. "
-                                      name="message"></textarea>
-                        </div>
+                            <div class="checkout-account mb-25">
+                                <input class="checkout-toggle2" type="checkbox">
+                                <span>Create an account?</span>
+                            </div>
+                            <div class="checkout-account-toggle open-toggle2 mb-30">
+                                <label>Email Address</label>
+                                <input placeholder="Password" type="password">
+                            </div>
+                            <div class="checkout-account mt-25">
+                                <input class="checkout-toggle" type="checkbox">
+                                <span>Ship to a different address?</span>
+                            </div>
+                            <div class="different-address open-toggle mt-30">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="billing-info mb-20">
+                                            <label>First Name</label>
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="billing-info mb-20">
+                                            <label>Last Name</label>
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="billing-info mb-20">
+                                            <label>Company Name</label>
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="billing-select mb-20">
+                                            <label>Country</label>
+                                            <select>
+                                                <option>Select a country</option>
+                                                <option>Azerbaijan</option>
+                                                <option>Bahamas</option>
+                                                <option>Bahrain</option>
+                                                <option>Bangladesh</option>
+                                                <option>Barbados</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="billing-info mb-20">
+                                            <label>Street Address</label>
+                                            <input class="billing-address" placeholder="House number and street name"
+                                                   type="text">
+                                            <input placeholder="Apartment, suite, unit etc." type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="billing-info mb-20">
+                                            <label>Town / City</label>
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="billing-info mb-20">
+                                            <label>State / County</label>
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="billing-info mb-20">
+                                            <label>Postcode / ZIP</label>
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="billing-info mb-20">
+                                            <label>Phone</label>
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="billing-info mb-20">
+                                            <label>Email Address</label>
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="additional-info-wrap">
+                                <label>Order notes</label>
+                                <textarea placeholder="Notes about your order, e.g. special notes for delivery. "
+                                          name="message"></textarea>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="col-lg-5">
