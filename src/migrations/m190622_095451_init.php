@@ -20,8 +20,9 @@ class m190622_095451_init extends Migration
         
         $this->createTable('{{%user}}', [
             'id' => $this->primaryKey(),
-            'username' => $this->string()->notNull(),
-            'email' => $this->string()->notNull()->defaultValue(''),
+            'name' => $this->string()->notNull(),
+            'email' => $this->string()->unique()->notNull(),
+            'phone' => $this->string(32)->unique()->notNull(),
             'password_hash' => $this->string()->notNull()->defaultValue(''),
             'auth_key' => $this->string(32)->notNull()->defaultValue(''),
             'email_confirm_token' => $this->string()->notNull()->defaultValue(''),
@@ -29,15 +30,14 @@ class m190622_095451_init extends Migration
             'status' => $this->boolean()->unsigned()->defaultValue(1),
             'created_at' => $this->integer()->unsigned()->notNull()->defaultValue(0),
             'updated_at' => $this->integer()->unsigned()->notNull()->defaultValue(0),
-        
         ], $tableOptions);
         
         $this->batchInsert(
             '{{%user}}',
-            [ 'username', 'email', 'password_hash', 'created_at', 'updated_at' ],
+            [ 'username', 'email', 'phone', 'password_hash', 'created_at', 'updated_at' ],
             [
-                [ 'admin', 'mirloxd3@gmail.com', '$2y$13$IhLqcYoo9q22IwLjFi7sLu3s5tYkteU/ngc27/2uf2HrOjAWjeVSi', time(), time() ],
-                [ 'capcatd', 'captaincatd@ukr.net', '$2y$13$IhLqcYoo9q22IwLjFi7sLu3s5tYkteU/ngc27/2uf2HrOjAWjeVSi', time(), time() ],
+                [ 'admin', 'mirloxd3@gmail.com', '+380675447477', '$2y$13$IhLqcYoo9q22IwLjFi7sLu3s5tYkteU/ngc27/2uf2HrOjAWjeVSi', time(), time() ],
+                [ 'capcatd', 'captaincatd@ukr.net', '+380675225770', '$2y$13$IhLqcYoo9q22IwLjFi7sLu3s5tYkteU/ngc27/2uf2HrOjAWjeVSi', time(), time() ],
             ]
         );
         $auth = Yii::$app->authManager;

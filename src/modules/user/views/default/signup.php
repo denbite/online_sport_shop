@@ -5,11 +5,12 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \app\modules\user\models\LoginForm */
+/* @var $model \app\modules\user\models\SignupForm */
 
 $this->title = 'Регистрация';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="login-register-area pt-100 pb-100">
     <div class="container">
         <div class="row">
@@ -25,14 +26,17 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <?php $form = ActiveForm::begin([
                                                                         'id' => 'signup-form',
                                                                     ]) ?>
-                                    <?= $form->field($model, 'username')
-                                             ->textInput([ 'placeholder' => $model->getAttributeLabel('username'), ])
+                                    <?= $form->field($model, 'email')
+                                             ->textInput([ 'placeholder' => $model->getAttributeLabel('email'), ])
                                              ->label(false) ?>
                                     <?= $form->field($model, 'password')
                                              ->passwordInput([ 'placeholder' => $model->getAttributeLabel('password'), ])
                                              ->label(false) ?>
-                                    <?= $form->field($model, 'email')
-                                             ->textInput([ 'placeholder' => $model->getAttributeLabel('email') ])
+                                    <?= $form->field($model, 'phone')
+                                             ->textInput([ 'placeholder' => $model->getAttributeLabel('phone') ])
+                                             ->label(false) ?>
+                                    <?= $form->field($model, 'name')
+                                             ->input('tel', [ 'placeholder' => $model->getAttributeLabel('name') ])
                                              ->label(false) ?>
                                     <div class="button-box">
                                         <?= Html::submitButton('Зарегистрироваться') ?>

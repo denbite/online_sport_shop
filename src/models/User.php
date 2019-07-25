@@ -5,16 +5,16 @@ namespace app\models;
 /**
  * This is the model class for table "user".
  *
- * @property int $id
- * @property string $username
+ * @property int    $id
+ * @property string $name
  * @property string $email
  * @property string $password_hash
  * @property string $auth_key
  * @property string $email_confirm_token
  * @property string $password_reset_token
- * @property int $status
- * @property int $created_at
- * @property int $updated_at
+ * @property int    $status
+ * @property int    $created_at
+ * @property int    $updated_at
  */
 class User extends \yii\db\ActiveRecord
 {
@@ -33,11 +33,11 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [ [ 'username' ], 'required' ],
+            [ [ 'email', 'phone' ], 'required' ],
             [ [ 'status', 'created_at', 'updated_at' ], 'integer' ],
-            [ [ 'username', 'email', 'password_hash', 'email_confirm_token', 'password_reset_token' ], 'string', 'max' => 255 ],
+            [ [ 'name', 'email', 'password_hash', 'email_confirm_token', 'password_reset_token' ], 'string', 'max' => 255 ],
             [ [ 'auth_key' ], 'string', 'max' => 32 ],
-            [ [ 'username', 'email' ], 'unique' ],
+            [ [ 'name', 'email' ], 'unique' ],
         ];
     }
     
@@ -48,7 +48,7 @@ class User extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'username' => 'Username',
+            'name' => 'Имя',
             'email' => 'Email',
             'password_hash' => 'Password Hash',
             'auth_key' => 'Auth Key',

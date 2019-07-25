@@ -69,63 +69,65 @@ use yii\helpers\Html;
 <!--    </div>-->
 <!--</div>-->
 
-<div class="product-area pb-70 pt-70">
-    <div class="container">
-        <div class="section-title text-center pb-45">
-            <h2>Топы продаж</h2>
-            <p> Эти товары раскупают быстрее всего, успей заказать и ты</p>
-        </div>
-        <div class="arrivals-wrap scroll-zoom">
-            <div class="ht-products product-slider-active-2 owl-carousel">
-                <?php foreach ($popular as $item): ?>
-                    <div class="ht-product ht-product-action-on-hover ht-product-category-right-bottom mb-30">
-                        <div class="ht-product-inner">
-                            <div class="ht-product-image-wrap">
-                                <span class="ht-product-label ht-product-label-left">HOT</span>
-                                <?php if (!empty($item['promotion'])): ?>
-                                    <span class="ht-product-label ht-product-label-right">Sale</span>
-                                <?php endif; ?>
-                                
-                                <?=
-                                Html::a(Html::img(Image::getLink($item['allColors'][0]['mainImage']['id'],
-                                                                 Image::SIZE_MEDIUM), [
-                                    'alt' => $item['allColors'][0]['mainImage']['url'],
-                                ]),
-                                    [ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ],
-                                    [
-                                        'class' => 'ht-product-image',
-                                    ])
-                                ?>
-                                <div class="ht-product-action">
-                                    <ul>
-                                        <!--                                        <li><a href="#" data-toggle="modal" data-target="#exampleModal"><i-->
-                                        <!--                                                        class="sli sli-magnifier"></i><span-->
-                                        <!--                                                        class="ht-product-action-tooltip">Quick View</span></a></li>-->
-                                        <!--                                        <li><a href="#"><i class="sli sli-heart"></i><span-->
-                                        <!--                                                        class="ht-product-action-tooltip">Add to Wishlist</span></a>-->
-                                        <!--                                        </li>-->
-                                        <!--                                        <li><a href="#"><i class="sli sli-refresh"></i><span-->
-                                        <!--                                                        class="ht-product-action-tooltip">Add to Compare</span></a></li>-->
-                                        <!--                                        <li><a href="#"><i class="sli sli-bag"></i><span-->
-                                        <!--                                                        class="ht-product-action-tooltip">Добавить в корзину</span></a>-->
-                                        <!--                                        </li>-->
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="ht-product-content">
-                                <div class="ht-product-content-inner">
-                                    <h4 class="ht-product-title"><a
-                                                href="<?= \yii\helpers\Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ]) ?>"><?= $item['firm'] . ' ' . $item['model'] ?></a>
-                                    </h4>
-                                    <div class="ht-product-price">
-                                        <span class="new"><?= ValueHelper::outPriceCatalog($item['allColors'],
-                                                                                           $item['promotion']) ?></span>
-                                        <?php if (!empty($item['promotion'])): ?>
-                                            <span class="old"> <?= ValueHelper::outPriceCatalog($item['allColors'],
-                                                                                                []); ?> </span>
-                                        <?php endif; ?>
+<?php if (!empty($popular)): ?>
+
+    <div class="product-area pb-70 pt-70">
+        <div class="container">
+            <div class="section-title text-center pb-45">
+                <h2>Топы продаж</h2>
+                <p> Эти товары раскупают быстрее всего, успей заказать и ты</p>
+            </div>
+            <div class="arrivals-wrap scroll-zoom">
+                <div class="ht-products product-slider-active-2 owl-carousel">
+                    <?php foreach ($popular as $item): ?>
+                        <div class="ht-product ht-product-action-on-hover ht-product-category-right-bottom mb-30">
+                            <div class="ht-product-inner">
+                                <div class="ht-product-image-wrap">
+                                    <span class="ht-product-label ht-product-label-left">HOT</span>
+                                    <?php if (!empty($item['promotion'])): ?>
+                                        <span class="ht-product-label ht-product-label-right">Sale</span>
+                                    <?php endif; ?>
+                                    
+                                    <?=
+                                    Html::a(Html::img(Image::getLink($item['allColors'][0]['mainImage']['id'],
+                                        Image::SIZE_MEDIUM), [
+                                        'alt' => $item['allColors'][0]['mainImage']['url'],
+                                    ]),
+                                        [ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ],
+                                        [
+                                            'class' => 'ht-product-image',
+                                        ])
+                                    ?>
+                                    <div class="ht-product-action">
+                                        <ul>
+                                            <!--                                        <li><a href="#" data-toggle="modal" data-target="#exampleModal"><i-->
+                                            <!--                                                        class="sli sli-magnifier"></i><span-->
+                                            <!--                                                        class="ht-product-action-tooltip">Quick View</span></a></li>-->
+                                            <!--                                        <li><a href="#"><i class="sli sli-heart"></i><span-->
+                                            <!--                                                        class="ht-product-action-tooltip">Add to Wishlist</span></a>-->
+                                            <!--                                        </li>-->
+                                            <!--                                        <li><a href="#"><i class="sli sli-refresh"></i><span-->
+                                            <!--                                                        class="ht-product-action-tooltip">Add to Compare</span></a></li>-->
+                                            <!--                                        <li><a href="#"><i class="sli sli-bag"></i><span-->
+                                            <!--                                                        class="ht-product-action-tooltip">Добавить в корзину</span></a>-->
+                                            <!--                                        </li>-->
+                                        </ul>
                                     </div>
-                                    <div class="ht-product-ratting-wrap">
+                                </div>
+                                <div class="ht-product-content">
+                                    <div class="ht-product-content-inner">
+                                        <h4 class="ht-product-title"><a
+                                                    href="<?= \yii\helpers\Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ]) ?>"><?= $item['firm'] . ' ' . $item['model'] ?></a>
+                                        </h4>
+                                        <div class="ht-product-price">
+                                        <span class="new"><?= ValueHelper::outPriceCatalog($item['allColors'],
+                                                $item['promotion']) ?></span>
+                                            <?php if (!empty($item['promotion'])): ?>
+                                                <span class="old"> <?= ValueHelper::outPriceCatalog($item['allColors'],
+                                                        []); ?> </span>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="ht-product-ratting-wrap">
                                         <span class="ht-product-ratting">
                                             <span class="ht-product-user-ratting" style="width: <?= $item['rate'] ?>%;">
                                                 <i class="sli sli-star"></i>
@@ -140,31 +142,32 @@ use yii\helpers\Html;
                                         <i class="sli sli-star"></i>
                                         <i class="sli sli-star"></i>
                                         </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="ht-product-action">
-                                    <ul>
-                                        <!--                                        <li><a href="#"><i class="sli sli-magnifier"></i><span-->
-                                        <!--                                                        class="ht-product-action-tooltip">Quick View</span></a></li>-->
-                                        <!--                                        <li><a href="#"><i class="sli sli-heart"></i><span-->
-                                        <!--                                                        class="ht-product-action-tooltip">Add to Wishlist</span></a>-->
-                                        <!--                                        </li>-->
-                                        <!--                                        <li><a href="#"><i class="sli sli-refresh"></i><span-->
-                                        <!--                                                        class="ht-product-action-tooltip">Add to Compare</span></a></li>-->
-                                        <li><a href="#"><i class="sli sli-bag"></i><span
-                                                        class="ht-product-action-tooltip">Добавить в корзину</span></a>
-                                        </li>
-                                    </ul>
+                                    <div class="ht-product-action">
+                                        <ul>
+                                            <!--                                        <li><a href="#"><i class="sli sli-magnifier"></i><span-->
+                                            <!--                                                        class="ht-product-action-tooltip">Quick View</span></a></li>-->
+                                            <!--                                        <li><a href="#"><i class="sli sli-heart"></i><span-->
+                                            <!--                                                        class="ht-product-action-tooltip">Add to Wishlist</span></a>-->
+                                            <!--                                        </li>-->
+                                            <!--                                        <li><a href="#"><i class="sli sli-refresh"></i><span-->
+                                            <!--                                                        class="ht-product-action-tooltip">Add to Compare</span></a></li>-->
+                                            <li><a href="#"><i class="sli sli-bag"></i><span
+                                                            class="ht-product-action-tooltip">Добавить в корзину</span></a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </div>
-    </div>
 </div>
 
+<?php endif; ?>
 <!--  ACTIVE PROMOTION (with image?)  -->
 <!--<div class="banner-area pt-80 pb-80 section-margin-1 bg-aliceblue">-->
 <!--    <div class="container">-->

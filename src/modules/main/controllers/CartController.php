@@ -5,6 +5,7 @@ namespace app\modules\main\controllers;
 use app\components\helpers\ValueHelper;
 use app\components\models\Status;
 use app\models\ItemColorSize;
+use app\modules\user\models\forms\LoginForm;
 use Yii;
 use yii\db\Exception;
 use yii\helpers\ArrayHelper;
@@ -191,6 +192,15 @@ class CartController
     
     public function actionCheckout()
     {
+    
+        if (Yii::$app->user->isGuest) {
+            $model = new LoginForm();
+            if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            
+                return $this->refresh();
+            }
+        }
+    
         $cart = Yii::$app->cart;
     
         foreach ($cart->getItems() as $index => $item) {
@@ -201,9 +211,10 @@ class CartController
         }
     
         return $this->render('checkout', [
-            'items' => $items,
+            'items' => !empty($items) ? $items : [],
             'totalCost' => ValueHelper::addCurrency($cart->getTotalCost()),
             'delivery' => ValueHelper::getDelivery($cart->getTotalCost()),
+            'model' => !empty($model) ? $model : null,
         ]);
     }
     

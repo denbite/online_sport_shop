@@ -38,7 +38,7 @@ AppAsset::register($this);
     <?php if (!Yii::$app->user->isGuest and \app\components\helpers\Permission::can('admin_default_index')): ?>
         <div class="row" style="background-color: #000000;">
             <div class="col py-2 px-5">
-                <?= Html::a('Добро пожаловать, ' . Yii::$app->user->identity->username, [ '/admin/default/index' ],
+                <?= Html::a('Добро пожаловать, ' . Yii::$app->user->identity->email, [ '/admin/default/index' ],
                             [ 'class' => 'px-50', 'style' => 'color:#fff;font-size:18px;text-decoration:underline;float:right;' ]) ?>
             </div>
         </div>

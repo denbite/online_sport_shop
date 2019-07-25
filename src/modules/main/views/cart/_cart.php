@@ -2,6 +2,7 @@
 
 use app\components\helpers\ValueHelper;
 use app\models\Image;
+use app\models\ItemColorSize;
 use yii\helpers\Url;
 
 /** @var array $result */
@@ -36,7 +37,7 @@ use yii\helpers\Url;
                 </div>
                 <div class="shopping-cart-title">
                     <h4>
-                        <a href="<?= Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['item']['id']) ]) ?>"> <?= $item['item']['model'] . ' ' . $item['size']['size'] ?></a>
+                        <a href="<?= Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['item']['id']) ]) ?>"> <?= $item['item']['firm'] . ' ' . $item['item']['model'] . ' ' . ( $item['size']['size'] != ItemColorSize::WITHOUT_SIZE ? $item['size']['size'] : '' ) ?></a>
                     </h4>
                     <span><?= $item['quantity'] . ' x ' . $item['price'] ?></span>
                 </div>

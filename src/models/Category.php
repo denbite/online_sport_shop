@@ -126,7 +126,8 @@ class Category extends Tree
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
-            if ($this->active != $this->oldAttributes['active']) {
+    
+            if (!$insert and $this->active != $this->oldAttributes['active']) {
                 
                 if (count($this->parents()->andWhere([ 'active' => Status::STATUS_ACTIVE ])->all()) == $this->lvl) {
                     self::updateAll([ 'active' => $this->active ],

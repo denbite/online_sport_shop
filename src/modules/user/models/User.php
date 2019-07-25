@@ -10,9 +10,10 @@ use yii\behaviors\TimestampBehavior;
 
 /**
  * @property string auth_key
- * @property string username
+ * @property string name
  * @property string email
- * @property int status
+ * @property string phone
+ * @property int    status
  */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
@@ -48,21 +49,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
     
     /**
-     * Finds user by username
+     * Finds user by email
      *
-     * @param string $username
-     *
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        return static::findOne([ 'username' => $username ]);
-    }
-    
-    /**
-     * Finds user by username
-     *
-     * @param string $username
+     * @param string $email
      *
      * @return static|null
      */
@@ -137,12 +126,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [ 'username', 'required' ],
-            [ 'username', 'match', 'pattern' => '#^[\w_-]+$#i' ],
-            [ 'username', 'unique', 'targetClass' => self::className(), 'message' => 'Пользователь с таким нийнеймом уже существует' ],
-            [ 'username', 'string', 'min' => 2, 'max' => 255 ],
-            
-            [ 'email', 'required' ],
+            [ 'name', 'string', 'min' => 2, 'max' => 32 ],
+    
+            [ [ 'email', 'phone' ], 'required' ],
             [ 'email', 'email' ],
             [ 'email', 'unique', 'targetClass' => self::className(), 'message' => 'Пользователь с такой почтой уже существует' ],
             [ 'email', 'string', 'max' => 255 ],
@@ -182,9 +168,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     /**
      * @return string
      */
-    public function getUsername()
+    public function getName()
     {
-        return $this->username;
+        return $this->name;
     }
     
     /**
@@ -314,7 +300,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'id' => 'ID',
             'created_at' => 'Дата создания',
             'updated_at' => 'Дата обновления',
-            'username' => 'Никнейм',
+            'name' => 'Имя',
             'email' => 'Почтовый ящик',
             'status' => 'Статус',
         ];

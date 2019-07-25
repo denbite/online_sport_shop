@@ -27,8 +27,8 @@ use yii\helpers\Html;
                                     <?php $form = ActiveForm::begin([
                                                                         'id' => 'login-form',
                                                                     ]) ?>
-                                    <?= $form->field($model, 'username')->textInput([
-                                        'placeholder' => $model->getAttributeLabel('username'),
+                                    <?= $form->field($model, 'email')->textInput([
+                                        'placeholder' => $model->getAttributeLabel('email'),
                                     ])->label(false) ?>
                                     <?= $form->field($model, 'password')->passwordInput([
                                         'placeholder' => $model->getAttributeLabel('password'),
