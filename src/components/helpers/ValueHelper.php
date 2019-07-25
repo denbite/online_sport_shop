@@ -185,4 +185,9 @@ class ValueHelper
         return null;
     }
     
+    public static function getDelivery($price)
+    {
+        return ( !empty($price) and (int) $price > 500 ) ? 'Бесплатно' : 'По тарифам перевозчика';
+    }
+    
 }

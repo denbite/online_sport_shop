@@ -71,7 +71,7 @@ use yii\helpers\Url;
                         <div class="col-lg-12">
                             <div class="cart-shiping-update-wrapper">
                                 <div class="cart-shiping-update">
-                                    <a href="<?= \yii\helpers\Url::to([ 'main/products/catalog' ]) ?>">Продолжить
+                                    <a href="<?= \yii\helpers\Url::to([ '/main/products/catalog' ]) ?>">Продолжить
                                         покупки</a>
                                 </div>
                                 <div class="cart-clear">
@@ -87,8 +87,16 @@ use yii\helpers\Url;
                             <div class="title-wrap">
                                 <h4 class="cart-bottom-title section-bg-gary-cart">Итого</h4>
                             </div>
+                            <div class="total-shipping">
+                                <h5>Доставка</h5>
+                                <ul>
+                                    <li><input type="checkbox" checked disabled> Новая почта
+                                        <span> <?= ValueHelper::getDelivery($totalCost) ?> </span>
+                                    </li>
+                                </ul>
+                            </div>
                             <h4 class="grand-totall-title pt-4">Сумма чека <span> <?= $totalCost ?> </span></h4>
-                            <a href="<?= Url::to([ '/main/cart/checkout' ]) ?>">Перейти к оплате</a>
+                            <a href="<?= Url::to([ '/main/cart/checkout' ]) ?>">Оформить заказ</a>
                         </div>
                     </div>
                 </div>

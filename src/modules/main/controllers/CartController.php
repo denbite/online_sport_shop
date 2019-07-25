@@ -59,6 +59,9 @@ class CartController
                                                $query->with([ 'promotion' => function ($query)
                                                {
                                                    $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
+                                               }, 'category' => function ($query)
+                                               {
+                                                   $query->andWhere([ 'active' => Status::STATUS_ACTIVE ]);
                                                } ]);
                                            }, 'mainImage image' ]);
                                        } ])
@@ -108,9 +111,7 @@ class CartController
                 
                 if ($cart->getItem($id)) {
                     $cart->remove($id);
-                    $result['totalCount'] = $cart->getTotalCount();
                     $result['totalCost'] = ValueHelper::addCurrency($cart->getTotalCost());
-                    $result['id'] = ValueHelper::encryptValue($id);
                     $result['success'] = true;
                 }
             }
@@ -131,6 +132,7 @@ class CartController
             try {
                 if (!empty($cart->getItems())) {
                     $cart->clear();
+                    $result['extra']['totalCost'] = ValueHelper::addCurrency($cart->getTotalCost());
                     $result['success'] = true;
                 }
             } catch (Exception $exception) {
@@ -170,10 +172,17 @@ class CartController
             
             unset($tmp);
             unset($index);
-            
-            return $this->view->render('_cart', [
+            unset($item);
+    
+            $data['cart'] = $this->view->render('_cart', [
                 'result' => $result,
             ], $this);
+    
+            $data['delivery'] = ValueHelper::getDelivery($cart->getTotalCost());
+            $data['totalCost'] = $result['totalCost'];
+            unset($result);
+    
+            return $this->asJson($data);
             
         }
         

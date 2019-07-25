@@ -47,7 +47,6 @@
             sendRequestRemoveItem(product, function () {
                 renderCart();
                 if ($cartIndex.length) {
-                    console.log('cart page');
                     $cartIndex.find('tr[data-product=' + product + ']').remove();
                 }
             });
@@ -67,8 +66,7 @@
         $cartIndex.on('click', '.product-remove i:visible', function () {
             var product = $(this).closest('tr').data('product');
 
-            sendRequestRemoveItem(product, function () {
-
+            sendRequestRemoveItem(product, function (data) {
                 $cartIndex.find('tr[data-product=' + product + ']').remove();
                 renderCart();
             });
@@ -76,13 +74,13 @@
 
         // clear cart on cart page
         $cartIndex.on('click', 'a.cart-close', function () {
-            console.log('clear');
-            sendRequestClearCart(function () {
-                renderCart();
+            sendRequestClearCart(function (data) {
                 $cartIndex.find('tbody').empty();
+                renderCart();
             });
         });
 
+        // change quantity on cart page
         $cartIndex.find('input.cart-plus-minus-box').on('change', function () {
             var quantity = $(this).val();
 
@@ -100,8 +98,6 @@
                 success: function (data) {
                     if (data['success']) {
                         $cartIndex.find('tr[data-product=' + data['extra']['id'] + '] .product-subtotal').html(data['extra']['cost']);
-                        $('h4.grand-totall-title span').html(data['extra']['totalCost']);
-
                         renderCart();
                     }
                 }
@@ -121,7 +117,7 @@
                 success: function (data) {
                     if (data['success']) {
                         if (typeof (foo) == 'function') {
-                            foo();
+                            foo(data);
                         }
                     }
                 }
@@ -140,7 +136,7 @@
                 success: function (data) {
                     if (data['success']) {
                         if (typeof (foo) == 'function') {
-                            foo();
+                            foo(data);
                         }
                     }
                 }
@@ -159,14 +155,18 @@
             return $.ajax({
                 type: "POST",
                 url: "/main/cart/cart",
-                dataType: "html",
+                dataType: "json",
                 data: "",
                 error: function () {
                     alert("Проблемы при загрузке корзины");
                 },
                 success: function (data) {
                     if (data) {
-                        $cartWrap.html(data);
+                        $cartWrap.html(data['cart']);
+                        if ($cartIndex.length) {
+                            $cartIndex.find('h4.grand-totall-title span').html(data['totalCost']);
+                            $cartIndex.find('.total-shipping ul li:first-child span').html(data['delivery']);
+                        }
                     }
 
                     if (typeof (afterRender) == 'function') {
