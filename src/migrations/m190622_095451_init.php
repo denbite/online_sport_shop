@@ -34,7 +34,7 @@ class m190622_095451_init extends Migration
         
         $this->batchInsert(
             '{{%user}}',
-            [ 'username', 'email', 'phone', 'password_hash', 'created_at', 'updated_at' ],
+            [ 'name', 'email', 'phone', 'password_hash', 'created_at', 'updated_at' ],
             [
                 [ 'admin', 'mirloxd3@gmail.com', '+380675447477', '$2y$13$IhLqcYoo9q22IwLjFi7sLu3s5tYkteU/ngc27/2uf2HrOjAWjeVSi', time(), time() ],
                 [ 'capcatd', 'captaincatd@ukr.net', '+380675225770', '$2y$13$IhLqcYoo9q22IwLjFi7sLu3s5tYkteU/ngc27/2uf2HrOjAWjeVSi', time(), time() ],
