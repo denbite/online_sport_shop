@@ -191,7 +191,20 @@ class CartController
     
     public function actionCheckout()
     {
-        return $this->render('checkout');
+        $cart = Yii::$app->cart;
+    
+        foreach ($cart->getItems() as $index => $item) {
+            $size = $item->getProduct();
+            $items[$index]['name'] = $size->color->item->model . ' ' . $size->size;
+            $items[$index]['quantity'] = $item->getQuantity();
+            $items[$index]['cost'] = ValueHelper::addCurrency($item->getCost());
+        }
+    
+        return $this->render('checkout', [
+            'items' => $items,
+            'totalCost' => ValueHelper::addCurrency($cart->getTotalCost()),
+            'delivery' => ValueHelper::getDelivery($cart->getTotalCost()),
+        ]);
     }
     
     public function actionIndex()

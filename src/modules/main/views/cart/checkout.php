@@ -1,6 +1,12 @@
 <?php
 
-$this->title = 'Оплата';
+
+/** @var string $totalCost */
+
+/** @var string $delivery */
+/** @var array $items */
+
+$this->title = 'Оформление заказа';
 
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -10,11 +16,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="checkout-main-area pt-70 pb-70">
     <div class="container">
         <div class="customer-zone mb-20">
-            <p class="cart-page-title">Returning customer? <a class="checkout-click1" href="#">Click here to login</a>
+            <p class="cart-page-title">Постоянный клиент? <a class="checkout-click1" href="#">Нажмите, чтобы войти</a>
             </p>
             <div class="checkout-login-info">
-                <p>If you have shopped with us before, please enter your details in the boxes below. If you are a new
-                    customer, please proceed to the Billing & Shipping section.</p>
+                <p>
+                    Если вы покупали у нас раньше, то пожалуйста войдите с помощью формы внизу. Если вы новый
+                    покупатель, пожалуйста перейдите к форме "Оформления заказа"
+                </p>
                 <form action="#">
                     <div class="row">
                         <div class="col-lg-6 col-md-6">
@@ -41,31 +49,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         <a href="#">Lost your password?</a>
                     </div>
                 </form>
-                <div class="checkout-login-social">
-                    <span>Login with:</span>
-                    <ul>
-                        <li><a href="#">Facebook</a></li>
-                        <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Google</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="customer-zone mb-20">
-            <p class="cart-page-title">Have a coupon? <a class="checkout-click3" href="#">Click here to enter your
-                    code</a></p>
-            <div class="checkout-login-info3">
-                <form action="#">
-                    <input type="text" placeholder="Coupon code">
-                    <input type="submit" value="Apply Coupon">
-                </form>
             </div>
         </div>
         <div class="checkout-wrap pt-30">
             <div class="row">
                 <div class="col-lg-7">
                     <div class="billing-info-wrap mr-50">
-                        <h3>Billing Details</h3>
+                        <h3>Оформление</h3>
+                        <!--                        Проверка на авторизацию пользователя-->
                         <div class="row">
                             <div class="col-lg-6 col-md-6">
                                 <div class="billing-info mb-20">
@@ -231,33 +222,35 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <div class="col-lg-5">
                     <div class="your-order-area">
-                        <h3>Your order</h3>
+                        <h3>Ваш заказ</h3>
                         <div class="your-order-wrap gray-bg-4">
                             <div class="your-order-info-wrap">
                                 <div class="your-order-info">
                                     <ul>
-                                        <li>Product <span>Total</span></li>
+                                        <li>Товар <span>Цена</span></li>
                                     </ul>
                                 </div>
                                 <div class="your-order-middle">
                                     <ul>
-                                        <li>Product Name X 1 <span>$329 </span></li>
-                                        <li>Product Name X 1 <span>$329 </span></li>
+                                        <?php foreach ($items as $item): ?>
+                                            <li><?= $item['name'] . ' X ' . $item['quantity'] ?>
+                                                <span> <?= $item['cost'] ?> </span></li>
+                                        <?php endforeach; ?>
                                     </ul>
                                 </div>
                                 <div class="your-order-info order-subtotal">
                                     <ul>
-                                        <li>Subtotal <span>$329 </span></li>
+                                        <li>Сумма <span><?= $totalCost ?> </span></li>
                                     </ul>
                                 </div>
                                 <div class="your-order-info order-shipping">
                                     <ul>
-                                        <li>Shipping <p>Enter your full address to see shipping <br>costs. </p></li>
+                                        <li>Доставка <p> <?= $delivery ?></p></li>
                                     </ul>
                                 </div>
                                 <div class="your-order-info order-total">
                                     <ul>
-                                        <li>Total <span>$273.00 </span></li>
+                                        <li>Итого <span><?= $totalCost ?> </span></li>
                                     </ul>
                                 </div>
                             </div>
