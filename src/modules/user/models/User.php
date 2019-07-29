@@ -24,12 +24,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     
     const STATUS_WAIT = 2;
     
-    private static $_myRoles = false;
-    
-    public $roles = [];
-    
-    protected $role_name;
-    
     /**
      * {@inheritdoc}
      */
@@ -132,12 +126,13 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [ 'email', 'email' ],
             [ 'email', 'unique', 'targetClass' => self::className(), 'message' => 'Пользователь с такой почтой уже существует' ],
             [ 'email', 'string', 'max' => 255 ],
+    
+            [ 'phone', 'string' ],
             
             [ 'status', 'integer' ],
             [ 'status', 'default', 'value' => self::STATUS_ACTIVE ],
             [ 'status', 'in', 'range' => array_keys(self::getStatusesArray()) ],
             
-            [ [ 'roles' ], 'safe' ],
         ];
     }
     
@@ -181,6 +176,14 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return $this->email;
     }
     
+    /**
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+    
     public function validateAuthKey($authKey)
     {
         return $this->getAuthKey() === $authKey;
@@ -189,23 +192,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function getAuthKey()
     {
         return $this->auth_key;
-    }
-    
-    public function can($permissionName, $params = [], $allowCaching = true)
-    {
-        if (empty(self::$_myRoles)) {
-            /* @var CheckAccessInterface */
-            $authManager = Yii::$app->authManager;
-            $allRoles = $authManager->getChildren($this->getRuleName());
-            foreach ($allRoles as $roleName => $role) {
-                self::$_myRoles[] = $roleName;
-            }
-        }
-        if (is_array(self::$_myRoles)) {
-            return in_array($permissionName, self::$_myRoles, false);
-        }
-        
-        return false;
     }
     
     public function getRuleName()

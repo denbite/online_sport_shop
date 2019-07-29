@@ -8,6 +8,7 @@ namespace app\models;
  * @property int    $id
  * @property string $name
  * @property string $email
+ * @property string $phone
  * @property string $password_hash
  * @property string $auth_key
  * @property string $email_confirm_token

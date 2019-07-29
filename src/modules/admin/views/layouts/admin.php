@@ -86,7 +86,7 @@ $action = Yii::$app->controller->action->id;
                                      class="float-left rounded-circle"
                                      alt="User Image">
                                 <p>
-                                    <?= Yii::$app->user->identity->username ?>
+                                    <?= Yii::$app->user->identity->name ?>
                                     <small class="mb-5"><?= Yii::$app->user->identity->email ?></small>
                                     <a href="#" class="btn btn-danger btn-sm btn-rounded">Посмотреть профиль</a>
                                 </p>
