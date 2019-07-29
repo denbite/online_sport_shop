@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                           },
                                                       ],
                                                       [
-                                                          'attribute' => 'username',
+                                                          'attribute' => 'name',
                 
                                                       ],
                                                       [

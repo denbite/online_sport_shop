@@ -22,7 +22,7 @@ class UserSearch extends User
     {
         return [
             [ [ 'id', 'status' ], 'integer', ],
-            [ [ 'role', 'username', 'email' ], 'string', ],
+            [ [ 'role', 'name', 'email' ], 'string', ],
             [ [ 'status' ], 'in', 'range' => array_keys(User::getStatusesArray()) ],
         ];
     }
@@ -101,7 +101,7 @@ class UserSearch extends User
                                    'like', 'email', $this->email,
                                ])
               ->andFilterWhere([
-                                   'like', 'username', $this->username,
+                                   'like', 'name', $this->name,
                                ]);
         
         return $dataProvider;

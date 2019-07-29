@@ -2,7 +2,7 @@
 
 /** @var \yii\db\ActiveRecord $model */
 
-$this->title = 'Пользователь: ' . $model->username;
+$this->title = 'Пользователь: ' . $model->name;
 
 $this->params['breadcrumbs'][] = [ 'label' => 'Пользователи', 'url' => [ '/admin/user/index' ] ];
 $this->params['breadcrumbs'][] = $this->title;
@@ -25,7 +25,7 @@ use yii\helpers\Html;
     <div class="box-body">
         <div class="row">
             <div class="col">
-                <?= $form->field($model, 'username') ?>
+                <?= $form->field($model, 'name') ?>
             </div>
             <div class="col">
                 <?= $form->field($model, 'email') ?>

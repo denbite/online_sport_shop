@@ -2,7 +2,7 @@
 
 /** @var \yii\db\ActiveRecord $model */
 
-$this->title = 'Пользователь: ' . $model->username;
+$this->title = 'Пользователь: ' . $model->name;
 
 $this->params['breadcrumbs'][] = [ 'label' => 'Пользователи', 'url' => [ '/admin/user/index' ] ];
 $this->params['breadcrumbs'][] = $this->title;
@@ -34,7 +34,7 @@ use yii\helpers\Html;
                                                  ],
                                                  'attributes' => [
                                                      'id',
-                                                     'username',
+                                                     'name',
                                                      'email',
                                                      [
                                                          'label' => 'Роль',
