@@ -7,7 +7,8 @@ use yii\web\Controller;
 /**
  * Default controller for the `admin` module
  */
-class DefaultController extends Controller
+class DefaultController
+    extends Controller
 {
     
     /**
@@ -16,6 +17,8 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
+        phpinfo();
+        
         return $this->render('index');
     }
 }

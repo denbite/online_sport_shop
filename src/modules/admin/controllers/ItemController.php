@@ -27,6 +27,8 @@ class ItemController
     extends Controller
 {
     
+    public $enableCsrfValidation = false;
+    
     /**
      * {@inheritdoc}
      */
@@ -53,11 +55,11 @@ class ItemController
         
         return $this->render(
             'index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-                'category' => Category::getAllCategoriesByRoot(),
-                'categories' => Category::getCategoriesIndexNameWithParents(),
-            ]
+                       'searchModel' => $searchModel,
+                       'dataProvider' => $dataProvider,
+                       'category' => Category::getAllCategoriesByRoot(),
+                       'categories' => Category::getCategoriesIndexNameWithParents(),
+                   ]
         );
     }
     
@@ -83,12 +85,12 @@ class ItemController
         
         return $this->render(
             'view', [
-                'model' => $model,
-                'modelColors' => !empty($modelColors) ? $modelColors : [],
-                'modelSizes' => !empty($modelSizes) ? $modelSizes : [],
-                'modelImages' => !empty($modelImages) ? $modelImages : [],
-                'modelDescription' => !empty($modelDescription) ? $modelDescription : [],
-            ]
+                      'model' => $model,
+                      'modelColors' => !empty($modelColors) ? $modelColors : [],
+                      'modelSizes' => !empty($modelSizes) ? $modelSizes : [],
+                      'modelImages' => !empty($modelImages) ? $modelImages : [],
+                      'modelDescription' => !empty($modelDescription) ? $modelDescription : [],
+                  ]
         );
     }
     
@@ -135,10 +137,11 @@ class ItemController
             }
     
             if (!empty($post[$modelDescription->formName()]['list_array']) and $list = $post[$modelDescription->formName()]['list_array'] and is_array($list) and key_exists('key',
-                    $list) and key_exists('value', $list) and count($list['key']) == count($list['value'])) {
+                                                                                                                                                                             $list) and key_exists('value',
+                                                                                                                                                                                                   $list) and count($list['key']) == count($list['value'])) {
                 for ($i = 0; $i < count($list['key']); $i++) {
                     $list['result'][] = implode(ItemDescription::PARTS_SEPARATOR,
-                        [ $list['key'][$i], $list['value'][$i] ]);
+                                                [ $list['key'][$i], $list['value'][$i] ]);
                 }
         
                 $modelDescription->list = implode(ItemDescription::ITEMS_SEPARATOR, $list['result']);
@@ -166,10 +169,10 @@ class ItemController
         
         return $this->render(
             'create', [
-                'model' => $model,
-                'modelDescription' => $modelDescription,
-                'categories' => Category::getCategoriesIndexNameWithParents(),
-            ]
+                        'model' => $model,
+                        'modelDescription' => $modelDescription,
+                        'categories' => Category::getCategoriesIndexNameWithParents(),
+                    ]
         );
     }
     
@@ -185,7 +188,7 @@ class ItemController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        
+        $modelUploads = [];
         $modelDescription = $model->description;
         
         $modelColors = !empty($model->allColors) ? $model->allColors : [];
@@ -209,31 +212,36 @@ class ItemController
             }
     
             if (!empty($post[$modelDescription->formName()]['list_array']) and $list = $post[$modelDescription->formName()]['list_array'] and is_array($list) and key_exists('key',
-                    $list) and key_exists('value', $list) and count($list['key']) == count($list['value'])) {
+                                                                                                                                                                             $list) and key_exists('value',
+                                                                                                                                                                                                   $list) and count($list['key']) == count($list['value'])) {
                 for ($i = 0; $i < count($list['key']); $i++) {
                     $list['result'][] = implode(ItemDescription::PARTS_SEPARATOR,
-                        [ $list['key'][$i], $list['value'][$i] ]);
+                                                [ $list['key'][$i], $list['value'][$i] ]);
                 }
         
                 $modelDescription->list = implode(ItemDescription::ITEMS_SEPARATOR, $list['result']);
                 unset($list);
             }
+    
+            if (!empty($post[$modelDescription->formName()]['small_text'])) {
+                $modelDescription->small_text = $post[$modelDescription->formName()]['small_text'];
+            }
+    
+            if (!empty($post[$modelDescription->formName()]['text'])) {
+                $modelDescription->small_text = $post[$modelDescription->formName()]['text'];
+            }
             
             try {
-                
-                if ($model->load($post) and $model->validate() and $modelDescription->load($post) and $modelDescription->validate() and Model::loadMultiple($modelColors,
-                        $post) and Model::validateMultiple($modelColors) and !empty($modelColorsSizes)) {
+                if ($model->load($post) and $model->validate() and $modelDescription->validate() and Model::loadMultiple($modelColors,
+                                                                                                                         $post) and Model::validateMultiple($modelColors) and !empty($modelColorsSizes)) {
                     // load sizes and validate
                     foreach ($modelColorsSizes as $color_id => $modelSizes) {
                         
-                        $modelUploads[$color_id]->images = UploadedFile::getInstancesByName("UploadForm[{$color_id}][images]");
-                        
                         if (!Model::loadMultiple($modelSizes,
-                                $post['ItemColorSize'],
-                                $color_id) or !Model::validateMultiple($modelSizes) or !$modelUploads[$color_id]->validate()) {
+                                                 $post['ItemColorSize'],
+                                                 $color_id) or !Model::validateMultiple($modelSizes)) {
                             throw new \Exception('Не удалось сохранить изменения, добавьте размер для всех существующих цветов');
                         }
-                        
                     }
                     
                     TransactionHelper::wrap(function () use (
@@ -250,6 +258,9 @@ class ItemController
                             foreach ($modelColorsSizes[$modelColor->id] as $modelSize) {
                                 $modelSize->save();
                             }
+    
+                            $modelUploads[$modelColor->id]->images = UploadedFile::getInstancesByName("UploadForm[{$modelColor->id}][images]");
+                            
                             $modelUploads[$modelColor->id]->uploadImages();
                         }
                         
@@ -267,23 +278,21 @@ class ItemController
             }
             
             return $this->redirect([
-                'view',
-                'id' => $model->id,
-            ]);
+                                       'view',
+                                       'id' => $model->id,
+                                   ]);
         }
     
         $modelDescription->small_list_array = explode(ItemDescription::ITEMS_SEPARATOR, $modelDescription->small_list);
         $modelDescription->list_array = explode(ItemDescription::ITEMS_SEPARATOR, $modelDescription->list);
         
         return $this->render(
-            'update', [
-                'model' => $model,
-                'modelDescription' => !empty($modelDescription) ? $modelDescription : null,
-                'modelColors' => !empty($modelColors) ? $modelColors : [],
-                'modelColorsSizes' => !empty($modelColorsSizes) ? $modelColorsSizes : [],
-                'modelUploads' => !empty($modelUploads) ? $modelUploads : [],
-                'categories' => Category::getCategoriesIndexNameWithParents(),
-            ]
+            'update', [ 'model' => $model,
+                        'modelDescription' => !empty($modelDescription) ? $modelDescription : null,
+                        'modelColors' => !empty($modelColors) ? $modelColors : [],
+                        'modelColorsSizes' => !empty($modelColorsSizes) ? $modelColorsSizes : [],
+                        'modelUploads' => !empty($modelUploads) ? $modelUploads : [],
+                        'categories' => Category::getCategoriesIndexNameWithParents(), ]
         );
     }
     
@@ -296,7 +305,8 @@ class ItemController
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public
+    function actionDelete($id)
     {
         $this->findModel($id)->delete();
         
@@ -308,7 +318,8 @@ class ItemController
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreateColor($id = null)
+    public
+    function actionCreateColor($id = null)
     {
         $model = new ItemColor();
         
@@ -341,7 +352,8 @@ class ItemController
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreateSize($id = null, $item = null)
+    public
+    function actionCreateSize($id = null, $item = null)
     {
         $model = new ItemColorSize();
         

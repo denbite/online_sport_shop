@@ -6,6 +6,7 @@ use app\components\helpers\ValueHelper;
 use app\components\models\Status;
 use app\models\ItemColorSize;
 use app\modules\user\models\forms\LoginForm;
+use app\modules\user\models\forms\SignupForm;
 use Yii;
 use yii\db\Exception;
 use yii\helpers\ArrayHelper;
@@ -45,43 +46,44 @@ class CartController
             $cart = Yii::$app->cart;
     
             if ($post = Yii::$app->request->post() and array_key_exists('color', $post) and array_key_exists('size',
-                    $post) and array_key_exists('quantity', $post)) {
+                                                                                                             $post) and array_key_exists('quantity',
+                                                                                                                                         $post)) {
                 $result['success'] = false;
                 $color = ValueHelper::decryptValue(Html::encode($post['color']));
                 $size = ValueHelper::decryptValue(Html::encode($post['size']));
                 $quantity = Html::encode($post['quantity']);
-    
+        
                 $item = ItemColorSize::find()
                                      ->from(ItemColorSize::tableName() . ' size')
                                      ->joinWith([ 'color color' => function ($query)
-                                       {
-                                           $query->joinWith([ 'item item' => function ($query)
-                                           {
-                                               $query->with([ 'promotion' => function ($query)
-                                               {
-                                                   $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
-                                               }, 'category' => function ($query)
-                                               {
-                                                   $query->andWhere([ 'active' => Status::STATUS_ACTIVE ]);
-                                               } ]);
-                                           }, 'mainImage image' ]);
-                                       } ])
+                                     {
+                                         $query->joinWith([ 'item item' => function ($query)
+                                         {
+                                             $query->with([ 'promotion' => function ($query)
+                                             {
+                                                 $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
+                                             }, 'category' => function ($query)
+                                             {
+                                                 $query->andWhere([ 'active' => Status::STATUS_ACTIVE ]);
+                                             } ]);
+                                         }, 'mainImage image' ]);
+                                     } ])
                                      ->where([
-                                           'color.id' => $color,
-                                           'size.id' => $size,
-                                           'size.status' => Status::STATUS_ACTIVE,
-                                           'color.status' => Status::STATUS_ACTIVE,
-                                           'item.status' => Status::STATUS_ACTIVE,
-                                       ])
+                                                 'color.id' => $color,
+                                                 'size.id' => $size,
+                                                 'size.status' => Status::STATUS_ACTIVE,
+                                                 'color.status' => Status::STATUS_ACTIVE,
+                                                 'item.status' => Status::STATUS_ACTIVE,
+                                             ])
                                      ->andWhere([ '>=', 'size.quantity', $quantity ])
                                      ->asArray()
                                      ->one();
-    
+        
                 if (!empty($item)) {
                     // check if this item already exists
                     $product = ItemColorSize::findOne([ 'id' => $size ]);
                     $cart_item = $cart->getItem($product->id);
-    
+            
                     if (empty($cart_item)) {
                         $cart->add($product, $quantity);
                         $result['success'] = true;
@@ -192,11 +194,10 @@ class CartController
     
     public function actionCheckout()
     {
-    
         if (Yii::$app->user->isGuest) {
-            $model = new LoginForm();
-            if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            
+            $loginForm = new LoginForm();
+            $signupForm = new SignupForm();
+            if (Yii::$app->request->isPost and $loginForm->load(Yii::$app->request->post()) and $loginForm->login()) {
                 return $this->refresh();
             }
         }
@@ -214,7 +215,8 @@ class CartController
             'items' => !empty($items) ? $items : [],
             'totalCost' => ValueHelper::addCurrency($cart->getTotalCost()),
             'delivery' => ValueHelper::getDelivery($cart->getTotalCost()),
-            'model' => !empty($model) ? $model : null,
+            'loginForm' => !empty($loginForm) ? $loginForm : null,
+            'signupForm' => !empty($signupForm) ? $signupForm : null,
         ]);
     }
     
@@ -247,7 +249,8 @@ class CartController
             $cart = Yii::$app->cart;
             
             if ($post = Yii::$app->request->post() and array_key_exists('product',
-                    $post) and array_key_exists('quantity', $post)) {
+                                                                        $post) and array_key_exists('quantity',
+                                                                                                    $post)) {
                 
                 $id = ValueHelper::decryptValue((int) Html::encode($post['product']));
                 $quantity = (int) Html::encode($post['quantity']);

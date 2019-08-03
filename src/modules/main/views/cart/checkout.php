@@ -5,7 +5,7 @@
 
 /** @var string $delivery */
 /** @var array $items */
-/** @var \app\modules\user\models\forms\LoginForm $model */
+/** @var \app\modules\user\models\forms\LoginForm $loginForm */
 
 $this->title = 'Оформление заказа';
 
@@ -19,7 +19,7 @@ use yii\helpers\Html;
 
 <div class="checkout-main-area pt-70 pb-70">
     <div class="container">
-        <?php if (Yii::$app->user->isGuest and !empty($model)): ?>
+        <?php if (Yii::$app->user->isGuest and !empty($loginForm)): ?>
             <div class="customer-zone mb-20">
                 <p class="cart-page-title">Постоянный клиент? <a class="checkout-click1" href="#">Нажмите, чтобы
                         войти</a>
@@ -30,28 +30,28 @@ use yii\helpers\Html;
                         покупатель, пожалуйста перейдите к форме "Оформления заказа"
                     </p>
                     <?php $form = ActiveForm::begin([
-                        'id' => 'login-form',
-                    ]) ?>
+                                                        'id' => 'login-form',
+                                                    ]) ?>
                     <div class="row">
                         <div class="col-lg-3 col-md-6">
                             <div class="sin-checkout-login">
-                                <?= $form->field($model, 'email')->textInput([
-                                    'placeholder' => $model->getAttributeLabel('email'),
-                                ])->label(false) ?>
+                                <?= $form->field($loginForm, 'email')->textInput([
+                                                                                     'placeholder' => $loginForm->getAttributeLabel('email'),
+                                                                                 ])->label(false) ?>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-6">
                             <div class="sin-checkout-login">
-                                <?= $form->field($model, 'password')->passwordInput([
-                                    'placeholder' => $model->getAttributeLabel('password'),
-                                ])->label(false) ?>
+                                <?= $form->field($loginForm, 'password')->passwordInput([
+                                                                                            'placeholder' => $loginForm->getAttributeLabel('password'),
+                                                                                        ])->label(false) ?>
                             </div>
                         </div>
                     </div>
                     <div class="button-remember-wrap">
                         <?= Html::submitButton('Войти') ?>
                         <div class="checkout-login-toggle-btn">
-                            <?= $form->field($model, 'rememberMe')
+                            <?= $form->field($loginForm, 'rememberMe')
                                      ->checkbox()
                                      ->label('Запомнить меня') ?>
                         </div>
@@ -69,24 +69,21 @@ use yii\helpers\Html;
                     <div class="billing-info-wrap mr-50">
                         <h3>Оформление</h3>
                         <!--                        Проверка на авторизацию пользователя-->
-                        <?php if (Yii::$app->user->isGuest): ?>
-                            <div class="row"><?php $form = ActiveForm::begin([
-                                    'id' => 'signup-form',
-                                ]) ?>
-                                <?= $form->field($model, 'email')
-                                         ->textInput([ 'placeholder' => $model->getAttributeLabel('email'), ])
+                        <?php if (Yii::$app->user->isGuest and !empty($signupForm)): ?>
+                            <div class="row">
+                                <?php $form = ActiveForm::begin([
+                                                                    'id' => 'signup-form',
+                                                                ]);
+                                ?>
+                                <?= $form->field($signupForm, 'email')
                                          ->label(false) ?>
-                                <?= $form->field($model, 'password')
-                                         ->passwordInput([ 'placeholder' => $model->getAttributeLabel('password'), ])
+                                <?= $form->field($signupForm, 'password')
                                          ->label(false) ?>
-                                <?= $form->field($model, 'phone')
-                                         ->textInput([ 'placeholder' => $model->getAttributeLabel('phone') ])
+                                <?= $form->field($signupForm, 'phone')
                                          ->label(false) ?>
-                                <?= $form->field($model, 'name')
-                                         ->input('tel', [ 'placeholder' => $model->getAttributeLabel('name') ])
-                                         ->label(false) ?>
-                                <div class="button-box">
-                                    <?= Html::submitButton('Зарегистрироваться') ?>
+                                <div class="billing-info">
+                                    <?= $form->field($signupForm, 'name')
+                                             ->label(false) ?>
                                 </div>
                                 <?php ActiveForm::end() ?></div>
                             <div class="row">

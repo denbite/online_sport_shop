@@ -6,13 +6,15 @@ use app\components\helpers\SeoHelper;
 use app\components\models\Status;
 use app\models\Banner;
 use app\models\Category;
+use app\models\Config;
 use app\models\Item;
 use yii\web\Controller;
 
 /**
  * Default controller for the `main` module
  */
-class DefaultController extends Controller
+class DefaultController
+    extends Controller
 {
     
     /**
@@ -80,11 +82,14 @@ class DefaultController extends Controller
                               ->all();
         
         SeoHelper::putDefaultTags();
+    
+        $instagram_token = Config::findOne([ 'name' => 'instagram_access_token' ])->value;
         
         return $this->render('index', [
             'banners' => $banners,
             'popular' => $popular,
             'categories' => $categories,
+            'instagram_token' => $instagram_token,
         ]);
     }
 }

@@ -27,13 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php endif; ?>
 
 <?php $form = ActiveForm::begin([
-    'id' => 'config',
-]) ?>
+                                    'id' => 'config',
+                                ]) ?>
 <div class="box box-shadowed box-outline-success <?= !empty(Yii::$app->params['background']) ? Yii::$app->params['background'] : '' ?>">
     <div class="box-header with-border">
         <div class="right-float">
             <?= Html::submitButton(Html::tag('i', '&nbsp;', [ 'class' => 'fas fa-save' ]) . ' Сохранить',
-                [ 'class' => 'btn btn-sm btn-success' ]) ?>
+                                   [ 'class' => 'btn btn-sm btn-success' ]) ?>
         </div>
     </div>
     <!-- /.box-header -->
@@ -52,13 +52,13 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php foreach (array_keys($params) as $index => $tab) : ?>
                 <div class="tab-pane <?= !$index ? ' active' : '' ?>" id="<?= $index ?>" role="tabpanel">
                     <div class="pad">
-                        <div class="row">
-                            <?php foreach ($params[$tab] as $attr => $model): ?>
-                                <div class="col-lg-2 col-6">
+                        <?php foreach ($params[$tab] as $attr => $model): ?>
+                            <div class="row">
+                                <div class="col-lg-6 col-12 py-3">
                                     <?= $form->field($model, '[' . $attr . ']value')->label($model->label) ?>
                                 </div>
-                            <?php endforeach; ?>
-                        </div>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             <?php endforeach; ?>
