@@ -110,10 +110,8 @@ class BannerController
                         $modelUpload->setType(Image::TYPE_BANNER);
                         $modelUpload->setSubject($model->id);
                         $modelUpload->image = UploadedFile::getInstance($modelUpload, 'image');
-                        
-                        if (!$modelUpload->uploadImage()) {
-                            throw new NotFoundHttpException('Не удалось сохранить изображение');
-                        }
+    
+                        $modelUpload->uploadImage();
                         
                     });
     
@@ -159,10 +157,9 @@ class BannerController
                     TransactionHelper::wrap(function () use ($model, $modelUpload)
                     {
                         $modelUpload->image = UploadedFile::getInstance($modelUpload, 'image');
+    
+                        $modelUpload->uploadImage();
                         
-                        if (!$modelUpload->uploadImage()) {
-                            throw new NotFoundHttpException('Не удалось сохранить изображение');
-                        }
                         Yii::$app->session->setFlash('success', 'Данные успешно сохранены');
                     });
                 }

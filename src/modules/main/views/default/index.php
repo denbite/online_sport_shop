@@ -47,28 +47,28 @@ use yii\helpers\Html;
     </div>
 <?php endif; ?>
 
-<!-- Возможно сделать вывод активных акций сюда (нужно добавить картинки) -->
-<!--<div class="banner-area pt-100 pb-65">-->
-<!--    <div class="container">-->
-<!--        <div class="section-title text-center pb-45">-->
-<!--            <h2>Акции</h2>-->
-<!--        </div>-->
-<!--        <div class="row">-->
-<!--            --><?php //foreach ($categories as $category): ?>
-<!--                <div class="col-lg-4 col-md-4">-->
-<!--                    <div class="single-banner mb-30 scroll-zoom">-->
-<!--                        --><? //= Html::a(Html::img(Image::getLink($category['image']['id'], Image::SIZE_MEDIUM), [
-//                            'alt' => $category['image']['url'],
-//                        ]), [ '/main/products/category', 'slug' => ValueHelper::encryptValue($category['id']) ]) ?>
-<!--                        <div class="banner-content-2 banner-position-5">-->
-<!--                            <h4>--><? //= $category['name'] ?><!--</h4>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            --><?php //endforeach; ?>
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
+    <!-- Возможно сделать вывод активных акций сюда (нужно добавить картинки) -->
+    <!--<div class="banner-area pt-100 pb-65">-->
+    <!--    <div class="container">-->
+    <!--        <div class="section-title text-center pb-45">-->
+    <!--            <h2>Акции</h2>-->
+    <!--        </div>-->
+    <!--        <div class="row">-->
+    <!--            --><?php //foreach ($categories as $category): ?>
+    <!--                <div class="col-lg-4 col-md-4">-->
+    <!--                    <div class="single-banner mb-30 scroll-zoom">-->
+    <!--                        -- //= Html::a(Html::img(Image::getLink($category['image']['id'], Image::SIZE_MEDIUM), [
+                            'alt' => $category['image']['url'],
+    //                        ]), [ '/main/products/category', 'slug' => ValueHelper::encryptValue($category['id']) ]) ?> -->
+    <!--                        <div class="banner-content-2 banner-position-5">-->
+    <!--                            <h4>--><? //= $category['name'] ?><!--</h4>-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            --><?php //endforeach; ?>
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--</div>-->
 
 <?php if (!empty($popular)): ?>
 
@@ -169,25 +169,25 @@ use yii\helpers\Html;
     </div>
 
 <?php endif; ?>
-<!--  ACTIVE PROMOTION (with image?)  -->
-<!--<div class="banner-area pt-80 pb-80 section-margin-1 bg-aliceblue">-->
-<!--    <div class="container">-->
-<!--        <div class="row align-items-center">-->
-<!--            <div class="col-lg-8 col-md-7 col-sm-7">-->
-<!--                <div class="banner-img-2 pr-10 scroll-zoom">-->
-<!--                    <a href="product-details.html"><img src="/images/main/banner/banner-11.png" alt=""></a>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-lg-4 col-md-5 col-sm-5">-->
-<!--                <div class="banner-bg-content pl-100 scroll-zoom">-->
-<!--                    <h3>35% off <br>Black Monday</h3>-->
-<!--                    <h2>Lighting For <br> Home.</h2>-->
-<!--                    <a href="product-details.html">Shop Now</a>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
+    <!--  ACTIVE PROMOTION (with image?)  -->
+    <!--<div class="banner-area pt-80 pb-80 section-margin-1 bg-aliceblue">-->
+    <!--    <div class="container">-->
+    <!--        <div class="row align-items-center">-->
+    <!--            <div class="col-lg-8 col-md-7 col-sm-7">-->
+    <!--                <div class="banner-img-2 pr-10 scroll-zoom">-->
+    <!--                    <a href="product-details.html"><img src="/images/main/banner/banner-11.png" alt=""></a>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--            <div class="col-lg-4 col-md-5 col-sm-5">-->
+    <!--                <div class="banner-bg-content pl-100 scroll-zoom">-->
+    <!--                    <h3>35% off <br>Black Monday</h3>-->
+    <!--                    <h2>Lighting For <br> Home.</h2>-->
+    <!--                    <a href="product-details.html">Shop Now</a>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--</div>-->
 
 <?php if (!empty($instagram_token)): ?>
     <div class="instagram-area section-margin-1 py-5">

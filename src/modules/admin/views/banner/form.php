@@ -36,13 +36,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php endif; ?>
 
 <?php $form = ActiveForm::begin([
-    'id' => $model->isNewRecord ? 'promotion-create' : 'promotion-update',
-]) ?>
+                                    'id' => $model->isNewRecord ? 'promotion-create' : 'promotion-update',
+                                ]) ?>
 <div class="box box-shadowed box-outline-success <?= !empty(Yii::$app->params['background']) ? Yii::$app->params['background'] : '' ?>">
     <div class="box-header with-border">
         <div class="right-float">
             <?= Html::submitButton(Html::tag('i', '&nbsp;', [ 'class' => 'fa fa-save' ]) . ' Сохранить',
-                [ 'class' => 'btn btn-sm btn-success' ]) ?>
+                                   [ 'class' => 'btn btn-sm btn-success' ]) ?>
         </div>
     </div>
     <div class="box-body form-element">
@@ -84,22 +84,22 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?= $form->field($model, 'publish_from')
                                      ->widget(
                                          DateTimePicker::classname(), [
-                                             'removeButton' => false,
-                                             'readonly' => true,
-                                             'options' => [
-                                                 'value' => $model->publish_from ? date("d.m.Y H:i",
-                                                     $model->publish_from) : date("d.m.Y H:i",
-                                                     time()),
-                                                 'placeholder' => 'Дата начала',
-                                             ],
-                                             'pluginOptions' => [
-                                                 'autoclose' => true,
-                                                 'todayBtn' => true,
-                                                 'format' => 'dd.mm.yyyy h:i',
-                                                 //                                                    'weekStart' => 1,
-                                                 //'startDate' => $startDate,//дата начала
-                                             ],
-                                         ]
+                                                                        'removeButton' => false,
+                                                                        'readonly' => true,
+                                                                        'options' => [
+                                                                            'value' => $model->publish_from ? date("d.m.Y H:i",
+                                                                                                                   $model->publish_from) : date("d.m.Y H:i",
+                                                                                                                                                time()),
+                                                                            'placeholder' => 'Дата начала',
+                                                                        ],
+                                                                        'pluginOptions' => [
+                                                                            //                                                                            'autoclose' => true,
+                                                                            'todayBtn' => true,
+                                                                            'format' => 'dd.mm.yyyy h:ii',
+                                                                            //                                                    'weekStart' => 1,
+                                                                            //'startDate' => $startDate,//дата начала
+                                                                        ],
+                                                                    ]
                                      ); ?>
 
                         </div>
@@ -107,22 +107,22 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?= $form->field($model, 'publish_to')
                                      ->widget(
                                          DateTimePicker::classname(), [
-                                             'removeButton' => false,
-                                             'readonly' => true,
-                                             'options' => [
-                                                 'value' => $model->publish_to ? date("d.m.Y H:i",
-                                                     $model->publish_to) : date("d.m.Y H:i",
-                                                     time()),
-                                                 'placeholder' => 'Дата окончания',
-                                             ],
-                                             'pluginOptions' => [
-                                                 //                                                 'autoclose' => true,
-                                                 'todayBtn' => true,
-                                                 'format' => 'dd.mm.yyyy h:i',
-                                                 //                                                    'weekStart' => 1,
-                                                 //'startDate' => $startDate,//дата начала
-                                             ],
-                                         ]
+                                                                        'removeButton' => false,
+                                                                        'readonly' => true,
+                                                                        'options' => [
+                                                                            'value' => $model->publish_to ? date("d.m.Y H:i",
+                                                                                                                 $model->publish_to) : date("d.m.Y H:i",
+                                                                                                                                            time()),
+                                                                            'placeholder' => 'Дата окончания',
+                                                                        ],
+                                                                        'pluginOptions' => [
+                                                                            //                                                 'autoclose' => true,
+                                                                            'todayBtn' => true,
+                                                                            'format' => 'dd.mm.yyyy h:ii',
+                                                                            //                                                    'weekStart' => 1,
+                                                                            //'startDate' => $startDate,//дата начала
+                                                                        ],
+                                                                    ]
                                      ); ?>
 
                         </div>
@@ -153,10 +153,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'minCount' => 0,
                                     'overwriteInitial' => false,
                                     'initialPreview' => Image::getUrlsBySubject(Image::TYPE_BANNER,
-                                        $model->id),
+                                                                                $model->id),
                                     'initialPreviewAsData' => true,
                                     'initialPreviewConfig' => Image::getInitialPreviewConfigBySubject(Image::TYPE_BANNER,
-                                        $model->id),
+                                                                                                      $model->id),
                                 ],
                             
                             

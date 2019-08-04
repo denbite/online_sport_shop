@@ -17,8 +17,6 @@ class DefaultController
      */
     public function actionIndex()
     {
-        phpinfo();
-        
         return $this->render('index');
     }
 }

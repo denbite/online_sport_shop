@@ -134,16 +134,20 @@ class ImageController
         if (Yii::$app->request->isPost and Yii::$app->request->isAjax) {
             
             Yii::$app->response->format = Response::FORMAT_JSON;
-            
-            $model = new UploadForm(Yii::$app->request->post('type'), Yii::$app->request->post('id'));
-            
-            $model->image = UploadedFile::getInstanceByName('UploadForm');
-            
-            if ($model->uploadImage()) {
+    
+            try {
+                $model = new UploadForm(Yii::$app->request->post('type'), Yii::$app->request->post('id'));
+        
+                $model->image = UploadedFile::getInstanceByName('UploadForm');
+        
+                $model->uploadImage();
+                
                 return true;
+            } catch (\Exception $exception) {
+                Yii::$app->errorHandler->logException($exception);
+                Yii::$app->session->setFlash('error', 'Ошибка при загрузке изображения');
             }
             
-            return false;
         }
         
         throw new MethodNotAllowedHttpException('Only POST method allowed');

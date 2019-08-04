@@ -21,7 +21,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 
-
 <div class="product-details-area pt-100 pb-95">
     <div class="container">
         <div class="row">
@@ -29,11 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="product-details-img">
                     <div id="preview" class="zoompro-border zoompro-span">
                         <?= Html::img(Image::getLink($item['allColors'][0]['allImages'][0]['id']),
-                            [
-                                'class' => 'zoompro',
-                                'data-zoom-image' => Image::getLink($item['allColors'][0]['allImages'][0]['id']),
-                                'alt' => $item['allColors'][0]['allImages'][0]['url'],
-                            ]) ?>
+                                      [
+                                          'class' => 'zoompro',
+                                          'data-zoom-image' => Image::getLink($item['allColors'][0]['allImages'][0]['id']),
+                                          'alt' => $item['allColors'][0]['allImages'][0]['url'],
+                                      ]) ?>
                         <?php if (!empty($item['promotion'])): ?>
                             <span>-<?= $item['promotion']['sale'] . ' ' . Promotion::getTypes()[$item['promotion']['type']] ?></span>
                         <?php endif; ?>
@@ -49,11 +48,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?php foreach ($color['allImages'] as $image): ?>
                                 <?= Html::a(Html::img(Image::getLink($image['id'], Image::SIZE_THUMBNAIL),
                                     // set size to 90x90 in future
-                                                      [ 'alt' => $image['url'], 'width' => 90, 'height' => 90 ]), null, [
+                                                      [ 'alt' => $image['url'], 'width' => 90, 'height' => 90 ]), null,
+                                            [
                                                 'data-image' => Image::getLink($image['id']),
                                                 'data-zoom-image' => Image::getLink($image['id']),
-                                    'data-color' => $color['id'],
-                            ]) ?>
+                                                'data-color' => $color['id'],
+                                            ]) ?>
                             <?php endforeach; ?>
                         <?php endforeach; ?>
                     </div>
@@ -93,7 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="pro-details-list">
                         <ul>
                             <?php foreach (explode(ItemDescription::ITEMS_SEPARATOR,
-                                $item['description']['small_list']) as $one): ?>
+                                                   $item['description']['small_list']) as $one): ?>
                                 <li>- <?= $one ?></li>
                             <?php endforeach; ?>
                         </ul>
@@ -132,7 +132,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <?php endforeach; ?>
                                     </ul>
                                 <?php endforeach; ?>
-                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="pro-details-quality">
@@ -177,9 +177,9 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-lg-8 col-md-8">
                 <div class="description-review-wrapper">
                     <div class="description-review-topbar nav">
-                        <a class="active" data-toggle="tab" href="#des-details1">Description</a>
-                        <a data-toggle="tab" href="#des-details3">Additional information</a>
-                        <a data-toggle="tab" href="#des-details2">Reviews (0)</a>
+                        <a class="active" data-toggle="tab" href="#des-details1">Описание</a>
+                        <a data-toggle="tab" href="#des-details3">Характеристики</a>
+                        <!--                        <a data-toggle="tab" href="#des-details2">Отзывы</a>-->
                     </div>
                     <div class="tab-content description-review-bottom">
                         <div id="des-details1" class="tab-pane active">
@@ -191,7 +191,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="product-anotherinfo-wrapper">
                                 <ul>
                                     <?php foreach (explode(ItemDescription::ITEMS_SEPARATOR,
-                                        $item['description']['list']) as $one): ?>
+                                                           $item['description']['list']) as $one): ?>
                                         <?php $parts = explode(ItemDescription::PARTS_SEPARATOR, $one);
                                         if (!empty($parts) and count($parts) == 2):
                                             ?>
@@ -202,134 +202,134 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </ul>
                             </div>
                         </div>
-                        <div id="des-details2" class="tab-pane">
-                            <div class="review-wrapper">
-                                <div class="single-review">
-                                    <div class="review-img">
-                                        <img src="/images/main/product-details/client-1.jpg" alt="">
-                                    </div>
-                                    <div class="review-content">
-                                        <p>“In convallis nulla et magna congue convallis. Donec eu nunc vel justo
-                                            maximus posuere. Sed viverra nunc erat, a efficitur nibh”</p>
-                                        <div class="review-top-wrap">
-                                            <div class="review-name">
-                                                <h4>Stella McGee</h4>
-                                            </div>
-                                            <div class="review-rating">
-                                                <i class="sli sli-star"></i>
-                                                <i class="sli sli-star"></i>
-                                                <i class="sli sli-star"></i>
-                                                <i class="sli sli-star"></i>
-                                                <i class="sli sli-star"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="single-review">
-                                    <div class="review-img">
-                                        <img src="/images/main/product-details/client-2.jpg" alt="">
-                                    </div>
-                                    <div class="review-content">
-                                        <p>“In convallis nulla et magna congue convallis. Donec eu nunc vel justo
-                                            maximus posuere. Sed viverra nunc erat, a efficitur nibh”</p>
-                                        <div class="review-top-wrap">
-                                            <div class="review-name">
-                                                <h4>Stella McGee</h4>
-                                            </div>
-                                            <div class="review-rating">
-                                                <i class="sli sli-star"></i>
-                                                <i class="sli sli-star"></i>
-                                                <i class="sli sli-star"></i>
-                                                <i class="sli sli-star"></i>
-                                                <i class="sli sli-star"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="single-review">
-                                    <div class="review-img">
-                                        <img src="/images/main/product-details/client-3.jpg" alt="">
-                                    </div>
-                                    <div class="review-content">
-                                        <p>“In convallis nulla et magna congue convallis. Donec eu nunc vel justo
-                                            maximus posuere. Sed viverra nunc erat, a efficitur nibh”</p>
-                                        <div class="review-top-wrap">
-                                            <div class="review-name">
-                                                <h4>Stella McGee</h4>
-                                            </div>
-                                            <div class="review-rating">
-                                                <i class="sli sli-star"></i>
-                                                <i class="sli sli-star"></i>
-                                                <i class="sli sli-star"></i>
-                                                <i class="sli sli-star"></i>
-                                                <i class="sli sli-star"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ratting-form-wrapper">
-                                <span>Add a Review</span>
-                                <p>Your email address will not be published. Required fields are marked <span>*</span>
-                                </p>
-                                <div class="star-box-wrap">
-                                    <div class="single-ratting-star">
-                                        <i class="sli sli-star"></i>
-                                    </div>
-                                    <div class="single-ratting-star">
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                    </div>
-                                    <div class="single-ratting-star">
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                    </div>
-                                    <div class="single-ratting-star">
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                    </div>
-                                    <div class="single-ratting-star">
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                        <i class="sli sli-star"></i>
-                                    </div>
-                                </div>
-                                <div class="ratting-form">
-                                    <form action="#">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="rating-form-style mb-20">
-                                                    <label>Your review <span>*</span></label>
-                                                    <textarea name="Your Review"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="rating-form-style mb-20">
-                                                    <label>Name <span>*</span></label>
-                                                    <input type="text">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="rating-form-style mb-20">
-                                                    <label>Email <span>*</span></label>
-                                                    <input type="email">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div class="form-submit">
-                                                    <input type="submit" value="Submit">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                        <!--                        <div id="des-details2" class="tab-pane">-->
+                        <!--                            <div class="review-wrapper">-->
+                        <!--                                <div class="single-review">-->
+                        <!--                                    <div class="review-img">-->
+                        <!--                                        <img src="/images/main/product-details/client-1.jpg" alt="">-->
+                        <!--                                    </div>-->
+                        <!--                                    <div class="review-content">-->
+                        <!--                                        <p>“In convallis nulla et magna congue convallis. Donec eu nunc vel justo-->
+                        <!--                                            maximus posuere. Sed viverra nunc erat, a efficitur nibh”</p>-->
+                        <!--                                        <div class="review-top-wrap">-->
+                        <!--                                            <div class="review-name">-->
+                        <!--                                                <h4>Stella McGee</h4>-->
+                        <!--                                            </div>-->
+                        <!--                                            <div class="review-rating">-->
+                        <!--                                                <i class="sli sli-star"></i>-->
+                        <!--                                                <i class="sli sli-star"></i>-->
+                        <!--                                                <i class="sli sli-star"></i>-->
+                        <!--                                                <i class="sli sli-star"></i>-->
+                        <!--                                                <i class="sli sli-star"></i>-->
+                        <!--                                            </div>-->
+                        <!--                                        </div>-->
+                        <!--                                    </div>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="single-review">-->
+                        <!--                                    <div class="review-img">-->
+                        <!--                                        <img src="/images/main/product-details/client-2.jpg" alt="">-->
+                        <!--                                    </div>-->
+                        <!--                                    <div class="review-content">-->
+                        <!--                                        <p>“In convallis nulla et magna congue convallis. Donec eu nunc vel justo-->
+                        <!--                                            maximus posuere. Sed viverra nunc erat, a efficitur nibh”</p>-->
+                        <!--                                        <div class="review-top-wrap">-->
+                        <!--                                            <div class="review-name">-->
+                        <!--                                                <h4>Stella McGee</h4>-->
+                        <!--                                            </div>-->
+                        <!--                                            <div class="review-rating">-->
+                        <!--                                                <i class="sli sli-star"></i>-->
+                        <!--                                                <i class="sli sli-star"></i>-->
+                        <!--                                                <i class="sli sli-star"></i>-->
+                        <!--                                                <i class="sli sli-star"></i>-->
+                        <!--                                                <i class="sli sli-star"></i>-->
+                        <!--                                            </div>-->
+                        <!--                                        </div>-->
+                        <!--                                    </div>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="single-review">-->
+                        <!--                                    <div class="review-img">-->
+                        <!--                                        <img src="/images/main/product-details/client-3.jpg" alt="">-->
+                        <!--                                    </div>-->
+                        <!--                                    <div class="review-content">-->
+                        <!--                                        <p>“In convallis nulla et magna congue convallis. Donec eu nunc vel justo-->
+                        <!--                                            maximus posuere. Sed viverra nunc erat, a efficitur nibh”</p>-->
+                        <!--                                        <div class="review-top-wrap">-->
+                        <!--                                            <div class="review-name">-->
+                        <!--                                                <h4>Stella McGee</h4>-->
+                        <!--                                            </div>-->
+                        <!--                                            <div class="review-rating">-->
+                        <!--                                                <i class="sli sli-star"></i>-->
+                        <!--                                                <i class="sli sli-star"></i>-->
+                        <!--                                                <i class="sli sli-star"></i>-->
+                        <!--                                                <i class="sli sli-star"></i>-->
+                        <!--                                                <i class="sli sli-star"></i>-->
+                        <!--                                            </div>-->
+                        <!--                                        </div>-->
+                        <!--                                    </div>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="ratting-form-wrapper">-->
+                        <!--                                <span>Add a Review</span>-->
+                        <!--                                <p>Your email address will not be published. Required fields are marked <span>*</span>-->
+                        <!--                                </p>-->
+                        <!--                                <div class="star-box-wrap">-->
+                        <!--                                    <div class="single-ratting-star">-->
+                        <!--                                        <i class="sli sli-star"></i>-->
+                        <!--                                    </div>-->
+                        <!--                                    <div class="single-ratting-star">-->
+                        <!--                                        <i class="sli sli-star"></i>-->
+                        <!--                                        <i class="sli sli-star"></i>-->
+                        <!--                                    </div>-->
+                        <!--                                    <div class="single-ratting-star">-->
+                        <!--                                        <i class="sli sli-star"></i>-->
+                        <!--                                        <i class="sli sli-star"></i>-->
+                        <!--                                        <i class="sli sli-star"></i>-->
+                        <!--                                    </div>-->
+                        <!--                                    <div class="single-ratting-star">-->
+                        <!--                                        <i class="sli sli-star"></i>-->
+                        <!--                                        <i class="sli sli-star"></i>-->
+                        <!--                                        <i class="sli sli-star"></i>-->
+                        <!--                                        <i class="sli sli-star"></i>-->
+                        <!--                                    </div>-->
+                        <!--                                    <div class="single-ratting-star">-->
+                        <!--                                        <i class="sli sli-star"></i>-->
+                        <!--                                        <i class="sli sli-star"></i>-->
+                        <!--                                        <i class="sli sli-star"></i>-->
+                        <!--                                        <i class="sli sli-star"></i>-->
+                        <!--                                        <i class="sli sli-star"></i>-->
+                        <!--                                    </div>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="ratting-form">-->
+                        <!--                                    <form action="#">-->
+                        <!--                                        <div class="row">-->
+                        <!--                                            <div class="col-md-12">-->
+                        <!--                                                <div class="rating-form-style mb-20">-->
+                        <!--                                                    <label>Your review <span>*</span></label>-->
+                        <!--                                                    <textarea name="Your Review"></textarea>-->
+                        <!--                                                </div>-->
+                        <!--                                            </div>-->
+                        <!--                                            <div class="col-md-12">-->
+                        <!--                                                <div class="rating-form-style mb-20">-->
+                        <!--                                                    <label>Name <span>*</span></label>-->
+                        <!--                                                    <input type="text">-->
+                        <!--                                                </div>-->
+                        <!--                                            </div>-->
+                        <!--                                            <div class="col-md-12">-->
+                        <!--                                                <div class="rating-form-style mb-20">-->
+                        <!--                                                    <label>Email <span>*</span></label>-->
+                        <!--                                                    <input type="email">-->
+                        <!--                                                </div>-->
+                        <!--                                            </div>-->
+                        <!--                                            <div class="col-lg-12">-->
+                        <!--                                                <div class="form-submit">-->
+                        <!--                                                    <input type="submit" value="Submit">-->
+                        <!--                                                </div>-->
+                        <!--                                            </div>-->
+                        <!--                                        </div>-->
+                        <!--                                    </form>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
                     </div>
                 </div>
             </div>
