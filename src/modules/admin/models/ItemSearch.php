@@ -19,7 +19,7 @@ class ItemSearch extends Item
     {
         return [
             [ [ 'id', 'category_id', 'status', 'created_at', 'updated_at' ], 'integer' ],
-            [ [ 'firm', 'model', 'collection', 'code' ], 'safe' ],
+            [ [ 'firm', 'model', 'collection' ], 'safe' ],
         ];
     }
     
@@ -68,8 +68,7 @@ class ItemSearch extends Item
         
         $query->andFilterWhere([ 'like', 'firm', $this->firm ])
               ->andFilterWhere([ 'like', 'model', $this->model ])
-              ->andFilterWhere([ 'like', 'collection', $this->collection ])
-              ->andFilterWhere([ 'like', 'code', $this->code ]);
+              ->andFilterWhere([ 'like', 'collection', $this->collection ]);
         
         return $dataProvider;
     }

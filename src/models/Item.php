@@ -54,12 +54,11 @@ class Item extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [ [ 'category_id', 'code' ], 'required' ],
+            [ [ 'category_id' ], 'required' ],
             [ [ 'category_id', 'status' ], 'integer' ],
             [ [ 'rate' ], 'integer', 'min' => 0, 'max' => 100 ],
             [ [ 'firm', 'model' ], 'string', 'max' => 128 ],
-            [ [ 'collection', 'code' ], 'string', 'max' => 64 ],
-            [ [ 'code' ], 'unique', 'message' => 'Товар с таким артикулом \'{value}\' уже существует' ],
+            [ [ 'collection' ], 'string', 'max' => 64 ],
             [ [ 'model' ], 'unique', 'targetAttribute' => [ 'firm', 'model' ], 'message' => 'Такая модель \'{value}\' уже существует' ],
         
         ];
@@ -83,7 +82,6 @@ class Item extends \yii\db\ActiveRecord
             'firm' => 'Фирма',
             'model' => 'Модель',
             'collection' => 'Коллекция',
-            'code' => 'Артикул',
             'rate' => 'Рейтинг',
             'status' => 'Статус',
             'created_at' => 'Дата создания',

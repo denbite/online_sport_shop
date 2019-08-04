@@ -45,7 +45,7 @@ class ItemDescription
             [ [ 'item_id' ], 'required' ],
             [ [ 'item_id' ], 'integer' ],
             [ [ 'item_id' ], 'unique' ],
-            [ [ 'small_text', 'small_list', 'text', 'list' ], 'string', 'max' => 255 ],
+            [ [ 'small_text', 'small_list', 'text', 'list' ], 'string' ],
         ];
     }
     

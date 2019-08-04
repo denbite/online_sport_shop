@@ -50,7 +50,7 @@ class ItemColor extends \yii\db\ActiveRecord
         return [
             [ [ 'item_id', 'code' ], 'required' ],
             [ [ 'item_id', 'status' ], 'integer' ],
-            [ [ 'code' ], 'string', 'max' => 32 ],
+            [ [ 'code' ], 'string', 'max' => 64 ],
             [ [ 'color' ], 'string', 'max' => 128 ],
             [ [ 'html' ], 'string', 'length' => 7 ],
             [ [ 'code' ], 'unique', 'targetAttribute' => [ 'item_id', 'code' ], 'message' => 'У данного товара уже существует такой код цвета \'{value}\' ' ],

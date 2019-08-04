@@ -5,7 +5,8 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `{{%item}}`.
  */
-class m190630_092214_create_item_table extends Migration
+class m190630_092214_create_item_table
+    extends Migration
 {
     
     /**
@@ -19,7 +20,6 @@ class m190630_092214_create_item_table extends Migration
             'firm' => $this->string(128),
             'model' => $this->string(128),
             'collection' => $this->string(64),
-            'code' => $this->string(64)->unique()->notNull(),
             'status' => $this->boolean()->defaultValue(1),
             'created_at' => $this->integer(12)->notNull()->defaultValue(time()),
             'updated_at' => $this->integer(12)->notNull()->defaultValue(time()),
@@ -27,10 +27,10 @@ class m190630_092214_create_item_table extends Migration
     
         $this->createTable('{{%item_description}}', [
             'item_id' => $this->integer()->notNull(),
-            'small_text' => $this->string(255),
-            'small_list' => $this->string(255),
-            'text' => $this->string(),
-            'list' => $this->string(),
+            'small_text' => $this->text()->defaultValue(''),
+            'small_list' => $this->text()->defaultValue(''),
+            'text' => $this->text()->defaultValue(''),
+            'list' => $this->text()->defaultValue(''),
             'updated_at' => $this->integer()->unsigned()->notNull()->defaultValue(time()),
             'created_at' => $this->integer()->unsigned()->notNull()->defaultValue(time()),
         ]);
@@ -38,7 +38,7 @@ class m190630_092214_create_item_table extends Migration
         $this->createTable('{{%item_color}}', [
             'id' => $this->primaryKey(),
             'item_id' => $this->integer()->notNull(),
-            'code' => $this->string(32)->notNull(),
+            'code' => $this->string(64)->notNull(),
             'color' => $this->string(128),
             'status' => $this->boolean()->defaultValue(1),
         ]);
@@ -98,13 +98,13 @@ class m190630_092214_create_item_table extends Migration
         );
     
         $this->batchInsert('{{%item}}', [
-            'category_id', 'firm', 'model', 'collection', 'code',
+            'category_id', 'firm', 'model', 'collection',
         ],
                            [
-                               [ 4, '47 Brand', 'FRANCHISE DODGERS', '2018`SS', 'FRANC12RPF' ],
-                               [ 7, 'Saucony', 'JAZZ O QUILTED', '2017`SS', '60295' ],
-                               [ 5, 'Funky Trunks', 'Pigs', '2018`SS', 'FJAJEAS' ],
-                               [ 6, 'Funkita', 'Bears', '2019`SS', 'FSH1241824S' ],
+                               [ 4, '47 Brand', 'FRANCHISE DODGERS', '2018`SS' ],
+                               [ 7, 'Saucony', 'JAZZ O QUILTED', '2017`SS' ],
+                               [ 5, 'Funky Trunks', 'Pigs', '2018`SS' ],
+                               [ 6, 'Funkita', 'Bears', '2019`SS' ],
                            ]
         );
     
