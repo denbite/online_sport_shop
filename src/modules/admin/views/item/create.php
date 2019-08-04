@@ -63,9 +63,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="col-lg-1 col-6">
                     <?= $form->field($model, 'collection') ?>
                 </div>
-                <div class="col-lg-2 col-6">
-                    <?= $form->field($model, 'code') ?>
-                </div>
                 <div class="col-lg-1 col-6">
                     <?= $form->field($model, 'rate') ?>
                 </div>

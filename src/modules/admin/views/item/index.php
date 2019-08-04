@@ -104,9 +104,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 
                                                       ],
                                                       [
-                                                          'attribute' => 'code',
-                                                      ],
-                                                      [
                                                           'attribute' => 'status',
                                                           'format' => 'html',
                                                           'class' => DropdownColumn::className(),

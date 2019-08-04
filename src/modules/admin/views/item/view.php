@@ -94,7 +94,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                      'firm',
                                                                      'model',
                                                                      'collection',
-                                                                     'code',
                                                                      'rate',
                                                                      [
                                                                          'attribute' => 'status',
