@@ -36,7 +36,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                              ->textInput([ 'placeholder' => $model->getAttributeLabel('phone') ])
                                              ->label(false) ?>
                                     <?= $form->field($model, 'name')
-                                             ->input('tel', [ 'placeholder' => $model->getAttributeLabel('name') ])
+                                             ->input('text', [ 'placeholder' => $model->getAttributeLabel('name') ])
+                                             ->label(false) ?>
+                                    <?= $form->field($model, 'surname')
+                                             ->input('text', [ 'placeholder' => $model->getAttributeLabel('surname') ])
                                              ->label(false) ?>
                                     <div class="button-box">
                                         <?= Html::submitButton('Зарегистрироваться') ?>

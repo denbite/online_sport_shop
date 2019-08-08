@@ -9,10 +9,13 @@ use yii\base\Model;
 /**
  * Signup form
  */
-class SignupForm extends Model
+class SignupForm
+    extends Model
 {
     
     public $name;
+    
+    public $surname;
     
     public $email;
     
@@ -22,24 +25,34 @@ class SignupForm extends Model
     
     public $phone;
     
+    private $_extra;
+    
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [ 'name', 'string', 'min' => 2, 'max' => 16, 'tooShort' => 'Имя должно быть длиной не меньше 2 символов', 'tooLong' => 'Имя должно быть длиной меньше 16 символов' ],
     
-            //            [ 'email', 'filter', 'filter' => 'trim' ],
-            [ 'email', 'required', 'message' => 'Поле не может быть пустым' ],
+            [ [ 'email', 'phone', 'name' ], 'required', 'message' => 'Поле не может быть пустым' ],
+    
+            [ 'email', 'filter', 'filter' => 'trim' ],
             [ 'email', 'email', 'message' => 'Введите корректный почтовый адрес' ],
             [ 'email', 'unique', 'targetClass' => User::className(), 'message' => 'Пользователь с таким почтовым ящиком уже зарегистрирован' ],
     
-            [ 'phone', 'required', 'message' => 'Поле не может быть пустым' ],
+            [ [ 'name', 'surname' ], 'string', 'max' => 64, 'tooLong' => 'Данное поле должно быть длиной меньше 64 символов' ],
     
-            [ 'password', 'required', 'message' => 'Поле не может быть пустым' ],
-            [ 'password', 'string', 'min' => 6, 'tooShort' => 'Пароль должен быть длиной не меньше 6 символов' ],
+            [ 'phone', 'unique', 'targetClass' => User::className(), 'message' => 'Пользователь с таким номером телефона уже зарегистрирован' ],
     
+            [ 'password', 'required', 'when' => function ($model)
+            {
+                return $model->getBooleanSignup();
+            }, 'whenClient' => 'function (attribute, value) {
+    return $("input#checkoutform-booleansignup[type=\'checkbox\']").is(":checked") === true;
+}', 'message' => 'Поле не может быть пустым' ],
+    
+            [ 'password', 'string', 'skipOnEmpty' => true, 'min' => 6, 'tooShort' => 'Пароль должен быть длиной не меньше 6 символов' ],
+            
             //            [ 'verifyCode', 'captcha', 'captchaAction' => '/user/default/captcha' ],
         ];
     }
@@ -51,13 +64,13 @@ class SignupForm extends Model
      */
     public function signup()
     {
-        if ($this->validate()) {
+        if ($this->validate() and !empty($this->password)) {
             $user = new User();
-            $user->name = $this->name;
+            $user->name = $this->name . ' ' . $this->surname;
             $user->email = $this->email;
             $user->phone = $this->phone;
             $user->setPassword($this->password);
-            // todo: change to WAIT after add mailer
+            // todo: change status to WAIT after add mailer
             $user->status = User::STATUS_ACTIVE;
             $user->generateAuthKey();
             $user->generateEmailConfirmToken();
@@ -76,7 +89,7 @@ class SignupForm extends Model
                 //                Yii::$app->user->login($user, 3600 * 24);
                 return Yii::$app->user->login($user, 3600 * 24 * 7);
             }
-    
+        
         }
         
         return null;
@@ -87,10 +100,26 @@ class SignupForm extends Model
     {
         return [
             'name' => 'Имя',
+            'surname' => 'Фамилия',
             'email' => 'Почтовый ящик',
             'phone' => 'Номер телефона',
             'password' => 'Пароль',
             'verifyCode' => 'Капча',
         ];
+    }
+    
+    public function setBooleanSignup($value = false)
+    {
+        $this->_extra['booleanSignup'] = $value;
+    }
+    
+    public function getBooleanSignup()
+    {
+        if (is_array($this->_extra) and array_key_exists('booleanSignup',
+                                                         $this->_extra) and $this->_extra['booleanSignup']) {
+            return true;
+        }
+        
+        return false;
     }
 }
