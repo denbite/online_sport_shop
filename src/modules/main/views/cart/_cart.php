@@ -51,7 +51,7 @@ use yii\helpers\Url;
             </h4>
         </div>
         <div class="shopping-cart-btn btn-hover text-center">
-            <a class="default-btn" href="<?= Url::to([ '/main/cart/checkout' ]) ?>">Оформить заказ</a>
+            <a class="default-btn" href="<?= Url::to([ '/main/checkout/index' ]) ?>">Оформить заказ</a>
             <a class="default-btn"
                href="<?= Url::to([ '/main/cart/index' ]) ?>">Корзина</a>
         </div>

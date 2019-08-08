@@ -75,6 +75,9 @@ $config = [
                 'productFieldSale' => 'sale_price',
             ],
         ],
+        'novaposhta' => [
+            'class' => 'app\components\novaposhta\NovaPoshta',
+        ],
         'formatter' => [
             'class' => 'yii\i18n\Formatter',
             'dateFormat' => 'medium',

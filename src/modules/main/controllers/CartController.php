@@ -3,10 +3,11 @@
 namespace app\modules\main\controllers;
 
 use app\components\helpers\ValueHelper;
+use app\components\models\NovaPoshta;
 use app\components\models\Status;
+use app\models\CheckoutForm;
 use app\models\ItemColorSize;
 use app\modules\user\models\forms\LoginForm;
-use app\modules\user\models\forms\SignupForm;
 use Yii;
 use yii\db\Exception;
 use yii\helpers\ArrayHelper;
@@ -196,27 +197,43 @@ class CartController
     {
         if (Yii::$app->user->isGuest) {
             $loginForm = new LoginForm();
-            $signupForm = new SignupForm();
+    
             if (Yii::$app->request->isPost and $loginForm->load(Yii::$app->request->post()) and $loginForm->login()) {
                 return $this->refresh();
             }
         }
     
+        $checkoutForm = new CheckoutForm();
+        
         $cart = Yii::$app->cart;
     
         foreach ($cart->getItems() as $index => $item) {
             $size = $item->getProduct();
-            $items[$index]['name'] = $size->color->item->model . ' ' . $size->size;
+            $items[$index]['name'] = $size->color->item->firm . ' ' . $size->color->item->model . ' ' . $size->size;
             $items[$index]['quantity'] = $item->getQuantity();
             $items[$index]['cost'] = ValueHelper::addCurrency($item->getCost());
         }
     
+        if (Yii::$app->request->isPost) {
+            $post = Yii::$app->request->post();
+        
+            if ($checkoutForm->load($post)) {
+                echo '<pre>';
+                var_dump($checkoutForm);
+                echo '</pre>';
+                die;
+                $checkoutForm->registerOrder();
+            }
+        
+        }
+        
         return $this->render('checkout', [
             'items' => !empty($items) ? $items : [],
             'totalCost' => ValueHelper::addCurrency($cart->getTotalCost()),
             'delivery' => ValueHelper::getDelivery($cart->getTotalCost()),
             'loginForm' => !empty($loginForm) ? $loginForm : null,
-            'signupForm' => !empty($signupForm) ? $signupForm : null,
+            'checkoutForm' => !empty($checkoutForm) ? $checkoutForm : null,
+            'np' => Yii::$app->novaposhta,
         ]);
     }
     

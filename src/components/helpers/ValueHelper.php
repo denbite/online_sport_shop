@@ -31,15 +31,15 @@ class ValueHelper
         return Yii::$app->cache->getOrSet(self::CACHE_MULTIPLIER, function ()
         {
             $param = Config::find()->select('value')->where([ 'name' => 'priceMultiplier' ])->asArray()->one();
-        
+    
             if (is_array($param) and array_key_exists('value', $param)) {
                 $multiplier = $param['value'];
             }
-        
+    
             if (empty($multiplier) and array_key_exists('priceMultiplier', Yii::$app->params)) {
                 $multiplier = Yii::$app->params['priceMultiplier'];
             }
-        
+    
             return !empty($multiplier) ? $multiplier : 1;
         }, 300);
     }
@@ -70,7 +70,7 @@ class ValueHelper
      */
     public static function addCurrency($price)
     {
-        return (int) $price >= 0 ? "₴ {$price}" : null;
+        return (int) $price >= 0 ? '₴ ' . number_format($price, 0, ' ', ' ') : null;
     }
     
     /**

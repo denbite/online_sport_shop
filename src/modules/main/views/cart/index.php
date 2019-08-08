@@ -96,7 +96,7 @@ use yii\helpers\Url;
                                 </ul>
                             </div>
                             <h4 class="grand-totall-title pt-4">Сумма чека <span> <?= $totalCost ?> </span></h4>
-                            <a href="<?= Url::to([ '/main/cart/checkout' ]) ?>">Оформить заказ</a>
+                            <a href="<?= Url::to([ '/main/checkout/index' ]) ?>">Оформить заказ</a>
                         </div>
                     </div>
                 </div>

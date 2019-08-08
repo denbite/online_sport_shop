@@ -15,7 +15,8 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class AppAsset extends AssetBundle
+class AppAsset
+    extends AssetBundle
 {
     
     public $basePath = '@webroot';
@@ -31,6 +32,7 @@ class AppAsset extends AssetBundle
     public $js = [
         'js/ajax-mail.js',
         'js/main.js',
+        'js/checkout.js',
         'js/cart.js',
         'js/plugins.js',
         'js/product_colors.js',

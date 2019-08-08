@@ -698,5 +698,5 @@ $(document).ready(function ($) {
     /*----------------------------------
         phone mask
         ------------------------------------*/
-    $("#signupform-phone").mask("+38(099) 999-99-99");
+    $("#signupform-phone, #checkoutform-phone").mask("(099) 999-99-99");
 });

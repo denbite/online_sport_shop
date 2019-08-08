@@ -10736,3 +10736,24 @@ h3.cart-page-title {
 }
 
 /*-------- Start My Account Page Wrapper --------*/
+
+
+#submit-order {
+    background-color: #ff3535;
+    font-size: 12px;
+    display: block;
+    cursor: pointer;
+    padding: 17px 50px 18px;
+    text-transform: uppercase;
+    font-weight: 700;
+    width: 100%;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600 l;
+    text-align: center;
+    border: none;
+}
+
+#submit-order:hover {
+    background-color: #000000;
+}
