@@ -17,13 +17,24 @@ class m190725_111029_order_table_and_user_fix
         $this->createTable('{{%order}}', [
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->unsigned()->notNull(),
-            'invoice' => $this->string(32)->defaultValue(''), // change to notNull(), it will be generate by API
-            'status' => $this->boolean()->defaultValue(1), // change status from model const to pending
+            'name' => $this->string(64),
+            'phone' => $this->string(32)->notNull(),
+            'email' => $this->string(),
+            'city' => $this->string(64),
+            'department' => $this->string(64),
+            'invoice' => $this->string(32)->defaultValue(''),
+            'sum' => $this->integer()->unsigned()->notNull(),
+            'buy_sum' => $this->integer()->unsigned()->notNull(),
+            'status' => $this->boolean()
+                             ->defaultValue(\app\models\Order::ORDER_STATUS_NEW),
             'delivery' => $this->boolean()->notNull(),
-            'issue_date' => $this->integer()->notNull(),
+            'comment' => $this->text(),
+            'phone_status' => $this->smallInteger()->unsigned(),
+            'updated_at' => $this->integer()->unsigned()->notNull()->defaultValue(0),
+            'created_at' => $this->integer()->unsigned()->notNull()->defaultValue(0),
         ]);
-        
-        $this->execute("ALTER TABLE `order` AUTO_INCREMENT=1373;");
+    
+        $this->execute("ALTER TABLE `order` AUTO_INCREMENT=1371;");
         
         $this->createTable('{{%order_size}}', [
             'order_id' => $this->integer()->unsigned()->notNull(),

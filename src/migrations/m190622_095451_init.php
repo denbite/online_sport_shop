@@ -5,7 +5,8 @@ use yii\db\Migration;
 /**
  * Class m190622_095451_init
  */
-class m190622_095451_init extends Migration
+class m190622_095451_init
+    extends Migration
 {
     
     /**
@@ -22,7 +23,7 @@ class m190622_095451_init extends Migration
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
             'email' => $this->string()->unique()->notNull(),
-            'phone' => $this->string(32)->unique()->notNull(),
+            'phone' => $this->string(32)->unique(),
             'password_hash' => $this->string()->notNull()->defaultValue(''),
             'auth_key' => $this->string(32)->notNull()->defaultValue(''),
             'email_confirm_token' => $this->string()->notNull()->defaultValue(''),
@@ -36,8 +37,8 @@ class m190622_095451_init extends Migration
             '{{%user}}',
             [ 'name', 'email', 'phone', 'password_hash', 'created_at', 'updated_at' ],
             [
-                [ 'admin', 'mirloxd3@gmail.com', '+380675447477', '$2y$13$IhLqcYoo9q22IwLjFi7sLu3s5tYkteU/ngc27/2uf2HrOjAWjeVSi', time(), time() ],
-                [ 'capcatd', 'captaincatd@ukr.net', '+380675225770', '$2y$13$IhLqcYoo9q22IwLjFi7sLu3s5tYkteU/ngc27/2uf2HrOjAWjeVSi', time(), time() ],
+                [ 'Денис Кляцкий', 'mirloxd3@gmail.com', '(067) 544-74-77', '$2y$13$IhLqcYoo9q22IwLjFi7sLu3s5tYkteU/ngc27/2uf2HrOjAWjeVSi', time(), time() ],
+                [ 'Олег Кляцкий', 'captaincatd@ukr.net', '(067) 522-57-70', '$2y$13$IhLqcYoo9q22IwLjFi7sLu3s5tYkteU/ngc27/2uf2HrOjAWjeVSi', time(), time() ],
             ]
         );
         $auth = Yii::$app->authManager;
