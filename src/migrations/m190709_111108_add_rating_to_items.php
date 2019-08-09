@@ -14,7 +14,7 @@ class m190709_111108_add_rating_to_items
      */
     public function safeUp()
     {
-        $this->addColumn('{{%item}}', 'rate', $this->smallInteger()->unsigned()->after('code')->defaultValue(0));
+        $this->addColumn('{{%item}}', 'rate', $this->smallInteger()->unsigned()->after('collection')->defaultValue(0));
     }
     
     /**
