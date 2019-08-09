@@ -97,7 +97,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                                       ],
                                                       [
                                                           'attribute' => 'model',
-                
                                                       ],
                                                       [
                                                           'attribute' => 'collection',

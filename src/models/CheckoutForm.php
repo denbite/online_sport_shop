@@ -8,6 +8,16 @@ use yii\base\Model;
 use yii\db\Exception;
 use yii\helpers\Html;
 
+/**
+ * This is the model class for table "item".
+ *
+ * @property SignupForm $signup
+ * @property bool       $booleanSignup
+ * @property string     $city
+ * @property string     $department
+ * @property bool       $callBack
+ * @property string     $comment
+ */
 class CheckoutForm
     extends Model
 {
@@ -20,11 +30,15 @@ class CheckoutForm
     
     public $department;
     
+    public $callBack;
+    
+    public $comment;
+    
     public function rules()
     {
         return [
             [ [ 'city', 'department' ], 'required', 'message' => 'Данное поле не может быть пустым' ],
-            [ [ 'city', 'department' ], 'string', 'skipOnEmpty' => false ],
+            [ [ 'city', 'department', 'callBack', 'comment' ], 'string' ],
             
             [ 'booleanSignup', 'boolean' ],
             
@@ -45,6 +59,8 @@ class CheckoutForm
             'booleanSignup' => 'Создать аккаунт?',
             'city' => 'Город',
             'department' => 'Отделение',
+            'callBack' => 'Перезвоните мне',
+            'comment' => 'Комментарий',
         ];
     }
     
@@ -74,6 +90,8 @@ class CheckoutForm
             $order->buy_sum = $cart->getTotalCost();
             $order->delivery = 1; // create table with delivery types
             $order->status = Order::ORDER_STATUS_NEW;
+            $order->phone_status = !$this->callBack ? Order::PHONE_STATUS_NOT_DISTURB : Order::ORDER_STATUS_NEW;
+            $order->comment = $this->comment;
             
             if (!$order->save()) {
                 throw new Exception('Не удалось сохранить заказ');

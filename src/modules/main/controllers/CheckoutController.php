@@ -51,22 +51,25 @@ class CheckoutController
             $post = Yii::$app->request->post();
             
             if ($checkoutForm->load($post) and $checkoutForm->validate()) {
-                $checkoutForm->signup->setBooleanSignup($checkoutForm->booleanSignup);
-                
-                if (empty($checkoutForm->signup) or ( $checkoutForm->signup->load($post) and $checkoutForm->validate() )) {
-                    try {
-                        TransactionHelper::wrap(function () use ($checkoutForm)
-                        {
-                            $checkoutForm->registerOrder();
-                        });
-                        
-                        return $this->redirect([ '/main/default/index' ]);
-                    } catch (\Exception $e) {
-                        Yii::$app->errorHandler->logException($e);
-                        //                        Yii::$app->session->setFlash('error', $e->getMessage());
+    
+                try {
+                    if (!empty($checkoutForm->signup)) {
+                        $checkoutForm->signup->setBooleanSignup($checkoutForm->booleanSignup);
+                        $checkoutForm->signup->load($post);
+                        $checkoutForm->signup->validate();
                     }
-                    
+        
+                    TransactionHelper::wrap(function () use ($checkoutForm)
+                    {
+                        $checkoutForm->registerOrder();
+                    });
+        
+                    return $this->redirect([ '/main/default/index' ]);
+                } catch (\Exception $e) {
+                    Yii::$app->errorHandler->logException($e);
+                    //                        Yii::$app->session->setFlash('error', $e->getMessage());
                 }
+                
             }
             
         }

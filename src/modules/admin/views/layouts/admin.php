@@ -44,11 +44,8 @@ $action = Yii::$app->controller->action->id;
 
     <header class="main-header">
         <!-- Logo -->
-        <?= Html::a('<b class="logo-mini">
-                <span class="light-logo"><img src="/files/logo-admin-icon.png" width="40px" height="40px" alt="logo"></span>
-            </b>
-            <span class="logo-lg">
-		  <img src="/files/logo-admin.png" alt="logo" class="light-logo" height="40px" width="128px">
+        <?= Html::a('            <span class="logo-lg">
+		  <img src="/images/logo-admin.png" alt="logo" class="light-logo" height="40px" width="130px">
 	  </span>', [ '/main/default/index' ], [ 'class' => 'logo' ]) ?>
 
         <!-- Header Navbar -->
@@ -75,14 +72,14 @@ $action = Yii::$app->controller->action->id;
                     <!-- User Account-->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="<?= !empty(Yii::$app->user->identity->image) ? Yii::$app->user->identity->image : '/files/default-profile.jpg' ?>"
+                            <img src="<?= !empty(Yii::$app->user->identity->image) ? Yii::$app->user->identity->image : '/images/default-profile.jpg' ?>"
                                  class="user-image rounded-circle"
                                  alt="User Image">
                         </a>
                         <ul class="dropdown-menu scale-up">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="<?= !empty(Yii::$app->user->identity->image) ? Yii::$app->user->identity->image : '/files/default-profile.jpg' ?>"
+                                <img src="<?= !empty(Yii::$app->user->identity->image) ? Yii::$app->user->identity->image : '/images/default-profile.jpg' ?>"
                                      class="float-left rounded-circle"
                                      alt="User Image">
                                 <p>
@@ -119,7 +116,8 @@ $action = Yii::$app->controller->action->id;
                 </li>
                 <li class="header nav-small-cap">Основные</li>
                 <?php if (Permission::can([ 'admin_item_index', 'admin_category_index', 'admin_order_index' ])): ?>
-                    <li class="treeview <?= in_array($controller, [ 'item', 'item-color', 'item-size', 'category', 'order' ]) ? ' active' : '' ?>">
+                    <li class="treeview <?= in_array($controller,
+                                                     [ 'item', 'item-color', 'item-size', 'category', 'order' ]) ? ' active' : '' ?>">
                         <a href="#">
                             <i class="fas fa-shopping-bag"></i>
                             <span>Магазин</span>
@@ -202,22 +200,22 @@ $action = Yii::$app->controller->action->id;
                 <li class="header nav-small-cap">Дополнительные</li>
                 <?php if (Permission::can([ 'admin_config_index', ])): ?>
                     <li class="treeview <?= in_array($controller, [ 'config', ]) ? ' active' : '' ?>">
-                    <a href="#">
-                        <i class="fas fa-cogs"></i>
-                        <span>Настройки</span>
-                        <span class="pull-right-container">
+                        <a href="#">
+                            <i class="fas fa-cogs"></i>
+                            <span>Настройки</span>
+                            <span class="pull-right-container">
               <i class="fa fa-angle-right pull-right"></i>
             </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <?php if (Permission::can('admin_config_index')): ?>
-                            <li <?= $controller == 'config' ? ' class="active"' : '' ?>><?= Html::a(Html::tag('i',
-                                        '&nbsp;',
-                                        [ 'class' => 'far fa-circle' ]) . 'Основные',
-                                    [ '/admin/config/index' ]) ?></li>
-                        <?php endif; ?>
-                    </ul>
-                </li>
+                        </a>
+                        <ul class="treeview-menu">
+                            <?php if (Permission::can('admin_config_index')): ?>
+                                <li <?= $controller == 'config' ? ' class="active"' : '' ?>><?= Html::a(Html::tag('i',
+                                                                                                                  '&nbsp;',
+                                                                                                                  [ 'class' => 'far fa-circle' ]) . 'Основные',
+                                                                                                        [ '/admin/config/index' ]) ?></li>
+                            <?php endif; ?>
+                        </ul>
+                    </li>
                 <?php endif; ?>
             </ul>
         </section>

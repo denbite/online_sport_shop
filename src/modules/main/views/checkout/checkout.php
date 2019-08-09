@@ -128,6 +128,12 @@ use yii\web\JsExpression;
                                                  ],
                                              ]) ?>
                                 </div>
+                                <div class="col-12">
+                                    <?= $form->field($checkoutForm, 'callBack')->checkbox() ?>
+                                </div>
+                                <div class="col-12">
+                                    <?= $form->field($checkoutForm, 'comment')->textarea() ?>
+                                </div>
                             </div>
 
 

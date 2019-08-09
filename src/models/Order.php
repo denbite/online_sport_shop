@@ -20,6 +20,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int    $sum
  * @property int    $buy_sum
  * @property int    $phone_status
+ * @property string $comment
  * @property int    $updated_at
  * @property int    $created_at
  */
@@ -34,6 +35,16 @@ class Order
     const ORDER_STATUS_RECEIVED = 3;
     
     const ORDER_STATUS_CANCELED = 4;
+    
+    const PHONE_STATUS_WAITING = 1;
+    
+    const PHONE_STATUS_NOT_DISTURB = 2;
+    
+    const PHONE_STATUS_IGNORE = 3;
+    
+    const PHONE_STATUS_CANCEL = 4;
+    
+    const PHONE_STATUS_CALLBACK = 5;
     
     /**
      * {@inheritdoc}
@@ -64,6 +75,17 @@ class Order
             self::ORDER_STATUS_CONFIRMED => 'Подтвержден',
             self::ORDER_STATUS_RECEIVED => 'Получен',
             self::ORDER_STATUS_CANCELED => 'Отменен',
+        ];
+    }
+    
+    public function getPhoneStatuses()
+    {
+        return [
+            self::PHONE_STATUS_WAITING => 'Ждет звонка',
+            self::PHONE_STATUS_NOT_DISTURB => 'Не звонить',
+            self::PHONE_STATUS_IGNORE => 'Не взял',
+            self::PHONE_STATUS_CANCEL => 'Отбился',
+            self::PHONE_STATUS_CALLBACK => 'Нужно перезвонить',
         ];
     }
     
