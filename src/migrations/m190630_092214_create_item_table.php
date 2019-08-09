@@ -27,10 +27,10 @@ class m190630_092214_create_item_table
     
         $this->createTable('{{%item_description}}', [
             'item_id' => $this->integer()->notNull(),
-            'small_text' => $this->text()->defaultValue(''),
-            'small_list' => $this->text()->defaultValue(''),
-            'text' => $this->text()->defaultValue(''),
-            'list' => $this->text()->defaultValue(''),
+            'small_text' => $this->text(),
+            'small_list' => $this->text(),
+            'text' => $this->text(),
+            'list' => $this->text(),
             'updated_at' => $this->integer()->unsigned()->notNull()->defaultValue(time()),
             'created_at' => $this->integer()->unsigned()->notNull()->defaultValue(time()),
         ]);
