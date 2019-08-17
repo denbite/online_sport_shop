@@ -9,6 +9,7 @@ use yii\helpers\Html;
 /** @var array $parents */
 /** @var array $items */
 /** @var array $pages */
+/** @var array $producers */
 
 $this->title = $current['name'];
 
@@ -210,6 +211,52 @@ $this->params['breadcrumbs'][] = $current['name'];
                             </form>
                         </div>
                     </div>
+                    <?php if (!empty($producers)): ?>
+                        <div class="sidebar-widget">
+                            <h4 class="pro-sidebar-title">Производитель</h4>
+                            <div class="sidebar-widget-list mt-30">
+                                <ul>
+                                    <?php
+                    
+                                    $curr = Yii::$app->request->getQueryParams();
+                                    if (array_key_exists('producers', $curr) and !empty($curr['producers'])) {
+                                        $curr = explode(',', $curr['producers']);
+                                    } else {
+                                        $curr = [];
+                                    }
+                    
+                                    ?>
+                                    <?php foreach ($producers as $producer => $count): ?>
+                                        <li>
+                                            <?php
+                            
+                                            if (in_array($producer, $curr)) {
+                                                $param = array_diff($curr, [ $producer ]);
+                                            } else {
+                                                if (empty($curr)) {
+                                                    $param = [ $producer ];
+                                                } else {
+                                                    $param = $curr;
+                                                    $param[] = $producer;
+                                                }
+                                            }
+                            
+                                            $param = implode(',', $param);
+                                            ?>
+                                            <div class="sidebar-widget-list-left">
+                                                <input type="checkbox" <?= in_array($producer,
+                                                                                    $curr) ? ' checked' : '' ?>>
+                                                <a href="<?= \yii\helpers\Url::current([ 'producers' => $param ]) ?>"> <?= $producer ?>
+                                                    <span><?= $count ?></span> </a>
+                                                <span class="checkmark"></span>
+                                            </div>
+                                            <?php unset($param); ?>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

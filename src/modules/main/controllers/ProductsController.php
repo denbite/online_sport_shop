@@ -11,6 +11,7 @@ use app\models\Item;
 use app\models\ItemDescription;
 use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -107,10 +108,12 @@ class ProductsController
         
         SeoHelper::putDefaultTags();
     
+        $params = \Yii::$app->request->getQueryParams();
+        
         if (empty($slug)) {
             
             $query = Item::find()
-                         ->select([ 'item.*' ])
+                         ->select('item.*, COUNT(item.id) as count')
                          ->from(Item::tableName() . ' item')
                          ->joinWith([ 'allColors colors' => function ($query)
                          {
@@ -125,13 +128,26 @@ class ProductsController
                          {
                              $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
                          } ])
-                         ->where([
-                                     'item.status' => Status::STATUS_ACTIVE,
-                                     'colors.status' => Status::STATUS_ACTIVE,
-                                     'sizes.status' => Status::STATUS_ACTIVE,
-                                 ])
+                         ->andWhere([
+                                        'item.status' => Status::STATUS_ACTIVE,
+                                        'colors.status' => Status::STATUS_ACTIVE,
+                                        'sizes.status' => Status::STATUS_ACTIVE,
+                                    ])
                          ->groupBy([ 'id' ])
                          ->orderBy([ 'rate' => SORT_DESC ]);
+    
+            $producerQuery = clone $query;
+    
+            $producers = ArrayHelper::map($producerQuery->groupBy([ 'id', 'firm' ])
+                                                        ->asArray()
+                                                        ->all(), 'firm', 'count');
+    
+            unset($producerQuery);
+    
+            if (!empty($params['producers'])) {
+                $param = explode(',', Html::encode($params['producers']));
+                $query->andWhere([ 'in', 'firm', $param ]);
+            }
             
             $pages = new Pagination([
                                         'totalCount' => $query->count(),
@@ -140,8 +156,12 @@ class ProductsController
                                         'forcePageParam' => false,
                                     ]
             );
+    
+            $items = $query->offset($pages->offset)
+                           ->limit($pages->limit)
+                           ->asArray()
+                           ->all();
             
-            $items = $query->offset($pages->offset)->limit($pages->limit)->asArray()->all();
             
             // all items, order by rate descending
             
@@ -150,6 +170,7 @@ class ProductsController
                 'current' => [ 'name' => 'Каталог' ],
                 'items' => $items,
                 'pages' => $pages,
+                'producers' => $producers,
             ]);
         } elseif ($current = Category::findOne([ 'id' => ValueHelper::decryptValue($slug), 'active' => Status::STATUS_ACTIVE ])) {
             if ($current['rgt'] != $current['lft'] + 1) {
@@ -157,7 +178,7 @@ class ProductsController
             } else {
     
                 $query = Item::find()
-                             ->select([ 'item.*', 'MIN(sizes.sell_price) as min_price' ])
+                             ->select([ 'item.*', 'MIN(sizes.sell_price) as min_price, COUNT(item.id) as count' ])
                              ->from(Item::tableName() . ' item')
                              ->joinWith([ 'allColors colors' => function ($query)
                              {
@@ -180,6 +201,19 @@ class ProductsController
                              ->groupBy([ 'id' ])
                              ->orderBy([ 'rate' => SORT_DESC ]);
     
+                $producerQuery = clone $query;
+    
+                $producers = ArrayHelper::map($producerQuery->groupBy([ 'id', 'firm' ])
+                                                            ->asArray()
+                                                            ->all(), 'firm', 'count');
+    
+                unset($producerQuery);
+    
+                if (!empty($params['producers'])) {
+                    $param = explode(',', Html::encode($params['producers']));
+                    $query->andWhere([ 'in', 'firm', $param ]);
+                }
+                
                 $pages = new Pagination([
                                             'totalCount' => $query->count(),
                                             'pageSize' => 18,
@@ -195,6 +229,7 @@ class ProductsController
                     'parents' => $current->parents()->all(),
                     'current' => $current,
                     'pages' => $pages,
+                    'producers' => $producers,
                 ]);
             }
         }
