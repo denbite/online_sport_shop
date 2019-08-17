@@ -196,9 +196,9 @@ class Image
         $urls = [];
         // todo-cache: add cache(30 sec)
         if (array_key_exists($type, self::getTypes()) and array_key_exists($size, self::getSizes())) {
-        
+    
             $ids = array_column(self::getImagesBySubject($type, $subject_id), 'id');
-        
+    
             foreach ($ids as $id) {
                 $urls[] = self::getLink($id, $size);
             }
@@ -271,7 +271,7 @@ class Image
     
     public static function watermark(&$img, $x = '50%', $y = '50%', $width = false, $height = false)
     {
-        $watermark = Yii::getAlias('@webroot') . '/files/watermark.png';
+        $watermark = Yii::getAlias('@webroot') . '/images/watermark.png';
         
         $info = getimagesize($watermark);
         switch ($info[2]) {
