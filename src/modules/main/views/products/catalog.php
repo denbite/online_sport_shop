@@ -140,7 +140,7 @@ $this->params['breadcrumbs'][] = $current['name'];
                                             <div class="product-list-img">
                                                 <a href="<?= \yii\helpers\Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ]) ?>">
                                                     <?= Html::img(Image::getLink($item['allColors'][0]['mainImage']['id']),
-                                                        [ 'alt' => $item['allColors'][0]['mainImage']['url'] ]) ?>
+                                                                  [ 'alt' => $item['allColors'][0]['mainImage']['url'] ]) ?>
                                                 </a>
                                                 <!--                                                <div class="product-quickview">-->
                                                 <!--                                                    <a href="#" title="Quick View" data-toggle="modal"-->
@@ -208,104 +208,6 @@ $this->params['breadcrumbs'][] = $current['name'];
                                     <i class="sli sli-magnifier"></i>
                                 </button>
                             </form>
-                        </div>
-                    </div>
-                    <div class="sidebar-widget">
-                        <h4 class="pro-sidebar-title">Сортировать по </h4>
-                        <div class="sidebar-widget-list mt-30">
-                            <ul>
-                                <li>
-                                    <div class="sidebar-widget-list-left">
-                                        <input type="checkbox"> <a
-                                                href="">On
-                                            Sale <span>4</span> </a>
-                                        <span class="checkmark"></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="?new=1">New <span>5</span></a>
-                                        <span class="checkmark"></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">In Stock <span>6</span> </a>
-                                        <span class="checkmark"></span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="sidebar-widget mt-45">
-                        <h4 class="pro-sidebar-title">По цене</h4>
-                        <div class="price-filter mt-10">
-                            <div class="price-slider-amount">
-                                <input type="text" id="amount" name="price" placeholder="Add Your Price"/>
-                            </div>
-                            <div id="slider-range"></div>
-                        </div>
-                    </div>
-                    <div class="sidebar-widget mt-50">
-                        <h4 class="pro-sidebar-title">По цвету </h4>
-                        <div class="sidebar-widget-list mt-20">
-                            <ul>
-                                <li>
-                                    <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">Green <span>7</span> </a>
-                                        <span class="checkmark"></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">Cream <span>8</span> </a>
-                                        <span class="checkmark"></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">Blue <span>9</span> </a>
-                                        <span class="checkmark"></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">Black <span>3</span> </a>
-                                        <span class="checkmark"></span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="sidebar-widget mt-40">
-                        <h4 class="pro-sidebar-title">По размерам </h4>
-                        <div class="sidebar-widget-list mt-20">
-                            <ul>
-                                <li>
-                                    <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">XL <span>4</span> </a>
-                                        <span class="checkmark"></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">L <span>5</span> </a>
-                                        <span class="checkmark"></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">SM <span>6</span> </a>
-                                        <span class="checkmark"></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">XXL <span>7</span> </a>
-                                        <span class="checkmark"></span>
-                                    </div>
-                                </li>
-                            </ul>
                         </div>
                     </div>
                 </div>

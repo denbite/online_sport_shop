@@ -23,6 +23,8 @@ class NovaPoshta
     
     const CACHE_WAREHOUSES_ARRAY = 'cache_warehouses_array';
     
+    const CACHE_QUERY_DEFAULT = 'cache_novaposhta';
+    
     private $api_key;
     
     public function init()
@@ -45,20 +47,16 @@ class NovaPoshta
     
     public function getCitiesArray($city_name)
     {
-        return Yii::$app->cache->getOrSet(self::CACHE_CITIES_ARRAY . "-search={$city_name}",
-            function () use ($city_name)
-            {
-                $result = [];
-                
-                foreach ($this->getCities($city_name) as $city) {
-                    if ($city['Warehouses'] > 0) {
-                        $result[$city['DeliveryCity']] = $city['Present'];
-                    }
-                }
-                
-                return $result;
-                
-            }, 3600 * 24 * 30);
+        $result = [];
+    
+        foreach ($this->getCities($city_name) as $city) {
+            if ($city['Warehouses'] > 0) {
+                $result[$city['DeliveryCity']] = $city['Present'];
+            }
+        }
+    
+        return $result;
+        
     }
     
     public function getCities($city_name)
@@ -66,9 +64,8 @@ class NovaPoshta
         if (mb_strlen($city_name) >= 3) {
             $model = 'Address';
             $method = 'searchSettlements';
-            
-            $params['CityName'] = '';
-            //            $params['CityName'] = $city_name;
+    
+            $params['CityName'] = $city_name;
             
             $response = $this->sendRequest($model, $method, $params);
             
@@ -80,46 +77,47 @@ class NovaPoshta
     private function sendRequest($model, $method, array $params = [], $http = self::HTTP_POST)
     {
         // todo-cache: add cache (many time, by model+method+params+http)
-        
-        $param = '';
-        
-        if (!empty($params) and is_array($params)) {
-            foreach ($params as $key => $value) {
-                if (!empty($param)) {
-                    $param .= ',';
+        return Yii::$app->cache->getOrSet(self::CACHE_QUERY_DEFAULT . "-{$model}-{$method}-" . serialize($params) . "-{$http}",
+            function () use ($model, $method, $params, $http)
+            {
+            
+                $param = '';
+            
+                if (!empty($params) and is_array($params)) {
+                    foreach ($params as $key => $value) {
+                        if (!empty($param)) {
+                            $param .= ',';
+                        }
+                        $param .= "\"$key\":\"$value\"";
+                    }
                 }
-                $param .= "\"$key\":\"$value\"";
-            }
-        }
-        
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => "https://api.novaposhta.ua/v2.0/json/",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => $http,
-            CURLOPT_POSTFIELDS => "{\r\n\"apiKey\": \"\",\r\n\"modelName\": \"$model\",\r\n\"calledMethod\": \"$method\",\r\n\"methodProperties\": {{$param}}\r\n}",
-            CURLOPT_HTTPHEADER => [ "content-type: application/json", ],
-        ]);
-        
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-        curl_close($curl);
-        if ($err) {
-            throw new \Exception($err);
-        }
-        
-        $response = Json::decode($response);
-        
-        return $response['success'] ? $response['data'] : null;
+            
+                $curl = curl_init();
+                curl_setopt_array($curl, [
+                    CURLOPT_URL => "https://api.novaposhta.ua/v2.0/json/",
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => $http,
+                    CURLOPT_POSTFIELDS => "{\r\n\"apiKey\": \"\",\r\n\"modelName\": \"$model\",\r\n\"calledMethod\": \"$method\",\r\n\"methodProperties\": {{$param}}\r\n}",
+                    CURLOPT_HTTPHEADER => [ "content-type: application/json", ],
+                ]);
+            
+                $response = curl_exec($curl);
+                $err = curl_error($curl);
+                curl_close($curl);
+                if ($err) {
+                    throw new \Exception($err);
+                }
+            
+                $response = Json::decode($response);
+            
+                return $response['success'] ? $response['data'] : null;
+            }, 3600 * 24 * 7);
     }
     
     public function getWarehousesArray($cityRef = null)
     {
-        return Yii::$app->cache->getOrSet(self::CACHE_WAREHOUSES_ARRAY . '-' . $cityRef, function () use ($cityRef)
-        {
-            return ArrayHelper::map($this->getWarehouses($cityRef), 'Ref', 'DescriptionRu');
-        }, 3600 * 24 * 30);
+        return ArrayHelper::map($this->getWarehouses($cityRef), 'Ref', 'DescriptionRu');
     }
     
     public function getWarehouses($cityRef = null, $warehouseRef = null)
@@ -194,7 +192,6 @@ class NovaPoshta
                     break;
             }
         }
-        die('404');
         
         return null;
     }

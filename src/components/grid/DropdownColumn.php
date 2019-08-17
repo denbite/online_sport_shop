@@ -4,7 +4,8 @@ namespace app\components\grid;
 
 use yii\helpers\Html;
 
-class DropdownColumn extends OwnColumn
+class DropdownColumn
+    extends OwnColumn
 {
     
     public $css;
@@ -26,7 +27,8 @@ class DropdownColumn extends OwnColumn
         $this->_attr = $model->$attribute;
         
         if (array_key_exists($this->_attr, $this->css) and array_key_exists($this->_attr, $this->filter)) {
-            return Html::tag('span', $this->filter[$this->_attr], [ 'class' => 'label label-' . $this->css[$this->_attr] ]);
+            return Html::tag('span', $this->filter[$this->_attr],
+                             [ 'class' => 'label bg-' . $this->css[$this->_attr] ]);
         }
         
         return null;

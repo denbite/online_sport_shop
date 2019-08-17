@@ -78,7 +78,17 @@ class Order
         ];
     }
     
-    public function getPhoneStatuses()
+    public static function getStatusCssClass()
+    {
+        return [
+            self::ORDER_STATUS_NEW => 'green',
+            self::ORDER_STATUS_CONFIRMED => 'info',
+            self::ORDER_STATUS_RECEIVED => 'success',
+            self::ORDER_STATUS_CANCELED => 'danger',
+        ];
+    }
+    
+    public static function getPhoneStatuses()
     {
         return [
             self::PHONE_STATUS_WAITING => 'Ждет звонка',
@@ -86,6 +96,17 @@ class Order
             self::PHONE_STATUS_IGNORE => 'Не взял',
             self::PHONE_STATUS_CANCEL => 'Отбился',
             self::PHONE_STATUS_CALLBACK => 'Нужно перезвонить',
+        ];
+    }
+    
+    public static function getPhoneStatusCssClass()
+    {
+        return [
+            self::PHONE_STATUS_WAITING => 'info',
+            self::PHONE_STATUS_NOT_DISTURB => 'yellow',
+            self::PHONE_STATUS_IGNORE => 'secondary',
+            self::PHONE_STATUS_CANCEL => 'danger',
+            self::PHONE_STATUS_CALLBACK => 'brown',
         ];
     }
     

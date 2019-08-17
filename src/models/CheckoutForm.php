@@ -66,8 +66,7 @@ class CheckoutForm
     
     public function registerOrder()
     {
-        
-        if ($this->validate() and $this->signup->validate()) {
+        if ($this->validate() and ( empty($this->cart) or $this->signup->validate() )) {
             if ($this->booleanSignup) {
                 if (!$this->signup->signup()) {
                     throw new Exception('Не удалось зарегистрировать данного пользователя');

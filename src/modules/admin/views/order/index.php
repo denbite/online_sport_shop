@@ -4,7 +4,6 @@ use app\components\grid\DropdownColumn;
 use app\components\grid\IdColumn;
 use app\components\grid\OwnColumn;
 use app\components\helpers\Permission;
-use app\components\models\Status;
 use app\models\Order;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -107,7 +106,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                          'format' => 'html',
                                          'class' => DropdownColumn::className(),
                                          'filter' => Order::getStatuses(),
-                                         'css' => Status::getStatusCssClass(),
+                                         'css' => Order::getStatusCssClass(),
                                      ],
                                      //'delivery',
                                      //'comment:ntext',
@@ -116,7 +115,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                          'format' => 'html',
                                          'class' => DropdownColumn::className(),
                                          'filter' => Order::getPhoneStatuses(),
-                                         'css' => Status::getStatusCssClass(),
+                                         'css' => Order::getPhoneStatusCssClass(),
                                      ],
                                      //'updated_at',
                                      //'created_at',

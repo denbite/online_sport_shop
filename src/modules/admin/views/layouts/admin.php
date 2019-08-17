@@ -44,7 +44,9 @@ $action = Yii::$app->controller->action->id;
 
     <header class="main-header">
         <!-- Logo -->
-        <?= Html::a('            <span class="logo-lg">
+        <?= Html::a('        <b class="logo-mini">
+		  <span class="light-logo"><img src="/images/logo-admin-icon.png" alt="logo" height="32px" width="32px"></span>
+	  </b>    <span class="logo-lg">
 		  <img src="/images/logo-admin.png" alt="logo" class="light-logo" height="40px" width="130px">
 	  </span>', [ '/main/default/index' ], [ 'class' => 'logo' ]) ?>
 
