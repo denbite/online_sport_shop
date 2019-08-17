@@ -30,7 +30,7 @@ class CheckoutForm
     
     public $department;
     
-    public $callBack;
+    public $callBack = true;
     
     public $comment;
     

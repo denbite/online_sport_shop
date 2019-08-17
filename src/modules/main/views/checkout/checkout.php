@@ -79,20 +79,34 @@ use yii\web\JsExpression;
                             <!--                        Проверка на авторизацию пользователя-->
                             <?php if (Yii::$app->user->isGuest and !empty($checkoutForm->signup)): ?>
                                 <div class="row">
-                                    <?= $form->field($checkoutForm->signup, 'name') ?>
-                                    <?= $form->field($checkoutForm->signup, 'surname') ?>
-                                    <?= $form->field($checkoutForm->signup, 'email') ?>
-                                    <?= $form->field($checkoutForm->signup, 'phone') ?>
-                                    <?= $form->field($checkoutForm, 'booleanSignup')->checkbox() ?>
-                                    
-                                    <?= $form->field($checkoutForm->signup, 'password',
-                                                     [ 'options' => [ 'style' => 'display:none;' ] ])
-                                             ->passwordInput() ?>
+                                    <div class="col-6">
+                                        <?= $form->field($checkoutForm->signup, 'name') ?>
+                                    </div>
+                                    <div class="col-6">
+                                        <?= $form->field($checkoutForm->signup, 'surname') ?>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <?= $form->field($checkoutForm->signup, 'email') ?>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <?= $form->field($checkoutForm->signup, 'phone') ?>
+                                    </div>
+                                    <div class="col-4 col-sm-3">
+                                        <?= $form->field($checkoutForm, 'booleanSignup')
+                                                 ->checkbox([
+                                                                'template' => '{input}{label}{error}',
+                                                            ]) ?>
+                                    </div>
+                                    <div class="col-8 offset-sm-1 col-sm-8">
+                                        <?= $form->field($checkoutForm->signup, 'password',
+                                                         [ 'options' => [ 'style' => $checkoutForm->booleanSignup ? 'display:block;' : 'display:none;', ] ])
+                                                 ->passwordInput() ?>
+                                    </div>
 
                                 </div>
                             <?php endif; ?>
 
-                            <div class="row">
+                            <div class="row py-3">
                                 <div class="col-12">
                                     <?= $form->field($checkoutForm, 'city')
                                              ->widget(\kartik\select2\Select2::className(), [
@@ -127,9 +141,6 @@ use yii\web\JsExpression;
                                                      'placeholder' => 'Выберите удобное для вас отделение',
                                                  ],
                                              ]) ?>
-                                </div>
-                                <div class="col-12">
-                                    <?= $form->field($checkoutForm, 'callBack')->checkbox() ?>
                                 </div>
                                 <div class="col-12">
                                     <?= $form->field($checkoutForm, 'comment')->textarea() ?>
