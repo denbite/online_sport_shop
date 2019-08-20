@@ -73,4 +73,35 @@ class ItemDescription
             'created_at' => 'Дата создания',
         ];
     }
+    
+    public function load($data, $formName = null)
+    {
+        if (parent::load($data, $formName)) {
+            if (!empty($data[$this->formName()]['small_list_array']) and $list = $data[$this->formName()]['small_list_array'] and is_array($list)) {
+                foreach ($list as $index => $one) {
+                    if (empty($one)) {
+                        unset($list[$index]);
+                    }
+                }
+                $this->small_list = implode(self::ITEMS_SEPARATOR, $list);
+                unset($list);
+            }
+            
+            if (!empty($data[$this->formName()]['list_array']) and $list = $data[$this->formName()]['list_array'] and is_array($list) and key_exists('key',
+                                                                                                                                                     $list) and key_exists('value',
+                                                                                                                                                                           $list) and count($list['key']) == count($list['value'])) {
+                for ($i = 0; $i < count($list['key']); $i++) {
+                    $list['result'][] = implode(self::PARTS_SEPARATOR,
+                                                [ $list['key'][$i], $list['value'][$i] ]);
+                }
+                
+                $this->list = implode(self::ITEMS_SEPARATOR, $list['result']);
+                unset($list);
+            }
+            
+            return true;
+        }
+        
+        return false;
+    }
 }
