@@ -9,6 +9,13 @@
         $('#price-details div.product-details-price[data-color = ' + color + '][data-size = ' + size + ']').show();
         $('#gallery .slick-list .slick-track a[data-color = ' + color + ']').show();
 
+        var $code = $('#detail-block-code');
+        var $color = $('#detail-block-color');
+
+        $code.find('ul li[data-color = ' + color + ']').show();
+        $color.find('ul li[data-color = ' + color + ']').show();
+
+
         $('#color-details li').click(function () {
 
             var old_color = $('#color-details li.active').data('color');
@@ -34,6 +41,12 @@
                 } else {
                     $('#no-stock').show();
                 }
+
+                $code.find('ul li').hide();
+                $code.find('ul li[data-color = ' + new_color + ']').show();
+
+                $color.find('ul li').hide();
+                $color.find('ul li[data-color = ' + new_color + ']').show();
 
                 $('input.cart-plus-minus-box').val(1);
 
