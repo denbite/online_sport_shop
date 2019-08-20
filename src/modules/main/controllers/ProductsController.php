@@ -309,6 +309,40 @@ class ProductsController
                                               'title' => $title,
                                               'description' => $description,
                                           ]);
+    
+                $relativeItems = Item::find()
+                                     ->select([ 'item.*', 'MIN(sizes.sell_price) as min_price' ])
+                                     ->from(Item::tableName() . ' item')
+                                     ->joinWith([ 'allColors colors' => function ($query)
+                                     {
+                                         $query->joinWith([ 'allSizes sizes', 'mainImage' ]);
+                                     }, 'description',
+                                                    'category' => function ($query)
+                                                    {
+                                                        $query->andWhere([ 'active' => Status::STATUS_ACTIVE ]);
+                                                    } ])
+                                     ->with([ 'promotion' => function ($query)
+                                     {
+                                         $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
+                                     } ])
+                                     ->where([
+                                                 'item.status' => Status::STATUS_ACTIVE,
+                                                 'colors.status' => Status::STATUS_ACTIVE,
+                                                 'sizes.status' => Status::STATUS_ACTIVE,
+                                             ])
+                                     ->andWhere('item.category_id = :category_id OR
+                    item.firm = :firm', [
+                                         'category_id' => $item['category_id'],
+                                         'firm' => $item['firm'],
+                                     ])
+                                     ->andWhere('item.id != :id', [
+                                         'id' => $item['id'],
+                                     ])
+                                     ->groupBy([ 'id' ])
+                                     ->orderBy([ 'rate' => SORT_DESC ])
+                                     ->asArray()
+                                     ->limit(12)
+                                     ->all();
                 
                 // create OpenGraph meta-tags
                 
@@ -320,6 +354,7 @@ class ProductsController
                 
                 return $this->render('product', [
                     'item' => $item,
+                    'relativeItems' => $relativeItems,
                     'parents' => $parents,
                 ]);
             }
