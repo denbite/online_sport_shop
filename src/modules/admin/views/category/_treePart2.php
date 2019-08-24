@@ -31,6 +31,11 @@ use yii\helpers\Url;
                                        'initialPreviewConfig' => Image::getInitialPreviewConfigBySubject(Image::TYPE_CATEGORY,
                                                                                                          $node->id),
                                    ],
+                                   'pluginEvents' => [
+                                       'filesorted' => new \yii\web\JsExpression('function(event, params){
+                    $.post("' . Url::toRoute([ "/admin/image/sort-image", "id" => $node->id ]) . '", {sort: params});
+                    }'),
+                                   ],
 
 
                                ])
