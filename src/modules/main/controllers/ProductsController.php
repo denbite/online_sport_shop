@@ -330,8 +330,9 @@ class ProductsController
                                                  'colors.status' => Status::STATUS_ACTIVE,
                                                  'sizes.status' => Status::STATUS_ACTIVE,
                                              ])
-                                     ->andWhere('item.category_id = :category_id OR
-                    item.firm = :firm', [
+                                     ->andWhere('(item.category_id = :category_id AND
+                    item.firm = :firm) OR
+                    item.category_id = :category_id', [
                                          'category_id' => $item['category_id'],
                                          'firm' => $item['firm'],
                                      ])
