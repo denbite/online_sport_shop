@@ -306,9 +306,11 @@ class ItemController
         $model = new ItemColorSize();
         
         if (Yii::$app->request->isPost) {
+            $post = Yii::$app->request->post();
+    
             if (Yii::$app->request->isAjax) {
                 $result = [];
-                if ($post = Yii::$app->request->post()) {
+                if (!empty($post)) {
                     switch ($post['query']) {
                         case 'getColors':
                             if ($item_id = (int) $post['item_id'] and $item_id > 0) {
@@ -330,13 +332,22 @@ class ItemController
                 
                 return $result;
             }
-            $post = Yii::$app->request->post();
             
             if ($model->load($post) and $model->validate()) {
+    
                 if ($model->save()) {
                     Yii::$app->session->setFlash('success', 'Размер сохранен');
+        
+        
+                    switch ($post['submit']) {
+                        case 'color':
+                            return $this->redirect([ '/admin/item/create-color', 'id' => $model->color->item_id ]);
+                        case 'size':
+                            return $this->refresh();
+                        default:
+                            break;
+                    }
                     
-                    return $this->refresh();
                 }
                 Yii::$app->session->setFlash('error', 'Не удалось сохранить размер');
             }
