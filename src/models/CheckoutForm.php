@@ -38,9 +38,9 @@ class CheckoutForm
     {
         return [
             [ [ 'city', 'department' ], 'required', 'message' => 'Данное поле не может быть пустым' ],
-            [ [ 'city', 'department', 'callBack', 'comment' ], 'string' ],
-            
-            [ 'booleanSignup', 'boolean' ],
+            [ [ 'city', 'department', 'comment' ], 'string' ],
+    
+            [ [ 'booleanSignup', 'callBack' ], 'boolean' ],
             
             [ 'signup', 'safe' ],
         ];
@@ -66,7 +66,7 @@ class CheckoutForm
     
     public function registerOrder()
     {
-        if ($this->validate() and ( empty($this->cart) or $this->signup->validate() )) {
+        if ($this->validate() and ( empty($this->signup) or $this->signup->validate() )) {
             if ($this->booleanSignup) {
                 if (!$this->signup->signup()) {
                     throw new Exception('Не удалось зарегистрировать данного пользователя');

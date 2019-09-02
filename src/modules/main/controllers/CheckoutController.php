@@ -49,9 +49,8 @@ class CheckoutController
         
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
-            
-            if ($checkoutForm->load($post) and $checkoutForm->validate()) {
     
+            if ($checkoutForm->load($post) and $checkoutForm->validate()) {
                 try {
                     if (!empty($checkoutForm->signup)) {
                         $checkoutForm->signup->setBooleanSignup($checkoutForm->booleanSignup);
@@ -63,8 +62,8 @@ class CheckoutController
                     {
                         $checkoutForm->registerOrder();
                     });
-        
-                    return $this->redirect([ '/main/default/index' ]);
+    
+                    return $this->redirect([ '/main/profile/index' ]);
                 } catch (\Exception $e) {
                     Yii::$app->errorHandler->logException($e);
                     //                        Yii::$app->session->setFlash('error', $e->getMessage());
