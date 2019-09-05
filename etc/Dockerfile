@@ -1,4 +1,5 @@
 FROM php:7.2-apache-stretch
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Use the default production configuration
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
@@ -17,7 +18,8 @@ RUN apt-get update \
     libjpeg62-turbo-dev \
     libpng-dev \
     libxpm-dev \
-    libvpx-dev
+    libvpx-dev  \
+    git
 
 RUN docker-php-ext-configure gd \
     --with-freetype-dir=/usr/lib/x86_64-linux-gnu/ \
@@ -32,7 +34,8 @@ RUN apt-get update \
     certbot \
     python-certbot-apache
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN composer install \
+    && composer update
 
 EXPOSE 80
 EXPOSE 443
