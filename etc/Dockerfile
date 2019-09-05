@@ -34,8 +34,7 @@ RUN apt-get update \
     certbot \
     python-certbot-apache
 
-RUN composer install \
-    && composer update
+RUN composer update
 
 EXPOSE 80
 EXPOSE 443
