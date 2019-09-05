@@ -39,7 +39,8 @@
     "mihaildev/yii2-ckeditor": "*",
     "kartik-v/yii2-widget-datetimepicker": "*",
     "kartik-v/yii2-widget-datepicker": "@dev",
-    "kartik-v/yii2-field-range": "*"
+    "kartik-v/yii2-field-range": "*",
+    "phpoffice/phpspreadsheet": "^1.9"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",
