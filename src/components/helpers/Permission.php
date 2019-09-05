@@ -17,26 +17,29 @@ class Permission
      */
     public static function can($rule)
     {
-        $auth = Yii::$app->authManager;
-        $user_id = Yii::$app->user->identity->id;
-    
-        if (array_key_exists('admin', self::getRolesByUser($user_id))) {
-            return true;
-        }
-    
-        if (is_string($rule)) {
-            if (self::permissionExist($rule)) {
-                return Yii::$app->user->can($rule);
-            }
-        }
-    
-        if (is_array($rule) and !empty($rule)) {
-            foreach ($rule as $one) {
-                if (!Yii::$app->user->can($one)) {
-                    continue;
-                }
-            
+        if (!Yii::$app->user->isGuest) {
+        
+            $auth = Yii::$app->authManager;
+            $user_id = Yii::$app->user->identity->id;
+        
+            if (array_key_exists('admin', self::getRolesByUser($user_id))) {
                 return true;
+            }
+        
+            if (is_string($rule)) {
+                if (self::permissionExist($rule)) {
+                    return Yii::$app->user->can($rule);
+                }
+            }
+        
+            if (is_array($rule) and !empty($rule)) {
+                foreach ($rule as $one) {
+                    if (!Yii::$app->user->can($one)) {
+                        continue;
+                    }
+                
+                    return true;
+                }
             }
         }
         

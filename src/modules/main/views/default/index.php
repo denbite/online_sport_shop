@@ -117,6 +117,8 @@ use yii\helpers\Html;
                                 </div>
                                 <div class="ht-product-content">
                                     <div class="ht-product-content-inner">
+                                        <div class="ht-product-categories"><a href="#"><?= $item['collection'] ?></a>
+                                        </div>
                                         <h4 class="ht-product-title"><a
                                                     href="<?= \yii\helpers\Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ]) ?>"><?= $item['firm'] . ' ' . $item['model'] ?></a>
                                         </h4>

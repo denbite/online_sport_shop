@@ -35,7 +35,7 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <div class="wrapper">
-    <?php if (!Yii::$app->user->isGuest and \app\components\helpers\Permission::can('admin_default_index')): ?>
+    <?php if (\app\components\helpers\Permission::can('admin_default_index')): ?>
         <div class="row" style="background-color: #000000;">
             <div class="col py-2 px-5">
                 <?= Html::a('Добро пожаловать, ' . Yii::$app->user->identity->email, [ '/admin/default/index' ],
@@ -120,7 +120,7 @@ AppAsset::register($this);
                                             <ul>
                                                 <?= !Yii::$app->user->isGuest ?
                                                     '<li>' . Html::a("Личный кабинет", [ '/main/profile/index' ]) . '</li>
-                                                <li>' . Html::a("Заказы", [ '/main/profile/orders' ]) . '</li>
+                                                <li>' . Html::a("Заказы", [ '/main/profile/index' ]) . '</li>
                                                 <li>' . Html::a("Настройки",
                                                         [ '/main/profile/settings' ]) . '</li>' : ''
                                                 ?>

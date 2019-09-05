@@ -47,6 +47,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                  ],
                                  'summary' => '<div class="box-header with-border"><h4 class="box-title">Найдено {totalCount} шт., показывается {begin} - {end}</h4></div>',
                                  'dataColumnClass' => OwnColumn::className(),
+                                 'pager' => [
+                                     'class' => 'app\components\widgets\AdminPaginator',
+                                 ],
                                  'columns' => [
                 
                                      [
