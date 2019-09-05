@@ -24,8 +24,8 @@ RUN docker-php-ext-configure gd \
     --with-jpeg-dir=/usr/lib/x86_64-linux-gnu/ \
     --with-xpm-dir=/usr/lib/x86_64-linux-gnu/ \
     --with-vpx-dir=/usr/lib/x86_64-linux-gnu/ \
-    && docker-php-ext-install gd
-    && docker-php-ext-install zip
+    && docker-php-ext-install gd \
+    zip
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
