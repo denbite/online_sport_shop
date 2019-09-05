@@ -1,5 +1,7 @@
+FROM composer:latest AS composer
 FROM php:7.2-apache-stretch
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 # Use the default production configuration
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
@@ -33,8 +35,6 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     certbot \
     python-certbot-apache
-
-RUN composer update
 
 EXPOSE 80
 EXPOSE 443
