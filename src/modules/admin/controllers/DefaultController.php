@@ -7,6 +7,7 @@ use app\components\models\Status;
 use app\models\Item;
 use app\models\ItemColor;
 use app\models\ItemColorSize;
+use app\models\ItemDescription;
 use PhpOffice\PhpSpreadsheet\Reader\Xls;
 use Yii;
 use yii\db\Exception;
@@ -73,6 +74,7 @@ class DefaultController
                                      ->one()) {
                         
                         $item = new Item();
+    
                         $item->firm = $data['firm'];
                         $item->model = $data['model'];
                         $item->collection = $collection;
@@ -82,6 +84,14 @@ class DefaultController
                         
                         if (!$item->save()) {
                             throw new Exception('Не удалось сохранить товар на строке ' . $i);
+                        }
+    
+                        $description = new ItemDescription();
+    
+                        $description->item_id = $item['id'];
+    
+                        if (!$description->save()) {
+                            throw new Exception('Не удалось сохранить описание для товара на строке ' . $i);
                         }
                         
                         $item = ArrayHelper::toArray($item);
