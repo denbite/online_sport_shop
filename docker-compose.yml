@@ -32,12 +32,3 @@ services:
         - 6080:8080
       depends_on:
         - db
-
-    composer:
-      image: composer
-      volumes:
-        - ${APP_PATH_HOST}:${APP_PATH_CONTAINER}
-      working_dir: ${APP_PATH_CONTAINER}
-      command: composer update
-      depends_on:
-        - web

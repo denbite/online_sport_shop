@@ -31,5 +31,7 @@ RUN apt-get update \
     certbot \
     python-certbot-apache
 
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
 EXPOSE 80
 EXPOSE 443
