@@ -81,7 +81,7 @@ class DefaultController
                         $item->rate = rand(75, 90);
                         
                         if (!$item->save()) {
-                            throw new Exception('Не удалось сохранить товар');
+                            throw new Exception('Не удалось сохранить товар на строке ' . $i);
                         }
                         
                         $item = ArrayHelper::toArray($item);
@@ -102,7 +102,7 @@ class DefaultController
                         $color->status = Status::STATUS_ACTIVE;
                         
                         if (!$color->save()) {
-                            throw new Exception('Не удалось сохранить цвет');
+                            throw new Exception('Не удалось сохранить цвет на строке ' . $i);
                         }
                         
                         $color = ArrayHelper::toArray($color);
@@ -123,7 +123,7 @@ class DefaultController
                         $size->status = Status::STATUS_ACTIVE;
                         
                         if (!$size->save()) {
-                            throw new Exception('Не удалось сохранить размер');
+                            throw new Exception('Не удалось сохранить размер на строке ' . $i);
                         }
                         
                         $size = ArrayHelper::toArray($size);
