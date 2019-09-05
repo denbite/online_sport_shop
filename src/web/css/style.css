@@ -4598,6 +4598,12 @@ textarea:focus {
     font-family: "Roboto", sans-serif;
 }
 
+@media only screen and (min-width: 1200px) {
+    .ht-products .ht-product .ht-product-inner .ht-product-content .ht-product-content-inner .ht-product-title {
+        height: 42px;
+    }
+}
+
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
     .ht-products .ht-product .ht-product-inner .ht-product-content .ht-product-content-inner .ht-product-title {
         font-size: 17px;
