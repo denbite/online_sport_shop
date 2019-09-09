@@ -94,18 +94,19 @@ AppAsset::register($this);
                                             <li><a href="<?= Url::to([ '/main/default/about' ]) ?>">О нас </a></li>
                                         </ul>
                                     </li>
-                                    <li class="angle-shape"><a
-                                                href="<?= Url::to([ '/main/promotions/index' ]) ?>">Акции </a>
-                                    </li>
+                                    <!--                                    <li class="angle-shape"><a-->
+                                    <!--                                                href="-->
+                                    <? //= Url::to([ '/main/promotions/index' ]) ?><!--">Акции </a>-->
+                                    <!--                                    </li>-->
                                 </ul>
                             </nav>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-3">
                         <div class="header-right-wrap pt-40">
-                            <div class="header-search">
-                                <a class="search-active" href="#"><i class="sli sli-magnifier"></i></a>
-                            </div>
+                            <!--                            <div class="header-search">-->
+                            <!--                                <a class="search-active" href="#"><i class="sli sli-magnifier"></i></a>-->
+                            <!--                            </div>-->
                             <div class="cart-wrap">
                             </div>
                             <div class="setting-wrap">
@@ -139,21 +140,21 @@ AppAsset::register($this);
                 </div>
             </div>
             <!-- main-search start -->
-            <div class="main-search-active">
-                <div class="sidebar-search-icon">
-                    <button class="search-close"><span class="sli sli-close"></span></button>
-                </div>
-                <div class="sidebar-search-input">
-                    <form>
-                        <div class="form-search">
-                            <input id="search" class="input-text" value="" placeholder="Search Now" type="search">
-                            <button>
-                                <i class="sli sli-magnifier"></i>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <!--            <div class="main-search-active">-->
+            <!--                <div class="sidebar-search-icon">-->
+            <!--                    <button class="search-close"><span class="sli sli-close"></span></button>-->
+            <!--                </div>-->
+            <!--                <div class="sidebar-search-input">-->
+            <!--                    <form>-->
+            <!--                        <div class="form-search">-->
+            <!--                            <input id="search" class="input-text" value="" placeholder="Search Now" type="search">-->
+            <!--                            <button>-->
+            <!--                                <i class="sli sli-magnifier"></i>-->
+            <!--                            </button>-->
+            <!--                        </div>-->
+            <!--                    </form>-->
+            <!--                </div>-->
+            <!--            </div>-->
         </div>
         <div class="header-small-mobile">
             <div class="container">
@@ -183,12 +184,12 @@ AppAsset::register($this);
     <div class="mobile-off-canvas-active">
         <a class="mobile-aside-close"><i class="sli sli-close"></i></a>
         <div class="header-mobile-aside-wrap">
-            <div class="mobile-search">
-                <form class="search-form" action="#">
-                    <input type="text" placeholder="Search entire store…">
-                    <button class="button-search"><i class="sli sli-magnifier"></i></button>
-                </form>
-            </div>
+            <!--            <div class="mobile-search">-->
+            <!--                <form class="search-form" action="#">-->
+            <!--                    <input type="text" placeholder="Search entire store…">-->
+            <!--                    <button class="button-search"><i class="sli sli-magnifier"></i></button>-->
+            <!--                </form>-->
+            <!--            </div>-->
             <div class="mobile-menu-wrap">
                 <!-- mobile menu start -->
                 <div class="mobile-navigation">
@@ -227,7 +228,8 @@ AppAsset::register($this);
                                     <li><a href="<?= Url::to([ '/main/default/about' ]) ?>">О нас </a></li>
                                 </ul>
                             </li>
-                            <li><a href="<?= Url::to([ '/main/promotions/index' ]) ?>">Акции</a></li>
+                            <!--                            <li><a href="-->
+                            <? //= Url::to([ '/main/promotions/index' ]) ?><!--">Акции</a></li>-->
                         </ul>
                     </nav>
                     <!-- mobile menu navigation end -->

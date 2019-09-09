@@ -116,9 +116,6 @@ use yii\web\JsExpression;
                                                      //                                                     'allowClear' => true,
                                                      'minimumInputLength' => 3,
                                                      'maximumInputLength' => 3,
-                                                     'language' => [
-                                                         'errorLoading' => new JsExpression("function () { return 'Ищем города ...'; }"),
-                                                     ],
                                                      'ajax' => [
                                                          'url' => '/main/checkout/get-city',
                                                          'dataType' => 'json',
@@ -140,6 +137,7 @@ use yii\web\JsExpression;
                                                      'prompt' => '',
                                                      'placeholder' => 'Выберите удобное для вас отделение',
                                                  ],
+
                                              ]) ?>
                                 </div>
                                 <div class="col-12">
