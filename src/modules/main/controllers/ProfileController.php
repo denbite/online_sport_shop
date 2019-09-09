@@ -33,11 +33,6 @@ class ProfileController
      */
     public function actionIndex()
     {
-        echo '<pre>';
-        var_dump(Yii::$app->formatter->asDate(time(), 'long'));
-        echo '</pre>';
-        die;
-        
         if (!Yii::$app->user->isGuest and $user = Yii::$app->user->identity) {
             
             $orders = Order::find()
