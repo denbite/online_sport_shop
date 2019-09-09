@@ -10,6 +10,7 @@ use app\models\Image;
 use app\models\Item;
 use app\models\ItemDescription;
 use yii\data\Pagination;
+use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\web\Controller;
@@ -113,7 +114,7 @@ class ProductsController
         if (empty($slug)) {
             
             $query = Item::find()
-                         ->select('item.*, COUNT(item.id) as count')
+                         ->select('item.*')
                          ->from(Item::tableName() . ' item')
                          ->joinWith([ 'allColors colors' => function ($query)
                          {
@@ -136,11 +137,14 @@ class ProductsController
                          ->groupBy([ 'id' ])
                          ->orderBy([ 'rate' => SORT_DESC ]);
     
+    
             $producerQuery = clone $query;
     
-            $producers = ArrayHelper::map($producerQuery->groupBy([ 'id', 'firm' ])
-                                                        ->asArray()
-                                                        ->all(), 'firm', 'count');
+            $producers = ArrayHelper::map(( new Query() )->select('item.firm, COUNT(*) as count')
+                                                         ->from(Item::tableName() . ' item')
+                                                         ->where([ 'item.firm' => $producerQuery->select('item.firm')
+                                                                                                ->groupBy(null) ])
+                                                         ->all(), 'firm', 'count');
     
             unset($producerQuery);
     
@@ -203,9 +207,12 @@ class ProductsController
     
                 $producerQuery = clone $query;
     
-                $producers = ArrayHelper::map($producerQuery->groupBy([ 'id', 'firm' ])
-                                                            ->asArray()
-                                                            ->all(), 'firm', 'count');
+                $producers = ArrayHelper::map(( new Query() )->select('item.firm, COUNT(*) as count')
+                                                             ->from(Item::tableName() . ' item')
+                                                             ->where([ 'item.firm' => $producerQuery
+                                                                 ->select('item.firm')
+                                                                 ->groupBy(null) ])
+                                                             ->all(), 'firm', 'count');
     
                 unset($producerQuery);
     
