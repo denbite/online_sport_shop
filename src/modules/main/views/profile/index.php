@@ -66,9 +66,8 @@ use app\models\Order; ?>
                                                 <?php foreach ($orders as $order): ?>
                                                     <tr>
                                                         <td><?= $order['id'] ?></td>
-                                                        <td><?= date('d.M.y', $order['created_at']) ?></td>
-                                                        <td><?= Yii::$app->formatter->asDate($order['created_at'],
-                                                                                             'long') ?></td>
+                                                        <td><?= Yii::$app->formatter->asDatetime($order['created_at'],
+                                                                                                 'long') ?></td>
                                                         <td><?= Order::getStatuses()[$order['status']] ?></td>
                                                         <td><?= $order['sum'] ?></td>
                                                     </tr>
