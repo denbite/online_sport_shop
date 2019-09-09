@@ -86,7 +86,7 @@ class CheckoutForm
             $order->city = $this->city;
             $order->department = $this->department;
             $order->sum = $cart->getTotalCost();
-            $order->buy_sum = $cart->getTotalCost();
+            $order->buy_sum = $cart->getTotalCost(); // write function that calculate buy_sum without round
             $order->delivery = 1; // create table with delivery types
             $order->status = Order::ORDER_STATUS_NEW;
             $order->phone_status = !$this->callBack ? Order::PHONE_STATUS_NOT_DISTURB : Order::ORDER_STATUS_NEW;

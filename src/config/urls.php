@@ -15,8 +15,9 @@ return [
     
     //    main pages
     '' => 'main/default/index',
-    'cart' => 'main/cart/index',
-    'checkout' => 'main/checkout/index',
+    
+    '<_c:(cart|checkout|profile)>' => 'main/<_c>/index',
+    '<_a:(delivery|payment|warranty|sizes|contacts|about)>' => 'main/default/<_a>',
     
     //    admin pages
     'admin' => 'admin/default/index',

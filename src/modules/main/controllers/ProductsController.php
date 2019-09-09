@@ -9,6 +9,7 @@ use app\models\Category;
 use app\models\Image;
 use app\models\Item;
 use app\models\ItemDescription;
+use Yii;
 use yii\data\Pagination;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
@@ -109,7 +110,7 @@ class ProductsController
         
         SeoHelper::putDefaultTags();
     
-        $params = \Yii::$app->request->getQueryParams();
+        $params = Yii::$app->request->getQueryParams();
         
         if (empty($slug)) {
             
@@ -137,6 +138,10 @@ class ProductsController
                          ->groupBy([ 'id' ])
                          ->orderBy([ 'rate' => SORT_DESC ]);
     
+            if (!empty($params['producers'])) {
+                $param = explode(',', Html::encode($params['producers']));
+                $query->andWhere([ 'in', 'firm', $param ]);
+            }
     
             $producerQuery = clone $query;
     
@@ -149,10 +154,6 @@ class ProductsController
     
             unset($producerQuery);
     
-            if (!empty($params['producers'])) {
-                $param = explode(',', Html::encode($params['producers']));
-                $query->andWhere([ 'in', 'firm', $param ]);
-            }
             
             $pages = new Pagination([
                                         'totalCount' => $query->count(),
@@ -206,6 +207,11 @@ class ProductsController
                              ->groupBy([ 'id' ])
                              ->orderBy([ 'rate' => SORT_DESC ]);
     
+                if (!empty($params['producers'])) {
+                    $param = explode(',', Html::encode($params['producers']));
+                    $query->andWhere([ 'in', 'firm', $param ]);
+                }
+                
                 $producerQuery = clone $query;
     
                 $producers = ArrayHelper::map(( new Query() )->select('item.firm, COUNT(*) as count')
@@ -217,10 +223,6 @@ class ProductsController
     
                 unset($producerQuery);
     
-                if (!empty($params['producers'])) {
-                    $param = explode(',', Html::encode($params['producers']));
-                    $query->andWhere([ 'in', 'firm', $param ]);
-                }
                 
                 $pages = new Pagination([
                                             'totalCount' => $query->count(),
