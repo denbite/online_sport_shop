@@ -10763,3 +10763,12 @@ h3.cart-page-title {
 #submit-order:hover {
     background-color: #000000;
 }
+
+#des-details1 {
+    font-weight: 400 !important;
+    font-family: Roboto, Sans-Serif !important;
+}
+
+#des-details1 ul {
+    list-style: outside;
+}

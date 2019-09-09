@@ -90,8 +90,7 @@ AppAsset::register($this);
                                             <li><a href="<?= Url::to([ '/main/default/warranty' ]) ?>">Гарантия </a>
                                             </li>
                                             <li><a href="<?= Url::to([ '/main/default/sizes' ]) ?>">Размеры </a></li>
-                                            <li><a href="<?= Url::to([ '/main/default/contacts' ]) ?>">Связаться с
-                                                    нами</a></li>
+                                            <li><a href="<?= Url::to([ '/main/default/contacts' ]) ?>">Контакты</a></li>
                                             <li><a href="<?= Url::to([ '/main/default/about' ]) ?>">О нас </a></li>
                                         </ul>
                                     </li>
@@ -225,8 +224,7 @@ AppAsset::register($this);
                                     <li><a href="<?= Url::to([ '/main/default/payment' ]) ?>">Оплата </a></li>
                                     <li><a href="<?= Url::to([ '/main/default/warranty' ]) ?>">Гарантия </a></li>
                                     <li><a href="<?= Url::to([ '/main/default/sizes' ]) ?>">Размеры </a></li>
-                                    <li><a href="<?= Url::to([ '/main/default/contacts' ]) ?>">Связаться с
-                                            нами</a></li>
+                                    <li><a href="<?= Url::to([ '/main/default/contacts' ]) ?>">Контакты</a></li>
                                     <li><a href="<?= Url::to([ '/main/default/about' ]) ?>">О нас </a></li>
                                 </ul>
                             </li>

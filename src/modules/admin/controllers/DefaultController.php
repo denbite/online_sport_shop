@@ -57,9 +57,9 @@ class DefaultController
                         'firm' => ucwords(strtolower($worksheet->getCell('F' . $i)->getValue())),
                         'code' => $worksheet->getCell('G' . $i)->getValue(),
                         'color' => $worksheet->getCell('H' . $i)->getValue(),
-                        'base_price' => $worksheet->getCell('I' . $i)->getValue(),
-                        'size' => $worksheet->getCell('L' . $i)->getValue(),
-                        'quantity' => $worksheet->getCell('M' . $i)->getValue(),
+                        'base_price' => (int) $worksheet->getCell('I' . $i)->getValue(),
+                        'size' => (string) $worksheet->getCell('L' . $i)->getValue(),
+                        'quantity' => (int) $worksheet->getCell('M' . $i)->getValue(),
                     ];
                     
                     // Получаем товар, если не существует такого, то создаем
@@ -127,9 +127,9 @@ class DefaultController
                                               ->all()) {
                         $size = new ItemColorSize();
                         $size->color_id = $color['id'];
-                        $size->size = (string) $data['size'];
-                        $size->quantity = (int) $data['quantity'];
-                        $size->base_price = (int) $data['base_price'];
+                        $size->size = $data['size'] === '0' ? ItemColorSize::WITHOUT_SIZE : $data['size'];
+                        $size->quantity = $data['quantity'];
+                        $size->base_price = $data['base_price'];
                         $size->status = Status::STATUS_ACTIVE;
                         
                         if (!$size->save()) {

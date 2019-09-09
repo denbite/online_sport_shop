@@ -92,4 +92,9 @@ class DefaultController
             'instagram_token' => $instagram_token,
         ]);
     }
+    
+    public function actionContacts()
+    {
+        return $this->render('contacts');
+    }
 }
