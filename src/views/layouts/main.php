@@ -119,9 +119,8 @@ AppAsset::register($this);
                                             <ul>
                                                 <?= !Yii::$app->user->isGuest ?
                                                     '<li>' . Html::a("Личный кабинет", [ '/main/profile/index' ]) . '</li>
-                                                <li>' . Html::a("Заказы", [ '/main/profile/index' ]) . '</li>
-                                                <li>' . Html::a("Настройки",
-                                                        [ '/main/profile/settings' ]) . '</li>' : ''
+                                                <li>' . Html::a("Заказы",
+                                                                [ '/main/profile/index', '#' => 'orders' ]) . '</li>' : ''
                                                 ?>
                                                 <?= Yii::$app->user->isGuest ?
                                                     '<li>' . Html::a('Войти', [ '/user/default/login' ]) . '</li>
@@ -242,9 +241,7 @@ AppAsset::register($this);
                         <ul>
                             <?= !Yii::$app->user->isGuest ?
                                 '<li>' . Html::a("Личный кабинет", [ '/main/profile/index' ]) . '</li>
-                                                <li>' . Html::a("Заказы", [ '/main/profile/orders' ]) . '</li>
-                                                <li>' . Html::a("Настройки",
-                                    [ '/main/profile/settings' ]) . '</li>' : ''
+                                                <li>' . Html::a("Заказы", [ '/main/profile/orders' ]) . '</li>' : ''
                             ?>
                             <?= Yii::$app->user->isGuest ? '<li>' . Html::a('Войти',
                                     [ '/user/default/login' ]) . '</li>
