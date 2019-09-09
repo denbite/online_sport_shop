@@ -142,8 +142,9 @@ class ProductsController
     
             $producers = ArrayHelper::map(( new Query() )->select('item.firm, COUNT(*) as count')
                                                          ->from(Item::tableName() . ' item')
-                                                         ->where([ 'item.firm' => $producerQuery->select('item.firm')
-                                                                                                ->groupBy(null) ])
+                                                         ->where([ 'item.id' => $producerQuery->select('item.id')
+                                                                                              ->groupBy(null) ])
+                                                         ->groupBy('item.firm')
                                                          ->all(), 'firm', 'count');
     
             unset($producerQuery);
@@ -209,9 +210,9 @@ class ProductsController
     
                 $producers = ArrayHelper::map(( new Query() )->select('item.firm, COUNT(*) as count')
                                                              ->from(Item::tableName() . ' item')
-                                                             ->where([ 'item.firm' => $producerQuery
-                                                                 ->select('item.firm')
-                                                                 ->groupBy(null) ])
+                                                             ->where([ 'item.id' => $producerQuery->select('item.id')
+                                                                                                  ->groupBy(null) ])
+                                                             ->groupBy('item.firm')
                                                              ->all(), 'firm', 'count');
     
                 unset($producerQuery);
