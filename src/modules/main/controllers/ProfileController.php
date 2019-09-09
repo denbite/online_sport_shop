@@ -44,7 +44,7 @@ class ProfileController
                                      ])
                            ->asArray()
                            ->all();
-            
+    
             return $this->render('index', [
                 'user' => $user,
                 'orders' => $orders,
