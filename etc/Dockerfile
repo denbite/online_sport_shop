@@ -36,5 +36,9 @@ RUN apt-get update \
     certbot \
     python-certbot-apache
 
+RUN apt-get install -y zlib1g-dev libicu-dev g++ \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install intl
+
 EXPOSE 80
 EXPOSE 443
