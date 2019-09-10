@@ -3,11 +3,11 @@ Allow from all
 
 AddDefaultCharset utf-8
 
-RewriteCond %{HTTP_HOST}  ^139\.59\.136\.91$
-RewriteRule ^(.*)$ https://aquista.com.ua/$1 [L,R=301]
 
 RewriteEngine on
 RewriteBase /
+RewriteCond %{HTTP_HOST}  ^139\.59\.136\.91$
+RewriteRule ^(.*)$ https://aquista.com.ua/$1 [L,R=301]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . index.php
