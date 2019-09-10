@@ -1,2 +1,5 @@
 User-agent: *
-Disallow:
+Disallow: /admin
+Disallow: /catalog?producers=
+Host: aquista.com.ua
+Sitemap: https://aquista.com.ua/sitemap.xml

@@ -8,3 +8,6 @@ RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . index.php
+
+RewriteCond %{HTTP_HOST}  ^139\.59\.136\.91
+RewriteRule (.*) https://aquista.com.ua/$1 [R=301,L]
