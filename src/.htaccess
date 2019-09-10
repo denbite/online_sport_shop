@@ -2,6 +2,9 @@ Options +FollowSymLinks
 IndexIgnore */*
 RewriteEngine on
 
+RewriteCond %{HTTP_HOST}  ^139\.59\.136\.91$
+RewriteRule ^(.*)$ https://aquista.com.ua/$1 [L,R=301]
+
 RewriteCond %{REQUEST_URI} !^/(web)
 RewriteRule ^assets/(.*)$ /web/assets/$1 [L]
 RewriteRule ^fonts/(.*)$ web/fonts/$1 [L]
