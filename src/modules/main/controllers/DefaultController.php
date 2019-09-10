@@ -97,4 +97,9 @@ class DefaultController
     {
         return $this->render('contacts');
     }
+    
+    public function actionDelivery()
+    {
+        return $this->render('delivery');
+    }
 }
