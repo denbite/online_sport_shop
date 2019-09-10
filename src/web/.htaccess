@@ -3,8 +3,8 @@ Allow from all
 
 AddDefaultCharset utf-8
 
-RewriteCond %{HTTP_HOST}  ^139\.59\.136\.91
-RewriteRule (.*) https://aquista.com.ua [R=301,L]
+RewriteCond %{HTTP_HOST}  ^139\.59\.136\.91$
+RewriteRule ^(.*)$ https://aquista.com.ua/$1 [L,R=301]
 
 RewriteEngine on
 RewriteBase /
