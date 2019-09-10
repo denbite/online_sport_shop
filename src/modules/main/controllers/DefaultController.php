@@ -102,4 +102,9 @@ class DefaultController
     {
         return $this->render('delivery');
     }
+    
+    public function actionPayment()
+    {
+        return $this->render('payment');
+    }
 }

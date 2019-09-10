@@ -11,9 +11,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="pt-100 pb-100">
     <div class="container">
         <div class="row">
-            <div class="delivery">
                 <div class="col-12 pb-50">
-                    <h2>Способы доставки</h2>
+                    <h2 style="font-weight: 600;margin: 0 0 15px;font-size: 35px;line-height: 30px;">
+                        Способы доставки
+                    </h2>
                 </div>
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="contact-from contact-shadow ml-0">
@@ -37,7 +38,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             вами дату доставки перед отправкой товара.
                         </p>
                     </div>
-                </div>
             </div>
         </div>
     </div>
