@@ -107,4 +107,9 @@ class DefaultController
     {
         return $this->render('payment');
     }
+    
+    public function actionSizes()
+    {
+        return $this->render('sizes');
+    }
 }
