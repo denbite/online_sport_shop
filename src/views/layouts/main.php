@@ -87,11 +87,12 @@ AppAsset::register($this);
                                             <li><a href="<?= Url::to([ '/main/default/delivery' ]) ?>">Доставка </a>
                                             </li>
                                             <li><a href="<?= Url::to([ '/main/default/payment' ]) ?>">Оплата </a></li>
-                                            <li><a href="<?= Url::to([ '/main/default/warranty' ]) ?>">Гарантия </a>
-                                            </li>
+                                            <!--                                            <li><a href="-->
+                                            <? //= Url::to([ '/main/default/warranty' ]) ?><!--">Гарантия </a></li>-->
                                             <li><a href="<?= Url::to([ '/main/default/sizes' ]) ?>">Размеры </a></li>
                                             <li><a href="<?= Url::to([ '/main/default/contacts' ]) ?>">Контакты</a></li>
-                                            <li><a href="<?= Url::to([ '/main/default/about' ]) ?>">О нас </a></li>
+                                            <!--                                            <li><a href="-->
+                                            <? //= Url::to([ '/main/default/about' ]) ?><!--">О нас </a></li>-->
                                         </ul>
                                     </li>
                                     <!--                                    <li class="angle-shape"><a-->
@@ -222,10 +223,12 @@ AppAsset::register($this);
                                     <li><a href="<?= Url::to([ '/main/default/delivery' ]) ?>">Доставка </a>
                                     </li>
                                     <li><a href="<?= Url::to([ '/main/default/payment' ]) ?>">Оплата </a></li>
-                                    <li><a href="<?= Url::to([ '/main/default/warranty' ]) ?>">Гарантия </a></li>
+                                    <!--                                    <li><a href="-->
+                                    <? //= Url::to([ '/main/default/warranty' ]) ?><!--">Гарантия </a></li>-->
                                     <li><a href="<?= Url::to([ '/main/default/sizes' ]) ?>">Размеры </a></li>
                                     <li><a href="<?= Url::to([ '/main/default/contacts' ]) ?>">Контакты</a></li>
-                                    <li><a href="<?= Url::to([ '/main/default/about' ]) ?>">О нас </a></li>
+                                    <!--                                    <li><a href="-->
+                                    <? //= Url::to([ '/main/default/about' ]) ?><!--">О нас </a></li>-->
                                 </ul>
                             </li>
                             <!--                            <li><a href="-->
@@ -303,28 +306,28 @@ AppAsset::register($this);
                                     'width' => 128,
                                     'height' => 40,
                                 ]), [ '/main/default/index' ]) ?>
-                                <div class="subscribe-style mt-45">
-                                    <p>Подпишитесь на новости, Введите свой e-mail</p>
-                                    <div id="mc_embed_signup" class="subscribe-form mt-20">
-                                        <form id="mc-embedded-subscribe-form" class="validate subscribe-form-style"
-                                              novalidate="" target="_blank" name="mc-embedded-subscribe-form"
-                                              method="post"
-                                              action="...">
-                                            <div id="mc_embed_signup_scroll" class="mc-form">
-                                                <input class="email" type="email" required=""
-                                                       placeholder="Введите свой e-mail...." name="EMAIL" value="">
-                                                <div class="mc-news" aria-hidden="true">
-                                                    <input type="text" value="" tabindex="-1"
-                                                           name="b_6bbb9b6f5827bd842d9640c82_05d85f18ef">
-                                                </div>
-                                                <div class="clear">
-                                                    <input id="mc-embedded-subscribe" class="button" type="submit"
-                                                           name="subscribe" value="">
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
+                                <!--                                <div class="subscribe-style mt-45">-->
+                                <!--                                    <p>Подпишитесь на новости, Введите свой e-mail</p>-->
+                                <!--                                    <div id="mc_embed_signup" class="subscribe-form mt-20">-->
+                                <!--                                        <form id="mc-embedded-subscribe-form" class="validate subscribe-form-style"-->
+                                <!--                                              novalidate="" target="_blank" name="mc-embedded-subscribe-form"-->
+                                <!--                                              method="post"-->
+                                <!--                                              action="...">-->
+                                <!--                                            <div id="mc_embed_signup_scroll" class="mc-form">-->
+                                <!--                                                <input class="email" type="email" required=""-->
+                                <!--                                                       placeholder="Введите свой e-mail...." name="EMAIL" value="">-->
+                                <!--                                                <div class="mc-news" aria-hidden="true">-->
+                                <!--                                                    <input type="text" value="" tabindex="-1"-->
+                                <!--                                                           name="b_6bbb9b6f5827bd842d9640c82_05d85f18ef">-->
+                                <!--                                                </div>-->
+                                <!--                                                <div class="clear">-->
+                                <!--                                                    <input id="mc-embedded-subscribe" class="button" type="submit"-->
+                                <!--                                                           name="subscribe" value="">-->
+                                <!--                                                </div>-->
+                                <!--                                            </div>-->
+                                <!--                                        </form>-->
+                                <!--                                    </div>-->
+                                <!--                                </div>-->
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-4 col-6">
