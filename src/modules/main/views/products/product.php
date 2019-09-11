@@ -153,6 +153,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             <!--                            <a title="Add To Compare" href="#"><i class="sli sli-refresh"></i></a>-->
                             <!--                        </div>-->
                         </div>
+                        <div id="detail-choose-size" class="pro-details-meta">
+                            <a href="<?= Url::to([ '/main/default/sizes', '#' => strtolower($item['firm']) ]) ?>"
+                               target="_blank">
+                                Подобрать размер
+                            </a>
+                        </div>
                         <div id="detail-block-code" class="pro-details-meta">
                             <span>Артикул :</span>
                             <ul>
