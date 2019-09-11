@@ -10,6 +10,8 @@ RewriteRule ^js/(.*)$ web/js/$1 [L]
 RewriteRule ^images/(.*)$ web/images/$1 [L]
 RewriteRule ^files/(.*)$ web/files/$1 [L]
 RewriteRule ^favicon.ico$ web/favicon.ico [L]
+RewriteRule ^robots.txt$ web/robots.txt [L]
+RewriteRule ^sitemap.xml$ web/sitemap.xml [L]
 RewriteRule (.*) /web/$1
 
 RewriteCond %{REQUEST_FILENAME} !-f
