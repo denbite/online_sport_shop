@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 [
                                                     'data-image' => Image::getLink($image['id']),
                                                     'data-zoom-image' => Image::getLink($image['id']),
-                                                    'data-color' => $color['id'],
+                                                    'data-color' => ValueHelper::encryptValue($color['id']),
                                                 ]) ?>
                                 <?php endforeach; ?>
                             <?php endforeach; ?>

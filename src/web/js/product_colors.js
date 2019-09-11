@@ -50,6 +50,9 @@
 
                 $('input.cart-plus-minus-box').val(1);
 
+                $('#gallery .slick-list .slick-track a[data-color=' + new_color + ']').click();
+
+
                 // clear gallery and setup new photos for active color
 
                 // find method from original js and call him for new color !!!
