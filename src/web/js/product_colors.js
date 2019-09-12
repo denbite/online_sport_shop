@@ -5,7 +5,14 @@
         var color = $('#color-details li.active').data('color');
 
         // on load page show sizes, current price and photo for active color
-        var size = $('#size-details ul[data-color = ' + color + ']').show().find('li a.active').data('size');
+        var $block_size = $('#size-details ul[data-color = ' + color + ']');
+        if ($block_size.length != 1 || $block_size.find('li a').html() != '-') {
+            $block_size.show();
+        } else {
+            $('.pro-details-size').hide();
+        }
+
+        var size = $block_size.find('li a.active').data('size');
         $('#price-details div.product-details-price[data-color = ' + color + '][data-size = ' + size + ']').show();
         $('#gallery .slick-list .slick-track a[data-color = ' + color + ']').show();
 
@@ -30,7 +37,18 @@
 
                 // clear sizes and setup new block with one active size
                 $('#size-details ul').hide();
-                var new_size = $('#size-details ul[data-color = ' + new_color + ']').show().find('li a.active').data('size');
+
+                var $block_size = $('#size-details ul[data-color = ' + new_color + ']');
+
+                console.log($block_size.find('li a').html());
+
+                if ($block_size.length == 1 && $block_size.find('li a').html() == '-') {
+                    $('.pro-details-size').hide();
+                } else {
+                    $block_size.show();
+                }
+
+                var new_size = $('#size-details ul[data-color = ' + new_color + ']').find('li a.active').data('size');
 
                 // clear price and then setup new value
                 $('#price-details div.product-details-price').hide();
@@ -50,7 +68,7 @@
 
                 $('input.cart-plus-minus-box').val(1);
 
-                $('#gallery .slick-list .slick-track a[data-color=' + new_color + ']').click();
+                $('#gallery .slick-list .slick-track a[data-color=' + new_color + ']:not(.slick-cloned)').click();
 
 
                 // clear gallery and setup new photos for active color
