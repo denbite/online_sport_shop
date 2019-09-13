@@ -1909,6 +1909,10 @@ textarea:focus {
         right: 5px;
         width: 300px;
     }
+
+    .cart-wrap .shopping-cart-content ul li .shopping-cart-title {
+        width: 130px;
+    }
 }
 
 .cart-wrap .shopping-cart-content .shopping-cart-top {
@@ -2007,6 +2011,10 @@ textarea:focus {
     -webkit-transition: all .3s ease 0s;
     -o-transition: all .3s ease 0s;
     transition: all .3s ease 0s;
+}
+
+.cart-wrap .shopping-cart-content ul li .shopping-cart-title {
+    width: 250px;
 }
 
 .cart-wrap .shopping-cart-content ul li .shopping-cart-title h4 {
