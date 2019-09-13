@@ -10804,5 +10804,6 @@ button#catalog-filter-button {
     border: none;
     border-bottom: dashed;
     background-color: #fff;
+    padding: 0;
 }
 
