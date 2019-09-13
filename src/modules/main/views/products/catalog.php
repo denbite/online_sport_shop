@@ -25,7 +25,69 @@ $this->params['breadcrumbs'][] = $current['name'];
 
 <div class="shop-area pt-95 pb-100">
     <div class="container">
-        <div class="row flex-row-reverse">
+        <div class="row ">
+            <div class="col-lg-3">
+                <div class="sidebar-style mr-30 mb-40">
+                    <div class="sidebar-widget search">
+                        <h4 class="pro-sidebar-title">Поиск </h4>
+                        <div class="pro-sidebar-search mb-50 mt-25">
+                            <form class="pro-sidebar-search-form" action="#">
+                                <input type="text" placeholder="Введите товар">
+                                <button>
+                                    <i class="sli sli-magnifier"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <button id="catalog-filter-button" class="mb-30 mb-lg-0">Фильтры</button>
+                    <?php if (!empty($producers)): ?>
+                        <div class="sidebar-widget">
+                            <h4 class="pro-sidebar-title">Производитель</h4>
+                            <div class="sidebar-widget-list mt-30">
+                                <ul>
+                                    <?php
+                                
+                                    $curr = Yii::$app->request->getQueryParams();
+                                    if (array_key_exists('producers', $curr) and !empty($curr['producers'])) {
+                                        $curr = explode(',', $curr['producers']);
+                                    } else {
+                                        $curr = [];
+                                    }
+                                
+                                    ?>
+                                    <?php foreach ($producers as $producer => $count): ?>
+                                        <li>
+                                            <?php
+                                        
+                                            if (in_array($producer, $curr)) {
+                                                $param = array_diff($curr, [ $producer ]);
+                                            } else {
+                                                if (empty($curr)) {
+                                                    $param = [ $producer ];
+                                                } else {
+                                                    $param = $curr;
+                                                    $param[] = $producer;
+                                                }
+                                            }
+                                        
+                                            $param = implode(',', $param);
+                                            ?>
+                                            <div class="sidebar-widget-list-left">
+                                                <input type="checkbox" <?= in_array($producer,
+                                                                                    $curr) ? ' checked' : '' ?>>
+                                                <a href="<?= \yii\helpers\Url::current([ 'producers' => $param ]) ?>"> <?= $producer ?>
+                                                    <span><?= $count ?></span> </a>
+                                                <span class="checkmark"></span>
+                                            </div>
+                                            <?php unset($param); ?>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
             <div class="col-lg-9">
                 <div class="shop-top-bar">
                     <div class="select-shoing-wrap">
@@ -201,67 +263,6 @@ $this->params['breadcrumbs'][] = $current['name'];
                                       ])
                     ?>
 
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="sidebar-style mr-30">
-                    <div class="sidebar-widget">
-                        <h4 class="pro-sidebar-title">Поиск </h4>
-                        <div class="pro-sidebar-search mb-50 mt-25">
-                            <form class="pro-sidebar-search-form" action="#">
-                                <input type="text" placeholder="Введите товар">
-                                <button>
-                                    <i class="sli sli-magnifier"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                    <?php if (!empty($producers)): ?>
-                        <div class="sidebar-widget">
-                            <h4 class="pro-sidebar-title">Производитель</h4>
-                            <div class="sidebar-widget-list mt-30">
-                                <ul>
-                                    <?php
-                    
-                                    $curr = Yii::$app->request->getQueryParams();
-                                    if (array_key_exists('producers', $curr) and !empty($curr['producers'])) {
-                                        $curr = explode(',', $curr['producers']);
-                                    } else {
-                                        $curr = [];
-                                    }
-                    
-                                    ?>
-                                    <?php foreach ($producers as $producer => $count): ?>
-                                        <li>
-                                            <?php
-                            
-                                            if (in_array($producer, $curr)) {
-                                                $param = array_diff($curr, [ $producer ]);
-                                            } else {
-                                                if (empty($curr)) {
-                                                    $param = [ $producer ];
-                                                } else {
-                                                    $param = $curr;
-                                                    $param[] = $producer;
-                                                }
-                                            }
-                            
-                                            $param = implode(',', $param);
-                                            ?>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" <?= in_array($producer,
-                                                                                    $curr) ? ' checked' : '' ?>>
-                                                <a href="<?= \yii\helpers\Url::current([ 'producers' => $param ]) ?>"> <?= $producer ?>
-                                                    <span><?= $count ?></span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                            <?php unset($param); ?>
-                                        </li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
-                        </div>
-                    <?php endif; ?>
                 </div>
             </div>
         </div>

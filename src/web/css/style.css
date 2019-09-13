@@ -7342,9 +7342,17 @@ textarea:focus {
 }
 
 /*-------- 14. Sidebar style ---------*/
-@media only screen and (min-width: 992px) and (max-width: 1199px) {
+@media only screen and (min-width: 992px) {
     .sidebar-style.mr-30 {
         margin-right: 0;
+    }
+
+    button#catalog-filter-button {
+        display: none;
+    }
+
+    .sidebar-widget {
+        display: block;
     }
 }
 
@@ -7356,6 +7364,14 @@ textarea:focus {
     .sidebar-style.mr-30 {
         margin-right: 0;
     }
+
+    button#catalog-filter-button {
+        display: block;
+    }
+
+    .sidebar-widget:not(.search) {
+        display: none;
+    }
 }
 
 @media only screen and (max-width: 767px) {
@@ -7365,6 +7381,14 @@ textarea:focus {
 
     .sidebar-style.mr-30 {
         margin-right: 0;
+    }
+
+    button#catalog-filter-button {
+        display: block;
+    }
+
+    .sidebar-widget:not(.search) {
+        display: none;
     }
 }
 
@@ -10772,3 +10796,13 @@ h3.cart-page-title {
 #des-details1 ul {
     list-style: outside;
 }
+
+button#catalog-filter-button {
+    font-size: 17px;
+    font-weight: 500;
+    font-family: "Roboto", sans-serif;
+    border: none;
+    border-bottom: dashed;
+    background-color: #fff;
+}
+

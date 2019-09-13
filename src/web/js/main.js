@@ -699,4 +699,14 @@ $(document).ready(function ($) {
         phone mask
         ------------------------------------*/
     $("#signupform-phone, #checkoutform-phone").mask("(099) 999-99-99");
+
+    $('button#catalog-filter-button').on('click', function () {
+        var $catalog_filters = $('.sidebar-widget:not(.search)');
+
+        if ($catalog_filters.is(':visible')) {
+            $catalog_filters.hide();
+        } else {
+            $catalog_filters.show();
+        }
+    });
 });
