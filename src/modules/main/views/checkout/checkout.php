@@ -18,6 +18,22 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\web\JsExpression;
 
+if (empty($checkoutForm->city) and !Yii::$app->user->isGuest and $user = Yii::$app->user->identity and $lastOrder = \app\models\Order::find()
+                                                                                                                                     ->where([ 'user_id' => $user->id ])
+                                                                                                                                     ->orderBy([ 'created_at' => SORT_DESC ])
+                                                                                                                                     ->asArray()
+                                                                                                                                     ->one()) {
+    if (!empty($lastOrder['city'])) {
+        $checkoutForm->city = $lastOrder['city'];
+    }
+    
+    //    if (!empty($lastOrder['department'])) {
+    //        $checkoutForm->department = $lastOrder['department'];
+    //    }
+    
+    unset($lastOrder);
+}
+
 ?>
 
 <?php if (!empty($items) and !empty($checkoutForm)): ?>
@@ -132,8 +148,9 @@ use yii\web\JsExpression;
                                     <?= $form->field($checkoutForm, 'department')
                                              ->widget(\kartik\select2\Select2::className(), [
                                                  'initValueText' => !empty($checkoutForm->department) ? Yii::$app->novaposhta->getWarehouseNameByRef($checkoutForm->department) : null, // set the initial display text
+                                                 'data' => !empty($checkoutForm->city) ? Yii::$app->novaposhta->getWarehousesArray($checkoutForm->city) : [],
                                                  'options' => [
-                                                     'disabled' => !empty($checkoutForm->department) ? false : true,
+                                                     'disabled' => ( !empty($checkoutForm->department) or !empty($checkoutForm->city) ) ? false : true,
                                                      'prompt' => '',
                                                      'placeholder' => 'Выберите удобное для вас отделение',
                                                  ],

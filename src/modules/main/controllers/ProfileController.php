@@ -40,7 +40,7 @@ class ProfileController
                                        'user_id' => $user['id'],
                                    ])
                            ->orderBy([
-                                         'created_at' => SORT_ASC,
+                                         'created_at' => SORT_DESC,
                                      ])
                            ->asArray()
                            ->all();
