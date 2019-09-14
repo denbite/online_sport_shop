@@ -6,6 +6,7 @@ use app\modules\user\models\forms\SignupForm;
 use Yii;
 use yii\base\Model;
 use yii\db\Exception;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /**
@@ -89,7 +90,7 @@ class CheckoutForm
             $order->buy_sum = $cart->getTotalCost(); // write function that calculate buy_sum without round
             $order->delivery = 1; // create table with delivery types
             $order->status = Order::ORDER_STATUS_NEW;
-            $order->phone_status = !$this->callBack ? Order::PHONE_STATUS_NOT_DISTURB : Order::ORDER_STATUS_NEW;
+            $order->phone_status = !$this->callBack ? Order::PHONE_STATUS_NOT_DISTURB : Order::PHONE_STATUS_WAITING;
             $order->comment = $this->comment;
             
             if (!$order->save()) {
@@ -97,8 +98,11 @@ class CheckoutForm
             }
             
             $this->saveOrderedItems($order->id);
-            
+    
+            return ArrayHelper::toArray($order);
         }
+    
+        return null;
     }
     
     public function saveOrderedItems($order_id)

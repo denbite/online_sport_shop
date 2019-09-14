@@ -10827,3 +10827,8 @@ button#catalog-filter-button {
     padding: 0;
 }
 
+#thanks-socials i {
+    font-size: 32px;
+    margin-right: 15px;
+}
+

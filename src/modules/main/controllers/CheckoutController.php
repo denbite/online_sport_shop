@@ -57,18 +57,25 @@ class CheckoutController
                         $checkoutForm->signup->load($post);
                         $checkoutForm->signup->validate();
                     }
-        
-                    TransactionHelper::wrap(function () use ($checkoutForm)
+    
+                    $order = [];
+    
+                    TransactionHelper::wrap(function () use ($checkoutForm, &$order)
                     {
-                        $checkoutForm->registerOrder();
+                        $order = $checkoutForm->registerOrder();
                     });
     
-                    return $this->redirect([ '/main/profile/index' ]);
                 } catch (\Exception $e) {
                     Yii::$app->errorHandler->logException($e);
                     //                        Yii::$app->session->setFlash('error', $e->getMessage());
                 }
-                
+    
+                Yii::$app->cart->clear();
+    
+                return $this->render('thanks', [
+                    'order' => $order,
+                ]);
+    
             }
             
         }
@@ -132,4 +139,5 @@ class CheckoutController
         
         throw new MethodNotAllowedHttpException('Only AJAX queries allowed');
     }
+    
 }
