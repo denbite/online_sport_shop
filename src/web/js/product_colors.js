@@ -37,17 +37,12 @@
 
                 // clear sizes and setup new block with one active size
                 $('#size-details ul').hide();
-
                 var $block_size = $('#size-details ul[data-color = ' + new_color + ']');
-
-                console.log($block_size.find('li a').html());
-
                 if ($block_size.length == 1 && $block_size.find('li a').html() == '-') {
                     $('.pro-details-size').hide();
                 } else {
                     $block_size.show();
                 }
-
                 var new_size = $('#size-details ul[data-color = ' + new_color + ']').find('li a.active').data('size');
 
                 // clear price and then setup new value
@@ -60,15 +55,17 @@
                     $('#no-stock').show();
                 }
 
+                // change item code
                 $code.find('ul li').hide();
                 $code.find('ul li[data-color = ' + new_color + ']').show();
 
+                // change item color name
                 $color.find('ul li').hide();
                 $color.find('ul li[data-color = ' + new_color + ']').show();
 
                 $('input.cart-plus-minus-box').val(1);
 
-                $('#gallery .slick-list .slick-track a[data-color=' + new_color + ']:not(.slick-cloned)').click();
+                $('#gallery .slick-list .slick-track a[data-color=' + new_color + ']:not(.slick-cloned):first').click();
 
 
                 // clear gallery and setup new photos for active color
