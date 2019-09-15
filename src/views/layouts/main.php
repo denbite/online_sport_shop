@@ -26,6 +26,20 @@ AppAsset::register($this);
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
     <title><?= Html::encode(!empty($this->title) ? $this->title . ' | Интернет-магазин Aquista, спортивный инвентарь, одежда,аксессуары. Бесплатная доставка.' : 'Интернет-магазин Aquista, спортивный инвентарь, одежда,аксессуары. Бесплатная доставка.') ?></title>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-147948971-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'UA-147948971-1');
+    </script>
+    
     
     <?php $this->head() ?>
 
