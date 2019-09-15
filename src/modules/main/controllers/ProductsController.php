@@ -126,17 +126,19 @@ class ProductsController
                                             $query->andWhere([ 'active' => Status::STATUS_ACTIVE ]);
                                         },
                                     ])
-                         ->with([ 'promotion' => function ($query)
+                ->with([ 'promotion' => function ($query)
                          {
                              $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
                          } ])
-                         ->andWhere([
+                ->andWhere([
                                         'item.status' => Status::STATUS_ACTIVE,
                                         'colors.status' => Status::STATUS_ACTIVE,
                                         'sizes.status' => Status::STATUS_ACTIVE,
                                     ])
-                         ->groupBy([ 'id' ])
-                         ->orderBy([ 'rate' => SORT_DESC ]);
+                ->groupBy([ 'id' ])
+                ->orderBy([
+                              'rate' => SORT_DESC,
+                          ]);
     
             $producerQuery = clone $query;
     
@@ -259,7 +261,11 @@ class ProductsController
                             $query->andWhere([ 'colors.status' => Status::STATUS_ACTIVE ])
                                   ->joinWith([ 'allSizes sizes' => function ($query)
                                   {
-                                      $query->andWhere([ 'sizes.status' => Status::STATUS_ACTIVE ]);
+                                      $query->andWhere([ 'sizes.status' => Status::STATUS_ACTIVE ])
+                                            ->orderBy([
+                                                          'CONVERT(sizes.size, UNSIGNED)' => SORT_ASC,
+                                                          'sizes.id' => SORT_ASC,
+                                                      ]);
                                   }, 'allImages images' ]);
                         }, 'description',
                                        'category' => function ($query)
@@ -277,7 +283,7 @@ class ProductsController
                                 ])
                         ->asArray()
                         ->one();
-            
+    
             if (!empty($item)) {
     
                 $current = $item['category'];
