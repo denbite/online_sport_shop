@@ -50,7 +50,7 @@ class ProfileController
                 'orders' => $orders,
             ]);
         }
-        
-        return $this->redirect([ '/main/default/index' ]);
+    
+        return $this->redirect([ '/user/default/login' ]);
     }
 }
