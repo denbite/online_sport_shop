@@ -11,7 +11,7 @@ return [
     ],
     
     //    auth
-    '<_a:(login|signup|logout|confirm-email|request-password-reset|reset-password)>' => 'user/default/<_a>',
+    '<_a:(login|signup|logout|confirm-email|reset-password|reset-password-request)>' => 'user/default/<_a>',
     
     //    main pages
     '' => 'main/default/index',

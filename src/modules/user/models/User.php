@@ -5,6 +5,7 @@ namespace app\modules\user\models;
 use app\models\AuthAssignment;
 use http\Exception;
 use Yii;
+use yii\base\InvalidParamException;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 
@@ -69,6 +70,26 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         
         return static::findOne([
                                    'password_reset_token' => $token,
+                                   'status' => self::STATUS_ACTIVE,
+                               ]);
+    }
+    
+    /**
+     * Finds user by password reset token
+     *
+     * @param string $token password reset token
+     *
+     * @return static|null
+     */
+    public static function findByPasswordResetTokenAndEmail($token, $email)
+    {
+        if (!static::isPasswordResetTokenValid($token) or !is_string($email)) {
+            throw new InvalidParamException('Время действия токена истекло');
+        }
+        
+        return static::findOne([
+                                   'password_reset_token' => $token,
+                                   'email' => $email,
                                    'status' => self::STATUS_ACTIVE,
                                ]);
     }

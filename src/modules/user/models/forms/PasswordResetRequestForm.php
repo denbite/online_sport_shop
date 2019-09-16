@@ -3,6 +3,7 @@
 namespace app\modules\user\models\forms;
 
 use app\modules\user\models\User;
+use Yii;
 use yii\base\Model;
 
 /**
@@ -23,10 +24,9 @@ class PasswordResetRequestForm extends Model
             [ 'email', 'required' ],
             [ 'email', 'email' ],
             [ 'email', 'exist',
-                //'targetClass' => '\common\models\User',
                 'targetClass' => '\app\modules\user\models\User',
                 'filter' => [ 'status' => User::STATUS_ACTIVE ],
-                'message' => 'There is no user with such email.',
+                'message' => 'Такого пользователя не существует.',
             ],
         ];
     }
@@ -50,12 +50,11 @@ class PasswordResetRequestForm extends Model
             }
             
             if ($user->save()) {
-                //return \Yii::$app->mailer->compose(['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'], ['user' => $user])
-                return \Yii::$app->mailer->compose('@app/modules/user/mails/passwordReset', [ 'user' => $user ])
-                                         ->setFrom([ \Yii::$app->params['supportEmail'] => \Yii::$app->name . ' robot' ])
-                                         ->setTo($this->email)
-                                         ->setSubject('Password reset for ' . \Yii::$app->name)
-                                         ->send();
+                return Yii::$app->mailer->compose('@app/modules/user/mails/reset-password-request', [ 'user' => $user ])
+                                        ->setFrom([ Yii::$app->params['senderEmail'] => Yii::$app->params['senderName'] ])
+                                        ->setTo($this->email)
+                                        ->setSubject($user['name'] . ', вы можете легко восстановить доступ на Aquista')
+                                        ->send();
             }
         }
         

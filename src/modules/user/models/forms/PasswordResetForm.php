@@ -3,7 +3,6 @@
 namespace app\modules\user\models\forms;
 
 use app\modules\user\models\User;
-use Yii;
 use yii\base\InvalidParamException;
 use yii\base\Model;
 
@@ -14,6 +13,8 @@ class PasswordResetForm extends Model
 {
     
     public $password;
+    
+    public $password_repeat;
     
     /**
      * @var \common\models\User
@@ -29,15 +30,18 @@ class PasswordResetForm extends Model
      *
      * @throws \yii\base\InvalidParamException if token is empty or not valid
      */
-    public function __construct($token, $config = [])
+    public function __construct($token, $email, $config = [])
     {
         if (empty($token) || !is_string($token)) {
-            throw new InvalidParamException(Yii::t('user', '_ERROR_EMPTY_TOKEN'));
+            throw new InvalidParamException('Пустой токен.');
         }
-        $this->_user = User::findByPasswordResetToken($token);
+    
+        $this->_user = User::findByPasswordResetTokenAndEmail($token, $email);
+        
         if (!$this->_user) {
-            throw new InvalidParamException(Yii::t('user', '_ERROR_INVALID_TOKEN'));
+            throw new InvalidParamException('Не удалось найти такие данные.');
         }
+    
         parent::__construct($config);
     }
     
@@ -47,8 +51,11 @@ class PasswordResetForm extends Model
     public function rules()
     {
         return [
-            [ 'password', 'required' ],
-            [ 'password', 'string', 'min' => 6 ],
+            [ [ 'password', 'password_repeat' ], 'required', 'message' => 'Заполните поле' ],
+    
+            [ [ 'password', 'password_repeat' ], 'string', 'min' => 6, 'tooShort' => 'Пароль должен быть длиной не меньше 6 символов' ],
+    
+            [ 'password_repeat', 'compare', 'compareAttribute' => 'password', 'message' => 'Пароли должны совпадать' ],
         ];
     }
     
@@ -64,5 +71,13 @@ class PasswordResetForm extends Model
         $user->removePasswordResetToken();
         
         return $user->save(false);
+    }
+    
+    public function attributeLabels()
+    {
+        return [
+            'password' => 'Новый пароль',
+            'password_repeat' => 'Повторите пароль',
+        ];
     }
 }

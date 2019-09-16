@@ -27,7 +27,7 @@ class m190622_095451_init
             'password_hash' => $this->string()->notNull()->defaultValue(''),
             'auth_key' => $this->string(32)->notNull()->defaultValue(''),
             'email_confirm_token' => $this->string()->notNull()->defaultValue(''),
-            'password_reset_token' => $this->string()->notNull()->defaultValue(''),
+            'password_reset_token' => $this->string()->defaultValue(''),
             'status' => $this->boolean()->unsigned()->defaultValue(1),
             'created_at' => $this->integer()->unsigned()->notNull()->defaultValue(0),
             'updated_at' => $this->integer()->unsigned()->notNull()->defaultValue(0),

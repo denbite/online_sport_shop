@@ -7,6 +7,12 @@ if (file_exists(__DIR__ . '/db-local.php')) {
     $db = array_merge($db, $db_local);
 }
 
+$mailer = require __DIR__ . '/mailer.php';
+if (file_exists(__DIR__ . '/mailer-local.php')) {
+    $mailer_local = require __DIR__ . '/mailer-local.php';
+    $mailer = array_merge($mailer, $mailer_local);
+}
+
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
@@ -57,13 +63,7 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'main/default/error',
         ],
-        'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
-            // for the mailer to send real emails.
-            'useFileTransport' => true,
-        ],
+        'mailer' => $mailer,
         'cart' => [
             'class' => 'app\components\cart\Cart',
             'storageClass' => 'app\components\cart\storage\CookieStorage',

@@ -5,7 +5,7 @@
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \app\modules\user\models\LoginForm */
 
-$this->title = 'Вход';
+$this->title = 'Восстановление пароля';
 $this->params['breadcrumbs'][] = $this->title;
 
 use yii\bootstrap\ActiveForm;
@@ -18,30 +18,20 @@ use yii\helpers\Html;
             <div class="col-lg-7 col-md-12 ml-auto mr-auto">
                 <div class="login-register-wrapper">
                     <div class="login-register-tab-list nav">
-                        <h4 style="color:#ff3535;"> Вход </h4>
+                        <h4 style="color:#ff3535;"> Восстановление пароля </h4>
                     </div>
                     <div class="tab-content">
                         <div class="tab-pane active">
                             <div class="login-form-container">
                                 <div class="login-register-form">
                                     <?php $form = ActiveForm::begin([
-                                                                        'id' => 'login-form',
+                                                                        'id' => 'reset-password-request-form',
                                                                     ]) ?>
                                     <?= $form->field($model, 'email')->textInput([
-                                        'placeholder' => $model->getAttributeLabel('email'),
-                                    ])->label(false) ?>
-                                    <?= $form->field($model, 'password')->passwordInput([
-                                        'placeholder' => $model->getAttributeLabel('password'),
-                                    ])->label(false) ?>
+                                                                                     'placeholder' => $model->getAttributeLabel('email'),
+                                                                                 ])->label(false) ?>
                                     <div class="button-box">
-                                        <div class="login-toggle-btn">
-                                            <?= $form->field($model, 'rememberMe')
-                                                     ->checkbox()
-                                                     ->label('Запомнить меня') ?>
-
-                                            <?= Html::a('Забыли пароль?', [ '/user/default/reset-password-request' ]) ?>
-                                        </div>
-                                        <?= Html::submitButton('Войти') ?>
+                                        <?= Html::submitButton('Восстановить доступ') ?>
                                     </div>
                                     <?php ActiveForm::end() ?>
                                 </div>

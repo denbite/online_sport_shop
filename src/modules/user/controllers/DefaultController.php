@@ -124,39 +124,40 @@ class DefaultController extends Controller
         return $this->goHome();
     }
     
-    public function actionPasswordResetRequest()
-    {
-        $model = new PasswordResetRequestForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail()) {
-                Yii::$app->getSession()->setFlash('success', Yii::t('app', '_PASSWORD_RESET_SEND'));
-                
-                return $this->goHome();
-            } else {
-                Yii::$app->getSession()->setFlash('error', Yii::t('app', '_PASSWORD_RESET_ERROR'));
-            }
-        }
-        
-        return $this->render('passwordResetRequest', [
-            'model' => $model,
-        ]);
-    }
-    
-    public function actionPasswordReset($token)
+    public function actionResetPassword($token, $email)
     {
         try {
-            $model = new PasswordResetForm($token);
+            $model = new PasswordResetForm($token, $email);
         } catch (InvalidParamException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
-        
+    
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
             Yii::$app->getSession()->setFlash('success', Yii::t('app', '_PASSWORD_RESET_SUCCESS'));
             
             return $this->goHome();
         }
+    
+        return $this->render('reset-password', [
+            'model' => $model,
+        ]);
+    }
+    
+    public function actionResetPasswordRequest()
+    {
+        $model = new PasswordResetRequestForm();
         
-        return $this->render('passwordReset', [
+        if (Yii::$app->request->isPost and $post = Yii::$app->request->post()) {
+            if ($model->load($post) and $model->validate() and $model->sendEmail()) {
+                
+                Yii::$app->session->setFlash('success',
+                                             'Письмо с инструкциями для восстановления было отправлено на вашу почту');
+                
+                return $this->redirect([ 'login' ]);
+            }
+        }
+        
+        return $this->render('reset-password-request', [
             'model' => $model,
         ]);
     }

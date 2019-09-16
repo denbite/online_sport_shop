@@ -8,6 +8,7 @@ use app\models\Banner;
 use app\models\Category;
 use app\models\Config;
 use app\models\Item;
+use app\modules\user\models\User;
 use yii\web\Controller;
 
 /**
@@ -111,5 +112,12 @@ class DefaultController
     public function actionSizes()
     {
         return $this->render('sizes');
+    }
+    
+    public function actionTest()
+    {
+        return $this->render('@app/modules/user/mails/reset-password-request', [
+            'user' => User::findByEmail('mirloxd3@gmail.com'),
+        ]);
     }
 }
