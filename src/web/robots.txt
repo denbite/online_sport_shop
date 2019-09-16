@@ -1,5 +1,12 @@
 User-agent: *
 Disallow: /admin
-Disallow: /catalog?producers=
+Disallow: /reset-password
+Disallow: /reset-password-request
+Disallow: /profile
+Disallow: /cart
+Disallow: /checkout
+
+Clean-param: producers /catalog
+
 Host: aquista.com.ua
 Sitemap: https://aquista.com.ua/sitemap.xml
