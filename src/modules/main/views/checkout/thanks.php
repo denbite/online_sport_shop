@@ -17,9 +17,9 @@
                     </p>
                     <div id="thanks-socials" class="mt-120">
                         <p>Также вы можете подписаться на наши соцсети, чтобы первыми узнавать об акциях:</p>
-                        <a href="https://instagram.com/aquista7" target="_blank"><i
+                        <a href="<?= Yii::$app->params['social.instagram'] ?>" target="_blank"><i
                                     class="sli sli-social-instagram"></i></a>
-                        <a href="https://facebook.com/storeaquista" target="_blank"><i
+                        <a href="<?= Yii::$app->params['social.facebook'] ?>" target="_blank"><i
                                     class="sli sli-social-facebook"></i></a>
                     </div>
                 </div>

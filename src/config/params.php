@@ -8,4 +8,7 @@ return [
     'priceMultiplier' => 0.95,
     'bsVersion' => '4.x',
     'user.passwordResetTokenExpire' => 3600,
+    'host' => 'https://aquista.com.ua',
+    'social.facebook' => 'https://facebook.com/storeaquista',
+    'social.instagram' => 'https://instagram.com/aquista7',
 ];

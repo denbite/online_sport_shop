@@ -275,9 +275,9 @@ AppAsset::register($this);
                 </div>
             </div>
             <div class="mobile-social-wrap">
-                <a class="instagram" href="https://instagram.com/aquista7" target="_blank"><i
+                <a class="instagram" href="<?= Yii::$app->params['social.instagram'] ?>" target="_blank"><i
                             class="sli sli-social-instagram"></i></a>
-                <a class="facebook" href="https://facebook.com/storeaquista" target="_blank"><i
+                <a class="facebook" href="<?= Yii::$app->params['social.facebook'] ?>" target="_blank"><i
                             class="sli sli-social-facebook"></i></a>
             </div>
         </div>
@@ -441,8 +441,8 @@ AppAsset::register($this);
                     <div class="row align-items-center">
                         <div class="col-lg-4 col-md-5 col-12">
                             <div class="footer-social pb-20">
-                                <a href="https://instagram.com/aquista7" target="_blank">Instagram</a>
-                                <a href="https://facebook.com/storeaquista" target="_blank">Facebook</a>
+                                <a href="<?= Yii::$app->params['social.instagram'] ?>" target="_blank">Instagram</a>
+                                <a href="<?= Yii::$app->params['social.facebook'] ?>" target="_blank">Facebook</a>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-4 col-12">

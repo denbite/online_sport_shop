@@ -96,13 +96,13 @@ use yii\helpers\Html;
                         <?= Html::a(Html::img('https://aquista.com.ua/images/logo.png', [
                             'width' => 169,
                             'height' => 52,
-                        ]), 'https://aquista.com.ua') ?>
+                        ]), Yii::$app->params['host']) ?>
                     </td>
                     <td align="right" valign="middle" style="padding: 40px 10px 40px 10px;">
                         <p style="margin: 0;font-family: 'Poppins', sans-serif;">
-                            <a href="https://facebook.com/storeaquista" target="_blank"
+                            <a href="<?= Yii::$app->params['social.facebook'] ?>" target="_blank"
                                style="color: #3b5998; font-weight: 700; text-decoration: none;">Facebook</a> -
-                            <a href="https://instagram.com/aquista7" target="_blank"
+                            <a href="<?= Yii::$app->params['social.instagram'] ?>" target="_blank"
                                style="color: #c12e6b; font-weight: 700; text-decoration: none;">Instagram</a>
                         </p>
                     </td>
@@ -166,7 +166,7 @@ use yii\helpers\Html;
                                     <table border="0" cellspacing="0" cellpadding="0">
                                         <tr>
                                             <td align="center" style="border-radius: 3px;" bgcolor="#ff3535"><a
-                                                        href="<?= 'https://aquista.com.ua' . \yii\helpers\Url::to([ '/user/default/reset-password', 'token' => $user['password_reset_token'], 'email' => $user['email'] ]) ?>"
+                                                        href="<?= Yii::$app->params['host'] . \yii\helpers\Url::to([ '/user/default/reset-password', 'token' => $user['password_reset_token'], 'email' => $user['email'] ]) ?>"
                                                         target="_blank"
                                                         style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 12px 50px; border-radius: 2px; border: 1px solid #fc4b6c; display: inline-block;">Сбросить
                                                     пароль</a></td>
