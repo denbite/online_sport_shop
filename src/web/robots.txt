@@ -6,7 +6,5 @@ Disallow: /profile
 Disallow: /cart
 Disallow: /checkout
 
-Clean-param: producers /catalog
-
 Host: aquista.com.ua
 Sitemap: https://aquista.com.ua/sitemap.xml
