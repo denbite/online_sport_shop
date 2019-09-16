@@ -3,6 +3,7 @@
 use app\components\helpers\Permission;
 use app\components\models\Status;
 use app\models\Category;
+use app\models\Image;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -213,42 +214,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="pad">
                         <?php foreach ($modelColors as $modelColor): ?>
                             <h1><?= $modelColor->color ?></h1>
-                            <div id="carousel-example-generic-captions-<?= $modelColor->id ?>" class="carousel slide"
-                                 data-ride="carousel">
-
-                                <!-- Indicators -->
-                                <ol class="carousel-indicators">
-                                    <?php foreach ($modelImages[$modelColor->id] as $index => $modelImage): ?>
-                                        <li data-target="#carousel-example-generic-captions-<?= $modelColor->id ?>"
-                                            data-slide-to="<?= $index ?>"
-                                            <?= !$index ? ' class="active"' : '' ?>></li>
-                                    <?php endforeach; ?>
-                                </ol>
-                                <!-- Wrapper for slides -->
-                                <div class="carousel-inner" role="listbox">
-                                    <?php foreach ($modelImages[$modelColor->id] as $index => $modelImage): ?>
-                                        <div class="carousel-item <?= !$index ? ' active' : '' ?>">
-                                            <?= Html::img($modelImage->path . $modelImage->url,
-                                                          [ 'class' => 'img-fluid', 'alt' => 'slide-' . $index ]) ?>
-                                            <div class="carousel-caption">
-                                                <h3><?= $modelImage->url ?></h3>
-                                            </div>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-                                <!-- Controls -->
-                                <a class="carousel-control-prev"
-                                   href="#carousel-example-generic-captions-<?= $modelColor->id ?>" role="button"
-                                   data-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="carousel-control-next"
-                                   href="#carousel-example-generic-captions-<?= $modelColor->id ?>" role="button"
-                                   data-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
-                                </a>
+                            <div class="zoom-gallery m-t-30">
+                                <?php foreach ($modelColor->allImages as $image): ?>
+                                    <a href="<?= Image::getLink($image->id) ?>"
+                                       title="<?= $image->url ?>"
+                                       data-source="<?= Image::getLink($image->id) ?>">
+                                        <img src="<?= Image::getLink($image->id, Image::SIZE_MEDIUM) ?>"
+                                             width="24.8%" alt="<?= $image->url ?>"/>
+                                    </a>
+                                <?php endforeach; ?>
                             </div>
                         <?php endforeach; ?>
                     </div>

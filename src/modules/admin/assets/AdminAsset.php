@@ -13,6 +13,7 @@ class AdminAsset extends AssetBundle
         'css/bootstrap-extend.css',
         'css/master_style.css',
         'css/skins/_all-skins.css',
+        'vendor/Magnific-Popup-master/dist/magnific-popup.css',
     ];
     
     public $js = [
@@ -21,7 +22,9 @@ class AdminAsset extends AssetBundle
         'vendor/jquery-slimscroll/jquery.slimscroll.js',
         'vendor/fastclick/lib/fastclick.js',
         'vendor/bootstrap/dist/js/bootstrap.js',
-    
+        'vendor/Magnific-Popup-master/dist/jquery.magnific-popup.min.js',
+        'vendor/Magnific-Popup-master/dist/jquery.magnific-popup-init.js',
+        
         'js/template.js',
         'js/item.js',
         //        'js/demo.js',
