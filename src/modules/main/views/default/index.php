@@ -36,6 +36,8 @@ use yii\helpers\Html;
                                     <?= \yii\helpers\Html::img(\app\models\Image::getLink($banner['image']['id']), [
                                         'class' => 'animated',
                                         'alt' => $banner['image']['url'],
+                                        'width' => 635,
+                                        'height' => 720,
                                     ]) ?>
                                 </div>
                             </div>
