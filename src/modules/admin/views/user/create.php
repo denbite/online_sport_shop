@@ -28,11 +28,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="col">
                     <?= $form->field($model, 'name') ?>
                 </div>
+            <div class="col">
+                <?= $form->field($model, 'surname') ?>
+            </div>
+            <div class="col">
+                <?= $form->field($model, 'email') ?>
+            </div>
                 <div class="col">
                     <?= $form->field($model, 'password')->passwordInput() ?>
                 </div>
                 <div class="col">
-                    <?= $form->field($model, 'email') ?>
+                    <?= $form->field($model, 'phone') ?>
                 </div>
             </div>
     </div>

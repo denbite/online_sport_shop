@@ -2,6 +2,9 @@
     "use strict";
 
     jQuery(function () {
+
+        $("#signupform-phone").mask("(099) 999-99-99");
+
         $('#item').change(function () {
             $('#item-color').find('option:not(:first)').remove().end().prop('disabled', true);
             var item_id = $(this).val();

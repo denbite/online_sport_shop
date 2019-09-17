@@ -60,7 +60,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                                       ],
                                                       [
                                                           'attribute' => 'email',
-                
+
+                                                      ],
+                                                      [
+                                                          'attribute' => 'phone',
+    
                                                       ],
                                                       [
                                                           'attribute' => 'role',

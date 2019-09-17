@@ -2,6 +2,7 @@
 
 namespace app\modules\user\models\forms;
 
+use app\components\helpers\Permission;
 use app\modules\user\models\User;
 use Yii;
 use yii\base\Model;
@@ -33,24 +34,24 @@ class SignupForm
     public function rules()
     {
         return [
-    
+            
             [ [ 'email', 'phone', 'name' ], 'required', 'message' => 'Поле не может быть пустым' ],
-    
+            
             [ 'email', 'filter', 'filter' => 'trim' ],
             [ 'email', 'email', 'message' => 'Введите корректный почтовый адрес' ],
             [ 'email', 'unique', 'targetClass' => User::className(), 'message' => 'Пользователь с таким почтовым ящиком уже зарегистрирован' ],
-    
+            
             [ [ 'name', 'surname' ], 'string', 'max' => 64, 'tooLong' => 'Данное поле должно быть длиной меньше 64 символов' ],
-    
+            
             [ 'phone', 'unique', 'targetClass' => User::className(), 'message' => 'Пользователь с таким номером телефона уже зарегистрирован' ],
-    
+            
             [ 'password', 'required', 'when' => function ($model)
             {
                 return $model->getBooleanSignup();
             }, 'whenClient' => 'function (attribute, value) {
     return $("input#checkoutform-booleansignup[type=\'checkbox\']").is(":checked") === true;
 }', 'message' => 'Поле не может быть пустым' ],
-    
+            
             [ 'password', 'string', 'skipOnEmpty' => true, 'min' => 6, 'tooShort' => 'Пароль должен быть длиной не меньше 6 символов' ],
             
             //            [ 'verifyCode', 'captcha', 'captchaAction' => '/user/default/captcha' ],
@@ -82,14 +83,14 @@ class SignupForm
                 //                                 ->setTo($this->email)
                 //                                 ->setSubject('Email confirmation for ' . Yii::$app->name)
                 //                                 ->send();
-    
+                
                 Yii::$app->authManager->assign(Yii::$app->authManager->getRole('user'), $user->id);
-    
+                
                 // doesn't work
                 //                Yii::$app->user->login($user, 3600 * 24);
-                return Yii::$app->user->login($user, 3600 * 24 * 7);
+                return !Permission::can('admin_user_create') ? Yii::$app->user->login($user, 3600 * 24 * 7) : true;
             }
-        
+            
         }
         
         return null;
