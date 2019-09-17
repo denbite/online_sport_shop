@@ -116,8 +116,8 @@ $action = Yii::$app->controller->action->id;
                     <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fas fa-home' ]) . Html::tag('span', 'Главная'),
                                 [ '/admin/default/index' ]) ?>
                 </li>
-                <li class="header nav-small-cap">Основные</li>
                 <?php if (Permission::can([ 'admin_item_index', 'admin_category_index', 'admin_order_index' ])): ?>
+                    <li class="header nav-small-cap">Основные</li>
                     <li class="treeview <?= in_array($controller,
                                                      [ 'item', 'item-color', 'item-size', 'category', 'order' ]) ? ' active' : '' ?>">
                         <a href="#">
@@ -199,8 +199,8 @@ $action = Yii::$app->controller->action->id;
                         </ul>
                     </li>
                 <?php endif; ?>
-                <li class="header nav-small-cap">Дополнительные</li>
                 <?php if (Permission::can([ 'admin_config_index', ])): ?>
+                    <li class="header nav-small-cap">Дополнительные</li>
                     <li class="treeview <?= in_array($controller, [ 'config', ]) ? ' active' : '' ?>">
                         <a href="#">
                             <i class="fas fa-cogs"></i>

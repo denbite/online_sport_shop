@@ -66,8 +66,8 @@ class UserController extends Controller
             $post = Yii::$app->request->post();
             
             if ($model->load($post) and $model->validate()) {
-                
-                if ($model->save()) {
+    
+                if ($model->loadNewRoles($post[$model->formName()]['roles']) and $model->save()) {
                     return $this->redirect([ 'view', 'id' => $model->id ]);
                 }
             }

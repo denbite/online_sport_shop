@@ -97,8 +97,8 @@ class DefaultController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                 //                Yii::$app->getSession()->setFlash('success', 'Подтвердите регистрацию');
-                
-                return $this->goHome();
+    
+                return $this->redirect([ '/main/profile/index' ]);
             }
         }
         

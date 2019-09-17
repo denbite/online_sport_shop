@@ -2,8 +2,8 @@
 
 namespace app\modules\user\models;
 
+use app\components\helpers\TransactionHelper;
 use app\models\AuthAssignment;
-use http\Exception;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\base\NotSupportedException;
@@ -24,6 +24,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     const STATUS_BLOCKED = 0;
     
     const STATUS_WAIT = 2;
+    
+    private $_newRoles = [];
     
     /**
      * {@inheritdoc}
@@ -142,18 +144,18 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             [ 'name', 'string', 'min' => 2, 'max' => 32 ],
-    
+            
             [ [ 'email', 'phone' ], 'required' ],
             [ 'email', 'email' ],
             [ 'email', 'unique', 'targetClass' => self::className(), 'message' => 'Пользователь с такой почтой уже существует' ],
             [ 'email', 'string', 'max' => 255 ],
-    
+            
             [ 'phone', 'string' ],
             
             [ 'status', 'integer' ],
             [ 'status', 'default', 'value' => self::STATUS_ACTIVE ],
             [ 'status', 'in', 'range' => array_keys(self::getStatusesArray()) ],
-            
+        
         ];
     }
     
@@ -218,6 +220,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function getRuleName()
     {
         $roleName = Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
+        
         if ($roleName) {
             return array_shift($roleName)->name;
         }
@@ -313,23 +316,31 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         ];
     }
     
+    public function loadNewRoles(array $roles)
+    {
+        foreach (array_keys($roles) as $role) {
+            if (!Yii::$app->authManager->getRole($role)) {
+                return false;
+            }
+            $this->_newRoles[$role] = true;
+        }
+        
+        return true;
+    }
+    
     public function save($runValidation = true, $attributeNames = null)
     {
-        if (!empty($this->roles)) {
+        if (is_array($this->_newRoles)) {
             AuthAssignment::deleteRolesById($this->id);
             
-            foreach (array_keys($this->roles) as $role) {
-                try {
-                    if (Yii::$app->authManager->assign(Yii::$app->authManager->getRole($role), $this->id)) {
-                        continue;
-                    } else {
-                        AuthAssignment::deleteRolesById($this->id);
-                        break;
+            TransactionHelper::wrap(function ()
+            {
+                foreach (array_keys($this->_newRoles) as $role) {
+                    if (!Yii::$app->authManager->assign(Yii::$app->authManager->getRole($role), $this->id)) {
+                        throw new \yii\db\Exception('Не удалось сохранить роль для пользователя: ' . $this->name);
                     }
-                } catch (Exception $e) {
-                    $e->getMessage();
                 }
-            }
+            });
         }
         
         return parent::save($runValidation, $attributeNames);

@@ -55,7 +55,7 @@ class ItemColorSize extends \yii\db\ActiveRecord
             'size' => 'Размер',
             'quantity' => 'Количество',
             'base_price' => 'Базовая цена',
-            'sell_price' => 'Цена закупки',
+            'sell_price' => 'Цена продажи',
             'sale_price' => 'Цена при акциях',
             'status' => 'Статус',
         ];
