@@ -32,3 +32,9 @@ services:
         - 6080:8080
       depends_on:
         - db
+    bot:
+      image: node
+      volumes:
+        - ${BOT_PATH_HOST}:${BOT_PATH_CONTAINER}
+      working_dir: ${BOT_PATH_CONTAINER}
+      command: "npm start"
