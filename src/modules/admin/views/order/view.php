@@ -11,7 +11,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Order */
 /* @var $orderSizes array */
 
-$this->title = 'Заказ: №' . $model->id;
+$this->title = 'Просмотр: Заказ №' . $model->id;
 $this->params['breadcrumbs'][] = [ 'label' => 'Заказы', 'url' => [ '/admin/order/index' ] ];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -37,17 +37,22 @@ $this->params['breadcrumbs'][] = $this->title;
         Yii::$app->params['background'] : '' ?>">
         <div class="box-header with-border">
             <div class="right-float">
-                <?php if (Permission::can('admin_order_update')): ?>
-                    <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fas fa-pen' ]) . ' Редактировать',
-                                [ "/admin/order/update", 'id' => $model->id ],
-                                [ 'class' => 'btn btn-sm btn-warning ml-20' ]) ?>
-                <?php endif; ?>
-                <?php if (Permission::can('admin_order_delete')): ?>
-                    <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fas fa-trash' ]) . ' Удалить',
-                                [ "/admin/order/delete", 'id' => $model->id ],
-                                [ 'class' => 'btn btn-sm btn-danger ml-20', 'data' => [
-                                    'confirm' => 'Вы уверены, что хотите удалить этот товар',
-                                ], ]) ?>
+                <?php if (Permission::can('admin_order_editable') and !in_array($model->status,
+                                                                                [ Order::ORDER_STATUS_CANCELED, Order::ORDER_STATUS_COMPLETED ])): ?>
+                    <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fas fa-trash' ]) . ' Отменить заказ',
+                                [ "/admin/order/editable", 'redirect' => true ],
+                                [
+                                    'class' => 'btn btn-sm btn-danger ml-20',
+                                    'data' => [
+                                        'confirm' => 'Вы уверены, что хотите отменить этот заказ',
+                                    ],
+                                    'data-method' => 'POST',
+                                    'data-params' => [
+                                        'value' => Order::ORDER_STATUS_CANCELED,
+                                        'name' => 'status',
+                                        'pk' => $model->id,
+                                    ],
+                                ]) ?>
                 <?php endif; ?>
             </div>
         </div>
@@ -90,6 +95,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                                        ],
                                                        [
                                                            'attribute' => 'invoice',
+                                                           'format' => 'html',
+                                                           'value' => function ($model)
+                                                           {
+                                                               if (Permission::can('admin_order_editable')) {
+                                                                   return "<a class='editable editable-click editable-invoice'>{$model->invoice}</a>";
+                                                               }
+        
+                                                               return $model->invoice;
+                                                           },
                                                        ],
                                                        [
                                                            'attribute' => 'sum',
@@ -106,6 +120,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                if (array_key_exists($model->status,
                                                                                     $css) and array_key_exists($model->status,
                                                                                                                $css)) {
+                                                                   if (Permission::can('admin_order_editable')) {
+                                                                       return "<a class='editable editable-click editable-status'>" .
+                                                                           Html::tag('span', $filter[$model->status],
+                                                                                     [ 'class' => 'label bg-' . $css[$model->status] ])
+                                                                           . "</a>";
+                                                                   }
+                                                                   
                                                                    return Html::tag('span', $filter[$model->status],
                                                                                     [ 'class' => 'label bg-' . $css[$model->status] ]);
                                                                }
@@ -139,6 +160,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                if (array_key_exists($model->phone_status,
                                                                                     $css) and array_key_exists($model->phone_status,
                                                                                                                $css)) {
+    
+                                                                   if (Permission::can('admin_order_editable')) {
+                                                                       return "<a class='editable editable-click editable-phone_status'>" .
+                                                                           Html::tag('span',
+                                                                                     $filter[$model->phone_status],
+                                                                                     [ 'class' => 'label bg-' . $css[$model->phone_status] ])
+                                                                           . "</a>";
+                                                                   }
+                                                                   
                                                                    return Html::tag('span',
                                                                                     $filter[$model->phone_status],
                                                                                     [ 'class' => 'label bg-' . $css[$model->phone_status] ]);

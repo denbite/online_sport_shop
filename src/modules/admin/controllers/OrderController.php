@@ -7,7 +7,9 @@ use app\models\OrderSize;
 use app\modules\admin\models\OrderSearch;
 use Yii;
 use yii\filters\VerbFilter;
+use yii\helpers\Html;
 use yii\web\Controller;
+use yii\web\MethodNotAllowedHttpException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -70,6 +72,41 @@ class OrderController
             'model' => $this->findModel($id),
             'orderSizes' => $orderSizes,
         ]);
+    }
+    
+    public function actionEditable($redirect = false)
+    {
+        if (Yii::$app->request->isPost and $post = Yii::$app->request->post()) {
+            
+            $result = [ 'success' => false ];
+            
+            if (array_key_exists('name', $post) and array_key_exists('value', $post) and array_key_exists('pk',
+                                                                                                          $post)) {
+                $name = Html::encode($post['name']);
+                $value = Html::encode($post['value']);
+                $id = Html::encode($post['pk']);
+                
+                if ($model = Order::findOne([ 'id' => $id ])) {
+                    $model->$name = $value;
+                    if ($model->save()) {
+                        $result['success'] = true;
+                    } else {
+                        $result['msg'] = 'Не удалось сохранить изменения';
+                    }
+                } else {
+                    $result['msg'] = 'Не удалось найти заказ с таким id: ' . $id;
+                }
+                
+            } else {
+                $result['msg'] = 'Некоторые параметры не были переданы';
+            }
+            
+            return ( $redirect and $result['success'] ) ?
+                $this->redirect([ '/admin/order/view', 'id' => $id ]) :
+                $this->asJson($result);
+        }
+        
+        throw new MethodNotAllowedHttpException('Only POST method allowes');
     }
     
     /**

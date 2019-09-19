@@ -60,6 +60,7 @@ use app\models\Order;
                                                     <th>Заказ</th>
                                                     <th>Дата</th>
                                                     <th>Статус</th>
+                                                    <th>Накладная</th>
                                                     <th>Сумма</th>
                                                 </tr>
                                                 </thead>
@@ -70,6 +71,7 @@ use app\models\Order;
                                                         <td><?= Yii::$app->formatter->asDate($order['created_at'],
                                                                                              'long') ?></td>
                                                         <td><?= Order::getStatuses()[$order['status']] ?></td>
+                                                        <td><?= $order['invoice'] ?></td>
                                                         <td><?= ValueHelper::addCurrency($order['sum']) ?></td>
                                                     </tr>
                                                 <?php endforeach; ?>

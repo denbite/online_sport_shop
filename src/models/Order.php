@@ -34,7 +34,7 @@ class Order
     
     const ORDER_STATUS_DELIVERY = 3;
     
-    const ORDER_STATUS_RECEIVED = 4;
+    const ORDER_STATUS_COMPLETED = 4;
     
     const ORDER_STATUS_CANCELED = 5;
     
@@ -81,7 +81,7 @@ class Order
             self::ORDER_STATUS_NEW => 'Новый',
             self::ORDER_STATUS_CONFIRMED => 'Обработан',
             self::ORDER_STATUS_DELIVERY => 'Передан в службу доставки',
-            self::ORDER_STATUS_RECEIVED => 'Выполнен',
+            self::ORDER_STATUS_COMPLETED => 'Выполнен',
             self::ORDER_STATUS_CANCELED => 'Отменен',
         ];
     }
@@ -95,7 +95,7 @@ class Order
             self::ORDER_STATUS_NEW => 'green',
             self::ORDER_STATUS_CONFIRMED => 'info',
             self::ORDER_STATUS_DELIVERY => 'primary',
-            self::ORDER_STATUS_RECEIVED => 'success',
+            self::ORDER_STATUS_COMPLETED => 'success',
             self::ORDER_STATUS_CANCELED => 'danger',
         ];
     }
