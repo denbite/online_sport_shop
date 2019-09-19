@@ -14,6 +14,7 @@ $this->title = 'Оформление заказа';
 
 $this->params['breadcrumbs'][] = $this->title;
 
+use app\models\Order;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\web\JsExpression;
@@ -272,12 +273,12 @@ if (empty($checkoutForm->city) and !Yii::$app->user->isGuest and $user = Yii::$a
                                 </div>
                                 <div class="payment-method">
                                     <div class="pay-top sin-payment">
-                                        <input id="payment_method_1" class="input-radio" type="radio" value="cheque"
-                                               checked="checked" name="payment_method">
-                                        <label for="payment_method_1"> Новая Почта</label>
+                                        <input id="delivery_method_1" class="input-radio" type="radio"
+                                               value="<?= Order::ORDER_DELIVERY_NOVAPOSHTA ?>"
+                                               checked="checked" name="delivery_method">
+                                        <label for="delivery_method_1"> <?= Order::getDeliveries()[Order::ORDER_DELIVERY_NOVAPOSHTA]['name'] ?></label>
                                         <div class="payment-box payment_method_bacs">
-                                            <p>Оплата происходит по номеру накладной, которая создается на вас при
-                                                оформлении заказа.</p>
+                                            <p><?= Order::getDeliveries()[Order::ORDER_DELIVERY_NOVAPOSHTA]['description'] ?></p>
                                         </div>
                                     </div>
                                 </div>

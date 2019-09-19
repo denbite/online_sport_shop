@@ -3,6 +3,7 @@
 namespace app\modules\admin\controllers;
 
 use app\models\Order;
+use app\models\OrderSize;
 use app\modules\admin\models\OrderSearch;
 use Yii;
 use yii\filters\VerbFilter;
@@ -56,8 +57,18 @@ class OrderController
      */
     public function actionView($id)
     {
+    
+        $orderSizes = OrderSize::find()
+                               ->with([ 'size.color.mainImage', 'size.color.item' ])
+                               ->where([
+                                           'order_id' => $id,
+                                       ])
+                               ->asArray()
+                               ->all();
+    
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'orderSizes' => $orderSizes,
         ]);
     }
     

@@ -45,4 +45,9 @@ class OrderSize
             'cost' => 'Cost',
         ];
     }
+    
+    public function getSize()
+    {
+        return $this->hasOne(ItemColorSize::className(), [ 'id' => 'size_id' ]);
+    }
 }

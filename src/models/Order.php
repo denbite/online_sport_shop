@@ -32,9 +32,11 @@ class Order
     
     const ORDER_STATUS_CONFIRMED = 2;
     
-    const ORDER_STATUS_RECEIVED = 3;
+    const ORDER_STATUS_DELIVERY = 3;
     
-    const ORDER_STATUS_CANCELED = 4;
+    const ORDER_STATUS_RECEIVED = 4;
+    
+    const ORDER_STATUS_CANCELED = 5;
     
     const PHONE_STATUS_WAITING = 1;
     
@@ -45,6 +47,8 @@ class Order
     const PHONE_STATUS_CANCEL = 4;
     
     const PHONE_STATUS_CALLBACK = 5;
+    
+    const ORDER_DELIVERY_NOVAPOSHTA = 1;
     
     /**
      * {@inheritdoc}
@@ -67,27 +71,38 @@ class Order
         ];
     }
     
+    /**
+     * @return array
+     */
     public static function getStatuses()
     {
         return [
             // Возможно добавить статус, когда товар передан в службу доставки
             self::ORDER_STATUS_NEW => 'Новый',
-            self::ORDER_STATUS_CONFIRMED => 'Подтвержден',
-            self::ORDER_STATUS_RECEIVED => 'Получен',
+            self::ORDER_STATUS_CONFIRMED => 'Обработан',
+            self::ORDER_STATUS_DELIVERY => 'Передан в службу доставки',
+            self::ORDER_STATUS_RECEIVED => 'Выполнен',
             self::ORDER_STATUS_CANCELED => 'Отменен',
         ];
     }
     
+    /**
+     * @return array
+     */
     public static function getStatusCssClass()
     {
         return [
             self::ORDER_STATUS_NEW => 'green',
             self::ORDER_STATUS_CONFIRMED => 'info',
+            self::ORDER_STATUS_DELIVERY => 'primary',
             self::ORDER_STATUS_RECEIVED => 'success',
             self::ORDER_STATUS_CANCELED => 'danger',
         ];
     }
     
+    /**
+     * @return array
+     */
     public static function getPhoneStatuses()
     {
         return [
@@ -99,6 +114,9 @@ class Order
         ];
     }
     
+    /**
+     * @return array
+     */
     public static function getPhoneStatusCssClass()
     {
         return [
@@ -107,6 +125,19 @@ class Order
             self::PHONE_STATUS_IGNORE => 'secondary',
             self::PHONE_STATUS_CANCEL => 'danger',
             self::PHONE_STATUS_CALLBACK => 'brown',
+        ];
+    }
+    
+    /**
+     * @return array
+     */
+    public static function getDeliveries()
+    {
+        return [
+            self::ORDER_DELIVERY_NOVAPOSHTA => [
+                'name' => 'Новая почта',
+                'description' => 'Оплата происходит по номеру накладной, которая создается на вас при оформлении заказа.',
+            ],
         ];
     }
     
@@ -130,9 +161,12 @@ class Order
             'phone_status' => 'Статус телефона',
             'city' => 'Город',
             'department' => 'Отделение НП',
-            'invoice' => ' Номер накладной',
+            'invoice' => 'Номер накладной',
+            'sum' => 'Сумма заказа',
+            'buy_sum' => 'Закупочная сумма',
             'status' => 'Статус',
             'delivery' => 'Тип доставки',
+            'comment' => 'Комментарий к заказу',
             'updated_at' => 'Дата обновления',
             'created_at' => 'Дата создания',
         ];

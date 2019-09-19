@@ -3,6 +3,8 @@
 
 namespace app\components\cart;
 
+use app\models\Config;
+
 class CartItem
 {
     
@@ -50,9 +52,9 @@ class CartItem
      * Returns the cost of the item
      * @return integer|float
      */
-    public function getCost()
+    public function getCost($purchase = false)
     {
-        return $this->getPrice() * $this->quantity;
+        return $purchase ? $this->product->base_price * Config::findOne([ 'name' => 'buyMultiplier' ])['value'] * $this->quantity : $this->getPrice() * $this->quantity;
     }
     
     /**

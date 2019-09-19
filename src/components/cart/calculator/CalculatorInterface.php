@@ -7,10 +7,11 @@ interface CalculatorInterface
     
     /**
      * @param \devanych\cart\CartItem[] $items
+     * @param boolean                   $purchase
      *
      * @return integer
      */
-    public function getCost(array $items);
+    public function getCost(array $items, $purchase = false);
     
     /**
      * @param \devanych\cart\CartItem[] $items

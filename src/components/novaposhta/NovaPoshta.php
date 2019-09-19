@@ -68,7 +68,6 @@ class NovaPoshta
             $params['CityName'] = $city_name;
             
             $response = $this->sendRequest($model, $method, $params);
-            
         }
         
         return !empty($response[0]['Addresses']) ? $response[0]['Addresses'] : [];

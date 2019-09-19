@@ -219,11 +219,11 @@ class Cart
      * Returns total cost all items from the cart
      * @return integer
      */
-    public function getTotalCost()
+    public function getTotalCost($purchase = false)
     {
         $this->loadItems();
-        
-        return $this->calculator->getCost($this->items);
+    
+        return $this->calculator->getCost($this->items, $purchase);
     }
     
     /**
