@@ -179,7 +179,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="tab-pane" id="photo" role="tabpanel">
                 <div class="pad">
                     <?php foreach ($modelColors as $modelColor): ?>
-                        <h1><?= $modelColor->color ?></h1>
+                        <h1><?= $modelColor->color . ' => ' . $modelColor->code ?></h1>
                         <?= $form->field($modelUploads[$modelColor->id], '[' . $modelColor->id . ']images[]')
                                  ->widget(\kartik\file\FileInput::className(), [
                                      'options' => [
