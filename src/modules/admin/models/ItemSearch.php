@@ -41,7 +41,10 @@ class ItemSearch extends Item
      */
     public function search($params)
     {
-        $query = Item::find();
+        $query = Item::find()->orderBy([
+                                           'updated_at' => SORT_DESC,
+                                           'created_at' => SORT_DESC,
+                                       ]);
         
         // add conditions that should always apply here
         

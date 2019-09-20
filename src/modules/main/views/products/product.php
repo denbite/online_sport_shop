@@ -121,7 +121,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <ul data-color="<?= ValueHelper::encryptValue($color['id']) ?>"
                                             style="display: none">
                                             <?php foreach ($color['allSizes'] as $size): ?>
-                                                <?php if ($size['quantity'] > 0 and $first): ?>
+                                                <?php if ($first): ?>
                                                     <li>
                                                         <a data-size="<?= ValueHelper::encryptValue($size['id']) ?>"
                                                            class="active"><?= $size['size'] ?></a>
