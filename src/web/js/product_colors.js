@@ -13,7 +13,13 @@
         }
 
         var size = $block_size.find('li a.active').data('size');
-        $('#price-details div.product-details-price[data-color = ' + color + '][data-size = ' + size + ']').show();
+
+        var $block_price = $('#price-details div.product-details-price[data-color = ' + color + '][data-size = ' + size + ']');
+        if ($block_price.length) {
+            $block_price.show();
+        } else {
+            $('#no-stock').show();
+        }
         $('#gallery .slick-list .slick-track a[data-color = ' + color + ']').show();
 
         var $code = $('#detail-block-code');

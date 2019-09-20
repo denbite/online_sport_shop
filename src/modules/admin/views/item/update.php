@@ -188,7 +188,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                      ],
                                      'pluginOptions' => [
                                          'deleteUrl' => Url::toRoute([ '/admin/image/delete-image' ]),
-                                         //                                         'showUpload' => false,
+                                         'showUpload' => false,
                                          'maxCount' => 10,
                                          'minCount' => 0,
                                          'overwriteInitial' => false,
