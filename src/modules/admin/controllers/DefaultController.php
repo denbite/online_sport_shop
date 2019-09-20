@@ -150,11 +150,12 @@ class DefaultController
         throw new NotFoundHttpException();
     }
     
-    public function actionLoadMulcano($token = null, $firm, $model, array $colors, $price, $category_id)
+    public function actionLoadMulcano($token = null, $firm, $model, array $colors, $price, $category_id,
+                                      $collection = 'Pandamonium')
     {
         if ($token == 'tyztyz') {
-            
-            TransactionHelper::wrap(function () use ($firm, $model, $colors, $price, $category_id)
+    
+            TransactionHelper::wrap(function () use ($firm, $model, $colors, $price, $category_id, $collection)
             {
                 $sizes = [
                     'Mens' => [
@@ -181,7 +182,7 @@ class DefaultController
                         
                         $item->firm = $firm;
                         $item->model = $model;
-                        $item->collection = '';
+                        $item->collection = $collection;
                         $item->category_id = $category_id;
                         $item->status = Status::STATUS_ACTIVE;
                         $item->rate = rand(85, 97);
