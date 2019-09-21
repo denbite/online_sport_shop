@@ -217,6 +217,9 @@ class Cart
     
     /**
      * Returns total cost all items from the cart
+     *
+     * @param bool $purchase
+     *
      * @return integer
      */
     public function getTotalCost($purchase = false)

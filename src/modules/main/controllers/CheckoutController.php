@@ -51,6 +51,8 @@ class CheckoutController
             $post = Yii::$app->request->post();
     
             if ($checkoutForm->load($post) and $checkoutForm->validate()) {
+                $order = [];
+                
                 try {
                     if (!empty($checkoutForm->signup)) {
                         $checkoutForm->signup->setBooleanSignup($checkoutForm->booleanSignup);
@@ -58,7 +60,6 @@ class CheckoutController
                         $checkoutForm->signup->validate();
                     }
     
-                    $order = [];
     
                     TransactionHelper::wrap(function () use ($checkoutForm, &$order)
                     {
@@ -70,11 +71,15 @@ class CheckoutController
                     //                        Yii::$app->session->setFlash('error', $e->getMessage());
                 }
     
-                Yii::$app->cart->clear();
-    
-                return $this->render('thanks', [
-                    'order' => $order,
-                ]);
+                if (!empty($order)) {
+        
+                    Yii::$app->cart->clear();
+        
+                    return $this->render('thanks', [
+                        'order' => $order,
+                    ]);
+        
+                }
     
             }
             

@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\helpers\ValueHelper;
 use app\modules\user\models\forms\SignupForm;
 use Yii;
 use yii\base\Model;
@@ -40,7 +41,7 @@ class CheckoutForm
         return [
             [ [ 'city', 'department' ], 'required', 'message' => 'Данное поле не может быть пустым' ],
             [ [ 'city', 'department', 'comment' ], 'string' ],
-    
+            
             [ [ 'booleanSignup', 'callBack' ], 'boolean' ],
             
             [ 'signup', 'safe' ],
@@ -98,10 +99,36 @@ class CheckoutForm
             }
             
             $this->saveOrderedItems($order->id);
-    
+            
+            
+            $bot_token = Config::findOne([ 'name' => 'telegram_bot_token' ])->value;
+            
+            $admin = Config::findOne([ 'name' => 'telegram_admin_id' ])->value;
+            
+            if (!empty($bot_token) and is_string($bot_token) and !empty($admin) and is_string($admin)) {
+                
+                $city = Yii::$app->novaposhta->getCityNameByRef($order['city']);
+                $department = Yii::$app->novaposhta->getWarehouseNameByRef($order['department']);
+                $sum = ValueHelper::addCurrency($order['sum']);
+                
+                $curl = curl_init();
+                curl_setopt_array($curl, [
+                    CURLOPT_URL => "https://api.telegram.org/bot{$bot_token}/sendMessage",
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_POST => true,
+                    CURLOPT_POSTFIELDS => http_build_query([
+                                                               'chat_id' => $admin,
+                                                               'text' => "`У вас новый заказ`\nЗаказ: №{$order['id']}\nЗаказчик: {$order['name']}\nТелефон: {$order['phone']}\nГород: {$city}\nОтделение: {$department}\nСумма: {$sum}\nКомментарий: {$order['comment']}",
+                                                               'parse_mode' => 'Markdown',
+                                                           ]),
+                ]);
+                curl_exec($curl);
+                curl_close($curl);
+            }
+            
             return ArrayHelper::toArray($order);
         }
-    
+        
         return null;
     }
     
