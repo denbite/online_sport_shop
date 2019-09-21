@@ -118,7 +118,7 @@ class CheckoutForm
                     CURLOPT_POST => true,
                     CURLOPT_POSTFIELDS => http_build_query([
                                                                'chat_id' => $admin,
-                                                               'text' => "`У вас новый заказ`\nЗаказ: №{$order['id']}\nЗаказчик: {$order['name']}\nТелефон: {$order['phone']}\nГород: {$city}\nОтделение: {$department}\nСумма: {$sum}\nКомментарий: {$order['comment']}",
+                                                               'text' => "*У вас новый заказ:*\nЗаказ: №{$order['id']}\nЗаказчик: {$order['name']}\nТелефон: {$order['phone']}\nГород: {$city}\nОтделение: {$department}\nСумма: {$sum}\nКомментарий: {$order['comment']}",
                                                                'parse_mode' => 'Markdown',
                                                            ]),
                 ]);
