@@ -23,7 +23,7 @@
                 dataType: "json",
                 data: "color=" + color + "&size=" + size + "&quantity=" + quantity,
                 error: function () {
-                    alert("При выполнении запроса возникла ошибка");
+                    console.log('Не удалось загрузить корзину');
                 },
                 success: function (data) {
                     if (data['success']) {
