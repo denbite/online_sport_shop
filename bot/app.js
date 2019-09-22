@@ -120,7 +120,8 @@ function getOrderText(result, def, suc) {
                     day: 'numeric',
                     hour: 'numeric',
                     hour12: false,
-                    minute: 'numeric'
+                    minute: 'numeric',
+                    timeZone: 'Europe/Kiev'
                 })
                 + '\n'
         })
