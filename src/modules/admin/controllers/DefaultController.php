@@ -150,85 +150,92 @@ class DefaultController
         throw new NotFoundHttpException();
     }
     
-    public function actionLoadMulcano($token = null, $firm, $model, array $colors, $price, $category_id,
+    public function actionLoadMulcano($token = null, $firm, $model, array $types, $price, $category_id,
                                       $collection = 'Pandamonium')
     {
         if ($token == 'tyztyz') {
     
-            TransactionHelper::wrap(function () use ($firm, $model, $colors, $price, $category_id, $collection)
+            TransactionHelper::wrap(function () use ($firm, $model, $types, $price, $category_id, $collection)
             {
                 $sizes = [
                     'Mens' => [
-                        'XS', 'S', 'M', 'L', 'XL',
+                        'sizes' => [ 'XS', 'S', 'M', 'L', 'XL' ],
+                        'price' => 880,
+                        'name' => ' (Mens, 17+)',
                     ],
                     'Boys' => [
-                        'Boys 8', 'Boys 10', 'Boys 12', 'Boys 14',
+                        'sizes' => [ '8', '10', '12', '14' ],
+                        'price' => 770,
+                        'name' => ' (Boys, 12+)',
                     ],
                     'Toddler' => [
-                        'Toddler 1', 'Toddler 2', 'Toddler 3', 'Toddler 4', 'Toddler 5', 'Toddler 6', 'Toddler 7',
+                        'sizes' => [ '1', '2', '3', '4', '5', '6', '7' ],
+                        'price' => 660,
+                        'name' => ' (Toddler, 5+)',
                     ],
                 ];
-                    // Получаем товар, если не существует такого, то создаем
-                    if (!$item = Item::find()
-                                     ->where([
-                                                 'firm' => $firm,
-                                                 'model' => $model,
-                                                 'category_id' => $category_id,
-                                             ])
-                                     ->asArray()
-                                     ->one()) {
-                        
-                        $item = new Item();
-                        
-                        $item->firm = $firm;
-                        $item->model = $model;
-                        $item->collection = $collection;
-                        $item->category_id = $category_id;
-                        $item->status = Status::STATUS_ACTIVE;
-                        $item->rate = rand(85, 97);
-                        
-                        if (!$item->save()) {
-                            throw new Exception("Не удалось сохранить товар {$firm} {$model}");
-                        }
-                        
-                        $description = new ItemDescription();
-                        
-                        $description->item_id = $item['id'];
-                        
-                        if (!$description->save()) {
-                            throw new Exception("Не удалось сохранить описание для товара {$firm} {$model}");
-                        }
-                        
-                        $item = ArrayHelper::toArray($item);
-                    }
     
-                foreach ($colors as $color_name => $data) {
-        
+                foreach ($types as $type_name => $data) {
                     if (is_array($data) and !empty($data)) {
+            
+                        // Получаем товар, если не существует такого, то создаем
+                        if (!$item = Item::find()
+                                         ->where([
+                                                     'firm' => $firm,
+                                                     'model' => $model . $sizes[$type_name]['name'],
+                                                     'category_id' => $category_id,
+                                                 ])
+                                         ->asArray()
+                                         ->one()) {
+                
+                            $item = new Item();
+                
+                            $item->firm = $firm;
+                            $item->model = $model . $sizes[$type_name]['name'];
+                            $item->collection = $collection;
+                            $item->category_id = $category_id;
+                            $item->status = Status::STATUS_ACTIVE;
+                            $item->rate = rand(88, 99);
+                
+                            if (!$item->save()) {
+                                throw new Exception("Не удалось сохранить товар {$firm} {$model}");
+                            }
+                
+                            $description = new ItemDescription();
+                
+                            $description->item_id = $item['id'];
+                
+                            if (!$description->save()) {
+                                throw new Exception("Не удалось сохранить описание для товара {$firm} {$model}");
+                            }
+                
+                            $item = ArrayHelper::toArray($item);
+                        }
+            
                         foreach ($data as $code) {
                 
                             if (!$color = ItemColor::find()
                                                    ->where([
                                                                'item_id' => $item['id'],
                                                                'code' => $code,
-                                                               'color' => $color_name,
+                                                               'color' => $type_name,
                                                            ])
                                                    ->asArray()
                                                    ->one()) {
                                 $color = new ItemColor();
                                 $color->item_id = $item['id'];
                                 $color->code = $code;
-                                $color->color = $color_name;
+                                $color->color = $type_name;
                                 $color->status = Status::STATUS_ACTIVE;
                     
                                 if (!$color->save()) {
-                                    throw new Exception("Не удалось сохранить цвет для товара {$firm} {$model} {$color_name}");
+                                    throw new Exception("Не удалось сохранить цвет для товара {$firm} {$model} {$type_name}");
                                 }
                     
                                 $color = ArrayHelper::toArray($color);
                             }
-                
-                            foreach ($sizes[$color_name] as $size_name) {
+    
+                            foreach ($sizes[$type_name]['sizes'] as $size_name) {
                                 if (!$size = ItemColorSize::find()
                                                           ->where([
                                                                       'color_id' => $color['id'],
@@ -240,13 +247,13 @@ class DefaultController
                                     $size->color_id = $color['id'];
                                     $size->size = $size_name === '0' ? ItemColorSize::WITHOUT_SIZE : $size_name;
                                     $size->quantity = 0;
-                                    $size->base_price = $price;
+                                    $size->base_price = $sizes[$type_name]['price'];
                                     $size->status = Status::STATUS_ACTIVE;
-                        
+    
                                     if (!$size->save()) {
-                                        throw new Exception("Не удалось сохранить размер для товара {$firm} {$model} {$color_name} {$size_name}");
+                                        throw new Exception("Не удалось сохранить размер для товара {$firm} {$model} {$type_name} {$size_name}");
                                     }
-                        
+    
                                     $size = ArrayHelper::toArray($size);
                                 }
                             }

@@ -145,7 +145,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="tab-pane" id="size" role="tabpanel">
                 <div class="pad">
                     <?php foreach ($modelColors as $modelColor): ?>
-                        <h1><?= $modelColor->color ?></h1>
+                        <h1><?= $modelColor->color . ' => ' . $modelColor->code ?></h1>
                         <?php foreach ($modelColorsSizes[$modelColor->id] as $index => $modelSize): ?>
                             <div class="row">
                                 <div class="col-lg-2 col-6">
