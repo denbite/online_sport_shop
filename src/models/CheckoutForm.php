@@ -100,7 +100,6 @@ class CheckoutForm
             
             $this->saveOrderedItems($order->id);
             
-            
             $bot_token = Config::findOne([ 'name' => 'telegram_bot_token' ])->value;
             
             $admin = Config::findOne([ 'name' => 'telegram_admin_id' ])->value;
@@ -144,13 +143,26 @@ class CheckoutForm
                 
                 $model->order_id = Html::encode($order_id);
                 $model->size_id = $item->getProduct()->id;
+    
                 $model->quantity = $item->getQuantity();
+                $size = ItemColorSize::findOne([ 'id' => $model->size_id ]);
+                if ($size->quantity < $model->quantity) {
+                    if ($size->quantity > 0) {
+                        throw new Exception("К сожалению, товара {$size->color->item->firm} {$size->color->item->model} {$size->color->color} {$size->size} осталось всего {$size->quantity} шт.");
+                    } else {
+                        throw new Exception("К сожалению, товар {$size->color->item->firm} {$size->color->item->model} {$size->color->color} {$size->size} закончился, уберите его из своей корзины");
+                    }
+                }
+        
                 $model->cost = $item->getCost();
                 
                 if (!$model->save()) {
                     throw new Exception('Не удалось сохранить товары для данного заказа');
                 }
-                
+    
+                ItemColorSize::updateAllCounters([ 'quantity' => -$model->quantity ],
+                                                 [ 'id' => $model->size_id ]);
+    
                 unset($model);
             }
         }

@@ -2,6 +2,7 @@
 
 namespace app\modules\admin\controllers;
 
+use app\models\ItemColorSize;
 use app\models\Order;
 use app\models\OrderSize;
 use app\modules\admin\models\OrderSearch;
@@ -59,7 +60,7 @@ class OrderController
      */
     public function actionView($id)
     {
-    
+        
         $orderSizes = OrderSize::find()
                                ->with([ 'size.color.mainImage', 'size.color.item' ])
                                ->where([
@@ -67,7 +68,7 @@ class OrderController
                                        ])
                                ->asArray()
                                ->all();
-    
+        
         return $this->render('view', [
             'model' => $this->findModel($id),
             'orderSizes' => $orderSizes,
@@ -89,6 +90,14 @@ class OrderController
                 if ($model = Order::findOne([ 'id' => $id ])) {
                     $model->$name = $value;
                     if ($model->save()) {
+                        if ($name == 'status' and $value == Order::ORDER_STATUS_CANCELED) {
+                            $items = OrderSize::find()->where([ 'order_id' => $id ])->asArray()->all();
+                            
+                            foreach ($items as $item) {
+                                ItemColorSize::updateAllCounters([ 'quantity' => $item['quantity'] ],
+                                                                 [ 'id' => $item['size_id'] ]);
+                            }
+                        }
                         $result['success'] = true;
                     } else {
                         $result['msg'] = 'Не удалось сохранить изменения';

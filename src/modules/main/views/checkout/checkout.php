@@ -41,6 +41,13 @@ if (empty($checkoutForm->city) and !Yii::$app->user->isGuest and $user = Yii::$a
 
     <div class="checkout-main-area pt-70 pb-70">
         <div class="container">
+            <?php if (Yii::$app->session->hasFlash('error')): ?>
+                <div class="alert alert-error alert-dismissible alert-main" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <?php echo Yii::$app->session->getFlash('error'); ?>
+                </div>
+            <?php endif; ?>
             <?php if (Yii::$app->user->isGuest and !empty($loginForm)): ?>
                 <div class="customer-zone mb-20">
                     <p class="cart-page-title">Постоянный клиент? <a class="checkout-click1" href="#">Нажмите, чтобы
@@ -299,6 +306,13 @@ if (empty($checkoutForm->city) and !Yii::$app->user->isGuest and $user = Yii::$a
 
     <div class="checkout-main-area pt-170 pb-170">
         <div class="container">
+            <?php if (Yii::$app->session->hasFlash('error')): ?>
+                <div class="alert alert-error alert-dismissible alert-main" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <?php echo Yii::$app->session->getFlash('error'); ?>
+                </div>
+            <?php endif; ?>
             <h1>К сожалению ваша корзина пуста</h1>
         </div>
     </div>

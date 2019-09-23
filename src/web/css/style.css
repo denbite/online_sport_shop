@@ -10832,3 +10832,7 @@ button#catalog-filter-button {
     margin-right: 15px;
 }
 
+.alert-main {
+    background-color: #ff3535;
+    color: #effeff;
+}

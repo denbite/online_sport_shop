@@ -68,7 +68,7 @@ class CheckoutController
     
                 } catch (\Exception $e) {
                     Yii::$app->errorHandler->logException($e);
-                    //                        Yii::$app->session->setFlash('error', $e->getMessage());
+                    Yii::$app->session->setFlash('error', $e->getMessage());
                 }
     
                 if (!empty($order)) {
