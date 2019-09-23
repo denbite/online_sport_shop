@@ -33,6 +33,8 @@ class Image
     
     const SIZE_THUMBNAIL = 3;
     
+    const CACHE_IMAGE_LINK = 'cache-image-link-';
+    
     /**
      * {@inheritdoc}
      */
@@ -170,18 +172,23 @@ class Image
     public static function getLink($image_id, $size = self::SIZE_ORIGINAL)
     {
         // todo-cache: add cache (few hours) md5($image_id . '_' . $size)
-        if ($image = self::findOne([ 'id' => (int) $image_id ]) and array_key_exists($image->type,
-                                                                                     self::getTypes()) and array_key_exists($size,
-                                                                                                                            self::getSizes())) {
+        return Yii::$app->cache->getOrSet(self::CACHE_IMAGE_LINK . $image_id . '-' . $size,
+            function () use ($image_id, $size)
+            {
             
-            $class = self::getTypes()[$image->type];
-            $size = self::getSizes()[$size];
+                if ($image = self::findOne([ 'id' => (int) $image_id ]) and array_key_exists($image->type,
+                                                                                             self::getTypes()) and array_key_exists($size,
+                                                                                                                                    self::getSizes())) {
+                
+                    $class = self::getTypes()[$image->type];
+                    $size = self::getSizes()[$size];
+                
+                    return "/files/{$class}/{$class}-{$image->subject_id}" . $size . $image->url;
+                
+                }
             
-            return "/files/{$class}/{$class}-{$image->subject_id}" . $size . $image->url;
-            
-        }
-        
-        return null;
+                return null;
+            }, 3600);
     }
     
     /**
