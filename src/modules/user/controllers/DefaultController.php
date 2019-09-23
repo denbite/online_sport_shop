@@ -133,9 +133,10 @@ class DefaultController extends Controller
         }
     
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->getSession()->setFlash('success', Yii::t('app', '_PASSWORD_RESET_SUCCESS'));
-            
-            return $this->goHome();
+            Yii::$app->getSession()->setFlash('success', 'Пароль успешно изменен. Войдите, пожалуйста, в систему.');
+    
+            return $this->redirect([ 'login' ]);
+    
         }
     
         return $this->render('reset-password', [
@@ -151,7 +152,7 @@ class DefaultController extends Controller
             if ($model->load($post) and $model->validate() and $model->sendEmail()) {
                 
                 Yii::$app->session->setFlash('success',
-                                             'Письмо с инструкциями для восстановления было отправлено на вашу почту');
+                                             'Письмо с инструкциями для восстановления было отправлено на вашу почту.');
                 
                 return $this->redirect([ 'login' ]);
             }
