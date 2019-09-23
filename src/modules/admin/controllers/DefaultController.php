@@ -195,7 +195,7 @@ class DefaultController
                             $item->collection = $collection;
                             $item->category_id = $category_id;
                             $item->status = Status::STATUS_ACTIVE;
-                            $item->rate = rand(88, 99);
+                            $item->rate = rand(65, 90);
                 
                             if (!$item->save()) {
                                 throw new Exception("Не удалось сохранить товар {$firm} {$model}");
