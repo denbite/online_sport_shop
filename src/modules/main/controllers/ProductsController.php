@@ -115,7 +115,7 @@ class ProductsController
         if (empty($slug)) {
             
             $query = Item::find()
-                         ->select('item.*')
+                         ->select([ 'item.*' ])
                          ->from(Item::tableName() . ' item')
                          ->joinWith([ 'allColors colors' => function ($query)
                          {
@@ -126,17 +126,17 @@ class ProductsController
                                             $query->andWhere([ 'active' => Status::STATUS_ACTIVE ]);
                                         },
                                     ])
-                ->with([ 'promotion' => function ($query)
+                         ->with([ 'promotion' => function ($query)
                          {
                              $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
                          } ])
-                ->andWhere([
+                         ->andWhere([
                                         'item.status' => Status::STATUS_ACTIVE,
                                         'colors.status' => Status::STATUS_ACTIVE,
                                         'sizes.status' => Status::STATUS_ACTIVE,
                                     ])
-                ->groupBy([ 'id' ])
-                ->orderBy([
+                         ->groupBy([ 'id' ])
+                         ->orderBy([
                               'rate' => SORT_DESC,
                           ]);
     
@@ -168,8 +168,8 @@ class ProductsController
                            ->limit($pages->limit)
                            ->asArray()
                            ->all();
-            
-            
+    
+    
             // all items, order by rate descending
             
             return $this->render('catalog', [
@@ -327,7 +327,7 @@ class ProductsController
                 $relativeItems = Item::find()
                                      ->select([ 'item.*', 'MIN(sizes.sell_price) as min_price' ])
                                      ->from(Item::tableName() . ' item')
-                                     ->joinWith([ 'allColors colors' => function ($query)
+                    ->joinWith([ 'allColors colors' => function ($query)
                                      {
                                          $query->joinWith([ 'allSizes sizes', 'mainImage' ]);
                                      }, 'description',
@@ -335,29 +335,30 @@ class ProductsController
                                                     {
                                                         $query->andWhere([ 'active' => Status::STATUS_ACTIVE ]);
                                                     } ])
-                                     ->with([ 'promotion' => function ($query)
+                    ->with([ 'promotion' => function ($query)
                                      {
                                          $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
                                      } ])
-                                     ->where([
+                    ->where([
                                                  'item.status' => Status::STATUS_ACTIVE,
                                                  'colors.status' => Status::STATUS_ACTIVE,
                                                  'sizes.status' => Status::STATUS_ACTIVE,
                                              ])
-                                     ->andWhere('(item.category_id = :category_id AND
+                    ->andWhere('sizes.quantity > 0 AND
+                                     ((item.category_id = :category_id AND
                     item.firm = :firm) OR
-                    item.category_id = :category_id', [
+                    item.category_id = :category_id)', [
                                          'category_id' => $item['category_id'],
                                          'firm' => $item['firm'],
                                      ])
-                                     ->andWhere('item.id != :id', [
+                    ->andWhere('item.id != :id', [
                                          'id' => $item['id'],
                                      ])
-                                     ->groupBy([ 'id' ])
-                                     ->orderBy([ 'rate' => SORT_DESC ])
-                                     ->asArray()
-                                     ->limit(12)
-                                     ->all();
+                    ->groupBy([ 'id' ])
+                    ->orderBy([ 'rate' => SORT_DESC ])
+                    ->asArray()
+                    ->limit(12)
+                    ->all();
                 
                 // create OpenGraph meta-tags
                 

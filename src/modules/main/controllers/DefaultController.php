@@ -51,30 +51,30 @@ class DefaultController
                          ->all();
         
         $popular = Item::find()
-                       ->select([ 'item.*', 'MIN(sizes.sell_price) as min_price' ])
-                       ->from(Item::tableName() . ' item')
-                       ->joinWith([ 'allColors colors' => function ($query)
+            ->select([ 'item.*', 'MIN(sizes.sell_price) as min_price' ])
+            ->from(Item::tableName() . ' item')
+            ->joinWith([ 'allColors colors' => function ($query)
                        {
                            $query->joinWith([ 'allSizes sizes', 'mainImage' ]);
                        }, 'category' => function ($query)
                        {
                            $query->andWhere([ 'active' => Status::STATUS_ACTIVE ]);
                        } ])
-                       ->with([ 'promotion' => function ($query)
+            ->with([ 'promotion' => function ($query)
                        {
                            $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
                        } ])
-                       ->where([
+            ->where([
                                    'item.status' => Status::STATUS_ACTIVE,
                                    'colors.status' => Status::STATUS_ACTIVE,
                                    'sizes.status' => Status::STATUS_ACTIVE,
                                ])
-                       ->andWhere([ '>', 'sizes.quantity', 0 ])
-                       ->groupBy('id')
-                       ->orderBy([ 'rate' => SORT_DESC ])
-                       ->limit(6)
-                       ->asArray()
-                       ->all();
+            ->andWhere([ '>', 'sizes.quantity', 0 ])
+            ->groupBy('id')
+            ->orderBy([ 'rate' => SORT_DESC ])
+            ->limit(8)
+            ->asArray()
+            ->all();
     
         $categories = Category::findOne([ 'lvl' => 0, 'root' => 1 ])
                               ->children(1)

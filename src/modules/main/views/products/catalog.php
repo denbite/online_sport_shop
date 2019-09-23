@@ -166,12 +166,17 @@ $this->params['breadcrumbs'][] = $current['name'];
                                                                     href="<?= \yii\helpers\Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ]) ?>"><?= $item['firm'] . ' ' . $item['model'] ?></a>
                                                         </h4>
                                                         <div class="ht-product-price">
-                                                            <span class="new"> <?= ValueHelper::outPriceCatalog($item['allColors'],
-                                                                                                                $item['promotion'])
-                                                                ?> </span>
-                                                            <?php if (!empty($item['promotion'])): ?>
-                                                                <span class="old"> <?= ValueHelper::outPriceCatalog($item['allColors'],
-                                                                                                                    []) ?> </span>
+                                                            <?php $min_price = ValueHelper::outPriceCatalog($item['allColors'],
+                                                                                                            $item['promotion']); ?>
+                                                            <?php if (!empty($min_price)): ?>
+                                                                <span class="new"> <?= $min_price ?> </span>
+                                                                <?php if (!empty($item['promotion'])): ?>
+                                                                    <span class="old"> <?= ValueHelper::outPriceCatalog($item['allColors'],
+                                                                                                                        []) ?> </span>
+                                                                <?php endif; ?>
+                                                            <?php else: ?>
+                                                                <span class="new"
+                                                                      style="color: #3b4552;">Нет в наличии</span>
                                                             <?php endif; ?>
                                                         </div>
                                                         <div class="ht-product-ratting-wrap">
@@ -225,12 +230,17 @@ $this->params['breadcrumbs'][] = $current['name'];
                                                 <div class="shop-list-price-action-wrap">
                                                     <div class="shop-list-price-ratting">
                                                         <div class="ht-product-list-price">
-                                                            <span class="new"> <?= ValueHelper::outPriceCatalog($item['allColors'],
-                                                                                                                $item['promotion'])
-                                                                ?> </span>
-                                                            <?php if (!empty($item['promotion'])): ?>
-                                                                <span class="old"> <?= ValueHelper::outPriceCatalog($item['allColors'],
-                                                                                                                    []) ?> </span>
+                                                            <?php $min_price = ValueHelper::outPriceCatalog($item['allColors'],
+                                                                                                            $item['promotion']); ?>
+                                                            <?php if (!empty($min_price)): ?>
+                                                                <span class="new"> <?= $min_price ?> </span>
+                                                                <?php if (!empty($item['promotion'])): ?>
+                                                                    <span class="old"> <?= ValueHelper::outPriceCatalog($item['allColors'],
+                                                                                                                        []) ?> </span>
+                                                                <?php endif; ?>
+                                                            <?php else: ?>
+                                                                <span class="new"
+                                                                      style="color: #3b4552;">Нет в наличии</span>
                                                             <?php endif; ?>
                                                         </div>
                                                         <div class="ht-product-list-ratting">

@@ -83,6 +83,7 @@ class ValueHelper
      */
     public static function outPriceProduct($size, $promotion)
     {
+        //todo-cache: 5 min
         if (!empty($promotion) and !empty($size)) {
             return self::addCurrency(self::verifySalePrice($size, $promotion));
         } elseif (!empty($size)) {
@@ -102,32 +103,33 @@ class ValueHelper
      */
     public static function outPriceCatalog($colors, $promotion)
     {
+        //todo-cache: 5 min
         $min_price = -1;
     
         if (!empty($promotion) and !empty($colors)) {
             foreach ($colors as $color) {
                 foreach ($color['allSizes'] as $size) {
-                    if ($min_price < 0) {
+                    if ($min_price < 0 and $size['quantity'] > 0) {
                         $min_price = self::verifySalePrice($size, $promotion);
-                    } elseif ($min_price > self::verifySalePrice($size, $promotion)) {
+                    } elseif ($min_price > self::verifySalePrice($size, $promotion) and $size['quantity'] > 0) {
                         $min_price = self::verifySalePrice($size, $promotion);
                     }
                 }
             }
-        
-            return self::addCurrency($min_price);
+    
+            return ( $min_price > 0 ) ? self::addCurrency($min_price) : null;
         } elseif (!empty($colors)) {
             foreach ($colors as $color) {
                 foreach ($color['allSizes'] as $size) {
-                    if ($min_price < 0) {
+                    if ($min_price < 0 and $size['quantity'] > 0) {
                         $min_price = self::verifySellPrice($size);
-                    } elseif ($min_price > self::verifySellPrice($size)) {
+                    } elseif ($min_price > self::verifySellPrice($size) and $size['quantity'] > 0) {
                         $min_price = self::verifySellPrice($size);
                     }
                 }
             }
-        
-            return self::addCurrency($min_price);
+    
+            return ( $min_price > 0 ) ? self::addCurrency($min_price) : null;
         }
     
         return null;
