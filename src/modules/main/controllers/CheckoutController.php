@@ -95,6 +95,9 @@ class CheckoutController
         return $this->render('checkout', [
             'items' => !empty($items) ? $items : [],
             'totalCost' => ValueHelper::addCurrency($cart->getTotalCost()),
+            'totalCostWithoutPromotion' => ValueHelper::addCurrency($cart->getTotalCost()) != ValueHelper::addCurrency($cart->getTotalCost(false,
+                                                                                                                                           false)) ? ValueHelper::addCurrency($cart->getTotalCost(false,
+                                                                                                                                                                                                  false)) : null,
             'delivery' => ValueHelper::getDelivery($cart->getTotalCost()),
             'loginForm' => !empty($loginForm) ? $loginForm : null,
             'checkoutForm' => !empty($checkoutForm) ? $checkoutForm : null,

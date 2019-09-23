@@ -10,13 +10,15 @@ class SimpleCalculator
      * @param \devanych\cart\CartItem[] $items
      * @param boolean                   $purchase
      *
+     * @param bool                      $withPromotion
+     *
      * @return integer
      */
-    public function getCost(array $items, $purchase = false)
+    public function getCost(array $items, $purchase = false, $withPromotion = true)
     {
         $cost = 0;
         foreach ($items as $item) {
-            $cost += $item->getCost($purchase);
+            $cost += $item->getCost($purchase, $withPromotion);
         }
         
         return $cost;

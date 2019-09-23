@@ -40,14 +40,21 @@ use yii\helpers\Url;
                         <a href="<?= Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['item']['id']) ]) ?>"> <?= $item['item']['firm'] . ' ' . $item['item']['model'] . ' ' . ( $item['size']['size'] != ItemColorSize::WITHOUT_SIZE ? $item['size']['size'] : '' ) ?></a>
                     </h4>
                     <span><?= $item['quantity'] . ' x ' . $item['price'] ?></span>
+                    <?php if (!empty($item['promotion']) and $item['price'] != $item['priceWithoutPromotion']): ?>
+                        <span class="promo-price"> <?= $item['priceWithoutPromotion'] ?></span>
+                    <?php endif; ?>
                 </div>
             </li>
         <?php endforeach; ?>
     </ul>
     <div class="shopping-cart-bottom">
         <div class="shopping-cart-total">
-            <h4>Всего : <span
-                        class="shop-total"><?= $result['totalCost'] ?></span>
+            <h4>Всего :
+                <?php if ($result['totalCost'] != $result['totalCostWithoutPromotion']): ?>
+                    <span class="shop-total promo-price"
+                          style="color: #000000;"><?= $result['totalCostWithoutPromotion'] ?></span>
+                <?php endif; ?>
+                <span class="shop-total"><?= $result['totalCost'] ?></span>
             </h4>
         </div>
         <div class="shopping-cart-btn btn-hover text-center">

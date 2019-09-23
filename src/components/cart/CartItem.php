@@ -50,20 +50,27 @@ class CartItem
     
     /**
      * Returns the cost of the item
+     *
+     * @param bool $purchase
+     * @param bool $withPromotion
+     *
      * @return integer|float
      */
-    public function getCost($purchase = false)
+    public function getCost($purchase = false, $withPromotion = true)
     {
-        return $purchase ? $this->product->base_price * Config::findOne([ 'name' => 'buyMultiplier' ])['value'] * $this->quantity : $this->getPrice() * $this->quantity;
+        return $purchase ? $this->product->base_price * Config::findOne([ 'name' => 'buyMultiplier' ])['value'] * $this->quantity : $this->getPrice($withPromotion) * $this->quantity;
     }
     
     /**
      * Returns the price of the item
+     *
+     * @param bool $withPromotion
+     *
      * @return integer|float
      */
-    public function getPrice()
+    public function getPrice($withPromotion = true)
     {
-        return !empty($this->product->promotion) ? $this->product->{$this->params['productFieldSale']} : $this->product->{$this->params['productFieldPrice']};
+        return ( !empty($this->product->promotion) and $withPromotion ) ? $this->product->{$this->params['productFieldSale']} : $this->product->{$this->params['productFieldPrice']};
     }
     
     /**

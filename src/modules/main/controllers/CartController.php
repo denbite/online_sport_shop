@@ -5,9 +5,7 @@ namespace app\modules\main\controllers;
 use app\components\helpers\ValueHelper;
 use app\components\models\NovaPoshta;
 use app\components\models\Status;
-use app\models\CheckoutForm;
 use app\models\ItemColorSize;
-use app\modules\user\models\forms\LoginForm;
 use Yii;
 use yii\db\Exception;
 use yii\helpers\ArrayHelper;
@@ -157,6 +155,7 @@ class CartController
             
             $result['totalCount'] = $cart->getTotalCount();
             $result['totalCost'] = ValueHelper::addCurrency($cart->getTotalCost());
+            $result['totalCostWithoutPromotion'] = ValueHelper::addCurrency($cart->getTotalCost(false, false));
             
             $tmp = [];
             
@@ -167,9 +166,12 @@ class CartController
                 $tmp[$index]['color'] = ArrayHelper::toArray($size->color);
                 $tmp[$index]['image'] = ArrayHelper::toArray($size->color->mainImage);
                 $tmp[$index]['item'] = ArrayHelper::toArray($size->color->item);
-                $tmp[$index]['promotion'] = ArrayHelper::toArray($size->promotion);
+                $tmp[$index]['promotion'] = !empty($size->promotion) ? ArrayHelper::toArray($size->promotion) : null;
                 $tmp[$index]['quantity'] = $item->getQuantity();
                 $tmp[$index]['price'] = ValueHelper::addCurrency($item->getPrice());
+                if (!empty($tmp[$index]['promotion'])) {
+                    $tmp[$index]['priceWithoutPromotion'] = ValueHelper::addCurrency($item->getPrice(false));
+                }
             }
             
             $result['items'] = $tmp;
@@ -184,6 +186,7 @@ class CartController
     
             $data['delivery'] = ValueHelper::getDelivery($cart->getTotalCost());
             $data['totalCost'] = $result['totalCost'];
+            $data['totalCostWithoutPromotion'] = $result['totalCost'] != $result['totalCostWithoutPromotion'] ? $result['totalCostWithoutPromotion'] : null;
             unset($result);
     
             return $this->asJson($data);
@@ -191,50 +194,6 @@ class CartController
         }
         
         throw new MethodNotAllowedHttpException('Only AJAX allowed');
-    }
-    
-    public function actionCheckout()
-    {
-        if (Yii::$app->user->isGuest) {
-            $loginForm = new LoginForm();
-    
-            if (Yii::$app->request->isPost and $loginForm->load(Yii::$app->request->post()) and $loginForm->login()) {
-                return $this->refresh();
-            }
-        }
-    
-        $checkoutForm = new CheckoutForm();
-        
-        $cart = Yii::$app->cart;
-    
-        foreach ($cart->getItems() as $index => $item) {
-            $size = $item->getProduct();
-            $items[$index]['name'] = $size->color->item->firm . ' ' . $size->color->item->model . ' ' . $size->size;
-            $items[$index]['quantity'] = $item->getQuantity();
-            $items[$index]['cost'] = ValueHelper::addCurrency($item->getCost());
-        }
-    
-        if (Yii::$app->request->isPost) {
-            $post = Yii::$app->request->post();
-        
-            if ($checkoutForm->load($post)) {
-                echo '<pre>';
-                var_dump($checkoutForm);
-                echo '</pre>';
-                die;
-                $checkoutForm->registerOrder();
-            }
-        
-        }
-        
-        return $this->render('checkout', [
-            'items' => !empty($items) ? $items : [],
-            'totalCost' => ValueHelper::addCurrency($cart->getTotalCost()),
-            'delivery' => ValueHelper::getDelivery($cart->getTotalCost()),
-            'loginForm' => !empty($loginForm) ? $loginForm : null,
-            'checkoutForm' => !empty($checkoutForm) ? $checkoutForm : null,
-            'np' => Yii::$app->novaposhta,
-        ]);
     }
     
     public function actionIndex()
@@ -247,15 +206,26 @@ class CartController
             $items[$index]['color'] = ArrayHelper::toArray($size->color);
             $items[$index]['image'] = ArrayHelper::toArray($size->color->mainImage);
             $items[$index]['item'] = ArrayHelper::toArray($size->color->item);
-            $items[$index]['promotion'] = ArrayHelper::toArray($size->promotion);
+            $items[$index]['promotion'] = !empty($size->promotion) ? ArrayHelper::toArray($size->promotion) : null;
             $items[$index]['quantity'] = $item->getQuantity();
             $items[$index]['price'] = ValueHelper::addCurrency($item->getPrice());
             $items[$index]['cost'] = ValueHelper::addCurrency($item->getCost());
+    
+            if (!empty($items[$index]['promotion'])) {
+                $items[$index]['priceWithoutPromotion'] = ValueHelper::addCurrency($item->getPrice(false));
+                $items[$index]['costWithoutPromotion'] = ValueHelper::addCurrency($item->getCost(false, false));
+            }
         }
     
+        $totalCost = ValueHelper::addCurrency($cart->getTotalCost());
+        
+        
         return $this->render('index', [
             'items' => !empty($items) ? $items : [],
-            'totalCost' => ValueHelper::addCurrency($cart->getTotalCost()),
+            'totalCost' => $totalCost,
+            'totalCostWithoutPromotion' => $totalCost != ValueHelper::addCurrency($cart->getTotalCost(false,
+                                                                                                      false)) ? ValueHelper::addCurrency($cart->getTotalCost(false,
+                                                                                                                                                             false)) : null,
         ]);
     }
     
@@ -279,7 +249,12 @@ class CartController
                     
                     $result['extra']['id'] = ValueHelper::encryptValue($id);
                     $result['extra']['cost'] = ValueHelper::addCurrency($item->getCost());
-                    $result['extra']['totalCost'] = ValueHelper::addCurrency($cart->getTotalCost());
+                    $result['extra']['costWithoutPromotion'] = ( $result['extra']['cost'] != ValueHelper::addCurrency($item->getCost(false,
+                                                                                                                                     false)) ) ? ValueHelper::addCurrency($item->getCost(false,
+                                                                                                                                                                                         false)) : null;
+                    //                    $result['extra']['totalCost'] = ValueHelper::addCurrency($cart->getTotalCost());
+                    //                    $result['extra']['totalCostWithoutPromotion'] = ValueHelper::addCurrency($cart->getTotalCost(false,
+                    //                                                                                                                 false));
                     $result['success'] = true;
                 }
                 

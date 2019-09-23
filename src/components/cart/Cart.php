@@ -220,13 +220,15 @@ class Cart
      *
      * @param bool $purchase
      *
+     * @param bool $withPromotion
+     *
      * @return integer
      */
-    public function getTotalCost($purchase = false)
+    public function getTotalCost($purchase = false, $withPromotion = true)
     {
         $this->loadItems();
     
-        return $this->calculator->getCost($this->items, $purchase);
+        return $this->calculator->getCost($this->items, $purchase, $withPromotion);
     }
     
     /**

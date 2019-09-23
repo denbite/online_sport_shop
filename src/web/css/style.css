@@ -10489,7 +10489,6 @@ h3.cart-page-title {
     font-size: 14px;
     padding: 0 0 7px;
     text-transform: uppercase;
-    font-weight: 500;
 }
 
 .your-order-area .your-order-wrap .your-order-info ul li span {
@@ -10835,4 +10834,10 @@ button#catalog-filter-button {
 .alert-main {
     background-color: #ff3535;
     color: #effeff;
+}
+
+.promo-price {
+    text-decoration: line-through !important;
+    margin-left: 4px !important;
+    color: #1f2226;
 }

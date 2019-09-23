@@ -3,6 +3,7 @@
 /** @var array $items */
 
 /** @var string $totalCost */
+/** @var string $totalCostWithoutPromotion */
 
 $this->title = 'Корзина';
 
@@ -50,6 +51,9 @@ use yii\helpers\Url;
                                                 href="<?= Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['item']['id']) ]) ?>"><?= $item['item']['firm'] . ' ' . $item['item']['model'] . ' ' . $item['size']['size'] ?>
                                         </a></td>
                                     <td class="product-price-cart"><span class="amount"><?= $item['price'] ?></span>
+                                        <?php if (!empty($item['promotion']) and $item['price'] != $item['priceWithoutPromotion']): ?>
+                                            <span class="promo-price"> <?= $item['priceWithoutPromotion'] ?></span>
+                                        <?php endif; ?>
                                     </td>
                                     <td class="product-quantity">
                                         <div class="cart-plus-minus">
@@ -58,7 +62,11 @@ use yii\helpers\Url;
                                                    value="<?= $item['quantity'] ?>" min="1">
                                         </div>
                                     </td>
-                                    <td class="product-subtotal"><?= $item['cost'] ?></td>
+                                    <td class="product-subtotal"><?= $item['cost'] ?>
+                                        <?php if (!empty($item['promotion']) and $item['cost'] != $item['costWithoutPromotion']): ?>
+                                            <span class="promo-price"> <?= $item['costWithoutPromotion'] ?></span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td class="product-remove">
                                         <a href="#"><i class="sli sli-close"></i></a>
                                     </td>
@@ -95,7 +103,12 @@ use yii\helpers\Url;
                                     </li>
                                 </ul>
                             </div>
-                            <h4 class="grand-totall-title pt-4">Сумма чека <span> <?= $totalCost ?> </span></h4>
+                            <h4 class="grand-totall-title pt-4">Сумма чека
+                                <?php if (!empty($totalCostWithoutPromotion)): ?>
+                                    <span class="promo-price"> <?= $totalCostWithoutPromotion ?></span>
+                                <?php endif; ?>
+                                <span id="total"> <?= $totalCost ?> </span>
+                            </h4>
                             <a href="<?= Url::to([ '/main/checkout/index' ]) ?>">Оформить заказ</a>
                         </div>
                     </div>

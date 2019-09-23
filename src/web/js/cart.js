@@ -98,6 +98,10 @@
                 success: function (data) {
                     if (data['success']) {
                         $cartIndex.find('tr[data-product=' + data['extra']['id'] + '] .product-subtotal').html(data['extra']['cost']);
+                        if (data['extra']['costWithoutPromotion']) {
+                            $cartIndex.find('tr[data-product=' + data['extra']['id'] + '] .product-subtotal').append('<span class="promo-price">' + data['extra']['costWithoutPromotion'] +
+                                '</span>');
+                        }
                         renderCart();
                     }
                 }
@@ -164,7 +168,12 @@
                     if (data) {
                         $cartWrap.html(data['cart']);
                         if ($cartIndex.length) {
-                            $cartIndex.find('h4.grand-totall-title span').html(data['totalCost']);
+                            $cartIndex.find('h4.grand-totall-title span#total').html(data['totalCost']);
+                            if (data['totalCostWithoutPromotion']) {
+                                $cartIndex.find('h4.grand-totall-title span.promo-price').html(data['totalCostWithoutPromotion']);
+                            } else {
+                                $cartIndex.find('h4.grand-totall-title span.promo-price').remove();
+                            }
                             $cartIndex.find('.total-shipping ul li:first-child span').html(data['delivery']);
                         }
                     }

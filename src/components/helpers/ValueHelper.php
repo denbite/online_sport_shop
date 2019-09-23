@@ -70,7 +70,7 @@ class ValueHelper
      */
     public static function addCurrency($price)
     {
-        return (int) $price >= 0 ? '₴ ' . number_format($price, 0, ' ', ' ') : null;
+        return (int) $price >= 0 ? '₴ ' . number_format((int) $price, 0, ' ', ' ') : null;
     }
     
     /**

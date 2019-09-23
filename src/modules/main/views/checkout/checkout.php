@@ -3,6 +3,8 @@
 
 /** @var string $totalCost */
 
+/** @var string $totalCostWithoutPromotion */
+
 /** @var string $delivery */
 /** @var array $items */
 /** @var \app\modules\user\models\forms\LoginForm $loginForm */
@@ -262,19 +264,17 @@ if (empty($checkoutForm->city) and !Yii::$app->user->isGuest and $user = Yii::$a
                                             <?php endforeach; ?>
                                         </ul>
                                     </div>
-                                    <div class="your-order-info order-subtotal">
-                                        <ul>
-                                            <li>Сумма <span><?= $totalCost ?> </span></li>
-                                        </ul>
-                                    </div>
                                     <div class="your-order-info order-shipping">
                                         <ul>
-                                            <li>Доставка <p> <?= $delivery ?></p></li>
+                                            <li>Доставка <p style="font-size: 14px;"> <?= $delivery ?></p></li>
                                         </ul>
                                     </div>
                                     <div class="your-order-info order-total">
                                         <ul>
-                                            <li>Итого <span><?= $totalCost ?> </span></li>
+                                            <li>Итого
+                                                <span class="promo-price"><?= $totalCostWithoutPromotion ?></span>
+                                                <span><?= $totalCost ?> </span>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
