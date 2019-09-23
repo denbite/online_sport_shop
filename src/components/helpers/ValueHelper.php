@@ -2,6 +2,7 @@
 
 namespace app\components\helpers;
 
+use app\components\models\Status;
 use app\models\Config;
 use app\models\ItemColorSize;
 use app\models\Promotion;
@@ -31,15 +32,15 @@ class ValueHelper
         return Yii::$app->cache->getOrSet(self::CACHE_MULTIPLIER, function ()
         {
             $param = Config::find()->select('value')->where([ 'name' => 'priceMultiplier' ])->asArray()->one();
-    
+            
             if (is_array($param) and array_key_exists('value', $param)) {
                 $multiplier = $param['value'];
             }
-    
+            
             if (empty($multiplier) and array_key_exists('priceMultiplier', Yii::$app->params)) {
                 $multiplier = Yii::$app->params['priceMultiplier'];
             }
-    
+            
             return !empty($multiplier) ? $multiplier : 1;
         }, 300);
     }
@@ -105,33 +106,34 @@ class ValueHelper
     {
         //todo-cache: 5 min
         $min_price = -1;
-    
+        
         if (!empty($promotion) and !empty($colors)) {
             foreach ($colors as $color) {
                 foreach ($color['allSizes'] as $size) {
-                    if ($min_price < 0 and $size['quantity'] > 0) {
+                    if ($min_price < 0 and $size['quantity'] > 0 and $size['status'] == Status::STATUS_ACTIVE) {
                         $min_price = self::verifySalePrice($size, $promotion);
-                    } elseif ($min_price > self::verifySalePrice($size, $promotion) and $size['quantity'] > 0) {
+                    } elseif ($min_price > self::verifySalePrice($size,
+                                                                 $promotion) and $size['quantity'] > 0 and $size['status'] == Status::STATUS_ACTIVE) {
                         $min_price = self::verifySalePrice($size, $promotion);
                     }
                 }
             }
-    
+            
             return ( $min_price > 0 ) ? self::addCurrency($min_price) : null;
         } elseif (!empty($colors)) {
             foreach ($colors as $color) {
                 foreach ($color['allSizes'] as $size) {
-                    if ($min_price < 0 and $size['quantity'] > 0) {
+                    if ($min_price < 0 and $size['quantity'] > 0 and $size['status'] == Status::STATUS_ACTIVE) {
                         $min_price = self::verifySellPrice($size);
-                    } elseif ($min_price > self::verifySellPrice($size) and $size['quantity'] > 0) {
+                    } elseif ($min_price > self::verifySellPrice($size) and $size['quantity'] > 0 and $size['status'] == Status::STATUS_ACTIVE) {
                         $min_price = self::verifySellPrice($size);
                     }
                 }
             }
-    
+            
             return ( $min_price > 0 ) ? self::addCurrency($min_price) : null;
         }
-    
+        
         return null;
     }
     
