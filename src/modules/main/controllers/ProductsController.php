@@ -137,8 +137,8 @@ class ProductsController
                                     ])
                          ->groupBy([ 'id' ])
                          ->orderBy([
-                                       'rate' => SORT_DESC,
-                                       'updated_at' => SORT_ASC,
+                                       'item.rate' => SORT_DESC,
+                                       'item.updated_at' => SORT_ASC,
                           ]);
     
             $producerQuery = clone $query;
