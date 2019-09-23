@@ -46,7 +46,7 @@ bot.action('orders_day', ctx => {
 
     var period = Math.round(Date.now() / 1000) - 3600 * 24
     dbQuery({
-        sql: 'SELECT * from `order` where `created_at` > ? ORDER BY `created_at` DESC',
+        sql: 'SELECT * from `order` where `created_at` > ? AND `status` != 5 ORDER BY `created_at` DESC',
         timeout: 20000,
     }, function (result, fields) {
         ctx.editMessageText(getOrderText(result, 'К сожалению за последний день заказов не было', 'Заказы, которые удалось найти за последний день:\n'))
@@ -56,7 +56,7 @@ bot.action('orders_day', ctx => {
 bot.action('orders_week', ctx => {
     var period = Math.round(Date.now() / 1000) - 3600 * 24 * 7
     dbQuery({
-        sql: 'SELECT * from `order` where `created_at` > ? ORDER BY `created_at` DESC',
+        sql: 'SELECT * from `order` where `created_at` > ? AND `status` != 5 ORDER BY `created_at` DESC',
         timeout: 20000,
     }, function (result, fields) {
         ctx.editMessageText(getOrderText(result, 'К сожалению за последнюю неделю заказов не было', 'Заказы, которые' +
@@ -67,7 +67,7 @@ bot.action('orders_week', ctx => {
 bot.action('orders_month', ctx => {
     var period = Math.round(Date.now() / 1000) - 3600 * 24 * 7 * 31
     dbQuery({
-        sql: 'SELECT * from `order` where `created_at` > ? ORDER BY `created_at` DESC',
+        sql: 'SELECT * from `order` where `created_at` > ? AND `status` != 5 ORDER BY `created_at` DESC',
         timeout: 20000,
     }, function (result, fields) {
         ctx.editMessageText(getOrderText(result, 'К сожалению за последний месяц заказов не было', 'Заказы, которые' +
