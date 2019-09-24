@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $current['name'];
                     </div>
                     <button id="catalog-filter-button" class="mb-30 mb-lg-0">Фильтры</button>
                     <?php if (!empty($producers)): ?>
-                        <div class="sidebar-widget">
+                        <div class="sidebar-widget mb-50">
                             <h4 class="pro-sidebar-title">Производитель</h4>
                             <div class="sidebar-widget-list mt-30">
                                 <ul>
@@ -86,6 +86,26 @@ $this->params['breadcrumbs'][] = $current['name'];
                             </div>
                         </div>
                     <?php endif; ?>
+                    <div class="sidebar-widget mb-50">
+                        <h4 class="pro-sidebar-title">Наличие</h4>
+                        <div class="sidebar-widget-list mt-30">
+                            <ul>
+                                <li>
+                                    <div class="sidebar-widget-list-left">
+                                        <input type="checkbox" <?= Yii::$app->request->get('available') ? ' checked' : '' ?>>
+                                        <a href="<?= \yii\helpers\Url::current([ 'available' => !Yii::$app->request->get('available') ]) ?>">
+                                            В наличии
+                                            <!--                                            <span>-->
+                                            <? //= $count ?><!--</span> -->
+                                        </a>
+                                        <span class="checkmark"></span>
+                                    </div>
+                                    <?php unset($param); ?>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="col-lg-9">

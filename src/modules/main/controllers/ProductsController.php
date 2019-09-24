@@ -156,6 +156,10 @@ class ProductsController
                 $param = explode(',', Html::encode($params['producers']));
                 $query->andWhere([ 'in', 'firm', $param ]);
             }
+    
+            if (!empty($params['available']) and $params['available'] === '1') {
+                $query->andWhere([ '>', 'sizes.quantity', 0 ]);
+            }
             
             $pages = new Pagination([
                                         'totalCount' => $query->count(),
