@@ -36,7 +36,8 @@ RUN apt-get update \
     certbot \
     python-certbot-apache
 
-RUN apt-get install -y zlib1g-dev libicu-dev g++ \
+RUN apt-get update \
+    && apt-get install -y zlib1g-dev libicu-dev g++ \
     && docker-php-ext-configure intl \
     && docker-php-ext-install intl
 
