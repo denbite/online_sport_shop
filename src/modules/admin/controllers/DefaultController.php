@@ -61,7 +61,7 @@ class DefaultController
                         'size' => (string) $worksheet->getCell('L' . $i)->getValue(),
                         'quantity' => (int) $worksheet->getCell('M' . $i)->getValue(),
                     ];
-                    
+    
                     // Получаем товар, если не существует такого, то создаем
                     if (!$item = Item::find()
                                      ->where([
@@ -83,6 +83,13 @@ class DefaultController
                         $item->rate = rand(75, 90);
                         
                         if (!$item->save()) {
+                            echo '<pre>';
+                            var_dump($collection);
+                            echo '</pre>';
+                            echo '<pre>';
+                            var_dump($data);
+                            echo '</pre>';
+                            die;
                             throw new Exception('Не удалось сохранить товар на строке ' . $i);
                         }
     
