@@ -78,19 +78,13 @@ class DefaultController
                         $item->firm = $data['firm'];
                         $item->model = $data['model'];
                         $item->collection = $collection;
-                        $item->category_id = $category_id;
+                        $item->category_id = (int) $category_id;
                         $item->status = Status::STATUS_ACTIVE;
                         $item->rate = rand(75, 90);
                         
                         if (!$item->save()) {
-                            echo '<pre>';
-                            var_dump($collection);
-                            echo '</pre>';
-                            echo '<pre>';
-                            var_dump($data);
-                            echo '</pre>';
-                            die;
-                            throw new Exception('Не удалось сохранить товар на строке ' . $i);
+                            $msg = $item->firstErrors;
+                            throw new Exception("Не удалось сохранить товар на строке {$i}: " . reset($msg));
                         }
     
                         $description = new ItemDescription();
@@ -98,7 +92,8 @@ class DefaultController
                         $description->item_id = $item['id'];
     
                         if (!$description->save()) {
-                            throw new Exception('Не удалось сохранить описание для товара на строке ' . $i);
+                            $msg = $item->firstErrors;
+                            throw new Exception("Не удалось сохранить описание для товара на строке {$i}: " . reset($msg));
                         }
                         
                         $item = ArrayHelper::toArray($item);
@@ -119,7 +114,8 @@ class DefaultController
                         $color->status = Status::STATUS_ACTIVE;
                         
                         if (!$color->save()) {
-                            throw new Exception('Не удалось сохранить цвет на строке ' . $i);
+                            $msg = $item->firstErrors;
+                            throw new Exception("Не удалось сохранить цвет на строке {$i}: " . reset($msg));
                         }
                         
                         $color = ArrayHelper::toArray($color);
@@ -140,7 +136,8 @@ class DefaultController
                         $size->status = Status::STATUS_ACTIVE;
                         
                         if (!$size->save()) {
-                            throw new Exception('Не удалось сохранить размер на строке ' . $i);
+                            $msg = $item->firstErrors;
+                            throw new Exception("Не удалось сохранить размер на строке {$i}: " . reset($msg));
                         }
                         
                         $size = ArrayHelper::toArray($size);
