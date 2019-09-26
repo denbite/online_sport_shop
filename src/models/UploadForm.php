@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\modules\admin\models\Import;
 use Yii;
 use yii\base\Model;
 use yii\db\Exception;
@@ -17,6 +18,8 @@ class UploadForm
     
     public $image;
     
+    public $excel;
+    
     private $_type;
     
     private $_subject_id;
@@ -25,7 +28,7 @@ class UploadForm
     {
         $this->setType($type);
         $this->setSubject($subject_id);
-    
+        
         //        return $this;
     }
     
@@ -34,6 +37,7 @@ class UploadForm
         return [
             [ [ 'images' ], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, webp', 'maxFiles' => 8 ],
             [ [ 'image' ], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, webp' ],
+            [ [ 'excel' ], 'file', 'skipOnEmpty' => true, ],
         ];
     }
     
@@ -74,25 +78,25 @@ class UploadForm
     
     public function uploadImage()
     {
-    
+        
         if ($this->validate()) {
             if (!empty($this->image)) {
-            
+                
                 $mdl = new Image();
                 // generate filename
                 $mdl->url = Yii::$app->security->generateRandomString(16) . '_' . time() . '.' . $this->image->extension;
                 $mdl->type = $this->_type;
                 $mdl->subject_id = $this->_subject_id;
-    
+                
                 if ($mdl->save() and $this->image instanceof UploadedFile) {
                     // save file and model
-                
+                    
                     switch ($mdl->type) {
                         case Image::TYPE_ITEM:
                             foreach (Image::getSizes() as $size => $folder) {
                                 // create path to save image
                                 $path = Yii::getAlias('@webroot') . $mdl->getPath($size);
-                            
+                                
                                 // check if path exists
                                 if (!file_exists($path)) {
                                     // if not -> create
@@ -101,7 +105,7 @@ class UploadForm
                                 if (!$this->image->saveAs($path . $mdl->url, false)) {
                                     throw new NotFoundHttpException('Изображения не были сохранены');
                                 }
-                            
+                                
                                 if ($size == Image::SIZE_ORIGINAL) {
                                     Image::resize($path . $mdl->url, 1024, 1024, true);
                                 } elseif ($size == Image::SIZE_MEDIUM) {
@@ -113,43 +117,111 @@ class UploadForm
                             break;
                         case Image::TYPE_CATEGORY:
                             $path = Yii::getAlias('@webroot') . $mdl->getPath(Image::SIZE_MEDIUM);
-                        
+                            
                             // check if path exists
                             if (!file_exists($path)) {
                                 // if not -> create
                                 FileHelper::createDirectory($path, 0777);
                             }
-                        
+                            
                             if (!$this->image->saveAs($path . $mdl->url, false)) {
                                 throw new NotFoundHttpException('Изображения не были сохранены');
                             }
-                        
+                            
                             Image::resize($path . $mdl->url, 512, 512);
-                        
+                            
                             break;
                         case Image::TYPE_BANNER:
                             $path = Yii::getAlias('@webroot') . $mdl->getPath(Image::SIZE_ORIGINAL);
-                        
+                            
                             // check if path exists
                             if (!file_exists($path)) {
                                 // if not -> create
                                 FileHelper::createDirectory($path, 0777);
                             }
-                        
+                            
                             if (!$this->image->saveAs($path . $mdl->url, false)) {
                                 throw new NotFoundHttpException('Изображение не были сохранены');
                             }
-                        
+                            
                             break;
                         default:
                             break;
                     }
                 }
-            
+                
                 unset($mdl);
             }
         } elseif (!empty($this->image)) {
             throw new Exception("Картинка \"{$this->image->baseName}.{$this->image->extension}\" не прошла валидацию");
         }
+    }
+    
+    public function uploadExcel($time = null)
+    {
+        // validation doesn't work, because i made check extension with in_array()
+        if ($this->validate() and !empty($this->excel) and $this->excel instanceof UploadedFile and in_array($this->excel->extension,
+                                                                                                             [
+                                                                                                                 'xls',
+                                                                                                                 'xlsx',
+                                                                                                             ])) {
+            if (empty($time)) {
+                $time = time();
+            }
+            
+            $path = Yii::getAlias('@webroot') . '/files/stock/';
+            
+            if (!file_exists($path)) {
+                FileHelper::createDirectory($path, 0777);
+            }
+            
+            
+            $filename = 'stock-' . $time . '.' . $this->excel->extension;
+            
+            if (!$this->excel->saveAs($path . $filename, false)) {
+                return false;
+            }
+            
+            // found time when created previous file
+            $imports = Import::find()
+                             ->where([
+                                         '<', 'created_at', $time,
+                                     ])
+                             ->andWhere([
+                                            'type' => Import::TYPE_UPLOAD_EXCEL,
+                                        ])
+                             ->orderBy([
+                                           'created_at' => SORT_DESC,
+                                       ])
+                             ->asArray()
+                             ->all();
+            
+            foreach ($imports as $import) {
+                if (unserialize($import['result'])['code'] == Import::RESULT_CODE_OK) {
+                    $lastTime = $import['created_at'];
+                    break;
+                }
+            }
+            
+            $filename = 'stock-' . $lastTime . '.';
+            
+            if (file_exists($path . $filename . 'xls')) {
+                unlink($path . $filename . 'xls');
+            }
+            
+            if (file_exists($path . $filename . 'xlsx')) {
+                unlink($path . $filename . 'xlsx');
+            }
+            
+            unset($filename);
+            unset($lastTime);
+            unset($time);
+            
+            return true;
+            
+        } else {
+            return null;
+        }
+        
     }
 }

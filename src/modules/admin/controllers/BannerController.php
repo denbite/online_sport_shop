@@ -102,7 +102,6 @@ class BannerController
             $post = Yii::$app->request->post();
             
             try {
-                
                 if ($model->load(Yii::$app->request->post()) and $model->save()) {
                     
                     TransactionHelper::wrap(function () use ($model, $modelUpload)

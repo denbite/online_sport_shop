@@ -199,9 +199,9 @@ $action = Yii::$app->controller->action->id;
                         </ul>
                     </li>
                 <?php endif; ?>
-                <?php if (Permission::can([ 'admin_config_index', ])): ?>
+                <?php if (Permission::can([ 'admin_config_index', 'admin_import_index' ])): ?>
                     <li class="header nav-small-cap">Дополнительные</li>
-                    <li class="treeview <?= in_array($controller, [ 'config', ]) ? ' active' : '' ?>">
+                    <li class="treeview <?= in_array($controller, [ 'config', 'import' ]) ? ' active' : '' ?>">
                         <a href="#">
                             <i class="fas fa-cogs"></i>
                             <span>Настройки</span>
@@ -215,6 +215,12 @@ $action = Yii::$app->controller->action->id;
                                                                                                                   '&nbsp;',
                                                                                                                   [ 'class' => 'far fa-circle' ]) . 'Основные',
                                                                                                         [ '/admin/config/index' ]) ?></li>
+                            <?php endif; ?>
+                            <?php if (Permission::can('admin_import_index')): ?>
+                                <li <?= $controller == 'import' ? ' class="active"' : '' ?>><?= Html::a(Html::tag('i',
+                                                                                                                  '&nbsp;',
+                                                                                                                  [ 'class' => 'far fa-circle' ]) . 'Импорт',
+                                                                                                        [ '/admin/import/index' ]) ?></li>
                             <?php endif; ?>
                         </ul>
                     </li>

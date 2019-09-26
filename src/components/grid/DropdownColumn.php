@@ -23,8 +23,12 @@ class DropdownColumn
     protected function renderDataCellContent($model, $key, $index)
     {
         $attribute = $this->attribute;
-        
-        $this->_attr = $model->$attribute;
+    
+        $val = $this->getDataCellValue($model, $key, $index);
+    
+        $this->_attr = !empty($val) ? $val : $model->$attribute;
+    
+        unset($val);
         
         if (array_key_exists($this->_attr, $this->css) and array_key_exists($this->_attr, $this->filter)) {
             return Html::tag('span', $this->filter[$this->_attr],
