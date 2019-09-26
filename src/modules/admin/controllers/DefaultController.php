@@ -4,14 +4,19 @@ namespace app\modules\admin\controllers;
 
 use app\components\helpers\TransactionHelper;
 use app\components\models\Status;
+use app\models\Image;
 use app\models\Item;
 use app\models\ItemColor;
 use app\models\ItemColorSize;
 use app\models\ItemDescription;
+use GuzzleHttp\Client;
 use PhpOffice\PhpSpreadsheet\Reader\Xls;
+use phpQuery;
 use Yii;
+use yii\base\ErrorException;
 use yii\db\Exception;
 use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -92,7 +97,7 @@ class DefaultController
                         $description->item_id = $item['id'];
     
                         if (!$description->save()) {
-                            $msg = $item->firstErrors;
+                            $msg = $description->firstErrors;
                             throw new Exception("Не удалось сохранить описание для товара на строке {$i}: " . reset($msg));
                         }
                         
@@ -114,7 +119,7 @@ class DefaultController
                         $color->status = Status::STATUS_ACTIVE;
                         
                         if (!$color->save()) {
-                            $msg = $item->firstErrors;
+                            $msg = $color->firstErrors;
                             throw new Exception("Не удалось сохранить цвет на строке {$i}: " . reset($msg));
                         }
                         
@@ -136,7 +141,7 @@ class DefaultController
                         $size->status = Status::STATUS_ACTIVE;
                         
                         if (!$size->save()) {
-                            $msg = $item->firstErrors;
+                            $msg = $size->firstErrors;
                             throw new Exception("Не удалось сохранить размер на строке {$i}: " . reset($msg));
                         }
                         
@@ -269,5 +274,168 @@ class DefaultController
             die('ok');
         }
         throw new NotFoundHttpException();
+    }
+    
+    public function actionParsePics($token = null)
+    {
+        if ($token == 'tyztyz') {
+            $queryWithPics = Item::find()
+                                 ->select([ 'item.id' ])
+                                 ->from(Item::tableName() . ' item')
+                                 ->joinWith([ 'allColors colors' => function ($query)
+                                 {
+                                     $query->joinWith([ 'mainImage' ]);
+                                 },
+                                            ]);
+            
+            $items = Item::find()
+                         ->joinWith([ 'allColors colors' ])
+                         ->where([ 'not in', 'item.id', $queryWithPics ])
+                         ->andWhere([
+                                        'firm' => 'Arena',
+                                    ])
+                         ->orderBy([
+                                       'id' => SORT_DESC,
+                                   ])
+                         ->asArray()
+                         ->all();
+            
+            $pathTmp = Yii::getAlias('@webroot') . '/files/tmp/';
+            
+            if (!file_exists($pathTmp)) {
+                FileHelper::createDirectory($pathTmp, 0777);
+            }
+            
+            $count_colors = 0;
+            $count_images = 0;
+            
+            Yii::$app->db->createCommand('SET SESSION wait_timeout = 28800;')->execute();
+            
+            if (!empty($items) and is_array($items)) {
+                $client = new Client([ 'base_uri' => 'https://arena.com.ua', ]);
+                foreach ($items as $item) {
+                    foreach ($item['allColors'] as $color) {
+                        $response = $client->request('GET',
+                                                     'index.php',
+                                                     [ 'query' => [
+                                                         'route' => 'product/search',
+                                                         'search' => $color['code'],
+                                                     ] ])->getBody()->getContents();
+                        
+                        // get search page
+                        $pq = phpQuery::newDocumentHTML($response);
+                        
+                        $link = $pq->find('#content .main-products .product-list-item:first .product-thumb .product-details .caption h4.name a')
+                                   ->attr('href');
+                        
+                        if (empty($link)) {
+                            continue;
+                        }
+                        
+                        // get product page
+                        $response = $client->request('GET', $link)->getBody()->getContents();
+                        
+                        $pq = phpQuery::newDocumentHTML($response);
+                        
+                        $code = $pq->find('#content #product span#otp-model')->html();
+                        
+                        if ($code !== $color['code']) {
+                            continue;
+                        }
+                        
+                        $images = $pq->find('#content .left .image-gallery')->children();
+                        
+                        if (empty($images)) {
+                            continue;
+                        }
+                        
+                        foreach ($images as $image) {
+                            $pqImage = pq($image);
+                            
+                            $pic = $pqImage->attr('href');
+                            
+                            if (!$this->copyRemote('https://arena.com.ua', $pic,
+                                                   $pathTmp . basename($pic))) {
+                                continue;
+                            }
+                            
+                        }
+                        
+                        foreach (scandir($pathTmp) as $one) {
+                            if (in_array($one, [ '.', '..' ])) {
+                                continue;
+                            }
+                            
+                            $mdl = new Image();
+                            // generate filename
+                            $mdl->url = Yii::$app->security->generateRandomString(16) . '_' . time() . '.' . strtolower(pathinfo($one,
+                                                                                                                                 PATHINFO_EXTENSION));
+                            $mdl->type = Image::TYPE_ITEM;
+                            $mdl->subject_id = $color['id'];
+                            
+                            if (!$mdl->save()) {
+                                throw new Exception("Не удалось сохранить картинку для товара с артикулом: {$color['code']}");
+                            }
+                            
+                            foreach (Image::getSizes() as $size => $folder) {
+                                // create path to save image
+                                $path = Yii::getAlias('@webroot') . $mdl->getPath($size);
+                                
+                                // check if path exists
+                                if (!file_exists($path)) {
+                                    // if not -> create
+                                    FileHelper::createDirectory($path, 0777);
+                                }
+                                
+                                if (!copy($pathTmp . $one, $path . $mdl->url)) {
+                                    throw new NotFoundHttpException('Изображения не были сохранены');
+                                }
+                                
+                                if ($size == Image::SIZE_ORIGINAL) {
+                                    Image::resize($path . $mdl->url, 1024, 1024, true);
+                                } elseif ($size == Image::SIZE_MEDIUM) {
+                                    Image::resize($path . $mdl->url, 512, 512, true);
+                                } elseif ($size == Image::SIZE_THUMBNAIL) {
+                                    Image::resize($path . $mdl->url, 192, 192);
+                                }
+                                
+                            }
+                            
+                            
+                            $count_images += 1;
+                            unlink($pathTmp . $one);
+                            unset($mdl);
+                            
+                        }
+                        
+                        $count_colors += 1;
+                        
+                    }
+                }
+                
+            }
+            
+            echo "<p> Цветов добавлено: {$count_colors} </p><br>";
+            echo "<p> Картинок добавлено: {$count_images} </p><br>";
+            
+            die('ok');
+        }
+        
+        throw new NotFoundHttpException('Страница не найдена.');
+    }
+    
+    
+    public function copyRemote($baseUri, $fromUrl, $toFile)
+    {
+        try {
+            $client = new Client([ 'base_uri' => $baseUri, ]);
+            $response = $client->request('GET', $fromUrl)->getBody()->getContents();
+            
+            return file_put_contents($toFile, $response);
+        } catch (ErrorException $e) {
+            Yii::$app->errorHandler->logException($e);
+            
+            return false;
+        }
     }
 }

@@ -23,11 +23,8 @@ class UploadForm
     
     public function __construct($type = null, $subject_id = null)
     {
-        if ($type and $subject_id) {
-            // add validation
-            $this->_type = $type;
-            $this->_subject_id = $subject_id;
-        }
+        $this->setType($type);
+        $this->setSubject($subject_id);
     
         //        return $this;
     }
@@ -35,8 +32,8 @@ class UploadForm
     public function rules()
     {
         return [
-            [ [ 'images' ], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg', 'maxFiles' => 8 ],
-            [ [ 'image' ], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg' ],
+            [ [ 'images' ], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, webp', 'maxFiles' => 8 ],
+            [ [ 'image' ], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, webp' ],
         ];
     }
     
@@ -86,7 +83,7 @@ class UploadForm
                 $mdl->url = Yii::$app->security->generateRandomString(16) . '_' . time() . '.' . $this->image->extension;
                 $mdl->type = $this->_type;
                 $mdl->subject_id = $this->_subject_id;
-            
+    
                 if ($mdl->save() and $this->image instanceof UploadedFile) {
                     // save file and model
                 

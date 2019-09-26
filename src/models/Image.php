@@ -231,6 +231,9 @@ class Image
                 $img = imageCreateFromPng($filename);
                 imageSaveAlpha($img, true);
                 break;
+            case IMAGETYPE_WEBP:
+                $img = imagecreatefromwebp($filename);
+                break;
             default:
                 throw new InvalidArgumentException('Invalid image type given');
         }
@@ -249,7 +252,7 @@ class Image
         }
         
         $tmp = imageCreateTrueColor($w, $h);
-        if ($type == IMAGETYPE_PNG || $type == IMAGETYPE_JPEG) {
+        if ($type == IMAGETYPE_PNG || $type == IMAGETYPE_JPEG || $type == IMAGETYPE_WEBP) {
             imagealphablending($tmp, true);
             imageSaveAlpha($tmp, true);
             $transparent = imagecolorallocate($tmp, 255, 255, 255);
@@ -273,6 +276,8 @@ class Image
             imagejpeg($tmp, $filename);
         } elseif ($type == IMAGETYPE_PNG) {
             imagepng($tmp, $filename);
+        } elseif ($type == IMAGETYPE_WEBP) {
+            imagewebp($tmp, $filename);
         }
     }
     
