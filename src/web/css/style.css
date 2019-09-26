@@ -10841,3 +10841,12 @@ button#catalog-filter-button {
     margin-left: 4px !important;
     color: #1f2226;
 }
+
+#product-edit {
+    display: none;
+    float: right;
+}
+
+#price-details h2:hover a#product-edit {
+    display: block;
+}

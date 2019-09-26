@@ -63,7 +63,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div id="price-details" class="product-details-content ml-30">
-                        <h2><?= $this->title ?></h2>
+                        <h2><?= $this->title ?>
+                            <?php if (\app\components\helpers\Permission::can([ 'admin_item_update' ])): ?>
+                                <a id="product-edit" class="fas fa-edit" target="_blank"
+                                   href="<?= Url::to([ '/admin/item/update', 'id' => $item['id'] ]) ?>"></a>
+                            <?php endif; ?>
+                        </h2>
+    
                         <?php foreach ($item['allColors'] as $color): ?>
                             <?php foreach ($color['allSizes'] as $size): ?>
                                 <?php if ($size['quantity'] > 0): ?>
