@@ -183,38 +183,34 @@ class UploadForm
             }
             
             // found time when created previous file
-            $imports = Import::find()
-                             ->where([
-                                         '<', 'created_at', $time,
-                                     ])
-                             ->andWhere([
-                                            'type' => Import::TYPE_UPLOAD_EXCEL,
-                                        ])
-                             ->orderBy([
-                                           'created_at' => SORT_DESC,
-                                       ])
-                             ->asArray()
-                             ->all();
-            
-            foreach ($imports as $import) {
-                if (unserialize($import['result'])['code'] == Import::RESULT_CODE_OK) {
-                    $lastTime = $import['created_at'];
-                    break;
+            $lastTime = 'stock-' . Import::find()
+                                         ->where([
+                                                     'type' => Import::TYPE_UPLOAD_EXCEL,
+                                                 ])
+                                         ->filterWhere([
+                                                           'like', 'result', 's:4:"code";i:' . Import::RESULT_CODE_OK,
+                                                       ])
+                                         ->orderBy([
+                                                       'created_at' => SORT_DESC,
+                                                   ])
+                                         ->one()
+                    ->created_at;
+    
+            if (!empty($lastTime)) {
+        
+                $filename = 'stock-' . $lastTime . '.';
+        
+                if (file_exists($path . $filename . 'xls')) {
+                    unlink($path . $filename . 'xls');
                 }
+        
+                if (file_exists($path . $filename . 'xlsx')) {
+                    unlink($path . $filename . 'xlsx');
+                }
+        
+                unset($lastTime);
             }
-            
-            $filename = 'stock-' . $lastTime . '.';
-            
-            if (file_exists($path . $filename . 'xls')) {
-                unlink($path . $filename . 'xls');
-            }
-            
-            if (file_exists($path . $filename . 'xlsx')) {
-                unlink($path . $filename . 'xlsx');
-            }
-            
             unset($filename);
-            unset($lastTime);
             unset($time);
             
             return true;
