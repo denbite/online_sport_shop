@@ -38,7 +38,7 @@ class Import
     {
         return [
             self::TYPE_UPLOAD_EXCEL => 'Загрузка Excel',
-            self::TYPE_IMPORT_FROM_EXCEL => 'Загрузка Excel',
+            self::TYPE_IMPORT_FROM_EXCEL => 'Импорт Excel',
         ];
     }
     

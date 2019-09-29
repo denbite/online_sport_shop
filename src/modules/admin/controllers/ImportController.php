@@ -107,7 +107,7 @@ class ImportController
                                          ->where([
                                                      'type' => Import::TYPE_UPLOAD_EXCEL,
                                                  ])
-                                         ->filterWhere([
+                                         ->andFilterWhere([
                                                            'like', 'result', 's:4:"code";i:' . Import::RESULT_CODE_OK,
                                                        ])
                                          ->orderBy([
@@ -396,7 +396,7 @@ class ImportController
                 ->joinWith([ 'allColors colors' ])
                 ->where([ 'not in', 'item.id', $queryWithPics ])
                 ->andWhere([
-                               'firm' => 'Arena',
+                               'firm' => 'Saucony',
                            ])
                 ->orderBy([
                               'id' => SORT_DESC,
@@ -416,22 +416,20 @@ class ImportController
             Yii::$app->db->createCommand('SET SESSION wait_timeout = 28800;')->execute();
             
             if (!empty($items) and is_array($items)) {
-                $client = new Client([ 'base_uri' => 'https://arena.com.ua', ]);
+                $client = new Client([ 'base_uri' => 'http://saucony.kiev.ua', ]);
                 foreach ($items as $item) {
                     foreach ($item['allColors'] as $color) {
                         $response = $client->request('GET',
-                                                     'index.php',
+                                                     'search',
                                                      [ 'query' => [
-                                                         'route' => 'product/search',
                                                          'search' => $color['code'],
                                                      ] ])->getBody()->getContents();
                         
                         // get search page
                         $pq = phpQuery::newDocumentHTML($response);
-                        
-                        $link = $pq->find('#content .main-products .product-list-item:first .product-thumb .product-details .caption h4.name a')
-                            ->attr('href');
-                        
+    
+                        $link = $pq->find('#search_block #content .row .product .product-img a')->attr('href');
+    
                         if (empty($link)) {
                             continue;
                         }
@@ -440,14 +438,17 @@ class ImportController
                         $response = $client->request('GET', $link)->getBody()->getContents();
                         
                         $pq = phpQuery::newDocumentHTML($response);
-                        
-                        $code = $pq->find('#content #product span#otp-model')->html();
+    
+                        $code = $pq->find('#tovar .col-md-4 ul.list-unstyled li:first')->html();
+                        $start = strpos($code, ':');
+                        $code = trim(substr($code, $start + 1));
                         
                         if ($code !== $color['code']) {
                             continue;
                         }
-                        
-                        $images = $pq->find('#content .left .image-gallery')->children();
+    
+                        $images = $pq->find('#tovar .col-md-8 #carouselExampleIndicators ul.carousel-inner')
+                                     ->children();
                         
                         if (empty($images)) {
                             continue;
@@ -455,10 +456,10 @@ class ImportController
                         
                         foreach ($images as $image) {
                             $pqImage = pq($image);
-                            
-                            $pic = $pqImage->attr('href');
-                            
-                            if (!$this->copyRemote('https://arena.com.ua', $pic,
+    
+                            $pic = $pqImage->find('img')->attr('src');
+    
+                            if (!$this->copyRemote('http://saucony.kiev.ua', $pic,
                                                    $pathTmp . basename($pic))) {
                                 continue;
                             }
