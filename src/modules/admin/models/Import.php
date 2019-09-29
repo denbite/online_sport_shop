@@ -2,6 +2,8 @@
 
 namespace app\modules\admin\models;
 
+use Yii;
+
 /**
  * This is the model class for table "import".
  *
@@ -17,6 +19,8 @@ class Import
 {
     
     const TYPE_UPLOAD_EXCEL = 1;
+    
+    const TYPE_IMPORT_FROM_EXCEL = 2;
     
     const RESULT_CODE_OK = 1;
     
@@ -34,6 +38,7 @@ class Import
     {
         return [
             self::TYPE_UPLOAD_EXCEL => 'Загрузка Excel',
+            self::TYPE_IMPORT_FROM_EXCEL => 'Загрузка Excel',
         ];
     }
     
@@ -41,6 +46,7 @@ class Import
     {
         return [
             self::TYPE_UPLOAD_EXCEL => 'success',
+            self::TYPE_IMPORT_FROM_EXCEL => 'info',
         ];
     }
     
@@ -58,6 +64,11 @@ class Import
             self::RESULT_CODE_OK => 'success',
             self::RESULT_CODE_ERROR => 'danger',
         ];
+    }
+    
+    public static function getStockBasePath()
+    {
+        return Yii::getAlias('@webroot') . '/files/stock/';
     }
     
     /**

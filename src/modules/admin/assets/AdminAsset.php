@@ -30,6 +30,7 @@ class AdminAsset extends AssetBundle
         
         'js/template.js',
         'js/item.js',
+        //        'js/import.js',
         'js/xeditable.js',
         'js/jquery.maskedinput.min.js',
     

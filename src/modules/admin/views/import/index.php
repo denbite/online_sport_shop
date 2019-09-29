@@ -5,6 +5,7 @@ use app\components\grid\DropdownColumn;
 use app\components\grid\IdColumn;
 use app\components\grid\OwnColumn;
 use app\components\helpers\Permission;
+use app\models\Category;
 use app\modules\admin\models\Import;
 use yii\helpers\Html;
 
@@ -39,6 +40,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php if (Permission::can('admin_import_upload-excel')): ?>
                 <?= Html::a('Загрузить excel', [ '/admin/import/upload-excel' ], [ 'class' => 'btn btn-sm
             btn-success', 'style' => 'font-size: 16px;font-weight: 600;margin-left:15px;' ]) ?>
+            <?php endif; ?>
+            <?php if (Permission::can('admin_import_import-from-excel')): ?>
+                <?= Html::a('Импортировать Excel таблицу', [ '/admin/import/import-from-excel' ], [ 'class' => 'btn btn-sm
+            btn-info', 'style' => 'font-size: 16px;font-weight: 600;margin-left:15px;' ]) ?>
             <?php endif; ?>
 
         </div>
@@ -90,7 +95,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                                           'attribute' => 'params',
                                                           'value' => function ($model)
                                                           {
-                                                              return 'name => ' . unserialize($model->params)['name'];
+                                                              if (array_key_exists($model->type, Import::getTypes())) {
+                                                                  switch ($model->type) {
+                                                                      case Import::TYPE_UPLOAD_EXCEL:
+                                                                          return 'Название => ' . unserialize($model->params)['name'];
+                                                                      case Import::TYPE_IMPORT_FROM_EXCEL:
+                                                                          return 'Категория => ' . Category::findOne([ 'id' => unserialize($model->params)['category_id'] ])->name;
+                                                                      default:
+                                                                          return null;
+                                                                  }
+                                                              }
+    
+                                                              return null;
                                                           },
                                                       ],
                                                       [

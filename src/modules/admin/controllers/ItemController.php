@@ -240,7 +240,8 @@ class ItemController
                         'modelColors' => !empty($modelColors) ? $modelColors : [],
                         'modelColorsSizes' => !empty($modelColorsSizes) ? $modelColorsSizes : [],
                         'modelUploads' => !empty($modelUploads) ? $modelUploads : [],
-                        'categories' => Category::getCategoriesIndexNameWithParents(), ]
+                        'categories' => Category::getCategoriesIndexNameWithParents(),
+                    ]
         );
     }
     
