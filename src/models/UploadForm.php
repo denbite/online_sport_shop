@@ -183,22 +183,21 @@ class UploadForm
             }
             
             // found time when created previous file
-            $lastTime = 'stock-' . Import::find()
-                                         ->where([
+            $lastTime = Import::find()
+                              ->where([
                                                      'type' => Import::TYPE_UPLOAD_EXCEL,
                                                  ])
-                                         ->filterWhere([
+                              ->filterWhere([
                                                            'like', 'result', 's:4:"code";i:' . Import::RESULT_CODE_OK,
                                                        ])
-                                         ->orderBy([
+                              ->orderBy([
                                                        'created_at' => SORT_DESC,
                                                    ])
-                                         ->one()
-                    ->created_at;
+                              ->one();
     
-            if (!empty($lastTime)) {
+            if (!empty($lastTime) and $lastTime instanceof Import) {
         
-                $filename = 'stock-' . $lastTime . '.';
+                $filename = 'stock-' . $lastTime->created_at . '.';
         
                 if (file_exists($path . $filename . 'xls')) {
                     unlink($path . $filename . 'xls');
