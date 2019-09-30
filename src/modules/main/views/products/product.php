@@ -99,14 +99,16 @@ $this->params['breadcrumbs'][] = $this->title;
                             <span><a href="#">0 отзывов</a></span>
                         </div>
                         <?= $item['description']['small_text'] ?>
-                        <div class="pro-details-list">
-                            <ul>
-                                <?php foreach (explode(ItemDescription::ITEMS_SEPARATOR,
-                                                       $item['description']['small_list']) as $one): ?>
-                                    <li>- <?= $one ?></li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
+                        <?php if (!empty($item['description']['small_list'])): ?>
+                            <div class="pro-details-list">
+                                <ul>
+                                    <?php foreach (explode(ItemDescription::ITEMS_SEPARATOR,
+                                                           $item['description']['small_list']) as $one): ?>
+                                        <li>- <?= $one ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
                         <div class="pro-details-size-color">
                             <div class="pro-details-color-wrap">
                                 <span>Цвет</span>
