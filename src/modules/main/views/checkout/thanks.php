@@ -5,6 +5,12 @@
 
 ?>
 
+<script>
+    fbq('track', 'Purchase', {
+        currency: 'UAH',
+    });
+</script>
+
 <div class="pt-100 pb-100">
     <div class="container">
         <div class="row">
