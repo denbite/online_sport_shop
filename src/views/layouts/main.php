@@ -43,11 +43,41 @@ AppAsset::register($this);
     
     <?php endif; ?>
     
+    <?php if (!YII_ENV_DEV and YII_ENV_PROD): ?>
+
+        <!-- Google Tag Manager -->
+        <script>(function (w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({
+                    'gtm.start':
+                        new Date().getTime(), event: 'gtm.js'
+                });
+                var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+                j.async = true;
+                j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', 'GTM-PVSJ5QB');</script>
+        <!-- End Google Tag Manager -->
+    
+    <?php endif; ?>
     <?php $this->head() ?>
 
 </head>
 
 <body>
+<?php if (!YII_ENV_DEV and YII_ENV_PROD): ?>
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PVSJ5QB"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+<?php endif; ?>
+
 <?php $this->beginBody() ?>
 
 <div class="wrapper">
@@ -82,11 +112,16 @@ AppAsset::register($this);
                                         <ul class="mega-menu">
                                             <?php foreach (\app\models\Category::findOne([ 'root' => 1, 'lvl' => 0 ])
                                                                                ->children(1)
+                                                                               ->andWhere([ 'active' => \app\components\models\Status::STATUS_ACTIVE ])
+                                                                               ->limit(4)
                                                                                ->all() as $category): ?>
                                                 <li><a class="menu-title"
                                                        href="<?= Url::to([ '/main/products/category', 'slug' => ValueHelper::encryptValue($category['id']) ]) ?>"><?= $category['name'] ?></a>
                                                     <ul>
-                                                        <?php foreach ($category->children(1)->all() as $child): ?>
+                                                        <?php foreach ($category->children(1)
+                                                                                ->andWhere([ 'active' => \app\components\models\Status::STATUS_ACTIVE ])
+                                                                                ->limit(8)
+                                                                                ->all() as $child): ?>
                                                             <li>
                                                                 <a href="<?= Url::to([ '/main/products/category', 'slug' => ValueHelper::encryptValue($child['id']) ]) ?>"><?= $child['name'] ?></a>
                                                             </li>
@@ -218,11 +253,14 @@ AppAsset::register($this);
                                 <ul class="dropdown">
                                     <?php foreach (\app\models\Category::findOne([ 'root' => 1, 'lvl' => 0 ])
                                                                        ->children(1)
+                                                                       ->andWhere([ 'active' => \app\components\models\Status::STATUS_ACTIVE ])
                                                                        ->all() as $category): ?>
                                         <li class="menu-item-has-children"><a
                                                     href="<?= Url::to([ '/main/products/category', 'slug' => ValueHelper::encryptValue($category['id']) ]) ?>"><?= $category['name'] ?></a>
                                             <ul class="dropdown">
-                                                <?php foreach ($category->children(1)->all() as $child): ?>
+                                                <?php foreach ($category->children(1)
+                                                                        ->andWhere([ 'active' => \app\components\models\Status::STATUS_ACTIVE ])
+                                                                        ->all() as $child): ?>
                                                     <li>
                                                         <a href="<?= Url::to([ '/main/products/category', 'slug' => ValueHelper::encryptValue($child['id']) ]) ?>"><?= $child['name'] ?></a>
                                                     </li>
