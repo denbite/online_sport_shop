@@ -8,6 +8,7 @@ use app\models\Banner;
 use app\models\Category;
 use app\models\Item;
 use app\modules\user\models\User;
+use Yii;
 use yii\web\Controller;
 
 /**
@@ -21,6 +22,7 @@ class DefaultController
     {
         SeoHelper::putOpenGraphTags([
                                         'og:site_name' => 'Интернет-магазин Aquista',
+                                        'og:image' => Yii::$app->params['host'] . '/images/logo.png',
                                     ]);
         
         return parent::beforeAction($action);
