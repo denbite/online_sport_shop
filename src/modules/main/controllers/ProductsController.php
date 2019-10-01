@@ -14,6 +14,7 @@ use yii\data\Pagination;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -366,6 +367,13 @@ class ProductsController
                     ->all();
                 
                 // create OpenGraph meta-tags
+    
+                SeoHelper::putOpenGraphTags([
+                                                'og:title' => Category::findOne([ 'id' => $item['category_id'] ])->name . ' ' . $item['firm'] . ' ' . $item['model'],
+                                                'og:image' => Yii::$app->params['host'] . Image::getLink($item['allColors'][0]['allImages'][0]['id'],
+                                                                                                         Image::SIZE_THUMBNAIL),
+                                                'og:url' => Yii::$app->params['host'] . Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ]),
+                                            ]);
                 
                 unset($title);
                 unset($description);
