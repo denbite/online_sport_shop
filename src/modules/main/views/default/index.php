@@ -76,7 +76,7 @@ use yii\helpers\Html;
         <div class="container">
             <div class="section-title text-center pb-45">
                 <h2>Топы продаж</h2>
-                <p> Эти товары раскупают быстрее всего, успей заказать и ты</p>
+                <p> Эти товары раскупают быстрее всего, <br> успей заказать и ты</p>
             </div>
             <div class="arrivals-wrap scroll-zoom">
                 <div class="ht-products product-slider-active-2 owl-carousel">
@@ -191,7 +191,7 @@ use yii\helpers\Html;
     <!--    </div>-->
     <!--</div>-->
 
-<?php if (!empty($instagram_token)): ?>
+<?php if (false and !empty($instagram_token)): ?>
     <div class="instagram-area section-margin-1 py-5">
         <div class="container">
             <div class="section-title text-center pb-45">

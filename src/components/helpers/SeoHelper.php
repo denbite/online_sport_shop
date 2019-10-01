@@ -14,7 +14,7 @@ class SeoHelper
      *
      * @param $tags
      */
-    public static function putOpenGraphTags($tags)
+    public static function putOpenGraphTags(array $tags)
     {
         foreach ($tags as $prop => $content) {
             Yii::$app->view->registerMetaTag([
@@ -29,7 +29,7 @@ class SeoHelper
      *
      * @param array $tags
      */
-    public static function putDefaultTags($tags = [])
+    public static function putDefaultTags(array $tags = [])
     {
         if (!empty($tags) and is_array($tags)) {
             
