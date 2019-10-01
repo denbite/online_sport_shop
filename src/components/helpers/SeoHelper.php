@@ -42,7 +42,7 @@ class SeoHelper
         } else {
             Yii::$app->view->registerMetaTag([
                                                  'name' => 'title',
-                'content' => 'Купить спортивные товары Arena, Saucony, Asics, плавки, купальники, модную одежду недорого | интернет-магазин Киев | бесплатная доствка',
+                                                 'content' => 'Купить спортивные товары, иннвентарь, аксессуары, питание недорого | интернет-магазин Киев | быстрая доствка',
                                              ], 'title');
             Yii::$app->view->registerMetaTag([
                                                  'name' => 'description',

@@ -22,7 +22,7 @@ class DefaultController
     {
         SeoHelper::putOpenGraphTags([
                                         'og:site_name' => 'Интернет-магазин Aquista',
-                                        'og:image' => Yii::$app->params['host'] . '/images/logo.png',
+                                        'og:image' => Yii::$app->params['host'] . '/images/logo-admin-icon.png',
                                     ]);
         
         return parent::beforeAction($action);
