@@ -17,6 +17,15 @@ class DefaultController
     extends Controller
 {
     
+    public function beforeAction($action)
+    {
+        SeoHelper::putOpenGraphTags([
+                                        'og:site_name' => 'Интернет-магазин Aquista',
+                                    ]);
+        
+        return parent::beforeAction($action);
+    }
+    
     /**
      * {@inheritdoc}
      */

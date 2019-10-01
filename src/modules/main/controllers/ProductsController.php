@@ -25,6 +25,14 @@ class ProductsController
     extends Controller
 {
     
+    public function beforeAction($action)
+    {
+        SeoHelper::putOpenGraphTags([
+                                        'og:site_name' => 'Интернет-магазин Aquista',
+                                    ]);
+        
+        return parent::beforeAction($action);
+    }
     /**
      * {@inheritdoc}
      */
@@ -373,6 +381,7 @@ class ProductsController
                                                 'og:image' => Yii::$app->params['host'] . Image::getLink($item['allColors'][0]['allImages'][0]['id'],
                                                                                                          Image::SIZE_THUMBNAIL),
                                                 'og:url' => Yii::$app->params['host'] . Url::to([ '/main/products/product', 'slug' => ValueHelper::encryptValue($item['id']) ]),
+                                                'og:site_name' => 'Интернет-магазин Aquista',
                                             ]);
                 
                 unset($title);

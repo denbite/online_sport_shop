@@ -2,6 +2,7 @@
 
 namespace app\modules\main\controllers;
 
+use app\components\helpers\SeoHelper;
 use app\models\Order;
 use Yii;
 use yii\web\Controller;
@@ -12,6 +13,15 @@ use yii\web\Controller;
 class ProfileController
     extends Controller
 {
+    
+    public function beforeAction($action)
+    {
+        SeoHelper::putOpenGraphTags([
+                                        'og:site_name' => 'Интернет-магазин Aquista',
+                                    ]);
+        
+        return parent::beforeAction($action);
+    }
     
     /**
      * {@inheritdoc}
@@ -44,13 +54,13 @@ class ProfileController
                                      ])
                            ->asArray()
                            ->all();
-    
+            
             return $this->render('index', [
                 'user' => $user,
                 'orders' => $orders,
             ]);
         }
-    
+        
         return $this->redirect([ '/user/default/login' ]);
     }
 }

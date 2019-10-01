@@ -2,6 +2,7 @@
 
 namespace app\modules\main\controllers;
 
+use app\components\helpers\SeoHelper;
 use app\components\helpers\ValueHelper;
 use app\components\models\NovaPoshta;
 use app\components\models\Status;
@@ -19,6 +20,15 @@ use yii\web\MethodNotAllowedHttpException;
 class CartController
     extends Controller
 {
+    
+    public function beforeAction($action)
+    {
+        SeoHelper::putOpenGraphTags([
+                                        'og:site_name' => 'Интернет-магазин Aquista',
+                                    ]);
+        
+        return parent::beforeAction($action);
+    }
     
     /**
      * {@inheritdoc}
@@ -43,7 +53,7 @@ class CartController
         if (Yii::$app->request->isPost and Yii::$app->request->isAjax) {
             $result = [];
             $cart = Yii::$app->cart;
-    
+            
             if ($post = Yii::$app->request->post() and array_key_exists('color', $post) and array_key_exists('size',
                                                                                                              $post) and array_key_exists('quantity',
                                                                                                                                          $post)) {
@@ -51,38 +61,38 @@ class CartController
                 $color = ValueHelper::decryptValue(Html::encode($post['color']));
                 $size = ValueHelper::decryptValue(Html::encode($post['size']));
                 $quantity = Html::encode($post['quantity']);
-        
+                
                 $item = ItemColorSize::find()
-                                     ->from(ItemColorSize::tableName() . ' size')
-                                     ->joinWith([ 'color color' => function ($query)
-                                     {
-                                         $query->joinWith([ 'item item' => function ($query)
-                                         {
-                                             $query->with([ 'promotion' => function ($query)
-                                             {
-                                                 $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
-                                             }, 'category' => function ($query)
-                                             {
-                                                 $query->andWhere([ 'active' => Status::STATUS_ACTIVE ]);
-                                             } ]);
-                                         }, 'mainImage image' ]);
-                                     } ])
-                                     ->where([
-                                                 'color.id' => $color,
-                                                 'size.id' => $size,
-                                                 'size.status' => Status::STATUS_ACTIVE,
-                                                 'color.status' => Status::STATUS_ACTIVE,
-                                                 'item.status' => Status::STATUS_ACTIVE,
-                                             ])
-                                     ->andWhere([ '>=', 'size.quantity', $quantity ])
-                                     ->asArray()
-                                     ->one();
-        
+                    ->from(ItemColorSize::tableName() . ' size')
+                    ->joinWith([ 'color color' => function ($query)
+                    {
+                        $query->joinWith([ 'item item' => function ($query)
+                        {
+                            $query->with([ 'promotion' => function ($query)
+                            {
+                                $query->andWhere([ 'status' => Status::STATUS_ACTIVE ]);
+                            }, 'category' => function ($query)
+                            {
+                                $query->andWhere([ 'active' => Status::STATUS_ACTIVE ]);
+                            } ]);
+                        }, 'mainImage image' ]);
+                    } ])
+                    ->where([
+                                'color.id' => $color,
+                                'size.id' => $size,
+                                'size.status' => Status::STATUS_ACTIVE,
+                                'color.status' => Status::STATUS_ACTIVE,
+                                'item.status' => Status::STATUS_ACTIVE,
+                            ])
+                    ->andWhere([ '>=', 'size.quantity', $quantity ])
+                    ->asArray()
+                    ->one();
+                
                 if (!empty($item)) {
                     // check if this item already exists
                     $product = ItemColorSize::findOne([ 'id' => $size ]);
                     $cart_item = $cart->getItem($product->id);
-            
+                    
                     if (empty($cart_item)) {
                         $cart->add($product, $quantity);
                         $result['success'] = true;
@@ -98,7 +108,7 @@ class CartController
             
             return $this->asJson($result);
         }
-    
+        
         throw new MethodNotAllowedHttpException('Only POST method allowed');
     }
     
@@ -117,7 +127,7 @@ class CartController
                     $result['success'] = true;
                 }
             }
-    
+            
             return $this->asJson($result);
         }
         
@@ -140,7 +150,7 @@ class CartController
             } catch (Exception $exception) {
                 Yii::$app->errorHandler->logException($exception);
             }
-    
+            
             return $this->asJson($result);
         }
         
@@ -160,7 +170,7 @@ class CartController
             $tmp = [];
             
             foreach ($cart->getItems() as $index => $item) {
-    
+                
                 $size = $item->getProduct();
                 $tmp[$index]['size'] = ArrayHelper::toArray($size);
                 $tmp[$index]['color'] = ArrayHelper::toArray($size->color);
@@ -179,16 +189,16 @@ class CartController
             unset($tmp);
             unset($index);
             unset($item);
-    
+            
             $data['cart'] = $this->view->render('_cart', [
                 'result' => $result,
             ], $this);
-    
+            
             $data['delivery'] = ValueHelper::getDelivery($cart->getTotalCost());
             $data['totalCost'] = $result['totalCost'];
             $data['totalCostWithoutPromotion'] = $result['totalCost'] != $result['totalCostWithoutPromotion'] ? $result['totalCostWithoutPromotion'] : null;
             unset($result);
-    
+            
             return $this->asJson($data);
             
         }
@@ -199,7 +209,7 @@ class CartController
     public function actionIndex()
     {
         $cart = Yii::$app->cart;
-    
+        
         foreach ($cart->getItems() as $index => $item) {
             $size = $item->getProduct();
             $items[$index]['size'] = ArrayHelper::toArray($size);
@@ -210,13 +220,13 @@ class CartController
             $items[$index]['quantity'] = $item->getQuantity();
             $items[$index]['price'] = ValueHelper::addCurrency($item->getPrice());
             $items[$index]['cost'] = ValueHelper::addCurrency($item->getCost());
-    
+            
             if (!empty($items[$index]['promotion'])) {
                 $items[$index]['priceWithoutPromotion'] = ValueHelper::addCurrency($item->getPrice(false));
                 $items[$index]['costWithoutPromotion'] = ValueHelper::addCurrency($item->getCost(false, false));
             }
         }
-    
+        
         $totalCost = ValueHelper::addCurrency($cart->getTotalCost());
         
         

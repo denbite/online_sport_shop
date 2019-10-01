@@ -2,6 +2,7 @@
 
 namespace app\modules\main\controllers;
 
+use app\components\helpers\SeoHelper;
 use app\components\helpers\TransactionHelper;
 use app\components\helpers\ValueHelper;
 use app\components\models\NovaPoshta;
@@ -19,6 +20,15 @@ use yii\web\MethodNotAllowedHttpException;
 class CheckoutController
     extends Controller
 {
+    
+    public function beforeAction($action)
+    {
+        SeoHelper::putOpenGraphTags([
+                                        'og:site_name' => 'Интернет-магазин Aquista',
+                                    ]);
+        
+        return parent::beforeAction($action);
+    }
     
     /**
      * {@inheritdoc}
@@ -49,7 +59,7 @@ class CheckoutController
         
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
-    
+            
             if ($checkoutForm->load($post) and $checkoutForm->validate()) {
                 $order = [];
                 
@@ -59,28 +69,28 @@ class CheckoutController
                         $checkoutForm->signup->load($post);
                         $checkoutForm->signup->validate();
                     }
-    
-    
+                    
+                    
                     TransactionHelper::wrap(function () use ($checkoutForm, &$order)
                     {
                         $order = $checkoutForm->registerOrder();
                     });
-    
+                    
                 } catch (\Exception $e) {
                     Yii::$app->errorHandler->logException($e);
                     Yii::$app->session->setFlash('error', $e->getMessage());
                 }
-    
+                
                 if (!empty($order)) {
-        
+                    
                     Yii::$app->cart->clear();
-        
+                    
                     return $this->render('thanks', [
                         'order' => $order,
                     ]);
-        
+                    
                 }
-    
+                
             }
             
         }
