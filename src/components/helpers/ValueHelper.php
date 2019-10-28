@@ -11,7 +11,7 @@ use Yii;
 class ValueHelper
 {
     
-    const  SECRET_KEY = 234;
+    const  SECRET_KEY = 4812;
     
     const CACHE_MULTIPLIER = 'config_price_multiplier';
     
