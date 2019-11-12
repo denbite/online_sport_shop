@@ -4,6 +4,8 @@ namespace app\models;
 
 use app\components\helpers\ValueHelper;
 use Yii;
+use yii\base\InvalidArgumentException;
+use yii\base\InvalidValueException;
 
 /**
  * This is the model class for table "config".
@@ -62,5 +64,24 @@ class Config
         } else {
             return false;
         }
+    }
+    
+    public static function getValue($name)
+    {
+        if (!is_string($name)) {
+            throw new InvalidArgumentException('Only string allowed, but ' . gettype($name) . ' given.');
+        }
+        
+        $config = self::findOne([ 'name' => $name ]);
+        
+        if (empty($config)) {
+            throw new InvalidArgumentException('Can\'t find "' . $name . '" in Config');
+        }
+        
+        if (!isset($config->value)) {
+            throw new InvalidValueException('Can\'t get value');
+        }
+        
+        return $config->value;
     }
 }

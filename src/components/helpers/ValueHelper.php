@@ -191,7 +191,7 @@ class ValueHelper
     
     public static function getDelivery($price)
     {
-        return ( !empty($price) and (int) $price > 1000 ) ? 'Бесплатно' : 'По тарифам перевозчика';
+        return ( !empty($price) and (int) $price > Config::getValue('minPriceForFreeDelivery') ) ? 'Бесплатно' : 'По тарифам перевозчика';
     }
     
 }
