@@ -21,6 +21,7 @@ use phpQuery;
 use Yii;
 use yii\base\ErrorException;
 use yii\db\Exception;
+use yii\db\IntegrityException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 use yii\web\Controller;
@@ -127,130 +128,149 @@ class ImportController
                 $from = $model->from;
                 $to = $model->to;
                 $category_id = $model->category_id;
-                
-                TransactionHelper::wrap(function () use ($from, $to, $worksheet, $category_id)
-                {
-                    $prev = [];
-                    
-                    for ($i = $from + 1; $i <= $to; $i++) {
-                        if (empty($collection) or !empty($worksheet->getCell('D' . $i)->getValue())) {
-                            $collection = $worksheet->getCell('D' . $i)->getValue();
-                            continue;
-                        }
-                        
-                        $data = [
-                            'model' => ucwords(strtolower($worksheet->getCell('E' . $i)->getValue())),
-                            'firm' => ucwords(strtolower($worksheet->getCell('F' . $i)->getValue())),
-                            'code' => $worksheet->getCell('G' . $i)->getValue(),
-                            'color' => $worksheet->getCell('H' . $i)->getValue(),
-                            'base_price' => (int) $worksheet->getCell('I' . $i)->getValue(),
-                            'size' => (string) $worksheet->getCell('L' . $i)
-                                                         ->getValue() === '0' ? ItemColorSize::WITHOUT_SIZE : (string) $worksheet->getCell('L' . $i)
-                                                                                                                                 ->getValue(),
-                            'quantity' => (int) $worksheet->getCell('M' . $i)->getValue(),
-                        ];
-                        
-                        // Получаем товар, если не существует такого, то создаем
-                        if (!$item = Item::find()
-                                         ->where([
-                                                     'firm' => $data['firm'],
-                                                     'model' => $data['model'],
-                                                     'collection' => $collection,
-                                                     'category_id' => $category_id,
-                                                 ])
-                                         ->asArray()
-                                         ->one()) {
-                            
-                            $item = new Item();
-                            
-                            $item->firm = $data['firm'];
-                            $item->model = $data['model'];
-                            $item->collection = $collection;
-                            $item->category_id = (int) $category_id;
-                            $item->status = Status::STATUS_ACTIVE;
-                            $item->rate = rand(75, 90);
-                            
-                            if (!$item->save()) {
-                                $msg = $item->firstErrors;
-                                throw new Exception("Не удалось сохранить товар на строке {$i}: " . reset($msg));
-                            }
-                            
-                            $description = new ItemDescription();
-                            
-                            $description->item_id = $item['id'];
-                            
-                            if (!$description->save()) {
-                                $msg = $description->firstErrors;
-                                throw new Exception("Не удалось сохранить описание для товара на строке {$i}: " . reset($msg));
-                            }
-                            
-                            $item = ArrayHelper::toArray($item);
-                        }
-                        
-                        if (!$color = ItemColor::find()
-                                               ->where([
-                                                           'item_id' => $item['id'],
-                                                           'code' => $data['code'],
-                                                           'color' => $data['color'],
-                                                       ])
-                                               ->asArray()
-                                               ->one()) {
-                            $color = new ItemColor();
-                            $color->item_id = $item['id'];
-                            $color->code = $data['code'];
-                            $color->color = $data['color'];
-                            $color->status = Status::STATUS_ACTIVE;
-                            
-                            if (!$color->save()) {
-                                $msg = $color->firstErrors;
-                                throw new Exception("Не удалось сохранить цвет на строке {$i}: " . reset($msg));
-                            }
-                            
-                            $color = ArrayHelper::toArray($color);
-                        }
-                        
-                        if (!$size = ItemColorSize::find()
-                                                  ->where([
-                                                              'color_id' => $color['id'],
-                                                              'size' => $data['size'],
-                                                          ])
-                                                  ->asArray()
-                                                  ->all()) {
-                            $size = new ItemColorSize();
-                            $size->color_id = $color['id'];
-                            $size->size = $data['size'];
-                            $size->quantity = $data['quantity'];
-                            $size->base_price = $data['base_price'];
-                            $size->status = Status::STATUS_ACTIVE;
-                            
-                            if (!$size->save()) {
-                                $msg = $size->firstErrors;
-                                throw new Exception("Не удалось сохранить размер на строке {$i}: " . reset($msg));
-                            }
-                            
-                            $size = ArrayHelper::toArray($size);
-                        }
-                    }
-                    
-                });
-                
+    
                 $import = new Import();
-                
+    
                 $import->user_id = Yii::$app->user->identity->id;
                 $import->created_at = time();
                 $import->type = Import::TYPE_IMPORT_FROM_EXCEL;
                 $import->params = serialize([
-                                                'from' => $model->from,
-                                                'to' => $model->to,
-                                                'category_id' => $model->category_id,
+                                                'from' => $from,
+                                                'to' => $to,
+                                                'category_id' => $category_id,
                                             ]);
-                $import->result = serialize([
-                                                'code' => Import::RESULT_CODE_OK,
-                                                'msg' => 'Товары были успешно имортированы на сервер',
-                                            ]);
+    
+                $err = false;
+    
+                try {
+                    TransactionHelper::wrap(function () use ($from, $to, $worksheet, $category_id)
+                    {
+                        $prev = [];
+            
+                        for ($i = $from + 1; $i <= $to; $i++) {
+                            if (empty($collection) or !empty($worksheet->getCell('D' . $i)->getValue())) {
+                                $collection = $worksheet->getCell('D' . $i)->getValue();
+                                continue;
+                            }
+                
+                            $data = [
+                                'model' => ucwords(strtolower($worksheet->getCell('E' . $i)->getValue())),
+                                'firm' => ucwords(strtolower($worksheet->getCell('F' . $i)->getValue())),
+                                'code' => $worksheet->getCell('G' . $i)->getValue(),
+                                'color' => $worksheet->getCell('H' . $i)->getValue(),
+                                'base_price' => (int) $worksheet->getCell('I' . $i)->getValue(),
+                                'size' => (string) $worksheet->getCell('L' . $i)
+                                                             ->getValue() === '0' ? ItemColorSize::WITHOUT_SIZE : (string) $worksheet->getCell('L' . $i)
+                                                                                                                                     ->getValue(),
+                                'quantity' => (int) $worksheet->getCell('M' . $i)->getValue(),
+                            ];
+                
+                            // Получаем товар, если не существует такого, то создаем
+                            if (!$item = Item::find()
+                                             ->where([
+                                                         'firm' => $data['firm'],
+                                                         'model' => $data['model'],
+                                                         'collection' => $collection,
+                                                         'category_id' => $category_id,
+                                                     ])
+                                             ->asArray()
+                                             ->one()) {
+                    
+                                $item = new Item();
+                    
+                                $item->firm = $data['firm'];
+                                $item->model = $data['model'];
+                                $item->collection = $collection;
+                                $item->category_id = (int) $category_id;
+                                $item->status = Status::STATUS_ACTIVE;
+                                $item->rate = rand(75, 90);
+                    
+                                if (!$item->save()) {
+                                    $msg = $item->firstErrors;
+                                    throw new Exception("Не удалось сохранить товар на строке {$i}: " . reset($msg));
+                                }
+                    
+                                $description = new ItemDescription();
+                    
+                                $description->item_id = $item['id'];
+                    
+                                if (!$description->save()) {
+                                    $msg = $description->firstErrors;
+                                    throw new Exception("Не удалось сохранить описание для товара на строке {$i}: " . reset($msg));
+                                }
+                    
+                                $item = ArrayHelper::toArray($item);
+                            }
+                
+                            if (!$color = ItemColor::find()
+                                                   ->where([
+                                                               'item_id' => $item['id'],
+                                                               'code' => $data['code'],
+                                                               'color' => $data['color'],
+                                                           ])
+                                                   ->asArray()
+                                                   ->one()) {
+                                $color = new ItemColor();
+                                $color->item_id = $item['id'];
+                                $color->code = $data['code'];
+                                $color->color = $data['color'];
+                                $color->status = Status::STATUS_ACTIVE;
+                    
+                                if (!$color->save()) {
+                                    $msg = $color->firstErrors;
+                                    throw new Exception("Не удалось сохранить цвет на строке {$i}: " . reset($msg));
+                                }
+                    
+                                $color = ArrayHelper::toArray($color);
+                            }
+                
+                            if (!$size = ItemColorSize::find()
+                                                      ->where([
+                                                                  'color_id' => $color['id'],
+                                                                  'size' => $data['size'],
+                                                              ])
+                                                      ->asArray()
+                                                      ->all()) {
+                                $size = new ItemColorSize();
+                                $size->color_id = $color['id'];
+                                $size->size = $data['size'];
+                                $size->quantity = $data['quantity'];
+                                $size->base_price = $data['base_price'];
+                                $size->status = Status::STATUS_ACTIVE;
+                    
+                                if (!$size->save()) {
+                                    $msg = $size->firstErrors;
+                                    throw new Exception("Не удалось сохранить размер на строке {$i}: " . reset($msg));
+                                }
+                    
+                                $size = ArrayHelper::toArray($size);
+                            }
+                        }
+            
+                    });
+                } catch (IntegrityException $exception) {
+                    Yii::$app->errorHandler->logException($exception);
+        
+                    $err = true;
+                }
+    
+                if (!$err) {
+                    $import->result = serialize([
+                                                    'code' => Import::RESULT_CODE_OK,
+                                                    'msg' => 'Товары были успешно имортированы на сервер',
+                                                ]);
+        
+                    Yii::$app->session->setFlash('success', 'Товары были успешно имортированы');
+                } else {
+                    $import->result = serialize([
+                                                    'code' => Import::RESULT_CODE_ERROR,
+                                                    'msg' => $exception->getMessage(),
+                                                ]);
+        
+                    Yii::$app->session->setFlash('error', 'Ошибка при импортировании');
+                }
                 
                 if ($import->save()) {
-                    Yii::$app->session->setFlash('success', 'Товары были успешно имортированы');
                     
                     return $this->redirect('/admin/import/index');
                 }
@@ -258,9 +278,11 @@ class ImportController
                 Yii::$app->session->setFlash('error', 'Невозможно прочитать файл с наличием');
             }
         }
-        
-        return $this->render('import-from-excel', [ 'model' => $model,
-            'categories' => Category::getCategoriesIndexNameWithParents(), ]);
+    
+        return $this->render('import-from-excel', [
+            'model' => $model,
+            'categories' => Category::getCategoriesIndexNameWithParents(),
+        ]);
     }
     
     public function actionLoadMulcano($token = null, $firm, $model, array $types, $category_id,
