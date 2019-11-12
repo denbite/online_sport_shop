@@ -58,7 +58,7 @@ class CartItem
      */
     public function getCost($purchase = false, $withPromotion = true)
     {
-        return $purchase ? $this->product->base_price * Config::findOne([ 'name' => 'buyMultiplier' ])['value'] * $this->quantity : $this->getPrice($withPromotion) * $this->quantity;
+        return $purchase ? $this->product->base_price * Config::getValue('buyMultiplier') * $this->quantity : $this->getPrice($withPromotion) * $this->quantity;
     }
     
     /**

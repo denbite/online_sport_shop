@@ -94,7 +94,7 @@ class DefaultController
         
         SeoHelper::putDefaultTags();
     
-        //        $instagram_token = Config::findOne([ 'name' => 'instagram_access_token' ])->value;
+        //        $instagram_token = Config::getValue('instagram_access_token');
         
         return $this->render('index', [
             'banners' => $banners,

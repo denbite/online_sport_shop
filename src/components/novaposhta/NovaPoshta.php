@@ -36,7 +36,7 @@ class NovaPoshta
     
     private function initApiKey()
     {
-        $key = Config::findOne([ 'name' => 'nova_poshta_api_key' ])->value;
+        $key = Config::getValue('nova_poshta_api_key');
         
         if (!empty($key) and is_string($key)) {
             $this->api_key = $key;

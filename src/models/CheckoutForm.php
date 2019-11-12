@@ -99,10 +99,10 @@ class CheckoutForm
             }
             
             $this->saveOrderedItems($order->id);
-            
-            $bot_token = Config::findOne([ 'name' => 'telegram_bot_token' ])->value;
-            
-            $admin = Config::findOne([ 'name' => 'telegram_admin_id' ])->value;
+    
+            $bot_token = Config::getValue('telegram_bot_token');
+    
+            $admin = Config::getValue('telegram_admin_id');
             
             if (!empty($bot_token) and is_string($bot_token) and !empty($admin) and is_string($admin)) {
                 
