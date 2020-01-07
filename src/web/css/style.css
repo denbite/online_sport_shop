@@ -8055,10 +8055,11 @@ textarea:focus {
     font-size: 13px !important;
     margin: 0 0 19px;
     line-height: 26px;
+    font-family: Roboto, sans-serif !important;
 }
 
 .description-review-wrapper .description-review-bottom .product-description-wrapper {
-    font-family: Poppins, sans-serif !important;
+    font-family: Roboto, Poppins, sans-serif !important;
     font-weight: 600 !important;
     font-size: 13px !important;
     color: #333 !important;

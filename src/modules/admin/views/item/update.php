@@ -237,8 +237,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                              ])
                                              ->label($index ? false : $modelDescription->getAttributeLabel('small_list_array')) ?>
                                 <?php endforeach; ?>
-                                <a id="add-field" class="btn btn-info"><i class="glyphicon glyphicon-plus"></i></a>
-                                <a id="minus-field" class="btn btn-info" style="display: none;"><i
+                                <a id="add-field" class="btn btn-info" style="margin-bottom: 15px;"><i
+                                            class="glyphicon glyphicon-plus"></i></a>
+                                <a id="minus-field" class="btn btn-info" style="margin-bottom: 15px;display: none;"><i
                                             class="glyphicon glyphicon-minus"></i></a>
                             </div>
                         </div>
