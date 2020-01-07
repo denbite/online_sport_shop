@@ -1,5 +1,5 @@
 {
-  "name": "telegram-bot-aquista",
+  "name": "telegram-bot-aquista^local",
   "version": "1.0.0",
   "description": "telegram bot for online shop Aquista",
   "main": "app.js",

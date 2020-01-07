@@ -16,6 +16,7 @@ sudo docker-compose exec web bash
 chmod -R 777 ./runtime
 chmod -R 777 ./web/assets
 chmod -R 777 ./web/files
+composer install
 php yii migrate --migrationPath=@yii/rbac/migrations
 php yii migrate
 ~~~
