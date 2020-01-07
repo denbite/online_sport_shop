@@ -27,7 +27,6 @@ RUN docker-php-ext-configure gd \
     --with-freetype-dir=/usr/lib/x86_64-linux-gnu/ \
     --with-jpeg-dir=/usr/lib/x86_64-linux-gnu/ \
     --with-xpm-dir=/usr/lib/x86_64-linux-gnu/ \
-    --with-vpx-dir=/usr/lib/x86_64-linux-gnu/ \
     && docker-php-ext-install gd \
     zip
 
