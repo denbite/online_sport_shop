@@ -692,10 +692,9 @@ class ImportController
         } else {
             Yii::$app->session->setFlash('error',
                                          'С помощью этого Excel-файла уже проводилось обновления наличия, загрузите новый');
-            
-            return $this->redirect('/admin/import/index');
-            
+    
         }
+            return $this->redirect('/admin/import/index');
         
     }
     
