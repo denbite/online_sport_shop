@@ -16,6 +16,7 @@ use app\modules\admin\models\Import;
 use app\modules\admin\models\ImportFromExcelForm;
 use app\modules\admin\models\ImportSearch;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use PhpOffice\PhpSpreadsheet\Reader\Xls;
 use phpQuery;
 use Yii;
@@ -109,8 +110,8 @@ class ImportController
                                                      'type' => Import::TYPE_UPLOAD_EXCEL,
                                                  ])
                                          ->andWhere([
-                                                           'like', 'result', 's:4:"code";i:' . Import::RESULT_CODE_OK,
-                                                       ])
+                                                        'like', 'result', 's:4:"code";i:' . Import::RESULT_CODE_OK,
+                                                    ])
                                          ->orderBy([
                                                        'created_at' => SORT_DESC,
                                                    ])
@@ -146,13 +147,13 @@ class ImportController
                     TransactionHelper::wrap(function () use ($from, $to, $worksheet, $category_id)
                     {
                         $prev = [];
-            
+    
                         for ($i = $from + 1; $i <= $to; $i++) {
                             if (empty($collection) or !empty($worksheet->getCell('D' . $i)->getValue())) {
                                 $collection = $worksheet->getCell('D' . $i)->getValue();
                                 continue;
                             }
-                
+        
                             $data = [
                                 'model' => ucwords(strtolower($worksheet->getCell('E' . $i)->getValue())),
                                 'firm' => ucwords(strtolower($worksheet->getCell('F' . $i)->getValue())),
@@ -164,7 +165,7 @@ class ImportController
                                                                                                                                      ->getValue(),
                                 'quantity' => (int) $worksheet->getCell('M' . $i)->getValue(),
                             ];
-                
+        
                             // Получаем товар, если не существует такого, то создаем
                             if (!$item = Item::find()
                                              ->where([
@@ -175,33 +176,33 @@ class ImportController
                                                      ])
                                              ->asArray()
                                              ->one()) {
-                    
+    
                                 $item = new Item();
-                    
+    
                                 $item->firm = $data['firm'];
                                 $item->model = $data['model'];
                                 $item->collection = $collection;
                                 $item->category_id = (int) $category_id;
                                 $item->status = Status::STATUS_ACTIVE;
                                 $item->rate = rand(75, 90);
-                    
+    
                                 if (!$item->save()) {
                                     $msg = $item->firstErrors;
                                     throw new Exception("Не удалось сохранить товар на строке {$i}: " . reset($msg));
                                 }
-                    
+    
                                 $description = new ItemDescription();
-                    
+    
                                 $description->item_id = $item['id'];
-                    
+    
                                 if (!$description->save()) {
                                     $msg = $description->firstErrors;
                                     throw new Exception("Не удалось сохранить описание для товара на строке {$i}: " . reset($msg));
                                 }
-                    
+    
                                 $item = ArrayHelper::toArray($item);
                             }
-                
+        
                             if (!$color = ItemColor::find()
                                                    ->where([
                                                                'item_id' => $item['id'],
@@ -215,15 +216,15 @@ class ImportController
                                 $color->code = $data['code'];
                                 $color->color = $data['color'];
                                 $color->status = Status::STATUS_ACTIVE;
-                    
+            
                                 if (!$color->save()) {
                                     $msg = $color->firstErrors;
                                     throw new Exception("Не удалось сохранить цвет на строке {$i}: " . reset($msg));
                                 }
-                    
+            
                                 $color = ArrayHelper::toArray($color);
                             }
-                
+        
                             if (!$size = ItemColorSize::find()
                                                       ->where([
                                                                   'color_id' => $color['id'],
@@ -237,16 +238,16 @@ class ImportController
                                 $size->quantity = $data['quantity'];
                                 $size->base_price = $data['base_price'];
                                 $size->status = Status::STATUS_ACTIVE;
-                    
+            
                                 if (!$size->save()) {
                                     $msg = $size->firstErrors;
                                     throw new Exception("Не удалось сохранить размер на строке {$i}: " . reset($msg));
                                 }
-                    
+            
                                 $size = ArrayHelper::toArray($size);
                             }
                         }
-            
+    
                     });
                 } catch (IntegrityException $exception) {
                     Yii::$app->errorHandler->logException($exception);
@@ -314,13 +315,13 @@ class ImportController
                         
                         // Получаем товар, если не существует такого, то создаем
                         if (!$item = Item::find()
-                            ->where([
-                                        'firm' => $firm,
-                                        'model' => $model . $sizes[$type_name]['name'],
-                                        'category_id' => $category_id,
-                                    ])
-                            ->asArray()
-                            ->one()) {
+                                         ->where([
+                                                     'firm' => $firm,
+                                                     'model' => $model . $sizes[$type_name]['name'],
+                                                     'category_id' => $category_id,
+                                                 ])
+                                         ->asArray()
+                                         ->one()) {
                             
                             $item = new Item();
                             
@@ -349,13 +350,13 @@ class ImportController
                         foreach ($data as $code) {
                             
                             if (!$color = ItemColor::find()
-                                ->where([
-                                            'item_id' => $item['id'],
-                                            'code' => $code,
-                                            'color' => $type_name,
-                                        ])
-                                ->asArray()
-                                ->one()) {
+                                                   ->where([
+                                                               'item_id' => $item['id'],
+                                                               'code' => $code,
+                                                               'color' => $type_name,
+                                                           ])
+                                                   ->asArray()
+                                                   ->one()) {
                                 $color = new ItemColor();
                                 $color->item_id = $item['id'];
                                 $color->code = $code;
@@ -371,12 +372,12 @@ class ImportController
                             
                             foreach ($sizes[$type_name]['sizes'] as $size_name) {
                                 if (!$size = ItemColorSize::find()
-                                    ->where([
-                                                'color_id' => $color['id'],
-                                                'size' => $size_name,
-                                            ])
-                                    ->asArray()
-                                    ->all()) {
+                                                          ->where([
+                                                                      'color_id' => $color['id'],
+                                                                      'size' => $size_name,
+                                                                  ])
+                                                          ->asArray()
+                                                          ->all()) {
                                     $size = new ItemColorSize();
                                     $size->color_id = $color['id'];
                                     $size->size = $size_name === '0' ? ItemColorSize::WITHOUT_SIZE : $size_name;
@@ -405,25 +406,25 @@ class ImportController
     {
         if ($token == 'tyztyz') {
             $queryWithPics = Item::find()
-                ->select([ 'item.id' ])
-                ->from(Item::tableName() . ' item')
-                ->joinWith([ 'allColors colors' => function ($query)
-                {
-                    $query->joinWith([ 'mainImage' ]);
-                },
-                           ]);
+                                 ->select([ 'item.id' ])
+                                 ->from(Item::tableName() . ' item')
+                                 ->joinWith([ 'allColors colors' => function ($query)
+                                 {
+                                     $query->joinWith([ 'mainImage' ]);
+                                 },
+                                            ]);
             
             $items = Item::find()
-                ->joinWith([ 'allColors colors' ])
-                ->where([ 'not in', 'item.id', $queryWithPics ])
-                ->andWhere([
-                               'firm' => 'Saucony',
-                           ])
-                ->orderBy([
-                              'id' => SORT_DESC,
-                          ])
-                ->asArray()
-                ->all();
+                         ->joinWith([ 'allColors colors' ])
+                         ->where([ 'not in', 'item.id', $queryWithPics ])
+                         ->andWhere([
+                                        'firm' => 'Saucony',
+                                    ])
+                         ->orderBy([
+                                       'id' => SORT_DESC,
+                                   ])
+                         ->asArray()
+                         ->all();
             
             $pathTmp = Yii::getAlias('@webroot') . '/files/tmp/';
             
@@ -454,9 +455,14 @@ class ImportController
                         if (empty($link)) {
                             continue;
                         }
-                        
-                        // get product page
-                        $response = $client->request('GET', $link)->getBody()->getContents();
+    
+                        try {
+                            // get product page
+                            $response = $client->request('GET', $link)->getBody()->getContents();
+                        } catch (ClientException $exception) {
+                            Yii::$app->errorHandler->logException($exception);
+                            continue;
+                        }
                         
                         $pq = phpQuery::newDocumentHTML($response);
     
@@ -694,7 +700,8 @@ class ImportController
                                          'С помощью этого Excel-файла уже проводилось обновления наличия, загрузите новый');
     
         }
-            return $this->redirect('/admin/import/index');
+    
+        return $this->redirect('/admin/import/index');
         
     }
     
@@ -710,5 +717,83 @@ class ImportController
             
             return false;
         }
+    }
+    
+    public function actionFixPics()
+    {
+        $array = Image::find()
+                      ->where([
+                                  'type' => Image::TYPE_ITEM,
+                              ])
+                      ->orderBy([
+                                    'subject_id' => SORT_ASC,
+                                    'sort' => SORT_ASC,
+                                ])
+                      ->all();
+        foreach ($array as $one) {
+            $all_images[$one->subject_id][$one->sort] = $one;
+        }
+        
+        foreach ($all_images as $subject_id => $images) {
+            $path = Yii::getAlias('@webroot') . "/files/Item/Item-{$subject_id}/";
+            
+            if (!file_exists($path)) {
+                continue;
+            }
+            
+            $files = glob($path . "*.{jpg,png,gif,webp}", GLOB_BRACE);
+            
+            foreach ($images as $sort => $image) {
+                if (file_exists($path . $image->url) or count($images) != count($files)) {
+                    continue;
+                }
+                
+                $new_path = $files[$sort];
+                $new_url = substr($new_path, strrpos($new_path, '/') + 1);
+                
+                if (!empty($new_url)) {
+                    $image->url = $new_url;
+                    
+                    if (!$image->save()) {
+                        throw new Exception('Не удалось сохранить');
+                    }
+                }
+                
+            }
+        }
+        
+        return $this->redirect('/admin/import/index');
+        
+    }
+    
+    public function actionFix()
+    {
+        $images = Image::find()
+                       ->where([
+                                   'type' => Image::TYPE_ITEM,
+                               ])
+                       ->all();
+        
+        foreach ($images as $model) {
+            
+            foreach (Image::getSizes() as $size => $folder) {
+                
+                $path = Yii::getAlias('@webroot') . Image::getLink($model->id, $size);
+                
+                // delete file, if exists
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+                
+            }
+            
+            $model->delete();
+            
+            //            Image::updateAllCounters([ 'sort' => -1 ], [
+            //                'and', [ 'type' => Image::TYPE_ITEM, 'subject_id' => $model->subject_id, ], [ '>', 'sort', $model->sort ],
+            //            ]);
+        }
+        
+        return $this->redirect('/admin/import/index');
     }
 }
