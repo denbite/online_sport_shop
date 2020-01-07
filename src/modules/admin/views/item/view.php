@@ -38,6 +38,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="box box-shadowed box-outline-success <?= !empty(Yii::$app->params['background']) ?
         Yii::$app->params['background'] : '' ?>">
         <div class="box-header with-border">
+            <div class="left-float">
+                <?= Html::a(Html::tag('i', '&nbsp;',
+                                      [ 'class' => 'fas fa-external-link-alt' ]) . ' Открыть товар в новой вкладке',
+                            [ '/main/products/product', 'slug' => \app\components\helpers\ValueHelper::encryptValue($model['id']) ],
+                            [ 'class' => 'btn btn-sm btn-info',
+                                'target' => '_blank',
+                            ]) ?>
+            </div>
             <div class="right-float">
                 <?php if (Permission::can('admin_item_update')): ?>
                     <?= Html::a(Html::tag('i', '&nbsp;', [ 'class' => 'fas fa-pen' ]) . ' Редактировать',
