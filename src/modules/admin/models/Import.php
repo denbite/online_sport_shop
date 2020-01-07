@@ -22,6 +22,8 @@ class Import
     
     const TYPE_IMPORT_FROM_EXCEL = 2;
     
+    const TYPE_UPDATE_FROM_EXCEL = 3;
+    
     const RESULT_CODE_OK = 1;
     
     const RESULT_CODE_ERROR = 2;
@@ -39,6 +41,7 @@ class Import
         return [
             self::TYPE_UPLOAD_EXCEL => 'Загрузка Excel',
             self::TYPE_IMPORT_FROM_EXCEL => 'Импорт Excel',
+            self::TYPE_UPDATE_FROM_EXCEL => 'Обновление наличия',
         ];
     }
     
@@ -47,6 +50,7 @@ class Import
         return [
             self::TYPE_UPLOAD_EXCEL => 'success',
             self::TYPE_IMPORT_FROM_EXCEL => 'info',
+            self::TYPE_UPDATE_FROM_EXCEL => 'purple',
         ];
     }
     

@@ -45,12 +45,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= Html::a('Импортировать Excel таблицу', [ '/admin/import/import-from-excel' ], [ 'class' => 'btn btn-sm
             btn-info', 'style' => 'font-size: 16px;font-weight: 600;margin-left:15px;' ]) ?>
             <?php endif; ?>
+            <?php if (Permission::can('admin_import_update-available-from-excel')): ?>
+                <?= Html::a('Обновить наличие из Excel', [ '/admin/import/update-available-from-excel' ], [ 'class' => 'btn btn-sm
+            btn-purple', 'style' => 'font-size: 16px;font-weight: 600;margin-left:15px;' ]) ?>
+            <?php endif; ?>
 
         </div>
     </div>
     <div class="box-body no-padding">
         <?php echo \yii\grid\GridView::widget([
-                                                  'id' => 'item-table',
+                                                  'id' => 'import-table',
                                                   'dataProvider' => $dataProvider,
                                                   'filterModel' => $searchModel,
                                                   'tableOptions' => [
@@ -73,10 +77,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                           'format' => 'html',
                                                           'value' => function ($model)
                                                           {
-                                                              if (Permission::can('admin_import_view')) {
-                                                                  return Html::a($model->id,
-                                                                                 [ '/admin/import/view', 'id' => $model->id ]);
-                                                              }
+                                                              //                                                              if (Permission::can('admin_import_view')) {
+                                                              //                                                                  return Html::a($model->id,
+                                                              //                                                                                 [ '/admin/import/view', 'id' => $model->id ]);
+                                                              //                                                              }
                         
                                                               return $model->id;
                                                           },
@@ -101,6 +105,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                           return 'Название => ' . unserialize($model->params)['name'];
                                                                       case Import::TYPE_IMPORT_FROM_EXCEL:
                                                                           return 'Категория => ' . Category::findOne([ 'id' => unserialize($model->params)['category_id'] ])->name;
+                                                                      case Import::TYPE_UPDATE_FROM_EXCEL:
+                                                                          return 'Источник => ' . unserialize($model->params)['stock'];
                                                                       default:
                                                                           return null;
                                                                   }

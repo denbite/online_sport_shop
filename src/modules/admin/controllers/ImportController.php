@@ -108,7 +108,7 @@ class ImportController
                                          ->where([
                                                      'type' => Import::TYPE_UPLOAD_EXCEL,
                                                  ])
-                                         ->andFilterWhere([
+                                         ->andWhere([
                                                            'like', 'result', 's:4:"code";i:' . Import::RESULT_CODE_OK,
                                                        ])
                                          ->orderBy([
@@ -250,7 +250,6 @@ class ImportController
                     });
                 } catch (IntegrityException $exception) {
                     Yii::$app->errorHandler->logException($exception);
-        
                     $err = true;
                 }
     
@@ -551,6 +550,154 @@ class ImportController
         throw new NotFoundHttpException('Страница не найдена.');
     }
     
+    public function actionUpdateAvailableFromExcel()
+    {
+        $update = Import::find()
+                        ->where([
+                                    'type' => Import::TYPE_UPDATE_FROM_EXCEL,
+                                ])
+                        ->andWhere([
+                                       'like', 'result', 's:4:"code";i:' . Import::RESULT_CODE_OK . ';',
+                                   ])
+                        ->orderBy([
+                                      'created_at' => SORT_DESC,
+                                  ])
+                        ->limit(1)
+                        ->one();
+        
+        $stock = Import::find()
+                       ->where([
+                                   'type' => Import::TYPE_UPLOAD_EXCEL,
+                               ])
+                       ->andWhere([
+                                      'like', 'result', 's:4:"code";i:' . Import::RESULT_CODE_OK . ';',
+                                  ])
+                       ->orderBy([
+                                     'created_at' => SORT_DESC,
+                                 ])
+                       ->limit(1)
+                       ->one();
+        
+        $last_update = !empty($update) ? $update->created_at : null;
+        $last_stock = !empty($stock) ? $stock->created_at : null;
+        
+        if ($last_stock === null or $last_stock > $last_update) {
+            $reader = new Xls();
+            
+            $filename = 'stock-' . $last_stock . '.xls';
+            
+            $path = Import::getStockBasePath() . $filename;
+            
+            if (file_exists($path) and $reader->canRead($path)) {
+                $reader->setReadDataOnly(true);
+                $spreadsheet = $reader->load($path);
+                
+                $worksheet = $spreadsheet->getActiveSheet();
+                
+                $from = 1;
+                $to = $worksheet->getHighestRow('G');
+                
+                $import = new Import();
+                
+                $import->user_id = Yii::$app->user->identity->id;
+                $import->created_at = time();
+                $import->type = Import::TYPE_UPDATE_FROM_EXCEL;
+                $import->params = serialize([
+                                                'stock' => $filename,
+                                            ]);
+                
+                $err = false;
+                
+                try {
+                    TransactionHelper::wrap(function () use ($from, $to, $worksheet)
+                    {
+                        
+                        for ($i = $from + 1; $i <= $to; $i++) {
+                            $code = $worksheet->getCell('G' . $i)->getValue();
+                            
+                            if (empty($code)) {
+                                continue;
+                            }
+                            
+                            if (!$color = ItemColor::find()
+                                                   ->where([
+                                                               'code' => $code,
+                                                           ])
+                                                   ->asArray()
+                                                   ->limit(1)
+                                                   ->one()) {
+                                continue;
+                            }
+                            
+                            $size = $worksheet->getCell('L' . $i)
+                                              ->getValue() == 0 ? ItemColorSize::WITHOUT_SIZE : $worksheet->getCell('L' . $i)
+                                                                                                          ->getValue();
+                            
+                            
+                            if (!$size = ItemColorSize::find()
+                                                      ->where([
+                                                                  'color_id' => $color['id'],
+                                                                  'size' => $size,
+                                                              ])
+                                                      ->limit(1)
+                                                      ->one()) {
+                                continue;
+                            }
+                            
+                            $quantity = (int) $worksheet->getCell('M' . $i)->getValue();
+                            
+                            if (empty($quantity)) {
+                                continue;
+                            }
+                            
+                            $size->quantity = $quantity;
+                            
+                            if (!$size->save()) {
+                                $msg = $size->firstErrors;
+                                throw new Exception("Не удалось обновить наличие на строке {$i}: " . reset($msg));
+                            }
+                            
+                        }
+                        
+                    });
+                } catch (IntegrityException $exception) {
+                    Yii::$app->errorHandler->logException($exception);
+                    $err = true;
+                }
+                
+                if (!$err) {
+                    $import->result = serialize([
+                                                    'code' => Import::RESULT_CODE_OK,
+                                                    'msg' => 'Наличие товаров было успешно обновлено на сервере',
+                                                ]);
+                    
+                    Yii::$app->session->setFlash('success', 'Наличие товаров было успешно обновлено на сервере');
+                } else {
+                    $import->result = serialize([
+                                                    'code' => Import::RESULT_CODE_ERROR,
+                                                    'msg' => $exception->getMessage(),
+                                                ]);
+                    
+                    Yii::$app->session->setFlash('error', 'Ошибка при обновлении наличия');
+                }
+                
+                if ($import->save()) {
+                    return $this->redirect('/admin/import/index');
+                }
+                
+            } else {
+                Yii::$app->session->setFlash('error', 'Невозможно прочитать файл с наличием');
+            }
+            
+        } else {
+            Yii::$app->session->setFlash('error',
+                                         'С помощью этого Excel-файла уже проводилось обновления наличия, загрузите новый');
+            
+            return $this->redirect('/admin/import/index');
+            
+        }
+        
+    }
     
     public function copyRemote($baseUri, $fromUrl, $toFile)
     {
