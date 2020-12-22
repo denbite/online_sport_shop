@@ -22,7 +22,7 @@ Project:	Fab Admin - Responsive Admin Template
 
 /*---Skin: Blue---*/
 
-.skin-blue .main-header .navbar {
+/* .skin-blue .main-header .navbar {
     background-color: #1e88e5;
 }
 
@@ -234,7 +234,7 @@ Project:	Fab Admin - Responsive Admin Template
 .skin-blue-light .main-header .navbar .nav > li > a {
     color: #ffffff;
 }
-
+/*  
 .skin-blue-light .main-header .navbar .nav > li > a:hover,
 .skin-blue-light .main-header .navbar .nav > li > a:active,
 .skin-blue-light .main-header .navbar .nav > li > a:focus,
@@ -423,7 +423,7 @@ Project:	Fab Admin - Responsive Admin Template
 
 
 /*---Skin: Black---*/
-
+/*
 .skin-black .main-header .navbar {
     background-color: #ffffff;
 }
@@ -953,7 +953,7 @@ Project:	Fab Admin - Responsive Admin Template
 .skin-green .sidebar a:hover {
     text-decoration: none;
 }
-
+/*
 .skin-green .sidebar-menu .treeview-menu > li > a {
     color: #afb7c3;
 }
@@ -1090,7 +1090,7 @@ Project:	Fab Admin - Responsive Admin Template
 .skin-green-light .main-header li.user-header {
     background-color: #fff;
 }
-
+/*
 .skin-green-light .content-header {
     background: #fff;
 }
@@ -1368,7 +1368,7 @@ Project:	Fab Admin - Responsive Admin Template
     border-radius: 3px;
     border: 1px solid #898989;
 }
-
+/*
 .skin-red .sidebar-form input[type="text"],
 .skin-red .sidebar-form .btn {
     box-shadow: none;
@@ -1539,7 +1539,7 @@ Project:	Fab Admin - Responsive Admin Template
 .skin-red-light .sidebar-menu > li.active > a {
     border-left-color: #ff002e;
 }
-
+/*
 .skin-red-light .sidebar-menu > li > .treeview-menu {
     margin: 0 0px;
     background: #ffffff;
@@ -1710,7 +1710,7 @@ Project:	Fab Admin - Responsive Admin Template
 .skin-purple .user-panel > .info > a {
     color: #fff;
 }
-
+/*
 .skin-purple .sidebar {
     border-color: #7460ee;
 }
@@ -2427,4 +2427,4 @@ Project:	Fab Admin - Responsive Admin Template
 
 .skin-yellow-light .main-header .messages-menu .dropdown-toggle i::after, .skin-yellow-light .main-header .notifications-menu .dropdown-toggle i::after, .skin-yellow-light .main-header .tasks-menu .dropdown-toggle i::after {
     border-color: #e9ab2e;
-}
+} */
